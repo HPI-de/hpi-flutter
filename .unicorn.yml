@@ -1,6 +1,6 @@
 ---
 unicornVersion: "0.0.2"
 type: "OTHER"
-name: "hpi-flutter"
+name: "hpi_flutter"
 description: "The official HPI app, written in Flutter"
 version: "0.0.1"
