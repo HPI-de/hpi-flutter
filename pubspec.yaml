@@ -4,11 +4,23 @@ description: The official HPI app, written in Flutter.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
+
+  # General
+  kt_dart: ^0.6.2
+
+  # Data
+  protobuf: ^0.13.15
+  grpc: ^2.0.0+1
+  rxdart: ^0.22.1+1
+  provider: ^3.0.0+1
+
+  # UI
+  timeago: ^2.0.18
 
 dev_dependencies:
   flutter_test:
