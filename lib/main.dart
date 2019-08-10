@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart';
 import 'package:provider/provider.dart';
 
-import 'news/widgets/news_page.dart';
+import 'app/widget/dashboard_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: NewsPage(),
+        home: DashboardPage(),
       ),
     );
   }
