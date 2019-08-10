@@ -3,7 +3,7 @@ import 'package:grpc/service_api.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/news/v1test/news_service.pbgrpc.dart';
 import 'package:kt_dart/collection.dart';
 
-import 'data/article.dart';
+import 'article.dart';
 
 @immutable
 class NewsBloc {

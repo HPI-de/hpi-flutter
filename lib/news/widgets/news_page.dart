@@ -5,7 +5,7 @@ import 'package:hpi_flutter/news/data/article.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:provider/provider.dart';
 
-import '../bloc.dart';
+import '../data/bloc.dart';
 import 'article_preview.dart';
 
 @immutable
