@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart';
+import 'package:hpi_flutter/course/widgets/course_detail_page.dart';
 import '../data/course.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:provider/provider.dart';
 
 import '../bloc.dart';
 
+@immutable
 class CoursePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class CoursePage extends StatelessWidget {
               children: [
                 CourseList(),
                 Center(
-                  child: Text('In progress!'),
+                  child: FlutterLogo(),
                 ),
                 CourseSeriesList()
               ],
@@ -74,8 +76,21 @@ class CourseList extends StatelessWidget {
         return ListView(
           children: snapshot.data
               .map((c) => ListTile(
-                    title: Text(c.courseSeriesId),
+                    title: StreamBuilder<CourseSeries>(
+                      stream: Provider.of<CourseBloc>(context)
+                          .getCourseSeries(c.courseSeriesId),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) return Text('Loading...');
+
+                        return Text(snapshot.data.title);
+                      },
+                    ),
                     subtitle: Text(c.lecturer),
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => CourseDetailPage(c),
+                      ));
+                    },
                   ))
               .asList(),
         );

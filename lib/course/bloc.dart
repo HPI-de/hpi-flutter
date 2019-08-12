@@ -37,4 +37,11 @@ class CourseBloc {
     return Stream.fromFuture(_client.getCourse(GetCourseRequest()..id = id))
         .map((c) => Course.fromProto(c));
   }
+
+  Stream<CourseDetail> getCourseDetail(String courseId) {
+    assert(courseId != null);
+    return Stream.fromFuture(_client
+            .getCourseDetail(GetCourseDetailRequest()..courseId = courseId))
+        .map((c) => CourseDetail.fromProto(c));
+  }
 }
