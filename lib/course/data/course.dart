@@ -24,6 +24,32 @@ class CourseSeries {
   final String language;
   final KtSet<Type> types;
 
+  static Type typeFromProto(proto.CourseSeries_Type type) {
+    switch (type) {
+      case proto.CourseSeries_Type.LECTURE:
+        return Type.LECTURE;
+      case proto.CourseSeries_Type.SEMINAR:
+        return Type.SEMINAR;
+      case proto.CourseSeries_Type.BLOCK_SEMINAR:
+        return Type.BLOCK_SEMINAR;
+      case proto.CourseSeries_Type.EXERCISE:
+        return Type.EXERCISE;
+    }
+  }
+
+  static proto.CourseSeries_Type typeToProto(Type type) {
+    switch (type) {
+      case Type.LECTURE:
+        return proto.CourseSeries_Type.LECTURE;
+      case Type.SEMINAR:
+        return proto.CourseSeries_Type.SEMINAR;
+      case Type.BLOCK_SEMINAR:
+        return proto.CourseSeries_Type.BLOCK_SEMINAR;
+      case Type.EXERCISE:
+        return proto.CourseSeries_Type.EXERCISE;
+    }
+  }
+
   CourseSeries({
     @required this.id,
     @required this.title,
@@ -51,7 +77,9 @@ class CourseSeries {
           ects: courseSeries.ects,
           hoursPerWeek: courseSeries.hoursPerWeek,
           mandatory: courseSeries.mandatory,
-          //types: KtSet.from(courseSeries.types).map(.toSet(),
+          types: KtSet.from(courseSeries.types)
+              .map((t) => typeFromProto(t))
+              .toSet(),
         );
 
   proto.CourseSeries toProto() {
@@ -62,7 +90,8 @@ class CourseSeries {
       ..abbreviation = abbreviation
       ..ects = ects
       ..hoursPerWeek = hoursPerWeek
-      ..mandatory = mandatory;
+      ..mandatory = mandatory
+      ..types.addAll(types.map((t) => typeToProto(t)).asList());
   }
 }
 
@@ -155,10 +184,83 @@ class Course {
       ..courseSeriesId = courseSeriesId
       ..semesterId = semesterId
       ..lecturer = lecturer
-      //..assistants = assistants.toList().asList()
+      ..assistants.addAll(assistants.toList().asList())
       ..website = website;
   }
 }
 
 @immutable
-class CourseDetail {}
+class ProgramList {
+  final KtSet<String> programs;
+
+  ProgramList({this.programs}) : assert(programs != null);
+
+  ProgramList.fromProto(proto.CourseDetail_ProgramList programList)
+      : this(programs: KtSet.from(programList.programs));
+
+  proto.CourseDetail_ProgramList toProto() {
+    return proto.CourseDetail_ProgramList()
+      ..programs.addAll(programs.toList().asList());
+  }
+}
+
+@immutable
+class CourseDetail {
+  final String courseId;
+  final String teletask;
+  final KtMap<String, ProgramList> programs;
+  final String description;
+  final String requirements;
+  final String learning;
+  final String examination;
+  final String dates;
+  final String literature;
+
+  CourseDetail({
+    @required this.courseId,
+    this.teletask,
+    @required this.programs,
+    this.description,
+    this.requirements,
+    this.learning,
+    this.examination,
+    this.dates,
+    this.literature,
+  })  : assert(courseId != null),
+        assert(teletask != null),
+        assert(programs != null),
+        assert(description != null),
+        assert(requirements != null),
+        assert(learning != null),
+        assert(examination != null),
+        assert(dates != null),
+        assert(literature != null);
+
+  CourseDetail.fromProto(proto.CourseDetail courseDetail)
+      : this(
+          courseId: courseDetail.courseId,
+          teletask: courseDetail.teletask,
+          programs: KtMap.from(courseDetail.programs
+              .map((k, v) => MapEntry(k, ProgramList.fromProto(v)))),
+          description: courseDetail.description,
+          requirements: courseDetail.requirements,
+          learning: courseDetail.learning,
+          examination: courseDetail.examination,
+          dates: courseDetail.dates,
+          literature: courseDetail.literature,
+        );
+
+  proto.CourseDetail toProto() {
+    return proto.CourseDetail()
+      ..courseId = courseId
+      ..teletask = teletask
+      ..programs
+          .addAll(programs.asMap().map((k, v) => MapEntry(k, v.toProto())))
+      ..description = description
+      ..requirements = requirements
+      ..learning = learning
+      ..examination = examination
+      ..dates = dates
+      ..literature = literature;
+  }
+}
