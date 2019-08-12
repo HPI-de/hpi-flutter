@@ -40,6 +40,11 @@ class MainScaffold extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           NavigationItem(
+            icon: OMIcons.home,
+            text: "Dashboard",
+            route: Route.dashboard,
+          ),
+          NavigationItem(
             icon: OMIcons.school,
             text: "Courses",
             route: Route.courses,
@@ -72,7 +77,9 @@ class NavigationItem extends StatelessWidget {
   Widget build(BuildContext context) {
     var isActive =
         route == Provider.of<NavigationService>(context).lastKnownRoute;
-    var color = isActive ? Theme.of(context).primaryColor : Colors.black;
+    var color = isActive
+        ? Theme.of(context).primaryColor
+        : Theme.of(context).colorScheme.onSurface.withOpacity(0.87);
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
