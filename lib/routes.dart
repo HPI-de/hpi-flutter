@@ -12,7 +12,8 @@ class Routes {
 
   static const dashboard = const Routes._internal('/');
   static const news = const Routes._internal('/news');
+  static const course = const Routes._internal('/course');
 
-  static List<Routes> get values => [dashboard, news];
+  static List<Routes> get values => [dashboard, news, course];
   String get name => _name;
 }
