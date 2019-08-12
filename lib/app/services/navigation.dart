@@ -3,14 +3,6 @@ import 'package:hpi_flutter/route.dart';
 
 class NavigationService {
   Route lastKnownRoute;
-  static Route getActiveScreen(flutter.BuildContext context) {
-    Route route;
-    flutter.Navigator.popUntil(context, (r) {
-      route = Route.fromString(r.settings.name);
-      return true;
-    });
-    return route;
-  }
 }
 
 class NavigationObserver extends flutter.RouteObserver {
@@ -42,10 +34,9 @@ class NavigationObserver extends flutter.RouteObserver {
 
   void _onUpdate(
       flutter.Route<dynamic> newRoute, flutter.Route<dynamic> oldRoute) {
+    print(
+        "Navigating from ${oldRoute?.settings?.name} to ${newRoute?.settings?.name}");
     var knownRoute = Route.fromString(newRoute?.settings?.name);
     if (knownRoute != null) service.lastKnownRoute = knownRoute;
-    // Route newInternalRoute = Route.fromString(newRoute.settings.name);
-    // print("Navigated from ${oldRoute?.settings?.name} to ");
-    // service.activeScreen = newInternalRoute;
   }
 }
