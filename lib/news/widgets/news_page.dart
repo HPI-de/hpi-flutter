@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:grpc/grpc.dart';
+import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/news/data/article.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +15,7 @@ class NewsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ProxyProvider<ClientChannel, NewsBloc>(
       builder: (_, channel, __) => NewsBloc(channel),
-      child: Scaffold(
+      child: MainScaffold(
         appBar: AppBar(
           title: Text("News"),
         ),
