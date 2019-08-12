@@ -49,7 +49,7 @@ class ArticleView extends StatelessWidget {
       children: <Widget>[
         Text(article.content),
         _buildAuthorsCategoriesTags(context),
-      ],
+      ].where((x) => x != null).toList(),
     );
   }
 
