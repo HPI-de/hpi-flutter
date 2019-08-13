@@ -3,9 +3,9 @@ import 'package:flutter/widgets.dart' hide Route;
 import 'package:hpi_flutter/news/data/article.dart';
 import 'package:hpi_flutter/route.dart';
 import 'package:provider/provider.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 import '../bloc.dart';
+import '../utils.dart';
 
 @immutable
 class ArticlePreview extends StatelessWidget {
@@ -27,6 +27,7 @@ class ArticlePreview extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
                     article.title,
@@ -42,17 +43,11 @@ class ArticlePreview extends StatelessWidget {
                     stream: Provider.of<NewsBloc>(context)
                         .getSource(article.sourceId),
                     builder: (context, snapshot) {
-                      String source = "";
                       if (snapshot.hasError) print(snapshot.error);
-                      source = snapshot?.data?.name ?? article.sourceId;
 
-                      return Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          (source.isNotEmpty ? "$source · " : "") +
-                              timeago.format(article.publishDate),
-                          style: Theme.of(context).textTheme.caption,
-                        ),
+                      return Text(
+                        formatSourcePublishDate(article, snapshot.data),
+                        style: Theme.of(context).textTheme.caption,
                       );
                     },
                   ),
