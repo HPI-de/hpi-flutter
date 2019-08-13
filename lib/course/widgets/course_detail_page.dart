@@ -3,6 +3,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:grpc/grpc.dart';
 import 'package:hpi_flutter/course/bloc.dart';
 import 'package:hpi_flutter/course/data/course.dart';
+import 'package:hpi_flutter/course/widgets/elevated_expansion_tile.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -39,6 +40,7 @@ class CourseDetailPage extends StatelessWidget {
 
               var courseDetail = snapshot.data;
               return Scaffold(
+                backgroundColor: Color(0xfffafafa),
                 appBar: AppBar(
                   title: Text(courseSeries.title),
                 ),
@@ -57,37 +59,52 @@ class CourseDetailPage extends StatelessWidget {
   List<Widget> _buildCourseDetails(
       {Course course, CourseSeries courseSeries, CourseDetail courseDetail}) {
     return [
-      ListTile(
-        title: Text(
-            '''${courseSeries.ects} ECTS · ${courseSeries.hoursPerWeek} h/week'''),
-        subtitle: Text(courseSeries.types
-            .map((t) => courseTypeToString(t))
-            .joinToString(separator: ' · ')),
-        leading: Icon(Icons.info_outline),
+      Material(
+        elevation: 1.0,
+        color: Colors.white,
+        child: ListTile(
+          title: Text(
+              '''${courseSeries.ects} ECTS · ${courseSeries.hoursPerWeek} h/week'''),
+          subtitle: Text(courseSeries.types
+              .map((t) => courseTypeToString(t))
+              .joinToString(separator: ' · ')),
+          leading: Icon(Icons.info_outline),
+        ),
       ),
-      ListTile(
-        title: Text(getLanguage(courseSeries.language)),
-        leading: Icon(Icons.language),
+      Material(
+        elevation: 1.0,
+        color: Colors.white,
+        child: ListTile(
+          title: Text(getLanguage(courseSeries.language)),
+          leading: Icon(Icons.language),
+        ),
       ),
       if (courseDetail.teletask != null)
-        ListTile(
-          title: Text('This course is on tele-TASK'),
-          leading: Icon(Icons.videocam),
-          trailing: IconButton(
-            icon: Icon(Icons.open_in_new),
-            onPressed: () async {
-              if (await canLaunch(courseDetail.teletask))
-                await launch(courseDetail.teletask);
-            },
+        Material(
+          elevation: 1.0,
+          color: Colors.white,
+          child: ListTile(
+            title: Text('This course is on tele-TASK'),
+            leading: Icon(Icons.videocam),
+            trailing: IconButton(
+              icon: Icon(Icons.open_in_new),
+              onPressed: () async {
+                if (await canLaunch(courseDetail.teletask))
+                  await launch(courseDetail.teletask);
+              },
+            ),
           ),
         ),
-      ListTile(
-        title: Text(course.lecturer),
-        subtitle: Text(course.assistants.joinToString(separator: ', ')),
-        leading: Icon(Icons.person_outline),
+      Material(
+        elevation: 1.0,
+        color: Colors.white,
+        child: ListTile(
+          title: Text(course.lecturer),
+          subtitle: Text(course.assistants.joinToString(separator: ', ')),
+          leading: Icon(Icons.person_outline),
+        ),
       ),
-      SizedBox(height: 8),
-      ExpansionTile(
+      ElevatedExpansionTile(
         title: Text('Programs & Modules'),
         children: courseDetail.programs
             .map((program) => ListTile(
@@ -138,6 +155,7 @@ class CourseDetailPage extends StatelessWidget {
         'All statements without guarantee',
         textAlign: TextAlign.center,
       ),
+      SizedBox(height: 16)
     ];
   }
 }
@@ -152,7 +170,7 @@ class CourseInformationTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ExpansionTile(
+    return ElevatedExpansionTile(
       title: Text(title),
       leading: icon,
       children: [
