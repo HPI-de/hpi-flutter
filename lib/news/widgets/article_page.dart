@@ -77,8 +77,6 @@ class ArticleView extends StatelessWidget {
                 _buildCaption(context),
                 SizedBox(height: 16),
                 Html(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                   data: article.content,
                   onLinkTap: (url) async {
                     if (await canLaunch(url)) await launch(url);
