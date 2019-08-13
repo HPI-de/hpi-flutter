@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:grpc/grpc.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/news/data/article.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../bloc.dart';
 import '../utils.dart';
@@ -74,7 +76,14 @@ class ArticleView extends StatelessWidget {
                 SizedBox(height: 8),
                 _buildCaption(context),
                 SizedBox(height: 16),
-                Text(article.content),
+                Html(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  data: article.content,
+                  onLinkTap: (url) async {
+                    if (await canLaunch(url)) await launch(url);
+                  },
+                ),
                 if (article.authorIds.isNotEmpty() ||
                     article.categories.isNotEmpty() ||
                     article.tags.isNotEmpty())

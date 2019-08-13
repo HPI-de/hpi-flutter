@@ -20,6 +20,8 @@ dependencies:
   provider: ^3.0.0+1
 
   # UI
+  flutter_html: ^0.10.4
+  url_launcher: ^5.1.2
   timeago: ^2.0.18
   outline_material_icons: ^0.1.0
 
