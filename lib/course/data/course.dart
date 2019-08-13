@@ -1,5 +1,4 @@
 import 'package:fixnum/fixnum.dart';
-import 'package:hpi_flutter/core/data/utils.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/course/v1test/course.pb.dart'
     as proto;
 import 'package:kt_dart/collection.dart';
@@ -77,6 +76,7 @@ class CourseSeries {
           ects: courseSeries.ects,
           hoursPerWeek: courseSeries.hoursPerWeek,
           mandatory: courseSeries.mandatory,
+          language: courseSeries.language,
           types: KtSet.from(courseSeries.types)
               .map((t) => typeFromProto(t))
               .toSet(),
@@ -91,6 +91,7 @@ class CourseSeries {
       ..ects = ects
       ..hoursPerWeek = hoursPerWeek
       ..mandatory = mandatory
+      ..language = language
       ..types.addAll(types.map((t) => typeToProto(t)).asList());
   }
 }

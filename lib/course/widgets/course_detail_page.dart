@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:grpc/grpc.dart';
 import 'package:hpi_flutter/course/bloc.dart';
 import 'package:hpi_flutter/course/data/course.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../utils.dart';
 
 @immutable
 class CourseDetailPage extends StatelessWidget {
@@ -18,7 +22,7 @@ class CourseDetailPage extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasError)
           return Center(
-            child: Text(snapshot.error),
+            child: Text(snapshot.error.toString()),
           );
         if (!snapshot.hasData) return Placeholder();
 
@@ -29,7 +33,7 @@ class CourseDetailPage extends StatelessWidget {
             builder: (context, snapshot) {
               if (snapshot.hasError)
                 return Center(
-                  child: Text(snapshot.error),
+                  child: Text(snapshot.error.toString()),
                 );
               if (!snapshot.hasData) return Placeholder();
 
@@ -55,50 +59,111 @@ class CourseDetailPage extends StatelessWidget {
     return [
       ListTile(
         title: Text(
-            '''${(courseSeries.mandatory) ? "Compulsory module" : "Voluntary module"} · 
-                      ${courseSeries.ects} ECTS · ${courseSeries.hoursPerWeek} h/week'''),
-        subtitle: Text(courseSeries.types.joinToString(separator: ' · ')),
+            '''${courseSeries.ects} ECTS · ${courseSeries.hoursPerWeek} h/week'''),
+        subtitle: Text(courseSeries.types
+            .map((t) => courseTypeToString(t))
+            .joinToString(separator: ' · ')),
         leading: Icon(Icons.info_outline),
       ),
       ListTile(
-        title: Text(courseSeries.language),
+        title: Text(getLanguage(courseSeries.language)),
         leading: Icon(Icons.language),
       ),
+      if (courseDetail.teletask != null)
+        ListTile(
+          title: Text('This course is on tele-TASK'),
+          leading: Icon(Icons.videocam),
+          trailing: IconButton(
+            icon: Icon(Icons.open_in_new),
+            onPressed: () async {
+              if (await canLaunch(courseDetail.teletask))
+                await launch(courseDetail.teletask);
+            },
+          ),
+        ),
       ListTile(
         title: Text(course.lecturer),
         subtitle: Text(course.assistants.joinToString(separator: ', ')),
         leading: Icon(Icons.person_outline),
       ),
+      SizedBox(height: 8),
       ExpansionTile(
-        title: Text('Description'),
-        children: [Text(courseDetail.description)],
-        leading: Icon(Icons.subject),
+        title: Text('Programs & Modules'),
+        children: courseDetail.programs
+            .map((program) => ListTile(
+                title: Text(program.key),
+                subtitle:
+                    Text(program.value.programs.joinToString(separator: '\n'))))
+            .asList(),
+        leading: Icon(Icons.grid_on),
       ),
-      ExpansionTile(
-        title: Text('Requirements'),
-        children: [Text(courseDetail.requirements)],
-        leading: Icon(Icons.check),
+      if (courseDetail.description.isNotEmpty)
+        CourseInformationTile(
+          title: 'Description',
+          content: courseDetail.description,
+          icon: Icon(Icons.subject),
+        ),
+      if (courseDetail.requirements.isNotEmpty)
+        CourseInformationTile(
+          title: 'Requirements',
+          content: courseDetail.requirements,
+          icon: Icon(Icons.check),
+        ),
+      if (courseDetail.learning.isNotEmpty)
+        CourseInformationTile(
+          title: 'Learning',
+          content: courseDetail.learning,
+          icon: Icon(Icons.school),
+        ),
+      if (courseDetail.examination.isNotEmpty)
+        CourseInformationTile(
+          title: 'Examination',
+          content: courseDetail.examination,
+          icon: Icon(Icons.format_list_numbered),
+        ),
+      if (courseDetail.dates.isNotEmpty)
+        CourseInformationTile(
+          title: 'Dates',
+          content: courseDetail.dates,
+          icon: Icon(Icons.calendar_today),
+        ),
+      if (courseDetail.literature.isNotEmpty)
+        CourseInformationTile(
+          title: 'Literature',
+          content: courseDetail.literature,
+          icon: Icon(Icons.book),
+        ),
+      SizedBox(height: 16),
+      Text(
+        'All statements without guarantee',
+        textAlign: TextAlign.center,
       ),
-      ExpansionTile(
-        title: Text('Learning'),
-        children: [Text(courseDetail.learning)],
-        leading: Icon(Icons.school),
-      ),
-      ExpansionTile(
-        title: Text('Examination'),
-        children: [Text(courseDetail.examination)],
-        leading: Icon(Icons.format_list_numbered),
-      ),
-      ExpansionTile(
-        title: Text('Dates'),
-        children: [Text(courseDetail.dates)],
-        leading: Icon(Icons.calendar_today),
-      ),
-      ExpansionTile(
-        title: Text('Literature'),
-        children: [Text(courseDetail.literature)],
-        leading: Icon(Icons.book),
-      )
     ];
+  }
+}
+
+class CourseInformationTile extends StatelessWidget {
+  final String title;
+  final String content;
+  final Icon icon;
+
+  const CourseInformationTile({Key key, this.title, this.content, this.icon})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ExpansionTile(
+      title: Text(title),
+      leading: icon,
+      children: [
+        Html(
+          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          data: content,
+          onLinkTap: (url) async {
+            if (await canLaunch(url)) await launch(url);
+          },
+        )
+      ],
+    );
   }
 }
