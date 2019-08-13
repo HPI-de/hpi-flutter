@@ -31,9 +31,6 @@ class ArticlePage extends StatelessWidget {
             if (!snapshot.hasData) return Placeholder();
 
             return MainScaffold(
-              appBar: AppBar(
-                title: Text(snapshot.data.title),
-              ),
               body: ArticleView(snapshot.data),
             );
           },
@@ -53,10 +50,18 @@ class ArticleView extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: <Widget>[
-        if (article.cover != null)
-          SliverToBoxAdapter(
-            child: Image.network(article.cover.source),
+        SliverAppBar(
+          floating: true,
+          expandedHeight: 300,
+          flexibleSpace: FlexibleSpaceBar(
+            background: article.cover != null
+                ? Image.network(
+                    article.cover.source,
+                    fit: BoxFit.cover,
+                  )
+                : null,
           ),
+        ),
         SliverPadding(
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           sliver: SliverList(
