@@ -77,21 +77,21 @@ class ArticleView extends StatelessWidget {
                 if (article.authorIds.isNotEmpty())
                   ..._buildChipSection(
                     context,
-                    "Authors",
+                    "AUTHORS",
                     article.authorIds,
                     (a) => Chip(label: Text(a)),
                   ),
                 if (article.categories.isNotEmpty())
                   ..._buildChipSection(
                     context,
-                    "Categories",
+                    "CATEGORIES",
                     article.categories,
                     (c) => Chip(label: Text(c.name)),
                   ),
                 if (article.tags.isNotEmpty())
                   ..._buildChipSection(
                     context,
-                    "Tags",
+                    "TAGS",
                     article.tags,
                     (t) => Chip(label: Text(t.name)),
                   ),
@@ -140,12 +140,14 @@ class ArticleView extends StatelessWidget {
   List<Widget> _buildChipSection<T>(BuildContext context, String title,
       KtCollection<T> items, Widget Function(T) chipBuilder) {
     return <Widget>[
-      SizedBox(height: 16),
+      SizedBox(height: 4),
       Text(
         title,
         style: Theme.of(context).textTheme.overline,
       ),
       Wrap(
+        spacing: 8,
+        runSpacing: 8,
         children: items.map((i) => chipBuilder(i)).asList(),
       )
     ];

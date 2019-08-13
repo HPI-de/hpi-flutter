@@ -62,12 +62,29 @@ const _brandColorYellow = 0xFFF6A804;
 class HpiApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = ThemeData(
+      primarySwatch: _brandColorRedSwatch,
+      accentColor: Color(_brandColorOrange),
+    );
+    theme = theme.copyWith(
+      textTheme: theme.textTheme.copyWith(
+        overline: theme.textTheme.overline.copyWith(
+          color: Colors.black.withOpacity(0.6),
+          fontWeight: FontWeight.w500,
+          fontSize: 10,
+          letterSpacing: 1.5,
+          height: 1.6,
+        ),
+      ),
+      chipTheme: theme.chipTheme.copyWith(
+        backgroundColor: Colors.transparent,
+        shape: StadiumBorder(side: BorderSide(color: Colors.black12)),
+      ),
+    );
+
     return MaterialApp(
       title: 'HPI',
-      theme: ThemeData(
-        primarySwatch: _brandColorRedSwatch,
-        accentColor: Color(_brandColorOrange),
-      ),
+      theme: theme,
       initialRoute: Route.dashboard.name,
       onGenerateRoute: Route.generateRoute,
       navigatorObservers: [
