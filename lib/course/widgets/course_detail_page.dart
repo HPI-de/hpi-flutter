@@ -45,7 +45,22 @@ class CourseDetailPage extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(snapshot.data.first.title),
+            title: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(snapshot.data.first.title),
+                StreamBuilder<Semester>(
+                  stream: bloc.getSemester(course.semesterId),
+                  builder: (context, snapshot) => Text(
+                    snapshot.data != null
+                        ? semesterToString(snapshot.data)
+                        : course.semesterId,
+                    style: Theme.of(context).textTheme.subtitle,
+                  ),
+                ),
+              ],
+            ),
           ),
           body: ListView(
             children: _buildCourseDetails(
@@ -104,8 +119,10 @@ class CourseDetailPage extends StatelessWidget {
             .map((program) =>
                 program.key +
                 "\v" +
-                program.value
-                    .joinToString(separator: '\n', transform: (v) => "\t\t\t\t$v"))
+                program.value.joinToString(
+                  separator: '\n',
+                  transform: (v) => "\t\t\t\t$v",
+                ))
             .joinToString(separator: "\n"),
       ),
       _buildCourseInfoTile(

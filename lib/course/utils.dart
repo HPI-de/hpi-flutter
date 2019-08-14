@@ -25,3 +25,16 @@ String getLanguage(String abbreviation) {
       return 'Unknown';
   }
 }
+
+String semesterToString(Semester semester) {
+  String term;
+  switch (semester.term) {
+    case Term.WINTER:
+      term = "Winter Term";
+      break;
+    case Term.SUMMER:
+      term = "Summer Term";
+      break;
+  }
+  return "$term ${semester.year}";
+}
