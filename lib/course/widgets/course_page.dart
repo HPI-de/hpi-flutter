@@ -13,24 +13,66 @@ class CoursePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<ClientChannel, CourseBloc>(
-        builder: (_, channel, __) => CourseBloc(channel),
-        child: DefaultTabController(
-          length: 2,
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text('Courses'),
-              bottom: TabBar(
-                tabs: [
-                  Tab(text: 'Current courses'),
-                  Tab(text: 'All courses'),
-                ],
-              ),
-            ),
-            body: TabBarView(
-              children: [CourseList(), CourseSeriesList()],
+      builder: (_, clientChannel, __) => CourseBloc(clientChannel),
+      child: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text("Courses"),
+            bottom: TabBar(
+              tabs: [
+                Tab(text: "Current courses"),
+                Tab(text: "All courses"),
+              ],
             ),
           ),
-        ));
+          body: TabBarView(
+            children: [
+              CourseList(),
+              CourseSeriesList(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CourseList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<KtList<Course>>(
+      stream: Provider.of<CourseBloc>(context).getCourses(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError)
+          return Center(child: Text(snapshot.error.toString()));
+        if (!snapshot.hasData) return Placeholder();
+
+        return ListView(
+          children: snapshot.data
+              .map((c) => StreamBuilder<CourseSeries>(
+                    stream: Provider.of<CourseBloc>(context)
+                        .getCourseSeries(c.courseSeriesId),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError)
+                        return Text(snapshot.error.toString());
+                      if (!snapshot.hasData) return Text("Loading...");
+
+                      return ListTile(
+                        title: Text(snapshot.data.title),
+                        subtitle: Text(c.lecturer),
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CourseDetailPage(c),
+                          ));
+                        },
+                      );
+                    },
+                  ))
+              .asList(),
+        );
+      },
+    );
   }
 }
 
@@ -50,56 +92,18 @@ class CourseSeriesList extends StatelessWidget {
                     title: Text(c.title),
                     children: <Widget>[
                       ListTile(
-                        title: Text(
-                            '''${c.ects} ECTS · ${c.hoursPerWeek} h/week'''),
+                        leading: Icon(Icons.info_outline),
+                        title:
+                            Text("${c.ects} ECTS · ${c.hoursPerWeek} h/week"),
                         subtitle: Text(c.types
                             .map((t) => courseTypeToString(t))
-                            .joinToString(separator: ' · ')),
-                        leading: Icon(Icons.info_outline),
+                            .joinToString(separator: " · ")),
                       ),
                       ListTile(
-                        title: Text(getLanguage(c.language)),
                         leading: Icon(Icons.language),
+                        title: Text(getLanguage(c.language)),
                       ),
                     ],
-                  ))
-              .asList(),
-        );
-      },
-    );
-  }
-}
-
-class CourseList extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<KtList<Course>>(
-      stream: Provider.of<CourseBloc>(context).getCourses(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError)
-          return Center(child: Text(snapshot.error.toString()));
-        if (!snapshot.hasData) return Placeholder();
-
-        return ListView(
-          children: snapshot.data
-              .map((c) => ListTile(
-                    title: StreamBuilder<CourseSeries>(
-                      stream: Provider.of<CourseBloc>(context)
-                          .getCourseSeries(c.courseSeriesId),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError)
-                          return Text(snapshot.error.toString());
-                        if (!snapshot.hasData) return Text('Loading...');
-
-                        return Text(snapshot.data.title);
-                      },
-                    ),
-                    subtitle: Text(c.lecturer),
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => CourseDetailPage(c),
-                      ));
-                    },
                   ))
               .asList(),
         );

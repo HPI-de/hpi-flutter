@@ -27,6 +27,12 @@ class CourseBloc {
         .map((c) => CourseSeries.fromProto(c));
   }
 
+  Stream<Semester> getSemester(String id) {
+    assert(id != null);
+    return Stream.fromFuture(_client.getSemester(GetSemesterRequest()..id = id))
+        .map((c) => Semester.fromProto(c));
+  }
+
   Stream<KtList<Course>> getCourses() {
     return Stream.fromFuture(_client.listCourses(ListCoursesRequest()))
         .map((r) => KtList.from(r.courses).map((c) => Course.fromProto(c)));

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:grpc/grpc.dart';
+import 'package:hpi_flutter/core/utils.dart';
 import 'package:hpi_flutter/course/bloc.dart';
 import 'package:hpi_flutter/course/data/course.dart';
 import 'package:hpi_flutter/course/widgets/elevated_expansion_tile.dart';
+import 'package:kt_dart/collection.dart';
 import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../utils.dart';
@@ -17,162 +20,154 @@ class CourseDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<CourseSeries>(
-      stream: CourseBloc(Provider.of<ClientChannel>(context))
-          .getCourseSeries(course.courseSeriesId),
+    return ProxyProvider<ClientChannel, CourseBloc>(
+      builder: (_, clientChannel, __) => CourseBloc(clientChannel),
+      child: Builder(
+        builder: (context) => _buildScaffold(context),
+      ),
+    );
+  }
+
+  Widget _buildScaffold(BuildContext context) {
+    assert(context != null);
+
+    var bloc = Provider.of<CourseBloc>(context);
+    var stream = Observable.combineLatest2(
+        bloc.getCourseSeries(course.courseSeriesId),
+        bloc.getCourseDetail(course.id),
+        (series, detail) => KtPair<CourseSeries, CourseDetail>(series, detail));
+    return StreamBuilder<KtPair<CourseSeries, CourseDetail>>(
+      stream: stream,
       builder: (context, snapshot) {
         if (snapshot.hasError)
-          return Center(
-            child: Text(snapshot.error.toString()),
-          );
+          return Center(child: Text(snapshot.error.toString()));
         if (!snapshot.hasData) return Placeholder();
 
-        var courseSeries = snapshot.data;
-        return StreamBuilder<CourseDetail>(
-            stream: CourseBloc(Provider.of<ClientChannel>(context))
-                .getCourseDetail(course.id),
-            builder: (context, snapshot) {
-              if (snapshot.hasError)
-                return Center(
-                  child: Text(snapshot.error.toString()),
-                );
-              if (!snapshot.hasData) return Placeholder();
-
-              var courseDetail = snapshot.data;
-              return Scaffold(
-                backgroundColor: Color(0xfffafafa),
-                appBar: AppBar(
-                  title: Text(courseSeries.title),
-                ),
-                body: ListView(
-                    children: _buildCourseDetails(
-                  course: course,
-                  courseSeries: courseSeries,
-                  courseDetail: courseDetail,
-                )),
-              );
-            });
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(snapshot.data.first.title),
+          ),
+          body: ListView(
+            children: _buildCourseDetails(
+              context,
+              course: course,
+              courseSeries: snapshot.data.first,
+              courseDetail: snapshot.data.second,
+            ),
+          ),
+        );
       },
     );
   }
 
-  List<Widget> _buildCourseDetails(
+  List<Widget> _buildCourseDetails(BuildContext context,
       {Course course, CourseSeries courseSeries, CourseDetail courseDetail}) {
+    assert(context != null);
+
     return [
-      Material(
-        elevation: 1.0,
-        color: Colors.white,
-        child: ListTile(
-          title: Text(
-              '''${courseSeries.ects} ECTS · ${courseSeries.hoursPerWeek} h/week'''),
-          subtitle: Text(courseSeries.types
-              .map((t) => courseTypeToString(t))
-              .joinToString(separator: ' · ')),
-          leading: Icon(Icons.info_outline),
-        ),
-      ),
-      Material(
-        elevation: 1.0,
-        color: Colors.white,
-        child: ListTile(
-          title: Text(getLanguage(courseSeries.language)),
-          leading: Icon(Icons.language),
-        ),
+      _buildElevatedTile(
+        context,
+        leading: Icons.info_outline,
+        title:
+            "${courseSeries.ects} ECTS · ${courseSeries.hoursPerWeek} h/week",
+        subtitle: courseSeries.types
+            .map((t) => courseTypeToString(t))
+            .joinToString(separator: ' · '),
       ),
       if (courseDetail.teletask != null)
-        Material(
-          elevation: 1.0,
-          color: Colors.white,
-          child: ListTile(
-            title: Text('This course is on tele-TASK'),
-            leading: Icon(Icons.videocam),
-            trailing: IconButton(
-              icon: Icon(Icons.open_in_new),
-              onPressed: () async {
-                if (await canLaunch(courseDetail.teletask))
-                  await launch(courseDetail.teletask);
-              },
-            ),
-          ),
+        _buildElevatedTile(
+          context,
+          leading: Icons.videocam,
+          title: "This course is on tele-TASK",
+          trailing: Icons.open_in_new,
+          onTap: () async {
+            if (await canLaunch(courseDetail.teletask))
+              await launch(courseDetail.teletask);
+          },
         ),
-      Material(
-        elevation: 1.0,
-        color: Colors.white,
-        child: ListTile(
-          title: Text(course.lecturer),
-          subtitle: Text(course.assistants.joinToString(separator: ', ')),
-          leading: Icon(Icons.person_outline),
-        ),
+      _buildElevatedTile(
+        context,
+        leading: Icons.person_outline,
+        title: course.lecturer,
+        subtitle: course.assistants.joinToString(),
       ),
-      ElevatedExpansionTile(
-        title: Text('Programs & Modules'),
-        children: courseDetail.programs
-            .map((program) => ListTile(
-                title: Text(program.key),
-                subtitle:
-                    Text(program.value.programs.joinToString(separator: '\n'))))
-            .asList(),
-        leading: Icon(Icons.grid_on),
+      _buildElevatedTile(
+        context,
+        leading: Icons.language,
+        title: getLanguage(courseSeries.language),
       ),
-      if (courseDetail.description.isNotEmpty)
-        CourseInformationTile(
-          title: 'Description',
-          content: courseDetail.description,
-          icon: Icon(Icons.subject),
-        ),
-      if (courseDetail.requirements.isNotEmpty)
-        CourseInformationTile(
-          title: 'Requirements',
-          content: courseDetail.requirements,
-          icon: Icon(Icons.check),
-        ),
-      if (courseDetail.learning.isNotEmpty)
-        CourseInformationTile(
-          title: 'Learning',
-          content: courseDetail.learning,
-          icon: Icon(Icons.school),
-        ),
-      if (courseDetail.examination.isNotEmpty)
-        CourseInformationTile(
-          title: 'Examination',
-          content: courseDetail.examination,
-          icon: Icon(Icons.format_list_numbered),
-        ),
-      if (courseDetail.dates.isNotEmpty)
-        CourseInformationTile(
-          title: 'Dates',
-          content: courseDetail.dates,
-          icon: Icon(Icons.calendar_today),
-        ),
-      if (courseDetail.literature.isNotEmpty)
-        CourseInformationTile(
-          title: 'Literature',
-          content: courseDetail.literature,
-          icon: Icon(Icons.book),
-        ),
+      _buildElevatedTile(
+        context,
+        leading: Icons.view_module,
+        title: "Programs & Modules",
+        subtitle: courseDetail.programs
+            .map((program) =>
+                program.key +
+                "\v" +
+                program.value
+                    .joinToString(separator: '\n', transform: (v) => "\t\t\t\t$v"))
+            .joinToString(separator: "\n"),
+      ),
+      _buildCourseInfoTile(
+          context, Icons.subject, "Description", courseDetail.description),
+      _buildCourseInfoTile(
+          context, Icons.check, "Requirements", courseDetail.requirements),
+      _buildCourseInfoTile(
+          context, Icons.school, "Learning", courseDetail.learning),
+      _buildCourseInfoTile(context, Icons.format_list_numbered, "Examination",
+          courseDetail.examination),
+      _buildCourseInfoTile(
+          context, Icons.calendar_today, "Dates", courseDetail.dates),
+      _buildCourseInfoTile(
+          context, Icons.book, "Literature", courseDetail.literature),
       SizedBox(height: 16),
       Text(
         'All statements without guarantee',
+        style: Theme.of(context)
+            .textTheme
+            .body1
+            .copyWith(color: Colors.black.withOpacity(0.6)),
         textAlign: TextAlign.center,
       ),
       SizedBox(height: 16)
-    ];
+    ].where((w) => w != null).toList();
   }
-}
 
-class CourseInformationTile extends StatelessWidget {
-  final String title;
-  final String content;
-  final Icon icon;
+  Widget _buildElevatedTile(BuildContext context,
+      {IconData leading,
+      String title,
+      String subtitle,
+      IconData trailing,
+      Function onTap}) {
+    assert(context != null);
 
-  const CourseInformationTile({Key key, this.title, this.content, this.icon})
-      : super(key: key);
+    return Material(
+      color: Theme.of(context).cardColor,
+      child: InkWell(
+        onTap: onTap,
+        child: ListTile(
+          leading: leading != null ? Icon(leading) : null,
+          title: title != null ? Text(title) : null,
+          subtitle: subtitle != null ? Text(subtitle) : null,
+          trailing: trailing != null ? Icon(trailing) : null,
+        ),
+      ),
+    );
+  }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildCourseInfoTile(
+      BuildContext context, IconData icon, String title, String content) {
+    assert(context != null);
+    assert(IconData != null);
+    assert(title != null);
+
+    if (isNullOrBlank(content)) return null;
     return ElevatedExpansionTile(
-      title: Text(title),
-      leading: icon,
+      leading: Icon(icon),
+      title: Text(
+        title,
+        style: Theme.of(context).textTheme.subhead,
+      ),
       children: [
         Html(
           padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),

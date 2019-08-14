@@ -4,13 +4,6 @@ import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/course/v1test/course.pb.dar
 import 'package:kt_dart/collection.dart';
 import 'package:meta/meta.dart';
 
-enum Type {
-  LECTURE,
-  SEMINAR,
-  BLOCK_SEMINAR,
-  EXERCISE,
-}
-
 @immutable
 class CourseSeries {
   final String id;
@@ -23,32 +16,6 @@ class CourseSeries {
   final String language;
   final KtSet<Type> types;
 
-  static Type typeFromProto(proto.CourseSeries_Type type) {
-    switch (type) {
-      case proto.CourseSeries_Type.LECTURE:
-        return Type.LECTURE;
-      case proto.CourseSeries_Type.SEMINAR:
-        return Type.SEMINAR;
-      case proto.CourseSeries_Type.BLOCK_SEMINAR:
-        return Type.BLOCK_SEMINAR;
-      case proto.CourseSeries_Type.EXERCISE:
-        return Type.EXERCISE;
-    }
-  }
-
-  static proto.CourseSeries_Type typeToProto(Type type) {
-    switch (type) {
-      case Type.LECTURE:
-        return proto.CourseSeries_Type.LECTURE;
-      case Type.SEMINAR:
-        return proto.CourseSeries_Type.SEMINAR;
-      case Type.BLOCK_SEMINAR:
-        return proto.CourseSeries_Type.BLOCK_SEMINAR;
-      case Type.EXERCISE:
-        return proto.CourseSeries_Type.EXERCISE;
-    }
-  }
-
   CourseSeries({
     @required this.id,
     @required this.title,
@@ -57,15 +24,17 @@ class CourseSeries {
     @required this.ects,
     @required this.hoursPerWeek,
     @required this.mandatory,
-    this.language,
-    this.types,
+    @required this.language,
+    @required this.types,
   })  : assert(id != null),
         assert(title != null),
         assert(shortTitle != null),
         assert(abbreviation != null),
         assert(ects != null),
         assert(hoursPerWeek != null),
-        assert(mandatory != null);
+        assert(mandatory != null),
+        assert(language != null),
+        assert(types != null);
 
   CourseSeries.fromProto(proto.CourseSeries courseSeries)
       : this(
@@ -92,38 +61,52 @@ class CourseSeries {
       ..hoursPerWeek = hoursPerWeek
       ..mandatory = mandatory
       ..language = language
-      ..types.addAll(types.map((t) => typeToProto(t)).asList());
+      ..types.addAll(types.map((t) => typeToProto(t)).iter);
+  }
+
+  static Type typeFromProto(proto.CourseSeries_Type type) {
+    switch (type) {
+      case proto.CourseSeries_Type.LECTURE:
+        return Type.LECTURE;
+      case proto.CourseSeries_Type.SEMINAR:
+        return Type.SEMINAR;
+      case proto.CourseSeries_Type.BLOCK_SEMINAR:
+        return Type.BLOCK_SEMINAR;
+      case proto.CourseSeries_Type.EXERCISE:
+        return Type.EXERCISE;
+      default:
+        return null;
+    }
+  }
+
+  static proto.CourseSeries_Type typeToProto(Type type) {
+    switch (type) {
+      case Type.LECTURE:
+        return proto.CourseSeries_Type.LECTURE;
+      case Type.SEMINAR:
+        return proto.CourseSeries_Type.SEMINAR;
+      case Type.BLOCK_SEMINAR:
+        return proto.CourseSeries_Type.BLOCK_SEMINAR;
+      case Type.EXERCISE:
+        return proto.CourseSeries_Type.EXERCISE;
+      default:
+        return null;
+    }
   }
 }
 
-enum Term {
-  WINTER,
-  SUMMER,
+enum Type {
+  LECTURE,
+  SEMINAR,
+  BLOCK_SEMINAR,
+  EXERCISE,
 }
 
 @immutable
 class Semester {
   final String id;
   final Term term;
-  final int year;
-
-  static Term termFromProto(proto.Semester_Term term) {
-    switch (term) {
-      case proto.Semester_Term.WINTER:
-        return Term.WINTER;
-      case proto.Semester_Term.SUMMER:
-        return Term.SUMMER;
-    }
-  }
-
-  static proto.Semester_Term termToProto(Term term) {
-    switch (term) {
-      case Term.WINTER:
-        return proto.Semester_Term.WINTER;
-      case Term.SUMMER:
-        return proto.Semester_Term.SUMMER;
-    }
-  }
+  final Int64 year;
 
   Semester({
     @required this.id,
@@ -137,15 +120,42 @@ class Semester {
       : this(
           id: semester.id,
           term: termFromProto(semester.term),
-          year: semester.year.toInt(),
+          year: semester.year,
         );
 
   proto.Semester toProto() {
     return proto.Semester()
       ..id = id
       ..term = termToProto(term)
-      ..year = year as Int64;
+      ..year = year;
   }
+
+  static Term termFromProto(proto.Semester_Term term) {
+    switch (term) {
+      case proto.Semester_Term.WINTER:
+        return Term.WINTER;
+      case proto.Semester_Term.SUMMER:
+        return Term.SUMMER;
+      default:
+        return null;
+    }
+  }
+
+  static proto.Semester_Term termToProto(Term term) {
+    switch (term) {
+      case Term.WINTER:
+        return proto.Semester_Term.WINTER;
+      case Term.SUMMER:
+        return proto.Semester_Term.SUMMER;
+      default:
+        return null;
+    }
+  }
+}
+
+enum Term {
+  WINTER,
+  SUMMER,
 }
 
 @immutable
@@ -162,12 +172,13 @@ class Course {
     @required this.courseSeriesId,
     @required this.semesterId,
     @required this.lecturer,
-    this.assistants,
+    @required this.assistants,
     this.website,
   })  : assert(id != null),
         assert(courseSeriesId != null),
         assert(semesterId != null),
-        assert(lecturer != null);
+        assert(lecturer != null),
+        assert(assistants != null);
 
   Course.fromProto(proto.Course course)
       : this(
@@ -185,23 +196,8 @@ class Course {
       ..courseSeriesId = courseSeriesId
       ..semesterId = semesterId
       ..lecturer = lecturer
-      ..assistants.addAll(assistants.toList().asList())
+      ..assistants.addAll(assistants.iter)
       ..website = website;
-  }
-}
-
-@immutable
-class ProgramList {
-  final KtSet<String> programs;
-
-  ProgramList({this.programs}) : assert(programs != null);
-
-  ProgramList.fromProto(proto.CourseDetail_ProgramList programList)
-      : this(programs: KtSet.from(programList.programs));
-
-  proto.CourseDetail_ProgramList toProto() {
-    return proto.CourseDetail_ProgramList()
-      ..programs.addAll(programs.toList().asList());
   }
 }
 
@@ -209,7 +205,7 @@ class ProgramList {
 class CourseDetail {
   final String courseId;
   final String teletask;
-  final KtMap<String, ProgramList> programs;
+  final KtMap<String, KtList<String>> programs;
   final String description;
   final String requirements;
   final String learning;
@@ -221,28 +217,22 @@ class CourseDetail {
     @required this.courseId,
     this.teletask,
     @required this.programs,
-    this.description,
+    @required this.description,
     this.requirements,
     this.learning,
     this.examination,
     this.dates,
     this.literature,
   })  : assert(courseId != null),
-        assert(teletask != null),
         assert(programs != null),
-        assert(description != null),
-        assert(requirements != null),
-        assert(learning != null),
-        assert(examination != null),
-        assert(dates != null),
-        assert(literature != null);
+        assert(description != null);
 
   CourseDetail.fromProto(proto.CourseDetail courseDetail)
       : this(
           courseId: courseDetail.courseId,
           teletask: courseDetail.teletask,
           programs: KtMap.from(courseDetail.programs
-              .map((k, v) => MapEntry(k, ProgramList.fromProto(v)))),
+              .map((k, v) => MapEntry(k, KtList.from(v.programs)))),
           description: courseDetail.description,
           requirements: courseDetail.requirements,
           learning: courseDetail.learning,
@@ -255,8 +245,10 @@ class CourseDetail {
     return proto.CourseDetail()
       ..courseId = courseId
       ..teletask = teletask
-      ..programs
-          .addAll(programs.asMap().map((k, v) => MapEntry(k, v.toProto())))
+      ..programs.addAll(programs
+          .mapValues((e) =>
+              proto.CourseDetail_ProgramList()..programs.addAll(e.value.iter))
+          .asMap())
       ..description = description
       ..requirements = requirements
       ..learning = learning

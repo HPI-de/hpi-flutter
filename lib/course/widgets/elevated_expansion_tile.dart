@@ -1,12 +1,10 @@
-// Copyright 2017 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
 const Duration _kExpand = Duration(milliseconds: 200);
 
+/// Originally taken from: https://github.com/flutter/flutter/blob/20e59316b8/packages/flutter/lib/src/material/expansion_tile.dart
+///
 /// A single-line [ListTile] with a trailing button that expands or collapses
 /// the tile to reveal or hide the [children].
 ///

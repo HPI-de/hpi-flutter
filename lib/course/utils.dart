@@ -10,6 +10,8 @@ String courseTypeToString(Type type) {
       return 'Block seminar';
     case Type.EXERCISE:
       return 'Exercise';
+    default:
+      return null;
   }
 }
 
