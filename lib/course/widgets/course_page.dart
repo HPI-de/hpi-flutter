@@ -3,6 +3,7 @@ import 'package:grpc/grpc.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/route.dart';
 import 'package:kt_dart/collection.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
 
 import '../bloc.dart';
@@ -93,7 +94,7 @@ class CourseSeriesList extends StatelessWidget {
                     title: Text(c.title),
                     children: <Widget>[
                       ListTile(
-                        leading: Icon(Icons.info_outline),
+                        leading: Icon(OMIcons.info),
                         title:
                             Text("${c.ects} ECTS · ${c.hoursPerWeek} h/week"),
                         subtitle: Text(c.types
@@ -101,7 +102,7 @@ class CourseSeriesList extends StatelessWidget {
                             .joinToString(separator: " · ")),
                       ),
                       ListTile(
-                        leading: Icon(Icons.language),
+                        leading: Icon(OMIcons.language),
                         title: Text(getLanguage(c.language)),
                       ),
                     ],

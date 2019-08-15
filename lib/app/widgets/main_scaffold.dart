@@ -22,7 +22,7 @@ class MainScaffold extends StatelessWidget {
         child: Row(
           children: <Widget>[
             IconButton(
-              icon: Icon(Icons.menu),
+              icon: Icon(OMIcons.menu),
               onPressed: () {
                 _openNavDrawer(context);
               },

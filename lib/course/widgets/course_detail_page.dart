@@ -8,6 +8,7 @@ import 'package:hpi_flutter/course/bloc.dart';
 import 'package:hpi_flutter/course/data/course.dart';
 import 'package:hpi_flutter/course/widgets/elevated_expansion_tile.dart';
 import 'package:kt_dart/collection.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -93,7 +94,7 @@ class CourseDetailPage extends StatelessWidget {
     return [
       _buildElevatedTile(
         context,
-        leading: Icons.info_outline,
+        leading: OMIcons.info,
         title:
             "${courseSeries.ects} ECTS · ${courseSeries.hoursPerWeek} h/week",
         subtitle: courseSeries.types
@@ -103,9 +104,9 @@ class CourseDetailPage extends StatelessWidget {
       if (courseDetail.teletask != null)
         _buildElevatedTile(
           context,
-          leading: Icons.videocam,
+          leading: OMIcons.videocam,
           title: "This course is on tele-TASK",
-          trailing: Icons.open_in_new,
+          trailing: OMIcons.openInNew,
           onTap: () async {
             if (await canLaunch(courseDetail.teletask))
               await launch(courseDetail.teletask);
@@ -113,18 +114,18 @@ class CourseDetailPage extends StatelessWidget {
         ),
       _buildElevatedTile(
         context,
-        leading: Icons.person_outline,
+        leading: OMIcons.personOutline,
         title: course.lecturer,
         subtitle: course.assistants.joinToString(),
       ),
       _buildElevatedTile(
         context,
-        leading: Icons.language,
+        leading: OMIcons.language,
         title: getLanguage(courseSeries.language),
       ),
       _buildElevatedTile(
         context,
-        leading: Icons.view_module,
+        leading: OMIcons.viewModule,
         title: "Programs & Modules",
         subtitle: courseDetail.programs
             .map((program) =>
@@ -137,17 +138,17 @@ class CourseDetailPage extends StatelessWidget {
             .joinToString(separator: "\n"),
       ),
       _buildCourseInfoTile(
-          context, Icons.subject, "Description", courseDetail.description),
+          context, OMIcons.subject, "Description", courseDetail.description),
       _buildCourseInfoTile(
-          context, Icons.check, "Requirements", courseDetail.requirements),
+          context, OMIcons.check, "Requirements", courseDetail.requirements),
       _buildCourseInfoTile(
-          context, Icons.school, "Learning", courseDetail.learning),
-      _buildCourseInfoTile(context, Icons.format_list_numbered, "Examination",
+          context, OMIcons.school, "Learning", courseDetail.learning),
+      _buildCourseInfoTile(context, OMIcons.formatListNumbered, "Examination",
           courseDetail.examination),
       _buildCourseInfoTile(
-          context, Icons.calendar_today, "Dates", courseDetail.dates),
+          context, OMIcons.calendarToday, "Dates", courseDetail.dates),
       _buildCourseInfoTile(
-          context, Icons.book, "Literature", courseDetail.literature),
+          context, OMIcons.book, "Literature", courseDetail.literature),
       SizedBox(height: 16),
       Text(
         'All statements without guarantee',

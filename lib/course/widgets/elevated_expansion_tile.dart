@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 
 const Duration _kExpand = Duration(milliseconds: 200);
 
@@ -164,7 +165,7 @@ class _ElevatedExpansionTileState extends State<ElevatedExpansionTile>
                 trailing: widget.trailing ??
                     RotationTransition(
                       turns: _iconTurns,
-                      child: const Icon(Icons.expand_more),
+                      child: const Icon(OMIcons.expandMore),
                     ),
               ),
             ),
