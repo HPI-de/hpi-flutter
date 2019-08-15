@@ -1,11 +1,13 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Route;
 import 'package:grpc/grpc.dart';
-import 'package:hpi_flutter/course/widgets/course_detail_page.dart';
-import '../data/course.dart';
+import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
+import 'package:hpi_flutter/route.dart';
 import 'package:kt_dart/collection.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
 
 import '../bloc.dart';
+import '../data/course.dart';
 import '../utils.dart';
 
 @immutable
@@ -16,7 +18,7 @@ class CoursePage extends StatelessWidget {
       builder: (_, clientChannel, __) => CourseBloc(clientChannel),
       child: DefaultTabController(
         length: 2,
-        child: Scaffold(
+        child: MainScaffold(
           appBar: AppBar(
             title: Text("Courses"),
             bottom: TabBar(
@@ -62,9 +64,9 @@ class CourseList extends StatelessWidget {
                         title: Text(snapshot.data.title),
                         subtitle: Text(c.lecturer),
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => CourseDetailPage(c),
-                          ));
+                          Navigator.of(context).pushNamed(
+                              Route.coursesDetail.name,
+                              arguments: c.id);
                         },
                       );
                     },
@@ -92,7 +94,7 @@ class CourseSeriesList extends StatelessWidget {
                     title: Text(c.title),
                     children: <Widget>[
                       ListTile(
-                        leading: Icon(Icons.info_outline),
+                        leading: Icon(OMIcons.info),
                         title:
                             Text("${c.ects} ECTS · ${c.hoursPerWeek} h/week"),
                         subtitle: Text(c.types
@@ -100,7 +102,7 @@ class CourseSeriesList extends StatelessWidget {
                             .joinToString(separator: " · ")),
                       ),
                       ListTile(
-                        leading: Icon(Icons.language),
+                        leading: Icon(OMIcons.language),
                         title: Text(getLanguage(c.language)),
                       ),
                     ],

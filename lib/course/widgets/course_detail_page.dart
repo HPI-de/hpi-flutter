@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:grpc/grpc.dart';
+import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
+import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/core/utils.dart';
 import 'package:hpi_flutter/course/bloc.dart';
 import 'package:hpi_flutter/course/data/course.dart';
 import 'package:hpi_flutter/course/widgets/elevated_expansion_tile.dart';
 import 'package:kt_dart/collection.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -14,9 +17,9 @@ import '../utils.dart';
 
 @immutable
 class CourseDetailPage extends StatelessWidget {
-  final Course course;
+  CourseDetailPage(this.courseId) : assert(courseId != null);
 
-  CourseDetailPage(this.course) : assert(course != null);
+  final String courseId;
 
   @override
   Widget build(BuildContext context) {
@@ -33,42 +36,51 @@ class CourseDetailPage extends StatelessWidget {
 
     var bloc = Provider.of<CourseBloc>(context);
     var stream = Observable.combineLatest2(
-        bloc.getCourseSeries(course.courseSeriesId),
-        bloc.getCourseDetail(course.id),
-        (series, detail) => KtPair<CourseSeries, CourseDetail>(series, detail));
-    return StreamBuilder<KtPair<CourseSeries, CourseDetail>>(
+      Observable(bloc.getCourse(courseId)).switchMap(
+        (c) => bloc
+            .getCourseSeries(c.courseSeriesId)
+            .map((cs) => KtPair<Course, CourseSeries>(c, cs)),
+      ),
+      bloc.getCourseDetail(courseId),
+      (ccs, detail) => KtTriple<Course, CourseSeries, CourseDetail>(
+          ccs.first, ccs.second, detail),
+    );
+
+    return StreamBuilder<KtTriple<Course, CourseSeries, CourseDetail>>(
       stream: stream,
       builder: (context, snapshot) {
         if (snapshot.hasError)
           return Center(child: Text(snapshot.error.toString()));
         if (!snapshot.hasData) return Placeholder();
 
-        return Scaffold(
-          appBar: AppBar(
-            title: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(snapshot.data.first.title),
-                StreamBuilder<Semester>(
-                  stream: bloc.getSemester(course.semesterId),
-                  builder: (context, snapshot) => Text(
-                    snapshot.data != null
-                        ? semesterToString(snapshot.data)
-                        : course.semesterId,
-                    style: Theme.of(context).textTheme.subtitle,
+        var course = snapshot.data.first;
+        var courseSeries = snapshot.data.second;
+        var courseDetail = snapshot.data.third;
+
+        return MainScaffold(
+          body: ListView(
+            children: <Widget>[
+              AppBar(
+                title: buildAppBarTitle(
+                  title: Text(courseSeries.title),
+                  subtitle: StreamBuilder<Semester>(
+                    stream: bloc.getSemester(course.semesterId),
+                    builder: (context, snapshot) => Text(
+                      snapshot.data != null
+                          ? semesterToString(snapshot.data)
+                          : course.semesterId,
+                      style: Theme.of(context).textTheme.subtitle,
+                    ),
                   ),
                 ),
-              ],
-            ),
-          ),
-          body: ListView(
-            children: _buildCourseDetails(
-              context,
-              course: course,
-              courseSeries: snapshot.data.first,
-              courseDetail: snapshot.data.second,
-            ),
+              ),
+              ..._buildCourseDetails(
+                context,
+                course: course,
+                courseSeries: courseSeries,
+                courseDetail: courseDetail,
+              ),
+            ],
           ),
         );
       },
@@ -82,7 +94,7 @@ class CourseDetailPage extends StatelessWidget {
     return [
       _buildElevatedTile(
         context,
-        leading: Icons.info_outline,
+        leading: OMIcons.info,
         title:
             "${courseSeries.ects} ECTS · ${courseSeries.hoursPerWeek} h/week",
         subtitle: courseSeries.types
@@ -92,9 +104,9 @@ class CourseDetailPage extends StatelessWidget {
       if (courseDetail.teletask != null)
         _buildElevatedTile(
           context,
-          leading: Icons.videocam,
+          leading: OMIcons.videocam,
           title: "This course is on tele-TASK",
-          trailing: Icons.open_in_new,
+          trailing: OMIcons.openInNew,
           onTap: () async {
             if (await canLaunch(courseDetail.teletask))
               await launch(courseDetail.teletask);
@@ -102,18 +114,18 @@ class CourseDetailPage extends StatelessWidget {
         ),
       _buildElevatedTile(
         context,
-        leading: Icons.person_outline,
+        leading: OMIcons.personOutline,
         title: course.lecturer,
         subtitle: course.assistants.joinToString(),
       ),
       _buildElevatedTile(
         context,
-        leading: Icons.language,
+        leading: OMIcons.language,
         title: getLanguage(courseSeries.language),
       ),
       _buildElevatedTile(
         context,
-        leading: Icons.view_module,
+        leading: OMIcons.viewModule,
         title: "Programs & Modules",
         subtitle: courseDetail.programs
             .map((program) =>
@@ -126,17 +138,17 @@ class CourseDetailPage extends StatelessWidget {
             .joinToString(separator: "\n"),
       ),
       _buildCourseInfoTile(
-          context, Icons.subject, "Description", courseDetail.description),
+          context, OMIcons.subject, "Description", courseDetail.description),
       _buildCourseInfoTile(
-          context, Icons.check, "Requirements", courseDetail.requirements),
+          context, OMIcons.check, "Requirements", courseDetail.requirements),
       _buildCourseInfoTile(
-          context, Icons.school, "Learning", courseDetail.learning),
-      _buildCourseInfoTile(context, Icons.format_list_numbered, "Examination",
+          context, OMIcons.school, "Learning", courseDetail.learning),
+      _buildCourseInfoTile(context, OMIcons.formatListNumbered, "Examination",
           courseDetail.examination),
       _buildCourseInfoTile(
-          context, Icons.calendar_today, "Dates", courseDetail.dates),
+          context, OMIcons.calendarToday, "Dates", courseDetail.dates),
       _buildCourseInfoTile(
-          context, Icons.book, "Literature", courseDetail.literature),
+          context, OMIcons.book, "Literature", courseDetail.literature),
       SizedBox(height: 16),
       Text(
         'All statements without guarantee',

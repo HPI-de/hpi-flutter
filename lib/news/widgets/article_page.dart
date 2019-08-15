@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:grpc/grpc.dart';
+import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/news/data/article.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +26,7 @@ class ArticlePage extends StatelessWidget {
           );
         if (!snapshot.hasData) return Placeholder();
 
-        return Scaffold(
+        return MainScaffold(
           appBar: AppBar(
             title: Text(snapshot.data.title),
           ),
@@ -48,7 +49,7 @@ class ArticleView extends StatelessWidget {
       children: <Widget>[
         Text(article.content),
         _buildAuthorsCategoriesTags(context),
-      ],
+      ].where((x) => x != null).toList(),
     );
   }
 
@@ -60,26 +61,29 @@ class ArticleView extends StatelessWidget {
       children: <Widget>[
         SizedBox(height: 16),
         ..._buildChipSection(
-            context,
-            "Authors",
-            article.authorIds.toList(),
-            (a) => Chip(
-                  label: Text(a),
-                )),
+          context,
+          "Authors",
+          article.authorIds.toList(),
+          (a) => Chip(
+            label: Text(a),
+          ),
+        ),
         ..._buildChipSection(
-            context,
-            "Categories",
-            article.categories.toList(),
-            (c) => Chip(
-                  label: Text(c.name),
-                )),
+          context,
+          "Categories",
+          article.categories.toList(),
+          (c) => Chip(
+            label: Text(c.name),
+          ),
+        ),
         ..._buildChipSection(
-            context,
-            "Tags",
-            article.tags.toList(),
-            (t) => Chip(
-                  label: Text(t.name),
-                )),
+          context,
+          "Tags",
+          article.tags.toList(),
+          (t) => Chip(
+            label: Text(t.name),
+          ),
+        ),
       ],
     );
   }
