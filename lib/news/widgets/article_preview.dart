@@ -4,7 +4,7 @@ import 'package:hpi_flutter/news/data/article.dart';
 import 'package:hpi_flutter/route.dart';
 import 'package:provider/provider.dart';
 
-import '../bloc.dart';
+import '../data/bloc.dart';
 import '../utils.dart';
 
 @immutable

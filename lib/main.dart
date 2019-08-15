@@ -4,7 +4,7 @@ import 'package:hpi_flutter/route.dart';
 import 'package:provider/provider.dart';
 
 import 'app/services/navigation.dart';
-import 'news/widgets/news_page.dart';
+import 'app/widgets/hpi_theme.dart';
 
 void main() {
   runApp(
@@ -82,14 +82,17 @@ class HpiApp extends StatelessWidget {
       ),
     );
 
-    return MaterialApp(
-      title: 'HPI',
-      theme: theme,
-      initialRoute: Route.dashboard.name,
-      onGenerateRoute: Route.generateRoute,
-      navigatorObservers: [
-        NavigationObserver(Provider.of<NavigationService>(context)),
-      ],
+    return HpiTheme(
+      tertiary: Color(0xFFF6A804),
+      child: MaterialApp(
+        title: 'HPI',
+        theme: theme,
+        initialRoute: Route.dashboard.name,
+        onGenerateRoute: Route.generateRoute,
+        navigatorObservers: [
+          NavigationObserver(Provider.of<NavigationService>(context)),
+        ],
+      ),
     );
   }
 }

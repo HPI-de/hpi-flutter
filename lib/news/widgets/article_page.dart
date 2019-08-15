@@ -9,7 +9,7 @@ import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../bloc.dart';
+import '../data/bloc.dart';
 import '../utils.dart';
 
 @immutable

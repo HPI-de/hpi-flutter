@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hpi_flutter/course/widgets/course_page.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:meta/meta.dart';
 
+import 'app/widgets/dashboard_page.dart';
 import 'app/widgets/main_scaffold.dart';
+import 'course/widgets/course_detail_page.dart';
 import 'news/widgets/article_page.dart';
 import 'news/widgets/news_page.dart';
 
@@ -18,7 +21,12 @@ class Route {
     return MaterialPageRoute(
       builder: (context) {
         var route = Route.fromString(settings.name);
-        assert(route != null, "Did you forget to add route ${settings.name} to Route.values?");
+        assert(route != null,
+            "Did you forget to add route ${settings.name} to Route.values?");
+        if (route == dashboard) return DashboardPage();
+        if (route == courses) return CoursePage();
+        if (route == coursesDetail)
+          return CourseDetailPage(settings.arguments as String);
         if (route == news) return NewsPage();
         if (route == newsArticle)
           return ArticlePage(settings.arguments as String);
@@ -43,8 +51,10 @@ class Route {
 
   static const dashboard = const Route._internal('/');
   static const courses = const Route._internal('/courses');
+  static const coursesDetail = const Route._internal('/courses/courseId');
   static const news = const Route._internal('/news');
   static const newsArticle = const Route._internal('/news/articleId');
 
-  static KtList<Route> values = KtList.of(dashboard, courses, news, newsArticle);
+  static KtList<Route> values =
+      KtList.of(dashboard, courses, coursesDetail, news, newsArticle);
 }
