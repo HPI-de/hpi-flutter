@@ -3,6 +3,7 @@ import 'package:grpc/grpc.dart';
 import 'package:provider/provider.dart';
 
 import 'app/widget/dashboard_page.dart';
+import 'app/widget/hpi_theme.dart';
 
 void main() => runApp(MyApp());
 
@@ -21,12 +22,15 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ],
-      child: MaterialApp(
-        title: 'HPI',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
+      child: HpiTheme(
+        tertiary: Color(0xFFF6A804),
+        child: MaterialApp(
+          title: 'HPI',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: DashboardPage(),
         ),
-        home: DashboardPage(),
       ),
     );
   }

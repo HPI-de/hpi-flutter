@@ -24,7 +24,7 @@ class OpenHpiBloc {
     }
   }
 
-  Stream<KtList<OpenHpiCourse>> getOpenHpiCourses() {
+  Stream<KtList<OpenHpiCourse>> getCourses() {
     return Stream.fromFuture(
       fetchData(
         COURSE_URL,
@@ -38,8 +38,11 @@ class OpenHpiBloc {
     );
   }
 
-  Stream<KtList<OpenHpiCourse>> getAnnouncedOpenHpiCourses() {
-    return getOpenHpiCourses()
-        .map((list) => list.filter((course) => course.status == 'announced'));
+  Stream<KtList<OpenHpiCourse>> getAnnouncedCourses() {
+    return getCourses().map(
+      (list) => list
+          .filter((course) => course.status == 'announced')
+          .sortedBy((c) => c.startAt),
+    );
   }
 }
