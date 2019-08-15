@@ -3,7 +3,7 @@ import 'package:grpc/grpc.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/course/v1test/course_service.pbgrpc.dart';
 import 'package:kt_dart/collection.dart';
 
-import 'data/course.dart';
+import 'course.dart';
 
 @immutable
 class CourseBloc {

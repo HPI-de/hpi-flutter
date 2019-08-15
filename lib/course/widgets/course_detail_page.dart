@@ -4,9 +4,8 @@ import 'package:grpc/grpc.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/core/utils.dart';
-import 'package:hpi_flutter/course/bloc.dart';
+import 'package:hpi_flutter/course/data/bloc.dart';
 import 'package:hpi_flutter/course/data/course.dart';
-import 'package:hpi_flutter/course/widgets/elevated_expansion_tile.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +13,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../utils.dart';
+import 'elevated_expansion_tile.dart';
 
 @immutable
 class CourseDetailPage extends StatelessWidget {

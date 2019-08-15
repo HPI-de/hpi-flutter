@@ -5,13 +5,13 @@ import 'package:hpi_flutter/myhpi/widgets/infobit_card.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:provider/provider.dart';
 
-import '../bloc.dart';
+import '../data/bloc.dart';
 
-class MyHPIPage extends StatelessWidget {
+class MyHpiPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<ClientChannel, MyHPIBloc>(
-      builder: (_, channel, __) => MyHPIBloc(channel),
+    return ProxyProvider<ClientChannel, MyHpiBloc>(
+      builder: (_, channel, __) => MyHpiBloc(channel),
       child: Scaffold(
         appBar: AppBar(
           title: Text('MyHPI'),
@@ -26,7 +26,7 @@ class InfoBitList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<KtList<InfoBit>>(
-      stream: Provider.of<MyHPIBloc>(context).getInfoBits(),
+      stream: Provider.of<MyHpiBloc>(context).getInfoBits(),
       builder: (context, snapshot) {
         if (snapshot.hasError)
           return Center(child: Text(snapshot.error.toString()));

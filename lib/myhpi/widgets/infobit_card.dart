@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:grpc/grpc.dart';
-import 'package:hpi_flutter/myhpi/bloc.dart';
+import 'package:hpi_flutter/myhpi/data/bloc.dart';
 import 'package:hpi_flutter/myhpi/data/infobit.dart';
 import 'package:hpi_flutter/myhpi/data/infobit.dart' as prefix0;
 import 'package:provider/provider.dart';
@@ -35,7 +35,7 @@ class InfoBitCard extends StatelessWidget {
               spacing: 8.0,
               children: infoBit.actionIds
                   .map((a) => StreamBuilder<prefix0.Action>(
-                        stream: MyHPIBloc(Provider.of<ClientChannel>(context))
+                        stream: MyHpiBloc(Provider.of<ClientChannel>(context))
                             .getAction(a),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData)

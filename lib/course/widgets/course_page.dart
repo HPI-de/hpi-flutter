@@ -6,7 +6,7 @@ import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
 
-import '../bloc.dart';
+import '../data/bloc.dart';
 import '../data/course.dart';
 import '../utils.dart';
 

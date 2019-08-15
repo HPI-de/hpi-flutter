@@ -28,7 +28,7 @@ class Route {
         if (route == courses) return CoursePage();
         if (route == coursesDetail)
           return CourseDetailPage(settings.arguments as String);
-        if (route == myhpi) return MyHPIPage();
+        if (route == myhpi) return MyHpiPage();
         if (route == news) return NewsPage();
         if (route == newsArticle)
           return ArticlePage(settings.arguments as String);
