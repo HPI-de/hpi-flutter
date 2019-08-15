@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:grpc/grpc.dart';
+import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
+import 'package:hpi_flutter/myhpi/data/bloc.dart';
 import 'package:hpi_flutter/myhpi/data/infobit.dart';
-import 'package:hpi_flutter/myhpi/widgets/infobit_card.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:provider/provider.dart';
 
-import '../data/bloc.dart';
+import 'infobit_card.dart';
 
 class MyHpiPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<ClientChannel, MyHpiBloc>(
       builder: (_, channel, __) => MyHpiBloc(channel),
-      child: Scaffold(
+      child: MainScaffold(
         appBar: AppBar(
           title: Text('MyHPI'),
         ),
@@ -33,11 +34,7 @@ class InfoBitList extends StatelessWidget {
         if (!snapshot.hasData) return Placeholder();
 
         return ListView(
-          children: snapshot.data
-              .map((i) => InfoBitCard(
-                    infoBit: i,
-                  ))
-              .asList(),
+          children: snapshot.data.map((i) => InfoBitCard(i)).asList(),
         );
       },
     );

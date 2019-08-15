@@ -14,8 +14,11 @@ class InfoBit {
     @required this.id,
     @required this.title,
     @required this.description,
-    this.actionIds,
-  });
+    @required this.actionIds,
+  })  : assert(id != null),
+        assert(title != null),
+        assert(description != null),
+        assert(actionIds != null);
 
   InfoBit.fromProto(proto.InfoBit infoBit)
       : this(
@@ -29,7 +32,7 @@ class InfoBit {
       ..id = id
       ..title = title
       ..description = description
-      ..actionIds.addAll(actionIds.asList());
+      ..actionIds.addAll(actionIds.iter);
   }
 }
 
@@ -41,7 +44,8 @@ abstract class Action {
   Action({
     @required this.id,
     @required this.title,
-  });
+  })  : assert(id != null),
+        assert(title != null);
 
   Action._fromProto(proto.Action action)
       : this(id: action.id, title: action.title);
@@ -52,8 +56,8 @@ abstract class Action {
         return ActionText.fromProto(action);
       case proto.Action_Type.link:
         return ActionLink.fromProto(action);
-      case proto.Action_Type.notSet:
-        throw Error();
+      default:
+        return null;
     }
   }
 
@@ -76,16 +80,17 @@ class ActionText extends Action {
     @required String id,
     @required String title,
     @required this.content,
-  }) : super(id: id, title: title);
+  })  : assert(content != null),
+        super(id: id, title: title);
 
   ActionText.fromProto(proto.Action action)
-      : assert(action.text.content != null),
+      : assert(action.text != null),
         content = action.text.content,
         super._fromProto(action);
 
   @override
   void _writeToProto(proto.Action action) {
-    action..text.content = content;
+    action.text.content = content;
   }
 }
 
@@ -97,15 +102,16 @@ class ActionLink extends Action {
     @required String id,
     @required String title,
     @required this.url,
-  }) : super(id: id, title: title);
+  })  : assert(url != null),
+        super(id: id, title: title);
 
   ActionLink.fromProto(proto.Action action)
-      : assert(action.link.url != null),
+      : assert(action.link != null),
         url = action.link.url,
         super._fromProto(action);
 
   @override
   void _writeToProto(proto.Action action) {
-    action..link.url = url;
+    action.link.url = url;
   }
 }

@@ -21,4 +21,5 @@ class HpiIcons {
   static const _kFontFam = 'HpiIcons';
 
   static const IconData newspaper = const IconData(0xe800, fontFamily: _kFontFam);
+  static const IconData myhpi = const IconData(0xe801, fontFamily: _kFontFam);
 }
