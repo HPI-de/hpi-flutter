@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:hpi_flutter/openhpi/widgets/openhpi_fragment.dart';
 
 import 'hpi_theme.dart';
+import 'main_scaffold.dart';
 
 @immutable
 class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return MainScaffold(
       body: ListView(
         padding: EdgeInsets.all(16),
         children: <Widget>[

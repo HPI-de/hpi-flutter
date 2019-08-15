@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:grpc/grpc.dart';
+import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
+import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/core/utils.dart';
 import 'package:hpi_flutter/course/bloc.dart';
 import 'package:hpi_flutter/course/data/course.dart';
@@ -14,9 +16,9 @@ import '../utils.dart';
 
 @immutable
 class CourseDetailPage extends StatelessWidget {
-  final Course course;
+  CourseDetailPage(this.courseId) : assert(courseId != null);
 
-  CourseDetailPage(this.course) : assert(course != null);
+  final String courseId;
 
   @override
   Widget build(BuildContext context) {
@@ -33,42 +35,51 @@ class CourseDetailPage extends StatelessWidget {
 
     var bloc = Provider.of<CourseBloc>(context);
     var stream = Observable.combineLatest2(
-        bloc.getCourseSeries(course.courseSeriesId),
-        bloc.getCourseDetail(course.id),
-        (series, detail) => KtPair<CourseSeries, CourseDetail>(series, detail));
-    return StreamBuilder<KtPair<CourseSeries, CourseDetail>>(
+      Observable(bloc.getCourse(courseId)).switchMap(
+        (c) => bloc
+            .getCourseSeries(c.courseSeriesId)
+            .map((cs) => KtPair<Course, CourseSeries>(c, cs)),
+      ),
+      bloc.getCourseDetail(courseId),
+      (ccs, detail) => KtTriple<Course, CourseSeries, CourseDetail>(
+          ccs.first, ccs.second, detail),
+    );
+
+    return StreamBuilder<KtTriple<Course, CourseSeries, CourseDetail>>(
       stream: stream,
       builder: (context, snapshot) {
         if (snapshot.hasError)
           return Center(child: Text(snapshot.error.toString()));
         if (!snapshot.hasData) return Placeholder();
 
-        return Scaffold(
-          appBar: AppBar(
-            title: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(snapshot.data.first.title),
-                StreamBuilder<Semester>(
-                  stream: bloc.getSemester(course.semesterId),
-                  builder: (context, snapshot) => Text(
-                    snapshot.data != null
-                        ? semesterToString(snapshot.data)
-                        : course.semesterId,
-                    style: Theme.of(context).textTheme.subtitle,
+        var course = snapshot.data.first;
+        var courseSeries = snapshot.data.second;
+        var courseDetail = snapshot.data.third;
+
+        return MainScaffold(
+          body: ListView(
+            children: <Widget>[
+              AppBar(
+                title: buildAppBarTitle(
+                  title: Text(courseSeries.title),
+                  subtitle: StreamBuilder<Semester>(
+                    stream: bloc.getSemester(course.semesterId),
+                    builder: (context, snapshot) => Text(
+                      snapshot.data != null
+                          ? semesterToString(snapshot.data)
+                          : course.semesterId,
+                      style: Theme.of(context).textTheme.subtitle,
+                    ),
                   ),
                 ),
-              ],
-            ),
-          ),
-          body: ListView(
-            children: _buildCourseDetails(
-              context,
-              course: course,
-              courseSeries: snapshot.data.first,
-              courseDetail: snapshot.data.second,
-            ),
+              ),
+              ..._buildCourseDetails(
+                context,
+                course: course,
+                courseSeries: courseSeries,
+                courseDetail: courseDetail,
+              ),
+            ],
           ),
         );
       },

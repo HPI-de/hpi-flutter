@@ -4,7 +4,7 @@ import 'package:hpi_flutter/route.dart';
 import 'package:provider/provider.dart';
 
 import 'app/services/navigation.dart';
-import 'app/widget/hpi_theme.dart';
+import 'app/widgets/hpi_theme.dart';
 
 void main() {
   runApp(
