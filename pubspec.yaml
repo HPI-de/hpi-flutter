@@ -22,6 +22,7 @@ dependencies:
 
   # UI
   intl: ^0.15.8
+  flutter_html: ^0.10.4
   timeago: ^2.0.18
   url_launcher: ^5.1.2
   align_positioned: ^1.0.8

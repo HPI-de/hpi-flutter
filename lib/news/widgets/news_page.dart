@@ -32,7 +32,7 @@ class ArticleList extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasError)
           return Center(
-            child: Text(snapshot.error),
+            child: Text(snapshot.error.toString()),
           );
         if (!snapshot.hasData) return Placeholder();
 
