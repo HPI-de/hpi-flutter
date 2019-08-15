@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart' hide Route;
-import 'package:grpc/grpc.dart';
 import 'package:hpi_flutter/route.dart';
 import 'package:provider/provider.dart';
 
@@ -12,14 +11,8 @@ void main() {
       Provider<NavigationService>(
         builder: (_) => NavigationService(),
       ),
-      Provider<ClientChannel>(
-        builder: (_) => ClientChannel(
-          "172.18.132.7",
-          port: 50061,
-          options: ChannelOptions(
-            credentials: ChannelCredentials.insecure(),
-          ),
-        ),
+      Provider<Uri>(
+        builder: (_) => Uri.parse("192.168.0.104"),
       ),
     ], child: HpiApp()),
   );

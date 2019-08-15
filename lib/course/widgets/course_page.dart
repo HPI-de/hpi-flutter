@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart' hide Route;
-import 'package:grpc/grpc.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
+import 'package:hpi_flutter/course/data/bloc.dart';
 import 'package:hpi_flutter/route.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
 
-import '../bloc.dart';
 import '../data/course.dart';
 import '../utils.dart';
 
@@ -14,8 +13,8 @@ import '../utils.dart';
 class CoursePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<ClientChannel, CourseBloc>(
-      builder: (_, clientChannel, __) => CourseBloc(clientChannel),
+    return ProxyProvider<Uri, CourseBloc>(
+      builder: (_, serverUrl, __) => CourseBloc(serverUrl),
       child: DefaultTabController(
         length: 2,
         child: MainScaffold(

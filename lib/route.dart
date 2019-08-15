@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hpi_flutter/course/widgets/course_page.dart';
+import 'package:hpi_flutter/myhpi/widgets/myhpi_page.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:meta/meta.dart';
 
@@ -27,6 +28,7 @@ class Route {
         if (route == courses) return CoursePage();
         if (route == coursesDetail)
           return CourseDetailPage(settings.arguments as String);
+        if (route == myhpi) return MyHpiPage();
         if (route == news) return NewsPage();
         if (route == newsArticle)
           return ArticlePage(settings.arguments as String);
@@ -52,9 +54,10 @@ class Route {
   static const dashboard = const Route._internal('/');
   static const courses = const Route._internal('/courses');
   static const coursesDetail = const Route._internal('/courses/courseId');
+  static const myhpi = const Route._internal('/myhpi');
   static const news = const Route._internal('/news');
   static const newsArticle = const Route._internal('/news/articleId');
 
   static KtList<Route> values =
-      KtList.of(dashboard, courses, coursesDetail, news, newsArticle);
+      KtList.of(dashboard, courses, coursesDetail, myhpi, news, newsArticle);
 }
