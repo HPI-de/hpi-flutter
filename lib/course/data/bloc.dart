@@ -7,11 +7,19 @@ import 'course.dart';
 
 @immutable
 class CourseBloc {
-  final CourseServiceClient _client;
+  CourseBloc(Uri serverUrl)
+      : assert(serverUrl != null),
+        _client = CourseServiceClient(
+          ClientChannel(
+            serverUrl.toString(),
+            port: 50062,
+            options: ChannelOptions(
+              credentials: ChannelCredentials.insecure(),
+            ),
+          ),
+        );
 
-  CourseBloc(ClientChannel channel)
-      : assert(channel != null),
-        _client = CourseServiceClient(channel);
+  final CourseServiceClient _client;
 
   Stream<KtList<CourseSeries>> getAllCourseSeries() {
     return Stream.fromFuture(

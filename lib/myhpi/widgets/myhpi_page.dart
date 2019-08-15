@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:grpc/grpc.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/myhpi/data/bloc.dart';
 import 'package:hpi_flutter/myhpi/data/infobit.dart';
@@ -11,8 +10,8 @@ import 'infobit_card.dart';
 class MyHpiPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<ClientChannel, MyHpiBloc>(
-      builder: (_, channel, __) => MyHpiBloc(channel),
+    return ProxyProvider<Uri, MyHpiBloc>(
+      builder: (_, serverUrl, __) => MyHpiBloc(serverUrl),
       child: MainScaffold(
         appBar: AppBar(
           title: Text('MyHPI'),

@@ -40,8 +40,7 @@ class InfoBitCard extends StatelessWidget {
               runSpacing: 8,
               children: infoBit.actionIds
                   .map((a) => StreamBuilder<Action>(
-                        stream: MyHpiBloc(Provider.of<ClientChannel>(context))
-                            .getAction(a),
+                        stream: Provider.of<MyHpiBloc>(context).getAction(a),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) return null;
                           if (!snapshot.hasData)

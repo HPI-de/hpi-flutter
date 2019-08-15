@@ -4,11 +4,19 @@ import 'package:hpi_flutter/myhpi/data/infobit.dart';
 import 'package:kt_dart/collection.dart';
 
 class MyHpiBloc {
-  final MyHpiServiceClient _client;
+  MyHpiBloc(Uri serverUrl)
+      : assert(serverUrl != null),
+        _client = MyHpiServiceClient(
+          ClientChannel(
+            serverUrl.toString(),
+            port: 50063,
+            options: ChannelOptions(
+              credentials: ChannelCredentials.insecure(),
+            ),
+          ),
+        );
 
-  MyHpiBloc(ClientChannel channel)
-      : assert(channel != null),
-        _client = MyHpiServiceClient(channel);
+  final MyHpiServiceClient _client;
 
   Stream<KtList<InfoBit>> getInfoBits() {
     return Stream.fromFuture(_client.listInfoBits(ListInfoBitsRequest()))

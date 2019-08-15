@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:grpc/service_api.dart';
+import 'package:grpc/grpc.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/news/v1test/news_service.pbgrpc.dart';
 import 'package:kt_dart/collection.dart';
 
@@ -7,11 +7,19 @@ import 'article.dart';
 
 @immutable
 class NewsBloc {
-  final NewsServiceClient _client;
+  NewsBloc(Uri serverUrl)
+      : assert(serverUrl != null),
+        _client = NewsServiceClient(
+          ClientChannel(
+            serverUrl.toString(),
+            port: 50061,
+            options: ChannelOptions(
+              credentials: ChannelCredentials.insecure(),
+            ),
+          ),
+        );
 
-  NewsBloc(ClientChannel channel)
-      : assert(channel != null),
-        _client = NewsServiceClient(channel);
+  final NewsServiceClient _client;
 
   Stream<KtList<Article>> getArticles() {
     return Stream.fromFuture(_client.listArticles(ListArticlesRequest()))

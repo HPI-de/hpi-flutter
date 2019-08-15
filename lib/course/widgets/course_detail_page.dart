@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:grpc/grpc.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/core/utils.dart';
@@ -23,8 +22,8 @@ class CourseDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<ClientChannel, CourseBloc>(
-      builder: (_, clientChannel, __) => CourseBloc(clientChannel),
+    return ProxyProvider<Uri, CourseBloc>(
+      builder: (_, serverUrl, __) => CourseBloc(serverUrl),
       child: Builder(
         builder: (context) => _buildScaffold(context),
       ),
