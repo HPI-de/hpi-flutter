@@ -6,7 +6,7 @@ import 'package:hpi_flutter/news/data/article.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:provider/provider.dart';
 
-import '../bloc.dart';
+import '../data/bloc.dart';
 import 'article_preview.dart';
 
 @immutable
@@ -33,7 +33,7 @@ class ArticleList extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasError)
           return Center(
-            child: Text(snapshot.error),
+            child: Text(snapshot.error.toString()),
           );
         if (!snapshot.hasData) return Placeholder();
 

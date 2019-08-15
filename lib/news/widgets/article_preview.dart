@@ -5,7 +5,7 @@ import 'package:hpi_flutter/route.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-import '../bloc.dart';
+import '../data/bloc.dart';
 
 @immutable
 class ArticlePreview extends StatelessWidget {

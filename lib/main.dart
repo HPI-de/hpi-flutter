@@ -4,7 +4,7 @@ import 'package:hpi_flutter/route.dart';
 import 'package:provider/provider.dart';
 
 import 'app/services/navigation.dart';
-import 'news/widgets/news_page.dart';
+import 'app/widget/hpi_theme.dart';
 
 void main() {
   runApp(
@@ -62,17 +62,20 @@ const _brandColorYellow = 0xFFF6A804;
 class HpiApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'HPI',
-      theme: ThemeData(
-        primarySwatch: _brandColorRedSwatch,
-        accentColor: Color(_brandColorOrange),
+    return HpiTheme(
+      tertiary: Color(0xFFF6A804),
+      child: MaterialApp(
+        title: 'HPI',
+        theme: ThemeData(
+          primarySwatch: _brandColorRedSwatch,
+          accentColor: Color(_brandColorOrange),
+        ),
+        initialRoute: Route.dashboard.name,
+        onGenerateRoute: Route.generateRoute,
+        navigatorObservers: [
+          NavigationObserver(Provider.of<NavigationService>(context)),
+        ],
       ),
-      initialRoute: Route.dashboard.name,
-      onGenerateRoute: Route.generateRoute,
-      navigatorObservers: [
-        NavigationObserver(Provider.of<NavigationService>(context)),
-      ],
     );
   }
 }
