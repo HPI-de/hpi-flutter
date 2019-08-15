@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -15,7 +16,7 @@ class OpenHpiCoursePreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(children: <Widget>[
-      Image.network(course.imageUrl.toString()),
+      CachedNetworkImage(imageUrl: course.imageUrl.toString()),
       Positioned.fill(
         child: _buildScrim(
           child: _buildLaunchable(
