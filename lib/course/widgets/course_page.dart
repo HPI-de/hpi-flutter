@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart' hide Route;
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
+import 'package:hpi_flutter/course/data/bloc.dart';
 import 'package:hpi_flutter/route.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
 
-import '../data/bloc.dart';
 import '../data/course.dart';
 import '../utils.dart';
 
