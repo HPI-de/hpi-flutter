@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 Widget buildAppBarTitle({@required Widget title, Widget subtitle}) {
   assert(title != null);
@@ -10,5 +10,15 @@ Widget buildAppBarTitle({@required Widget title, Widget subtitle}) {
       title,
       subtitle,
     ],
+  );
+}
+
+Widget buildLoadingErrorSliver(AsyncSnapshot<dynamic> snapshot) {
+  return SliverFillRemaining(
+    child: Center(
+      child: snapshot.hasError
+          ? Text(snapshot.error.toString())
+          : CircularProgressIndicator(),
+    ),
   );
 }
