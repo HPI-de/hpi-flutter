@@ -15,29 +15,37 @@ class NewsPage extends StatelessWidget {
     return ProxyProvider<Uri, NewsBloc>(
       builder: (_, serverUrl, __) => NewsBloc(serverUrl),
       child: MainScaffold(
-        appBar: AppBar(
-          title: Text("News"),
+        body: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              floating: true,
+              title: Text('News'),
+            ),
+            Builder(builder: (c) => _buildArticleList(c)),
+          ],
         ),
-        body: ArticleList(),
       ),
     );
   }
-}
 
-class ArticleList extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildArticleList(BuildContext context) {
     return StreamBuilder<KtList<Article>>(
       stream: Provider.of<NewsBloc>(context).getArticles(),
       builder: (context, snapshot) {
-        if (snapshot.hasError)
-          return Center(
-            child: Text(snapshot.error.toString()),
+        if (!snapshot.hasData)
+          return SliverFillRemaining(
+            child: Center(
+              child: snapshot.hasError
+                  ? Text(snapshot.error.toString())
+                  : CircularProgressIndicator(),
+            ),
           );
-        if (!snapshot.hasData) return Placeholder();
 
-        return ListView(
-          children: snapshot.data.map((a) => ArticlePreview(a)).asList(),
+        return SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) => ArticlePreview(snapshot.data[index]),
+            childCount: snapshot.data.size,
+          ),
         );
       },
     );

@@ -73,6 +73,13 @@ class HpiApp extends StatelessWidget {
         backgroundColor: Colors.transparent,
         shape: StadiumBorder(side: BorderSide(color: Colors.black12)),
       ),
+      appBarTheme: theme.appBarTheme.copyWith(
+        actionsIconTheme: theme.iconTheme,
+        brightness: Brightness.light,
+        color: Colors.grey.shade50,
+        iconTheme: theme.iconTheme,
+        textTheme: theme.textTheme,
+      ),
     );
 
     return HpiTheme(

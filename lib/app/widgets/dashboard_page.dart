@@ -20,7 +20,6 @@ class DashboardPage extends StatelessWidget {
             child: Image.asset('assets/logo/logo_text.png'),
           ),
           OpenHpiFragment(),
-          SizedBox(height: 2000),
         ].expand((child) sync* {
           yield const SizedBox(height: 16);
           yield child;
