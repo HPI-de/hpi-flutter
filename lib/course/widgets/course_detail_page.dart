@@ -95,7 +95,7 @@ class CourseDetailPage extends StatelessWidget {
         context,
         leading: OMIcons.info,
         title:
-            "${courseSeries.ects} ECTS · ${courseSeries.hoursPerWeek} h/week",
+            '${courseSeries.ects} ECTS · ${courseSeries.hoursPerWeek} h/week',
         subtitle: courseSeries.types
             .map((t) => courseTypeToString(t))
             .joinToString(separator: ' · '),
@@ -104,7 +104,7 @@ class CourseDetailPage extends StatelessWidget {
         _buildElevatedTile(
           context,
           leading: OMIcons.videocam,
-          title: "This course is on tele-TASK",
+          title: 'This course is on tele-TASK',
           trailing: OMIcons.openInNew,
           onTap: () async {
             if (await canLaunch(courseDetail.teletask))
@@ -125,29 +125,29 @@ class CourseDetailPage extends StatelessWidget {
       _buildElevatedTile(
         context,
         leading: OMIcons.viewModule,
-        title: "Programs & Modules",
+        title: 'Programs & Modules',
         subtitle: courseDetail.programs
             .map((program) =>
                 program.key +
-                "\v" +
+                '\v' +
                 program.value.joinToString(
                   separator: '\n',
-                  transform: (v) => "\t\t\t\t$v",
+                  transform: (v) => '\t\t\t\t$v',
                 ))
-            .joinToString(separator: "\n"),
+            .joinToString(separator: '\n'),
       ),
       _buildCourseInfoTile(
-          context, OMIcons.subject, "Description", courseDetail.description),
+          context, OMIcons.subject, 'Description', courseDetail.description),
       _buildCourseInfoTile(
-          context, OMIcons.check, "Requirements", courseDetail.requirements),
+          context, OMIcons.check, 'Requirements', courseDetail.requirements),
       _buildCourseInfoTile(
-          context, OMIcons.school, "Learning", courseDetail.learning),
-      _buildCourseInfoTile(context, OMIcons.formatListNumbered, "Examination",
+          context, OMIcons.school, 'Learning', courseDetail.learning),
+      _buildCourseInfoTile(context, OMIcons.formatListNumbered, 'Examination',
           courseDetail.examination),
       _buildCourseInfoTile(
-          context, OMIcons.calendarToday, "Dates", courseDetail.dates),
+          context, OMIcons.calendarToday, 'Dates', courseDetail.dates),
       _buildCourseInfoTile(
-          context, OMIcons.book, "Literature", courseDetail.literature),
+          context, OMIcons.book, 'Literature', courseDetail.literature),
       SizedBox(height: 16),
       Text(
         'All statements without guarantee',
