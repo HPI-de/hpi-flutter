@@ -47,21 +47,21 @@ class CoursePage extends StatelessWidget {
             ],
             body: TabBarView(
               children: KtList.from([
-                CourseList(),
-                CourseSeriesList(),
+                KtPair('tab:course', CourseList()),
+                KtPair('tab:courseSeries', CourseSeriesList()),
               ])
-                  .mapIndexed((index, widget) => SafeArea(
+                  .mapIndexed((index, tab) => SafeArea(
                         top: false,
                         bottom: false,
                         child: Builder(
                           builder: (context) => CustomScrollView(
-                            key: PageStorageKey(index),
+                            key: PageStorageKey(tab.first),
                             slivers: <Widget>[
                               SliverOverlapInjector(
                                 handle: NestedScrollView
                                     .sliverOverlapAbsorberHandleFor(context),
                               ),
-                              widget,
+                              tab.second,
                             ],
                           ),
                         ),
@@ -84,31 +84,34 @@ class CourseList extends StatelessWidget {
         if (!snapshot.hasData) return buildLoadingErrorSliver(snapshot);
 
         return SliverList(
-          delegate: SliverChildBuilderDelegate((context, index) {
-            var course = snapshot.data[index];
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              var course = snapshot.data[index];
 
-            return StreamBuilder<CourseSeries>(
-              stream: Provider.of<CourseBloc>(context)
-                  .getCourseSeries(course.courseSeriesId),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData)
+              return StreamBuilder<CourseSeries>(
+                stream: Provider.of<CourseBloc>(context)
+                    .getCourseSeries(course.courseSeriesId),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData)
+                    return ListTile(
+                      title: Text(snapshot.hasError
+                          ? snapshot.error.toString()
+                          : 'Loading...'),
+                    );
+
                   return ListTile(
-                    title: Text(snapshot.hasError
-                        ? snapshot.error.toString()
-                        : 'Loading...'),
+                    title: Text(snapshot.data.title),
+                    subtitle: Text(course.lecturer),
+                    onTap: () {
+                      Navigator.of(context).pushNamed(Route.coursesDetail.name,
+                          arguments: course.id);
+                    },
                   );
-
-                return ListTile(
-                  title: Text(snapshot.data.title),
-                  subtitle: Text(course.lecturer),
-                  onTap: () {
-                    Navigator.of(context).pushNamed(Route.coursesDetail.name,
-                        arguments: course.id);
-                  },
-                );
-              },
-            );
-          }),
+                },
+              );
+            },
+            childCount: snapshot.data.size,
+          ),
         );
       },
     );
@@ -124,27 +127,31 @@ class CourseSeriesList extends StatelessWidget {
         if (!snapshot.hasData) return buildLoadingErrorSliver(snapshot);
 
         return SliverList(
-          delegate: SliverChildBuilderDelegate((context, index) {
-            var courseSeries = snapshot.data[index];
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              var courseSeries = snapshot.data[index];
 
-            return ExpansionTile(
-              title: Text(courseSeries.title),
-              children: <Widget>[
-                ListTile(
-                  leading: Icon(OMIcons.info),
-                  title: Text(
-                      '${courseSeries.ects} ECTS · ${courseSeries.hoursPerWeek} h/week'),
-                  subtitle: Text(courseSeries.types
-                      .map((t) => courseTypeToString(t))
-                      .joinToString(separator: ' · ')),
-                ),
-                ListTile(
-                  leading: Icon(OMIcons.language),
-                  title: Text(getLanguage(courseSeries.language)),
-                ),
-              ],
-            );
-          }),
+              return ExpansionTile(
+                key: PageStorageKey(courseSeries.id),
+                title: Text(courseSeries.title),
+                children: <Widget>[
+                  ListTile(
+                    leading: Icon(OMIcons.info),
+                    title: Text(
+                        '${courseSeries.ects} ECTS · ${courseSeries.hoursPerWeek} h/week'),
+                    subtitle: Text(courseSeries.types
+                        .map((t) => courseTypeToString(t))
+                        .joinToString(separator: ' · ')),
+                  ),
+                  ListTile(
+                    leading: Icon(OMIcons.language),
+                    title: Text(getLanguage(courseSeries.language)),
+                  ),
+                ],
+              );
+            },
+            childCount: snapshot.data.size,
+          ),
         );
       },
     );
