@@ -171,14 +171,12 @@ class CourseDetailPage extends StatelessWidget {
 
     return Material(
       color: Theme.of(context).cardColor,
-      child: InkWell(
+      child: ListTile(
+        leading: leading != null ? Icon(leading) : null,
+        title: title != null ? Text(title) : null,
+        subtitle: subtitle != null ? Text(subtitle) : null,
+        trailing: trailing != null ? Icon(trailing) : null,
         onTap: onTap,
-        child: ListTile(
-          leading: leading != null ? Icon(leading) : null,
-          title: title != null ? Text(title) : null,
-          subtitle: subtitle != null ? Text(subtitle) : null,
-          trailing: trailing != null ? Icon(trailing) : null,
-        ),
       ),
     );
   }
