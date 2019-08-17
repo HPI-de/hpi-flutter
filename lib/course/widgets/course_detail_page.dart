@@ -51,16 +51,11 @@ class CourseDetailPage extends StatelessWidget {
       stream: stream,
       builder: (context, snapshot) {
         if (!snapshot.hasData)
-          return Scaffold(
-            appBar: AppBar(
-              backgroundColor: Theme.of(context).cardColor,
-              title: Text(snapshot.hasError ? 'Error' : 'Loading course…'),
-            ),
-            body: Center(
-              child: snapshot.hasError
-                  ? Text(snapshot.error.toString())
-                  : CircularProgressIndicator(),
-            ),
+          return buildLoadingErrorScaffold(
+            context,
+            snapshot,
+            appBarElevated: true,
+            loadingTitle: 'Loading course…',
           );
 
         var course = snapshot.data.first;
