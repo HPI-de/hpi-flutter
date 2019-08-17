@@ -24,8 +24,10 @@ class CourseDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ProxyProvider<Uri, CourseBloc>(
       builder: (_, serverUrl, __) => CourseBloc(serverUrl),
-      child: Builder(
-        builder: (context) => _buildScaffold(context),
+      child: MainScaffold(
+        body: Builder(
+          builder: (context) => _buildScaffold(context),
+        ),
       ),
     );
   }
@@ -48,39 +50,52 @@ class CourseDetailPage extends StatelessWidget {
     return StreamBuilder<KtTriple<Course, CourseSeries, CourseDetail>>(
       stream: stream,
       builder: (context, snapshot) {
-        if (snapshot.hasError)
-          return Center(child: Text(snapshot.error.toString()));
-        if (!snapshot.hasData) return Placeholder();
+        if (!snapshot.hasData)
+          return Scaffold(
+            appBar: AppBar(
+              backgroundColor: Theme.of(context).cardColor,
+              title: Text(snapshot.hasError ? 'Error' : 'Loading course…'),
+            ),
+            body: Center(
+              child: snapshot.hasError
+                  ? Text(snapshot.error.toString())
+                  : CircularProgressIndicator(),
+            ),
+          );
 
         var course = snapshot.data.first;
         var courseSeries = snapshot.data.second;
         var courseDetail = snapshot.data.third;
 
-        return MainScaffold(
-          body: ListView(
-            children: <Widget>[
-              AppBar(
-                title: buildAppBarTitle(
-                  title: Text(courseSeries.title),
-                  subtitle: StreamBuilder<Semester>(
-                    stream: bloc.getSemester(course.semesterId),
-                    builder: (context, snapshot) => Text(
-                      snapshot.data != null
-                          ? semesterToString(snapshot.data)
-                          : course.semesterId,
-                      style: Theme.of(context).textTheme.subtitle,
-                    ),
+        return CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              floating: true,
+              backgroundColor: Theme.of(context).cardColor,
+              title: buildAppBarTitle(
+                title: Text(courseSeries.title),
+                subtitle: StreamBuilder<Semester>(
+                  stream: bloc.getSemester(course.semesterId),
+                  builder: (context, snapshot) => Text(
+                    snapshot.data != null
+                        ? semesterToString(snapshot.data)
+                        : course.semesterId,
+                    style: Theme.of(context).textTheme.subhead,
                   ),
                 ),
               ),
-              ..._buildCourseDetails(
-                context,
-                course: course,
-                courseSeries: courseSeries,
-                courseDetail: courseDetail,
+            ),
+            SliverList(
+              delegate: SliverChildListDelegate(
+                _buildCourseDetails(
+                  context,
+                  course: course,
+                  courseSeries: courseSeries,
+                  courseDetail: courseDetail,
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         );
       },
     );
@@ -150,7 +165,7 @@ class CourseDetailPage extends StatelessWidget {
           context, OMIcons.book, 'Literature', courseDetail.literature),
       SizedBox(height: 16),
       Text(
-        'All statements without guarantee',
+        'All statements without guarantee.',
         style: Theme.of(context)
             .textTheme
             .body1
