@@ -69,9 +69,19 @@ class HpiApp extends StatelessWidget {
           height: 1.6,
         ),
       ),
+    );
+    var localizedTheme = ThemeData.localize(theme, theme.typography.geometryThemeFor(ScriptCategory.englishLike));
+    theme = theme.copyWith(
       chipTheme: theme.chipTheme.copyWith(
         backgroundColor: Colors.transparent,
         shape: StadiumBorder(side: BorderSide(color: Colors.black12)),
+      ),
+      appBarTheme: theme.appBarTheme.copyWith(
+        actionsIconTheme: theme.iconTheme,
+        brightness: Brightness.light,
+        color: Colors.grey.shade50,
+        iconTheme: theme.iconTheme,
+        textTheme: localizedTheme.textTheme,
       ),
     );
 

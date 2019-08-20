@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter_html/flutter_html.dart';
-import 'package:grpc/grpc.dart';
 import 'package:hpi_flutter/myhpi/data/bloc.dart';
 import 'package:hpi_flutter/myhpi/data/infobit.dart';
 import 'package:provider/provider.dart';

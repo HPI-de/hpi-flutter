@@ -12,16 +12,18 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MainScaffold(
       body: ListView(
-        padding: EdgeInsets.all(16),
+        padding:
+            EdgeInsets.fromLTRB(16, MediaQuery.of(context).padding.top, 16, 32),
         children: <Widget>[
+          ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 200, maxHeight: 100),
+            child: Image.asset('assets/logo/logo_text.png'),
+          ),
           OpenHpiFragment(),
-        ]
-            .expand((child) sync* {
-              yield const SizedBox(height: 16);
-              yield child;
-            })
-            .skip(1)
-            .toList(),
+        ].expand((child) sync* {
+          yield const SizedBox(height: 16);
+          yield child;
+        }).toList(),
       ),
     );
   }
@@ -45,7 +47,7 @@ class DashboardFragment extends StatelessWidget {
           Card(
             margin: EdgeInsets.zero,
             child: Padding(
-              padding: EdgeInsets.only(top:16),
+              padding: EdgeInsets.only(top: 16),
               child: child,
             ),
           ),

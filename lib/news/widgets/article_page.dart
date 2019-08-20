@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
+import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/news/data/article.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
@@ -25,11 +26,13 @@ class ArticlePage extends StatelessWidget {
         builder: (context) => StreamBuilder<Article>(
           stream: Provider.of<NewsBloc>(context).getArticle(articleId),
           builder: (context, snapshot) {
-            if (snapshot.hasError)
-              return Center(
-                child: Text(snapshot.error),
+            if (!snapshot.hasData)
+              return buildLoadingErrorScaffold(
+                context,
+                snapshot,
+                appBarElevated: true,
+                loadingTitle: 'Loading article…',
               );
-            if (!snapshot.hasData) return Placeholder();
 
             return MainScaffold(
               body: ArticleView(snapshot.data),
@@ -43,9 +46,9 @@ class ArticlePage extends StatelessWidget {
 
 @immutable
 class ArticleView extends StatelessWidget {
-  final Article article;
-
   const ArticleView(this.article) : assert(article != null);
+
+  final Article article;
 
   @override
   Widget build(BuildContext context) {

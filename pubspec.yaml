@@ -33,11 +33,23 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  flutter_launcher_icons: ^0.7.2+1
+
 
 flutter:
   uses-material-design: true
-  
+
+  assets:
+    - assets/logo/logo_text.png
+
   fonts:
   - family:  HpiIcons
     fonts:
       - asset: fonts/HpiIcons.ttf
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/logo/icon.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/logo/foreground.png"

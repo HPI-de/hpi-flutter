@@ -24,8 +24,10 @@ class CourseDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ProxyProvider<Uri, CourseBloc>(
       builder: (_, serverUrl, __) => CourseBloc(serverUrl),
-      child: Builder(
-        builder: (context) => _buildScaffold(context),
+      child: MainScaffold(
+        body: Builder(
+          builder: (context) => _buildScaffold(context),
+        ),
       ),
     );
   }
@@ -48,39 +50,47 @@ class CourseDetailPage extends StatelessWidget {
     return StreamBuilder<KtTriple<Course, CourseSeries, CourseDetail>>(
       stream: stream,
       builder: (context, snapshot) {
-        if (snapshot.hasError)
-          return Center(child: Text(snapshot.error.toString()));
-        if (!snapshot.hasData) return Placeholder();
+        if (!snapshot.hasData)
+          return buildLoadingErrorScaffold(
+            context,
+            snapshot,
+            appBarElevated: true,
+            loadingTitle: 'Loading course…',
+          );
 
         var course = snapshot.data.first;
         var courseSeries = snapshot.data.second;
         var courseDetail = snapshot.data.third;
 
-        return MainScaffold(
-          body: ListView(
-            children: <Widget>[
-              AppBar(
-                title: buildAppBarTitle(
-                  title: Text(courseSeries.title),
-                  subtitle: StreamBuilder<Semester>(
-                    stream: bloc.getSemester(course.semesterId),
-                    builder: (context, snapshot) => Text(
-                      snapshot.data != null
-                          ? semesterToString(snapshot.data)
-                          : course.semesterId,
-                      style: Theme.of(context).textTheme.subtitle,
-                    ),
+        return CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              floating: true,
+              backgroundColor: Theme.of(context).cardColor,
+              title: buildAppBarTitle(
+                title: Text(courseSeries.title),
+                subtitle: StreamBuilder<Semester>(
+                  stream: bloc.getSemester(course.semesterId),
+                  builder: (context, snapshot) => Text(
+                    snapshot.data != null
+                        ? semesterToString(snapshot.data)
+                        : course.semesterId,
+                    style: Theme.of(context).textTheme.subhead,
                   ),
                 ),
               ),
-              ..._buildCourseDetails(
-                context,
-                course: course,
-                courseSeries: courseSeries,
-                courseDetail: courseDetail,
+            ),
+            SliverList(
+              delegate: SliverChildListDelegate(
+                _buildCourseDetails(
+                  context,
+                  course: course,
+                  courseSeries: courseSeries,
+                  courseDetail: courseDetail,
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         );
       },
     );
@@ -95,7 +105,7 @@ class CourseDetailPage extends StatelessWidget {
         context,
         leading: OMIcons.info,
         title:
-            "${courseSeries.ects} ECTS · ${courseSeries.hoursPerWeek} h/week",
+            '${courseSeries.ects} ECTS · ${courseSeries.hoursPerWeek} h/week',
         subtitle: courseSeries.types
             .map((t) => courseTypeToString(t))
             .joinToString(separator: ' · '),
@@ -104,7 +114,7 @@ class CourseDetailPage extends StatelessWidget {
         _buildElevatedTile(
           context,
           leading: OMIcons.videocam,
-          title: "This course is on tele-TASK",
+          title: 'This course is on tele-TASK',
           trailing: OMIcons.openInNew,
           onTap: () async {
             if (await canLaunch(courseDetail.teletask))
@@ -125,32 +135,32 @@ class CourseDetailPage extends StatelessWidget {
       _buildElevatedTile(
         context,
         leading: OMIcons.viewModule,
-        title: "Programs & Modules",
+        title: 'Programs & Modules',
         subtitle: courseDetail.programs
             .map((program) =>
                 program.key +
-                "\v" +
+                '\v' +
                 program.value.joinToString(
                   separator: '\n',
-                  transform: (v) => "\t\t\t\t$v",
+                  transform: (v) => '\t\t\t\t$v',
                 ))
-            .joinToString(separator: "\n"),
+            .joinToString(separator: '\n'),
       ),
       _buildCourseInfoTile(
-          context, OMIcons.subject, "Description", courseDetail.description),
+          context, OMIcons.subject, 'Description', courseDetail.description),
       _buildCourseInfoTile(
-          context, OMIcons.check, "Requirements", courseDetail.requirements),
+          context, OMIcons.check, 'Requirements', courseDetail.requirements),
       _buildCourseInfoTile(
-          context, OMIcons.school, "Learning", courseDetail.learning),
-      _buildCourseInfoTile(context, OMIcons.formatListNumbered, "Examination",
+          context, OMIcons.school, 'Learning', courseDetail.learning),
+      _buildCourseInfoTile(context, OMIcons.formatListNumbered, 'Examination',
           courseDetail.examination),
       _buildCourseInfoTile(
-          context, OMIcons.calendarToday, "Dates", courseDetail.dates),
+          context, OMIcons.calendarToday, 'Dates', courseDetail.dates),
       _buildCourseInfoTile(
-          context, OMIcons.book, "Literature", courseDetail.literature),
+          context, OMIcons.book, 'Literature', courseDetail.literature),
       SizedBox(height: 16),
       Text(
-        'All statements without guarantee',
+        'All statements without guarantee.',
         style: Theme.of(context)
             .textTheme
             .body1
@@ -171,14 +181,12 @@ class CourseDetailPage extends StatelessWidget {
 
     return Material(
       color: Theme.of(context).cardColor,
-      child: InkWell(
+      child: ListTile(
+        leading: leading != null ? Icon(leading) : null,
+        title: title != null ? Text(title) : null,
+        subtitle: subtitle != null ? Text(subtitle) : null,
+        trailing: trailing != null ? Icon(trailing) : null,
         onTap: onTap,
-        child: ListTile(
-          leading: leading != null ? Icon(leading) : null,
-          title: title != null ? Text(title) : null,
-          subtitle: subtitle != null ? Text(subtitle) : null,
-          trailing: trailing != null ? Icon(trailing) : null,
-        ),
       ),
     );
   }

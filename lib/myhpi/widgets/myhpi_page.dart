@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
+import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/myhpi/data/bloc.dart';
 import 'package:hpi_flutter/myhpi/data/infobit.dart';
 import 'package:kt_dart/collection.dart';
@@ -13,10 +14,10 @@ class MyHpiPage extends StatelessWidget {
     return ProxyProvider<Uri, MyHpiBloc>(
       builder: (_, serverUrl, __) => MyHpiBloc(serverUrl),
       child: MainScaffold(
-        appBar: AppBar(
-          title: Text('MyHPI'),
-        ),
-        body: InfoBitList(),
+        body: CustomScrollView(slivers: <Widget>[
+          SliverAppBar(title: Text('MyHPI')),
+          InfoBitList(),
+        ]),
       ),
     );
   }
@@ -28,12 +29,13 @@ class InfoBitList extends StatelessWidget {
     return StreamBuilder<KtList<InfoBit>>(
       stream: Provider.of<MyHpiBloc>(context).getInfoBits(),
       builder: (context, snapshot) {
-        if (snapshot.hasError)
-          return Center(child: Text(snapshot.error.toString()));
-        if (!snapshot.hasData) return Placeholder();
+        if (!snapshot.hasData) return buildLoadingErrorSliver(snapshot);
 
-        return ListView(
-          children: snapshot.data.map((i) => InfoBitCard(i)).asList(),
+        return SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (_, index) => InfoBitCard(snapshot.data[index]),
+            childCount: snapshot.data.size,
+          ),
         );
       },
     );
