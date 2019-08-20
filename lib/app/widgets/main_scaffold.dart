@@ -59,6 +59,11 @@ class MainScaffold extends StatelessWidget {
             text: "News",
             route: Route.news,
           ),
+          NavigationItem(
+            icon: HpiIcons.tools,
+            text: "Tools",
+            route: Route.tools,
+          ),
           SizedBox(height: 12),
         ],
       ),
