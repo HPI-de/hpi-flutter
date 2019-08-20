@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hpi_flutter/feedback/widgets/feedback_dialog.dart';
 
-class HpiAppBar extends StatelessWidget {
+class HpiAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget leading;
   final bool automaticallyImplyLeading;
   final Widget title;
@@ -26,7 +26,7 @@ class HpiAppBar extends StatelessWidget {
   const HpiAppBar({
     Key key,
     this.leading,
-    this.automaticallyImplyLeading,
+    this.automaticallyImplyLeading = true,
     this.title,
     this.actions,
     this.flexibleSpace,
@@ -38,11 +38,11 @@ class HpiAppBar extends StatelessWidget {
     this.iconTheme,
     this.actionsIconTheme,
     this.textTheme,
-    this.primary,
+    this.primary = true,
     this.centerTitle,
-    this.titleSpacing,
-    this.toolbarOpacity,
-    this.bottomOpacity,
+    this.titleSpacing = NavigationToolbar.kMiddleSpacing,
+    this.toolbarOpacity = 1.0,
+    this.bottomOpacity = 1.0,
     this.menuItems,
     this.menuItemHandler,
   })  : assert(automaticallyImplyLeading != null),
@@ -92,6 +92,10 @@ class HpiAppBar extends StatelessWidget {
         ],
       ));
   }
+
+  @override
+  Size get preferredSize =>
+      Size.fromHeight(kToolbarHeight + (bottom?.preferredSize?.height ?? 0.0));
 }
 
 class HpiSliverAppBar extends StatelessWidget {

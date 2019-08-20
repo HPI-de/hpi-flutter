@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart' hide Route;
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hpi_flutter/localizations.dart';
 import 'package:hpi_flutter/route.dart';
 import 'package:provider/provider.dart';
 
-<<<<<<< HEAD
-import 'food/widgets/food_page.dart';
-=======
 import 'app/services/navigation.dart';
 import 'app/widgets/hpi_theme.dart';
->>>>>>> issue/20-news-widget-on-dashboard
 
 void main() {
   runApp(
@@ -16,7 +14,7 @@ void main() {
         builder: (_) => NavigationService(),
       ),
       Provider<Uri>(
-        builder: (_) => Uri.parse("192.168.0.104"),
+        builder: (_) => Uri.parse("172.18.132.7"),
       ),
     ], child: HpiApp()),
   );
@@ -59,27 +57,6 @@ const _brandColorYellow = 0xFFF6A804;
 class HpiApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
-    return MultiProvider(
-      providers: [
-        /*Provider<ClientChannel>(
-          builder: (_) => ClientChannel(
-            "172.18.132.7",
-            port: 50061,
-            options: ChannelOptions(
-              credentials: ChannelCredentials.insecure(),
-              idleTimeout: Duration(hours: 1),
-            ),
-          ),
-        ),*/
-      ],
-      child: MaterialApp(
-        title: 'HPI',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: FoodPage(),
-=======
     ThemeData theme = ThemeData(
       primarySwatch: _brandColorRedSwatch,
       accentColor: Color(_brandColorOrange),
@@ -93,10 +70,10 @@ class HpiApp extends StatelessWidget {
           letterSpacing: 1.5,
           height: 1.6,
         ),
->>>>>>> issue/20-news-widget-on-dashboard
       ),
     );
-    var localizedTheme = ThemeData.localize(theme, theme.typography.geometryThemeFor(ScriptCategory.englishLike));
+    var localizedTheme = ThemeData.localize(
+        theme, theme.typography.geometryThemeFor(ScriptCategory.englishLike));
     theme = theme.copyWith(
       chipTheme: theme.chipTheme.copyWith(
         backgroundColor: Colors.transparent,
@@ -120,6 +97,15 @@ class HpiApp extends StatelessWidget {
         onGenerateRoute: Route.generateRoute,
         navigatorObservers: [
           NavigationObserver(Provider.of<NavigationService>(context)),
+        ],
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          HpiLocalizationsDelegate()
+        ],
+        supportedLocales: [
+          const Locale('en'),
+          const Locale('de'),
         ],
       ),
     );
