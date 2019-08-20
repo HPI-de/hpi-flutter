@@ -1,5 +1,6 @@
 import 'package:hpi_flutter/core/data/image.dart';
 import 'package:hpi_flutter/core/data/utils.dart';
+import 'package:hpi_flutter/hpi_cloud_apis/google/protobuf/wrappers.pb.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/news/v1test/article.pb.dart'
     as proto;
 import 'package:kt_dart/collection.dart';
@@ -18,7 +19,7 @@ class Article {
   final String content;
   final KtSet<Category> categories;
   final KtSet<Tag> tags;
-  final int viewCount;
+  final UInt32Value viewCount;
 
   const Article({
     @required this.id,
@@ -92,13 +93,13 @@ class Source {
   Source.fromProto(proto.Source source)
       : this(
           id: source.id,
-          name: source.name,
+          name: source.title,
           link: Uri.parse(source.link),
         );
   proto.Source toProto() {
     return proto.Source()
       ..id = id
-      ..name = name
+      ..title = name
       ..link = link.toString();
   }
 }
@@ -115,12 +116,12 @@ class Category {
   Category.fromProto(proto.Category category)
       : this(
           id: category.id,
-          name: category.name,
+          name: category.title,
         );
   proto.Category toProto() {
     return proto.Category()
       ..id = id
-      ..name = name;
+      ..title = name;
   }
 }
 
@@ -139,13 +140,13 @@ class Tag {
   Tag.fromProto(proto.Tag tag)
       : this(
           id: tag.id,
-          name: tag.name,
+          name: tag.title,
           articleCount: tag.articleCount,
         );
   proto.Tag toProto() {
     return proto.Tag()
       ..id = id
-      ..name = name
+      ..title = name
       ..articleCount = articleCount;
   }
 }

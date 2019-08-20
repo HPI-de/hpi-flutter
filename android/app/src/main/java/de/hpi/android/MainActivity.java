@@ -1,4 +1,4 @@
-package com.example.hpi_flutter;
+package de.hpi.android;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
