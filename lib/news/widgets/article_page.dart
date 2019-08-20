@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/news/data/article.dart';
@@ -54,7 +55,7 @@ class ArticleView extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: <Widget>[
-        SliverAppBar(
+        HpiSliverAppBar(
           floating: true,
           expandedHeight: 300,
           flexibleSpace: FlexibleSpaceBar(
@@ -132,7 +133,7 @@ class ArticleView extends StatelessWidget {
           return Text.rich(
             TextSpan(children: <InlineSpan>[
               TextSpan(text: formatSourcePublishDate(article, snapshot.data)),
-              if (article.viewCount > 0) ...[
+              if (article.viewCount.value > 0) ...[
                 TextSpan(text: " · "),
                 WidgetSpan(
                   child: Icon(

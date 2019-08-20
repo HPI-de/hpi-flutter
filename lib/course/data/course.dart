@@ -1,4 +1,3 @@
-import 'package:fixnum/fixnum.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/course/v1test/course.pb.dart'
     as proto;
 import 'package:kt_dart/collection.dart';
@@ -106,7 +105,7 @@ enum Type {
 class Semester {
   final String id;
   final Term term;
-  final Int64 year;
+  final int year;
 
   Semester({
     @required this.id,
