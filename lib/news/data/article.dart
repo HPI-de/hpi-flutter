@@ -19,7 +19,7 @@ class Article {
   final String content;
   final KtSet<Category> categories;
   final KtSet<Tag> tags;
-  final UInt32Value viewCount;
+  final int viewCount;
 
   const Article({
     @required this.id,
@@ -60,7 +60,7 @@ class Article {
               .map((c) => Category.fromProto(c))
               .toSet(),
           tags: KtSet.from(article.tags).map((t) => Tag.fromProto(t)).toSet(),
-          viewCount: article.viewCount,
+          viewCount: article.hasViewCount() ? article.viewCount.value : null,
         );
   proto.Article toProto() {
     return proto.Article()
@@ -75,7 +75,8 @@ class Article {
       ..content = content
       ..categories.addAll(categories.map((c) => c.toProto()).iter)
       ..tags.addAll(tags.map((t) => t.toProto()).iter)
-      ..viewCount = viewCount;
+      ..viewCount =
+          viewCount != null ? (UInt32Value()..value = viewCount) : null;
   }
 }
 
