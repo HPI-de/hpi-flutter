@@ -12,7 +12,7 @@ void main() {
         builder: (_) => NavigationService(),
       ),
       Provider<Uri>(
-        builder: (_) => Uri.parse("192.168.0.104"),
+        builder: (_) => Uri.parse("172.18.132.7"),
       ),
     ], child: HpiApp()),
   );
@@ -70,7 +70,10 @@ class HpiApp extends StatelessWidget {
         ),
       ),
     );
-    var localizedTheme = ThemeData.localize(theme, theme.typography.geometryThemeFor(ScriptCategory.englishLike));
+    var localizedTheme = ThemeData.localize(
+      theme,
+      theme.typography.geometryThemeFor(ScriptCategory.englishLike),
+    );
     theme = theme.copyWith(
       chipTheme: theme.chipTheme.copyWith(
         backgroundColor: Colors.transparent,
@@ -82,6 +85,20 @@ class HpiApp extends StatelessWidget {
         color: Colors.grey.shade50,
         iconTheme: theme.iconTheme,
         textTheme: localizedTheme.textTheme,
+      ),
+      floatingActionButtonTheme: theme.floatingActionButtonTheme.copyWith(
+        backgroundColor: theme.primaryColor,
+        shape: BeveledRectangleBorder(
+          borderRadius: BorderRadius.circular(0),
+        ),
+      ),
+    );
+    theme = theme.copyWith(
+      bottomAppBarTheme: theme.bottomAppBarTheme.copyWith(
+        shape: AutomaticNotchedShape(
+          BeveledRectangleBorder(),
+          theme.floatingActionButtonTheme.shape,
+        ),
       ),
     );
 
