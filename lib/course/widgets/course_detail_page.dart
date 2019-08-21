@@ -172,12 +172,10 @@ class CourseDetailPage extends StatelessWidget {
       Center(
         child: FlatButton(
           child: Text('Report an error'),
-          onPressed: () => showModalBottomSheet(
-            context: context,
-            builder: (context) => FeedbackDialog(
-              title: 'Report an error',
-              feedbackType: 'course.data.',
-            ),
+          onPressed: () => FeedbackDialog.show(
+            context,
+            title: 'Report an error',
+            feedbackType: 'course.data.error',
           ),
         ),
       ),

@@ -78,19 +78,28 @@ class _FeedbackDialogState extends State<FeedbackDialog>
               color: Theme.of(context).primaryColor,
               child: !isSending
                   ? Text('Submit', style: TextStyle(color: Colors.white))
-                  : Container(
-                      height: 16,
-                      width: 16,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        backgroundColor: Colors.white,
-                      ),
+                  : Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        SizedBox(
+                          height: 16,
+                          width: 16,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            backgroundColor: Colors.white,
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        Text('Sending…', style: TextStyle(color: Colors.white)),
+                      ],
                     ),
-              onPressed: () => setState(() {
-                isSending = true;
-                Future.delayed(Duration(seconds: 2))
-                    .then((_) => Navigator.pop(context));
-              }),
+              onPressed: isSending
+                  ? null
+                  : () => setState(() {
+                        isSending = true;
+                        Future.delayed(Duration(seconds: 2))
+                            .then((_) => Navigator.pop(context));
+                      }),
             ),
           )
         ],
