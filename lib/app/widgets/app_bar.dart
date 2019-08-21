@@ -88,9 +88,13 @@ class HpiAppBar extends StatelessWidget implements PreferredSizeWidget {
         },
         icon: Icon(Icons.more_vert),
         itemBuilder: (context) => [
+          if (menuItems != null) ...menuItems,
           PopupMenuItem(
             value: 'Feedback',
-            child: Row(children: [Icon(Icons.feedback), Text('Feedback')]),
+            child: Row(children: [
+              Icon(Icons.feedback),
+              Text('Feedback'),
+            ]),
           )
         ],
       ));
@@ -192,10 +196,13 @@ class HpiSliverAppBar extends StatelessWidget {
         },
         icon: Icon(Icons.more_vert),
         itemBuilder: (context) => [
-          ...menuItems,
+          if (menuItems != null) ...menuItems,
           PopupMenuItem(
             value: 'Feedback',
-            child: Row(children: [Icon(Icons.feedback), Text('Feedback')]),
+            child: Row(children: [
+              Icon(Icons.feedback),
+              Text('Feedback'),
+            ]),
           )
         ],
       ));
