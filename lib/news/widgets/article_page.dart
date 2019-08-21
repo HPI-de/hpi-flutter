@@ -133,7 +133,7 @@ class ArticleView extends StatelessWidget {
           return Text.rich(
             TextSpan(children: <InlineSpan>[
               TextSpan(text: formatSourcePublishDate(article, snapshot.data)),
-              if (article.viewCount.value > 0) ...[
+              if (article.viewCount != null) ...[
                 TextSpan(text: " · "),
                 WidgetSpan(
                   child: Icon(

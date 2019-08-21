@@ -9,7 +9,9 @@ import 'data/restaurant.dart';
 class FoodBloc {
   final FoodServiceClient _client;
 
-  FoodBloc(ClientChannel channel) : _client = null
+  FoodBloc(Uri serverUrl)
+      : assert(serverUrl != null),
+        _client = null
   /* TODO: do this and not the above
       : assert(channel != null),
         _client = FoodServiceClient(channel)*/
@@ -23,8 +25,8 @@ class FoodBloc {
         date: DateTime.now(),
         restaurantId: "mensa",
         title: "Vegane Nudeln all' arrabbiata, dazu Reibekäse",
-        substitution: "andere Nudeln",
-        price: 1.40,
+        substitution: Substitution(title: "andere Nudeln"),
+        prices: {"student": 1.40},
         counter: "1",
         labelIds: setOf("chicken", "beef", "vegetarian"),
       ),
@@ -34,8 +36,8 @@ class FoodBloc {
         restaurantId: "mensa",
         title:
             "Tandem Marburg: Kassler-Rippenspeer mit Honigkruste, Apfelweinsauerkraut und Kartoffelbrei",
-        substitution: "nur Honigkruste",
-        price: 2.00,
+        substitution: Substitution(title: "nur Honigkruste"),
+        prices: {"student": 2.00},
         counter: "2",
         labelIds: setOf("chicken", "beef", "pork"),
       ),
@@ -46,7 +48,7 @@ class FoodBloc {
         title:
             "Rinderhacksteak mit Knoblauchdip und Peperoni-Schoten, dazu bunter CousCous-Salat oder griechiche Kartoffeln",
         substitution: null,
-        price: 2.50,
+        prices: {"student": 2.50},
         counter: "3",
         labelIds: setOf("chicken", "beef"),
       ),
@@ -56,9 +58,10 @@ class FoodBloc {
         restaurantId: "mensa",
         title:
             "Brokkoli-Nuss-Ecke mit rustikalem Möhrengemüse und Schupfnudeln oder Kartoffeln",
-        substitution:
-            "Blumenkohl-Marzipan-Kante mit feinem Karottenobst oder Schlöpfreis und Anti-Kartoffeln",
-        price: 2.50,
+        substitution: Substitution(
+            title:
+                "Blumenkohl-Marzipan-Kante mit feinem Karottenobst oder Schlöpfreis und Anti-Kartoffeln"),
+        prices: {"student": 2.50},
         counter: "4",
         labelIds: setOf("chicken", "beef", "vegetarian"),
       ),
@@ -67,8 +70,8 @@ class FoodBloc {
         date: DateTime.now(),
         restaurantId: "mensa",
         title: "Tandem Marbug: Quer durch en Gadde (Gemüsecremesuppe)",
-        substitution: "nur Brühe",
-        price: 1.00,
+        substitution: Substitution(title: "nur Brühe"),
+        prices: {"student": 1.00},
         counter: "S",
         labelIds: setOf("chicken", "beef", "vegetarian"),
       ),
@@ -77,8 +80,8 @@ class FoodBloc {
         date: DateTime.now(),
         restaurantId: "mensa",
         title: "Nudeln mit veganer Tomatensauce oder Hackfleischsauce",
-        substitution: "mehr Hack",
-        price: 2.00,
+        substitution: Substitution(title: "mehr Hack"),
+        prices: {"student": 2.00},
         counter: "N",
         labelIds: setOf("chicken", "beef", "pork"),
       ),
@@ -88,7 +91,7 @@ class FoodBloc {
         restaurantId: "ulf",
         title: "Hühnerfrikassee mit Reis",
         substitution: null,
-        price: 5.00,
+        prices: {"student": 5.00},
         counter: "T",
         labelIds: emptySet(),
       ),
@@ -98,7 +101,7 @@ class FoodBloc {
           restaurantId: "ulf",
           title: "Nudelsalat mit einer Ruccolapesto und Mozzarella",
           substitution: null,
-          price: 5.00,
+          prices: {"student": 5.00},
           counter: "T",
           labelIds: emptySet()),
       MenuItem(
@@ -107,7 +110,7 @@ class FoodBloc {
         restaurantId: "ulf",
         title: "Nudelsalat mit einer Tomatenpesto und Mozzarella",
         substitution: null,
-        price: 5.00,
+        prices: {"student": 5.00},
         counter: "T",
         labelIds: emptySet(),
       ),
@@ -117,7 +120,7 @@ class FoodBloc {
         restaurantId: "ulf",
         title: "Minestrone",
         substitution: null,
-        price: 3.00,
+        prices: {"student": 3.00},
         counter: "T",
         labelIds: emptySet(),
       ),

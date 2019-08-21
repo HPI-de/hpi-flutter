@@ -22,6 +22,9 @@ class HpiAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double titleSpacing;
   final double toolbarOpacity;
   final double bottomOpacity;
+  @override
+  Size get preferredSize =>
+      Size.fromHeight(kToolbarHeight + (bottom?.preferredSize?.height ?? 0.0));
 
   const HpiAppBar({
     Key key,
@@ -85,9 +88,13 @@ class HpiAppBar extends StatelessWidget implements PreferredSizeWidget {
         },
         icon: Icon(Icons.more_vert),
         itemBuilder: (context) => [
+          if (menuItems != null) ...menuItems,
           PopupMenuItem(
             value: 'Feedback',
-            child: Row(children: [Icon(Icons.feedback), Text('Feedback')]),
+            child: Row(children: [
+              Icon(Icons.feedback),
+              Text('Feedback'),
+            ]),
           )
         ],
       ));
@@ -193,10 +200,13 @@ class HpiSliverAppBar extends StatelessWidget {
         },
         icon: Icon(Icons.more_vert),
         itemBuilder: (context) => [
-          ...menuItems,
+          if (menuItems != null) ...menuItems,
           PopupMenuItem(
             value: 'Feedback',
-            child: Row(children: [Icon(Icons.feedback), Text('Feedback')]),
+            child: Row(children: [
+              Icon(Icons.feedback),
+              Text('Feedback'),
+            ]),
           )
         ],
       ));

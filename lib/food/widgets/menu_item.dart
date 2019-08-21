@@ -43,7 +43,7 @@ class MenuItemView extends StatelessWidget {
                   if (item.substitution != null) ...[
                     SizedBox(height: 4),
                     Text(
-                      'alternativ: ${item.substitution}',
+                      'alternativ: ${item.substitution.title}',
                       style: Theme.of(context)
                           .textTheme
                           .body1
@@ -109,28 +109,37 @@ class MenuItemDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: Column(
-              children: <Widget>[
-                Text('Food ${item.counter}'),
-                Text(item.title),
-                Text(item.substitution ?? ''),
-                Wrap(
-                  children: item.labelIds
-                      .map((id) => _buildChip(context, id))
-                      .iter
-                      .toList(),
-                ),
-              ],
-            ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.baseline,
+      textBaseline: TextBaseline.alphabetic,
+      children: <Widget>[
+        Container(
+          width: MediaQuery.of(context).size.width * 0.8,
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
+                'Food ${item.counter}',
+                style: Theme.of(context).textTheme.headline,
+              ),
+              Text(
+                item.title,
+                style: Theme.of(context).textTheme.subhead,
+              ),
+              Text(item.substitution.title ?? ''),
+              // TODO: Add proper labels
+              /*Wrap(
+                children: item.labelIds
+                    .map((id) => _buildChip(context, id))
+                    .iter
+                    .toList(),
+              ),*/
+            ],
           ),
-          Text('${item.price.toStringAsFixed(2)} €'),
-        ],
-      ),
+        ),
+        Text('${item.prices["student"].toStringAsFixed(2)} €'),
+      ],
     );
   }
 

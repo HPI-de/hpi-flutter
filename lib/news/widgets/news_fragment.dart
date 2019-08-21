@@ -36,6 +36,7 @@ class NewsFragment extends StatelessWidget {
                 ? Text(snapshot.error.toString())
                 : CircularProgressIndicator(),
           );
+
         return ListView.separated(
           padding: EdgeInsets.all(8),
           scrollDirection: Axis.horizontal,

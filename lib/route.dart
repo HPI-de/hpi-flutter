@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hpi_flutter/course/widgets/course_page.dart';
+import 'package:hpi_flutter/food/widgets/food_page.dart';
 import 'package:hpi_flutter/myhpi/widgets/myhpi_page.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:meta/meta.dart';
@@ -9,6 +10,7 @@ import 'app/widgets/main_scaffold.dart';
 import 'course/widgets/course_detail_page.dart';
 import 'news/widgets/article_page.dart';
 import 'news/widgets/news_page.dart';
+import 'tools/widgets/timer_page.dart';
 
 @immutable
 class Route {
@@ -32,6 +34,9 @@ class Route {
         if (route == news) return NewsPage();
         if (route == newsArticle)
           return ArticlePage(settings.arguments as String);
+        if (route == food) return FoodPage();
+        if (route == tools) return TimerPage();
+        if (route == toolsTimer) return TimerPage();
 
         return MainScaffold(
           body: Center(
@@ -57,7 +62,10 @@ class Route {
   static const myhpi = const Route._internal('/myhpi');
   static const news = const Route._internal('/news');
   static const newsArticle = const Route._internal('/news/articleId');
+  static const food = const Route._internal('/food');
+  static const tools = const Route._internal('/tools');
+  static const toolsTimer = const Route._internal('/tools/timer');
 
-  static KtList<Route> values =
-      KtList.of(dashboard, courses, coursesDetail, myhpi, news, newsArticle);
+  static KtList<Route> values = KtList.of(dashboard, courses, coursesDetail,
+      myhpi, news, newsArticle, food, tools, toolsTimer);
 }

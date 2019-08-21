@@ -9,10 +9,12 @@ import 'menu_item.dart';
 
 @immutable
 class RestaurantMenu extends StatelessWidget {
+  final String prefix;
   final String restaurantId;
   final KtList<MenuItem> menuItems;
 
-  RestaurantMenu({@required this.restaurantId, @required this.menuItems})
+  RestaurantMenu(
+      {@required this.restaurantId, @required this.menuItems, this.prefix = ''})
       : assert(restaurantId != null),
         assert(menuItems != null);
 
@@ -43,7 +45,7 @@ class RestaurantMenu extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 child: Text(
-                  snapshot.data?.title ?? '-',
+                  prefix + snapshot.data?.title ?? '-',
                   style:
                       Theme.of(context).textTheme.title.copyWith(fontSize: 20),
                 ),
