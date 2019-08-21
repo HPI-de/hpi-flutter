@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide Route;
+import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/course/data/bloc.dart';
@@ -24,7 +25,7 @@ class CoursePage extends StatelessWidget {
               SliverOverlapAbsorber(
                 handle:
                     NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                child: SliverAppBar(
+                child: HpiSliverAppBar(
                   floating: true,
                   pinned: true,
                   forceElevated: innerBoxIsScrolled,

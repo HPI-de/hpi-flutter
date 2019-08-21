@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/core/utils.dart';
 import 'package:hpi_flutter/course/data/bloc.dart';
 import 'package:hpi_flutter/course/data/course.dart';
+import 'package:hpi_flutter/feedback/widgets/feedback_dialog.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
@@ -64,7 +66,7 @@ class CourseDetailPage extends StatelessWidget {
 
         return CustomScrollView(
           slivers: <Widget>[
-            SliverAppBar(
+            HpiSliverAppBar(
               floating: true,
               backgroundColor: Theme.of(context).cardColor,
               title: buildAppBarTitle(
@@ -166,6 +168,16 @@ class CourseDetailPage extends StatelessWidget {
             .body1
             .copyWith(color: Colors.black.withOpacity(0.6)),
         textAlign: TextAlign.center,
+      ),
+      Center(
+        child: FlatButton(
+          child: Text('Report an error'),
+          onPressed: () => FeedbackDialog.show(
+            context,
+            title: 'Report an error',
+            feedbackType: 'course.data.error',
+          ),
+        ),
       ),
       SizedBox(height: 16)
     ].where((w) => w != null).toList();
