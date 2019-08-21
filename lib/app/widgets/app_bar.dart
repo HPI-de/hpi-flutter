@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hpi_flutter/feedback/widgets/feedback_dialog.dart';
 
-class HpiAppBar extends StatelessWidget {
+class HpiAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget leading;
   final bool automaticallyImplyLeading;
   final Widget title;
@@ -22,6 +22,9 @@ class HpiAppBar extends StatelessWidget {
   final double titleSpacing;
   final double toolbarOpacity;
   final double bottomOpacity;
+  @override
+  Size get preferredSize =>
+      Size.fromHeight(kToolbarHeight + (bottom?.preferredSize?.height ?? 0.0));
 
   const HpiAppBar({
     Key key,

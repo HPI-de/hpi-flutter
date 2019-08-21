@@ -50,6 +50,11 @@ class MainScaffold extends StatelessWidget {
             route: Route.courses,
           ),
           NavigationItem(
+            icon: OMIcons.restaurantMenu,
+            text: "Food",
+            route: Route.food,
+          ),
+          NavigationItem(
             icon: HpiIcons.myhpi,
             text: "MyHPI",
             route: Route.myhpi,

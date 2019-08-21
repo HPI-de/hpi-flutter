@@ -1,5 +1,6 @@
 import 'package:align_positioned/align_positioned.dart';
 import 'package:flutter/material.dart';
+import 'package:hpi_flutter/food/widgets/food_fragment.dart';
 import 'package:hpi_flutter/news/widgets/news_fragment.dart';
 
 import 'package:hpi_flutter/openhpi/widgets/openhpi_fragment.dart';
@@ -22,6 +23,7 @@ class DashboardPage extends StatelessWidget {
           ),
           OpenHpiFragment(),
           NewsFragment(),
+          FoodFragment(),
         ].expand((child) sync* {
           yield const SizedBox(height: 16);
           yield child;
