@@ -3,26 +3,46 @@ import 'dart:math';
 
 import 'package:flutter/material.dart' hide Route;
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
+import 'package:kt_dart/collection.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:rxdart/rxdart.dart';
 
 @immutable
 class TimerPage extends StatelessWidget {
+  final CountdownTimer _counter =
+      CountdownTimer(Duration(minutes: 5), Duration(milliseconds: 200));
+
   @override
   Widget build(BuildContext context) {
-    return MainScaffold(
-      appBar: AppBar(
-        title: Text('Timer'),
+    return StatefulBuilder(
+      builder: (context, setState) => MainScaffold(
+        appBar: AppBar(
+          title: Text('Timer'),
+        ),
+        body: Builder(builder: (c) => _buildTimer(c)),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(
+            _counter.state == CountdownTimerState.running
+                ? OMIcons.pause
+                : OMIcons.playArrow,
+          ),
+          onPressed: () => setState(() {
+            _counter.toggle();
+          }),
+        ),
+        bottomActions: KtList.of(IconButton(
+          icon: Icon(OMIcons.replay),
+          onPressed: () => setState(() {
+            _counter.reset();
+          }),
+        )),
       ),
-      body: Builder(builder: (c) => _buildTimer(c)),
     );
   }
 
   Widget _buildTimer(BuildContext context) {
-    var timer =
-        CountdownTimer(Duration(seconds: 500), Duration(milliseconds: 200))
-          ..resume();
     return StreamBuilder<Duration>(
-      stream: timer.stream,
+      stream: _counter.stream,
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Placeholder();
 
@@ -33,7 +53,7 @@ class TimerPage extends StatelessWidget {
               aspectRatio: 1,
               child: Builder(
                 builder: (context) => CustomPaint(
-                  painter: CountdownTimerPainter(context, timer),
+                  painter: CountdownTimerPainter(context, _counter),
                 ),
               ),
             ),
@@ -49,7 +69,8 @@ class CountdownTimer {
   final Duration frequency;
   Stopwatch _stopwatch = Stopwatch();
   Timer _timer;
-  CountdownTimerState _state;
+  CountdownTimerState _state = CountdownTimerState.ready;
+  CountdownTimerState get state => _state;
 
   BehaviorSubject<Duration> _updates;
   Stream<Duration> get stream => _updates.stream;
@@ -69,9 +90,12 @@ class CountdownTimer {
     _state = CountdownTimerState.running;
     _stopwatch.start();
     _timer = Timer.periodic(frequency, (t) {
-      _remaining = total - _stopwatch.elapsed;
-      _updates.value = _remaining;
-      if (_remaining.isNegative) t.cancel();
+      if (_remaining < Duration(milliseconds: 50)) {
+        t.cancel();
+        _updateRemaining(Duration.zero);
+        return;
+      }
+      _updateRemaining(total - _stopwatch.elapsed);
     });
   }
 
@@ -79,15 +103,30 @@ class CountdownTimer {
     if (_state == CountdownTimerState.ready ||
         _state == CountdownTimerState.paused) return;
 
+    _state = CountdownTimerState.paused;
     _stopwatch.stop();
     _timer.cancel();
+  }
+
+  void toggle() {
+    if (_state == CountdownTimerState.running)
+      pause();
+    else
+      resume();
   }
 
   void reset() {
     if (_state == CountdownTimerState.ready) return;
     if (_state == CountdownTimerState.running) pause();
 
+    _state = CountdownTimerState.ready;
     _stopwatch.reset();
+    _updateRemaining(total);
+  }
+
+  void _updateRemaining(Duration remaining) {
+    _remaining = remaining;
+    _updates.value = _remaining;
   }
 }
 

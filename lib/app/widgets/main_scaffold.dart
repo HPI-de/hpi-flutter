@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart' hide Route;
 import 'package:flutter/widgets.dart' hide Route;
+import 'package:flutter/widgets.dart' as prefix0;
 import 'package:hpi_flutter/app/services/navigation.dart';
 import 'package:hpi_flutter/core/hpi_icons.dart';
 import 'package:hpi_flutter/route.dart';
+import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -10,14 +12,24 @@ import 'package:provider/provider.dart';
 class MainScaffold extends StatelessWidget {
   final PreferredSizeWidget appBar;
   final Widget body;
+  final Widget floatingActionButton;
+  final KtList<Widget> bottomActions;
 
-  MainScaffold({this.appBar, @required this.body}) : assert(body != null);
+  MainScaffold({
+    this.appBar,
+    @required this.body,
+    this.floatingActionButton,
+    KtList<Widget> bottomActions,
+  })  : assert(body != null),
+        this.bottomActions = bottomActions ?? KtList.empty();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar,
       body: body,
+      floatingActionButton: floatingActionButton,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         child: Row(
           children: <Widget>[
@@ -27,6 +39,8 @@ class MainScaffold extends StatelessWidget {
                 _openNavDrawer(context);
               },
             ),
+            Spacer(),
+            ...bottomActions.iter,
           ],
         ),
       ),
