@@ -12,7 +12,7 @@ void main() {
         builder: (_) => NavigationService(),
       ),
       Provider<Uri>(
-        builder: (_) => Uri.parse("192.168.0.104"),
+        builder: (_) => Uri.parse("172.18.132.7"),
       ),
     ], child: HpiApp()),
   );

@@ -169,16 +169,18 @@ class CourseDetailPage extends StatelessWidget {
             .copyWith(color: Colors.black.withOpacity(0.6)),
         textAlign: TextAlign.center,
       ),
-      FlatButton(
-        child: Text('Report an error'),
-        onPressed: () => showModalBottomSheet(
+      Center(
+        child: FlatButton(
+          child: Text('Report an error'),
+          onPressed: () => showModalBottomSheet(
             context: context,
             builder: (context) => FeedbackDialog(
-                  title: 'Report an error',
-                  feedbackType: 'CourseError',
-                )),
+              title: 'Report an error',
+              feedbackType: 'course.data.',
+            ),
+          ),
+        ),
       ),
-      SizedBox(height: 16),
       SizedBox(height: 16)
     ].where((w) => w != null).toList();
   }
