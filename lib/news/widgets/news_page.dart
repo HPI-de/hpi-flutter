@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/news/data/article.dart';
 import 'package:kt_dart/collection.dart';
@@ -17,7 +18,7 @@ class NewsPage extends StatelessWidget {
       child: MainScaffold(
         body: CustomScrollView(
           slivers: <Widget>[
-            SliverAppBar(
+            HpiSliverAppBar(
               floating: true,
               title: Text('News'),
             ),
