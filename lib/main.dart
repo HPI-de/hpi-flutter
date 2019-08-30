@@ -1,20 +1,33 @@
 import 'package:flutter/material.dart' hide Route;
 import 'package:hpi_flutter/route.dart';
 import 'package:provider/provider.dart';
+import 'package:screenshot/screenshot.dart';
 
 import 'app/services/navigation.dart';
 import 'app/widgets/hpi_theme.dart';
 
 void main() {
+  // Used by feedback to capture the whole app
+  final screenshotController = ScreenshotController();
+
   runApp(
-    MultiProvider(providers: [
-      Provider<NavigationService>(
-        builder: (_) => NavigationService(),
+    MultiProvider(
+      providers: [
+        Provider<NavigationService>(
+          builder: (_) => NavigationService(),
+        ),
+        Provider<Uri>(
+          builder: (_) => Uri.parse("172.18.132.7"),
+        ),
+        Provider<ScreenshotController>(
+          builder: (_) => screenshotController,
+        ),
+      ],
+      child: Screenshot(
+        controller: screenshotController,
+        child: HpiApp(),
       ),
-      Provider<Uri>(
-        builder: (_) => Uri.parse("172.18.132.7"),
-      ),
-    ], child: HpiApp()),
+    ),
   );
 }
 

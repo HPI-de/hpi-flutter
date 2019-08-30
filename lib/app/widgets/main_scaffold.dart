@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart' hide Route;
 import 'package:flutter/widgets.dart' hide Route;
-import 'package:flutter/widgets.dart' as prefix0;
 import 'package:hpi_flutter/app/services/navigation.dart';
 import 'package:hpi_flutter/core/hpi_icons.dart';
 import 'package:hpi_flutter/route.dart';

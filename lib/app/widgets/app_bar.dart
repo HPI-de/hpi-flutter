@@ -76,22 +76,17 @@ class HpiAppBar extends StatelessWidget {
       bottomOpacity: bottomOpacity,
     )..actions.add(PopupMenuButton(
         onSelected: (selected) {
-          if (selected == 'Feedback') {
-            showModalBottomSheet(
-                context: context, builder: (context) => FeedbackDialog());
-          } else {
+          if (selected == 'app.feedback')
+            FeedbackDialog.show(context);
+          else
             menuItemHandler(selected);
-          }
         },
         icon: Icon(Icons.more_vert),
         itemBuilder: (context) => [
           if (menuItems != null) ...menuItems,
           PopupMenuItem(
-            value: 'Feedback',
-            child: Row(children: [
-              Icon(Icons.feedback),
-              Text('Feedback'),
-            ]),
+            value: 'app.feedback',
+            child: Text('Feedback'),
           )
         ],
       ));
@@ -184,22 +179,17 @@ class HpiSliverAppBar extends StatelessWidget {
       snap: snap,
     )..actions.add(PopupMenuButton(
         onSelected: (selected) {
-          if (selected == 'Feedback') {
-            showModalBottomSheet(
-                context: context, builder: (context) => FeedbackDialog());
-          } else {
+          if (selected == 'app.feedback')
+            FeedbackDialog.show(context);
+          else
             menuItemHandler(selected);
-          }
         },
         icon: Icon(Icons.more_vert),
         itemBuilder: (context) => [
           if (menuItems != null) ...menuItems,
           PopupMenuItem(
-            value: 'Feedback',
-            child: Row(children: [
-              Icon(Icons.feedback),
-              Text('Feedback'),
-            ]),
+            value: 'app.feedback',
+            child: Text('Send Feedback'),
           )
         ],
       ));
