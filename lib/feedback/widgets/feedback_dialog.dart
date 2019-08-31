@@ -13,12 +13,19 @@ class FeedbackDialog extends StatefulWidget {
     assert(context != null);
 
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (context) => ProxyProvider<Uri, FeedbackBloc>(
         builder: (_, serverUrl, __) => FeedbackBloc(serverUrl),
-        child: FeedbackDialog._(
-          title: title,
-          feedbackType: feedbackType,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: FeedbackDialog._(
+              title: title,
+              feedbackType: feedbackType,
+            ),
+          ),
         ),
       ),
     );
