@@ -19,7 +19,7 @@ class Article {
   final String content;
   final KtSet<Category> categories;
   final KtSet<Tag> tags;
-  final UInt32Value viewCount;
+  final int viewCount;
 
   const Article({
     @required this.id,
@@ -53,29 +53,30 @@ class Article {
           title: article.title,
           publishDate: timestampToDateTime(article.publishDate),
           authorIds: KtSet.from(article.authorIds),
-          cover: Image.fromProto(article.cover),
+          cover: article.hasCover() ? Image.fromProto(article.cover) : null,
           teaser: article.teaser,
           content: article.content,
           categories: KtSet.from(article.categories)
               .map((c) => Category.fromProto(c))
               .toSet(),
           tags: KtSet.from(article.tags).map((t) => Tag.fromProto(t)).toSet(),
-          viewCount: article.viewCount,
+          viewCount: article.hasViewCount() ? article.viewCount.value : null,
         );
   proto.Article toProto() {
-    return proto.Article()
-      ..id = id
-      ..sourceId = sourceId
-      ..link = link.toString()
-      ..title = title
-      ..publishDate = dateTimeToTimestamp(publishDate)
-      ..authorIds.addAll(authorIds.iter)
-      ..cover = cover.toProto()
-      ..teaser = teaser
-      ..content = content
-      ..categories.addAll(categories.map((c) => c.toProto()).iter)
-      ..tags.addAll(tags.map((t) => t.toProto()).iter)
-      ..viewCount = viewCount;
+    final a = proto.Article();
+    a.id = id;
+    a.sourceId = sourceId;
+    a.link = link.toString();
+    a.title = title;
+    a.publishDate = dateTimeToTimestamp(publishDate);
+    a.authorIds.addAll(authorIds.iter);
+    if (cover != null) a.cover = cover.toProto();
+    a.teaser = teaser;
+    a.content = content;
+    a.categories.addAll(categories.map((c) => c.toProto()).iter);
+    a.tags.addAll(tags.map((t) => t.toProto()).iter);
+    if (viewCount != null) a.viewCount = UInt32Value()..value = viewCount;
+    return a;
   }
 }
 
