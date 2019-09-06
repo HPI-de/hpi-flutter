@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hpi_flutter/app/widgets/dashboard_page.dart';
+import 'package:hpi_flutter/core/localizations.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter/widgets.dart';
 import 'package:kt_dart/collection.dart';
@@ -14,7 +15,7 @@ class OpenHpiFragment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DashboardFragment(
-      title: 'openHPI courses',
+      title: HpiL11n.of(context)['openhpiCourses'],
       child: Provider<OpenHpiBloc>(
         builder: (_) => OpenHpiBloc(),
         child: SizedBox(

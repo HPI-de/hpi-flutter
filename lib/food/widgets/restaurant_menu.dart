@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hpi_flutter/app/widgets/hpi_theme.dart';
 import 'package:kt_dart/kt.dart';
 import 'package:provider/provider.dart';
 
@@ -38,7 +39,7 @@ class RestaurantMenu extends StatelessWidget {
           ),
         ),
         Material(
-          color: Colors.orange,
+          color: HpiTheme.of(context).tertiary,
           child: StreamBuilder<Restaurant>(
             stream: Provider.of<FoodBloc>(context).getRestaurant(restaurantId),
             builder: (_, snapshot) {

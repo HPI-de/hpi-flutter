@@ -2,6 +2,7 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/app/widgets/utils.dart';
+import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/course/data/bloc.dart';
 import 'package:hpi_flutter/route.dart';
 import 'package:kt_dart/collection.dart';
@@ -29,7 +30,7 @@ class CoursePage extends StatelessWidget {
                   floating: true,
                   pinned: true,
                   forceElevated: innerBoxIsScrolled,
-                  title: Text('Courses'),
+                  title: Text(HpiL11n.of(context)['courses']),
                   bottom: TabBar(
                     indicatorColor: Theme.of(context).primaryColor,
                     labelColor: Theme.of(context).primaryColor,
@@ -39,8 +40,8 @@ class CoursePage extends StatelessWidget {
                         .color
                         .withOpacity(0.7),
                     tabs: [
-                      Tab(text: "Current courses"),
-                      Tab(text: "All courses"),
+                      Tab(text: HpiL11n.of(context)['currentCourses']),
+                      Tab(text: HpiL11n.of(context)['allCourses']),
                     ],
                   ),
                 ),

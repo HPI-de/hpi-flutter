@@ -4,3 +4,34 @@ food: Food
 myhpi: MyHPI
 news: News
 tools: Tools
+openhpiCourses: openHPI courses
+menuToday: Today's menu
+# Courses
+currentCourses: Current courses
+allCourses: All courses
+teletaskEnabled: This course is on tele-TASK
+programsModules: Programs & Modules
+description: Description
+requirements: Requirements
+learning: Learning
+examination: Examination
+dates: Dates
+literature: Literature
+allStatementsWithoutGuarantee: All statements without guarantee
+reportAnError: Report an Error
+hoursPerWeek: h/week
+Lecture: Lecture
+Seminar: Seminar
+Block Seminar: Block Seminar
+Exercise: Exercise
+# News
+authors: AUTHORS
+categories: CATEGORIES
+tags: TAGS
+# Feedback
+yourMessage: Your message
+includeContactDetails: Include your contact details
+contactDetailsInfo: This will show us your name and e-mail address. Recommended e.g. for bug reports and questions
+includeLogs: Include screenshot and logs
+includeLogsInfo: Recommended for bugs
+submit: Submit

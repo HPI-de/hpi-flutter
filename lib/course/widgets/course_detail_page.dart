@@ -3,6 +3,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/app/widgets/utils.dart';
+import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/core/utils.dart';
 import 'package:hpi_flutter/course/data/bloc.dart';
 import 'package:hpi_flutter/course/data/course.dart';
@@ -106,17 +107,17 @@ class CourseDetailPage extends StatelessWidget {
       _buildElevatedTile(
         context,
         leading: OMIcons.info,
-        title:
-            '${courseSeries.ects} ECTS · ${courseSeries.hoursPerWeek} h/week',
+        title: '${courseSeries.ects} ECTS · ${courseSeries.hoursPerWeek} ' +
+            HpiL11n.of(context)['hoursPerWeek'],
         subtitle: courseSeries.types
-            .map((t) => courseTypeToString(t))
+            .map((t) => HpiL11n.of(context)[courseTypeToString(t)])
             .joinToString(separator: ' · '),
       ),
       if (courseDetail.teletask != null)
         _buildElevatedTile(
           context,
           leading: OMIcons.videocam,
-          title: 'This course is on tele-TASK',
+          title: HpiL11n.of(context)['teletaskEnabled'],
           trailing: OMIcons.openInNew,
           onTap: () async {
             if (await canLaunch(courseDetail.teletask))
@@ -137,7 +138,7 @@ class CourseDetailPage extends StatelessWidget {
       _buildElevatedTile(
         context,
         leading: OMIcons.viewModule,
-        title: 'Programs & Modules',
+        title: HpiL11n.of(context)['programsModules'],
         subtitle: courseDetail.programs
             .map((program) =>
                 program.key +
@@ -148,21 +149,21 @@ class CourseDetailPage extends StatelessWidget {
                 ))
             .joinToString(separator: '\n'),
       ),
-      _buildCourseInfoTile(
-          context, OMIcons.subject, 'Description', courseDetail.description),
-      _buildCourseInfoTile(
-          context, OMIcons.check, 'Requirements', courseDetail.requirements),
-      _buildCourseInfoTile(
-          context, OMIcons.school, 'Learning', courseDetail.learning),
-      _buildCourseInfoTile(context, OMIcons.formatListNumbered, 'Examination',
-          courseDetail.examination),
-      _buildCourseInfoTile(
-          context, OMIcons.calendarToday, 'Dates', courseDetail.dates),
-      _buildCourseInfoTile(
-          context, OMIcons.book, 'Literature', courseDetail.literature),
+      _buildCourseInfoTile(context, OMIcons.subject,
+          HpiL11n.of(context)['description'], courseDetail.description),
+      _buildCourseInfoTile(context, OMIcons.check,
+          HpiL11n.of(context)['requirements'], courseDetail.requirements),
+      _buildCourseInfoTile(context, OMIcons.school,
+          HpiL11n.of(context)['learning'], courseDetail.learning),
+      _buildCourseInfoTile(context, OMIcons.formatListNumbered,
+          HpiL11n.of(context)['examination'], courseDetail.examination),
+      _buildCourseInfoTile(context, OMIcons.calendarToday,
+          HpiL11n.of(context)['dates'], courseDetail.dates),
+      _buildCourseInfoTile(context, OMIcons.book,
+          HpiL11n.of(context)['literature'], courseDetail.literature),
       SizedBox(height: 16),
       Text(
-        'All statements without guarantee.',
+        HpiL11n.of(context)['allStatementsWithoutGuarantee'],
         style: Theme.of(context)
             .textTheme
             .body1
@@ -171,10 +172,10 @@ class CourseDetailPage extends StatelessWidget {
       ),
       Center(
         child: FlatButton(
-          child: Text('Report an error'),
+          child: Text(HpiL11n.of(context)['reportAnError']),
           onPressed: () => FeedbackDialog.show(
             context,
-            title: 'Report an error',
+            title: HpiL11n.of(context)['reportAnError'],
             feedbackType: 'course.data.error',
           ),
         ),

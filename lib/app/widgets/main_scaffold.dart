@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide Route;
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart' hide Route;
 import 'package:hpi_flutter/app/services/navigation.dart';
 import 'package:hpi_flutter/core/hpi_icons.dart';
@@ -7,6 +8,8 @@ import 'package:hpi_flutter/route.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
+
+import 'package:http/http.dart' as http;
 
 @immutable
 class MainScaffold extends StatelessWidget {

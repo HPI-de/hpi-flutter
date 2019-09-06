@@ -4,3 +4,34 @@ food: Speisepläne
 myhpi: MyHPI
 news: Neuigkeiten
 tools: Werkzeuge
+openhpiCourses: openHPI-Kurse
+menuToday: Heutiges Essensangebot
+# Kurse
+currentCourses: Aktuelle Kurse
+allCourses: Alle Kurse
+teletaskEnabled: Dieser Kurs ist auf tele-TASK
+programsModules: Studiengänge & Module
+description: Beschreibung
+requirements: Voraussetzungen
+learning: Lehrinhalte
+examination: Leistungserfassung
+dates: Termine
+literature: Literatur
+allStatementsWithoutGuarantee: All Angaben ohne Gewähr
+reportAnError: Einen Fehler melden
+hoursPerWeek: h/Woche
+Lecture: Vorlesung
+Seminar: Seminar
+Block Seminar: Blockseminar
+Exercise: Übung
+# Neuigkeiten
+authors: AUTOREN
+categories: KATEGORIEN
+tags: STICHWORTE
+# Feedback
+yourMessage: Deine Nachricht
+includeContactDetails: Deine Kontaktinformationen mitschicken
+includeContactDetailsInfo: Hiermit sehen wir Deinen Namen und Deine E-Mail-Adresse. Empfohlen für Fehlermeldungen und Fragen
+includeLogs: Screenshots und Logdateien mitschicken
+includeLogsInfo: Empfohlen für Fehlermeldungen
+submit: Abschicken

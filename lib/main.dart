@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart' as prefix0;
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart' hide Route;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hpi_flutter/core/localizations.dart';
@@ -7,16 +11,34 @@ import 'package:provider/provider.dart';
 import 'app/services/navigation.dart';
 import 'app/widgets/hpi_theme.dart';
 
-void main() {
+Future<ByteData> fetchFont(String url) async {
+  final response = await http.get(url);
+  if (response.statusCode == 200) {
+    return ByteData.view(response.bodyBytes.buffer);
+  } else {
+    throw Exception('Failed to load font');
+  }
+}
+
+void main() async {
+  var delegate = HpiLocalizationsDelegate();
+  var fontLoader = FontLoader('Neo Sans')
+    ..addFont(fetchFont(
+        'https://hpi.de/fileadmin/templates/fonts/9de9709d-f77a-44ad-96b9-6fea586f7efb.ttf'));
+  await fontLoader.load();
+
   runApp(
-    MultiProvider(providers: [
-      Provider<NavigationService>(
-        builder: (_) => NavigationService(),
-      ),
-      Provider<Uri>(
-        builder: (_) => Uri.parse("172.18.132.7"),
-      ),
-    ], child: HpiApp()),
+    MultiProvider(
+      providers: [
+        Provider<NavigationService>(
+          builder: (_) => NavigationService(),
+        ),
+        Provider<Uri>(
+          builder: (_) => Uri.parse("172.18.132.7"),
+        ),
+      ],
+      child: HpiApp(hpiLocalizationsDelegate: delegate),
+    ),
   );
 }
 
@@ -55,22 +77,30 @@ const _brandColorOrangeSwatch = MaterialColor(
 const _brandColorYellow = 0xFFF6A804;
 
 class HpiApp extends StatelessWidget {
+  final LocalizationsDelegate hpiLocalizationsDelegate;
+
+  const HpiApp({prefix0.Key key, this.hpiLocalizationsDelegate})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     ThemeData theme = ThemeData(
       primarySwatch: _brandColorRedSwatch,
       accentColor: Color(_brandColorOrange),
+      fontFamily: 'Neo Sans',
     );
     theme = theme.copyWith(
       textTheme: theme.textTheme.copyWith(
-        overline: theme.textTheme.overline.copyWith(
-          color: Colors.black.withOpacity(0.6),
-          fontWeight: FontWeight.w500,
-          fontSize: 10,
-          letterSpacing: 1.5,
-          height: 1.6,
-        ),
-      ),
+          overline: theme.textTheme.overline.copyWith(
+            color: Colors.black.withOpacity(0.6),
+            fontWeight: FontWeight.w500,
+            fontSize: 10,
+            letterSpacing: 1.5,
+            height: 1.6,
+          ),
+          headline: theme.textTheme.headline.copyWith(
+            fontFamily: 'Neo Sans',
+          )),
     );
     var localizedTheme = ThemeData.localize(
       theme,
@@ -115,9 +145,9 @@ class HpiApp extends StatelessWidget {
           NavigationObserver(Provider.of<NavigationService>(context)),
         ],
         localizationsDelegates: [
+          hpiLocalizationsDelegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
-          HpiLocalizationsDelegate()
         ],
         supportedLocales: [
           const Locale('en'),

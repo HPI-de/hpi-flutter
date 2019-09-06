@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hpi_flutter/core/localizations.dart';
 
 class FeedbackDialog extends StatefulWidget {
   static void show(BuildContext context,
@@ -49,15 +50,14 @@ class _FeedbackDialogState extends State<FeedbackDialog>
             maxLines: 8,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              labelText: 'Your message',
+              labelText: HpiL11n.of(context)['yourMessage'],
             ),
           ),
           SizedBox(height: 16),
           CheckboxListTile(
             controlAffinity: ListTileControlAffinity.leading,
-            title: Text('Include your contact details'),
-            subtitle: Text(
-                'This will show us your name and e-mail address. Recommended e.g. for bug reports and questions'),
+            title: Text(HpiL11n.of(context)['includeContactDetails']),
+            subtitle: Text(HpiL11n.of(context)['includeContactDetailsInfo']),
             value: includeContact,
             onChanged: (checked) => setState(() {
               includeContact = checked;
@@ -65,8 +65,8 @@ class _FeedbackDialogState extends State<FeedbackDialog>
           ),
           CheckboxListTile(
             controlAffinity: ListTileControlAffinity.leading,
-            title: Text('Include screenshot and logs'),
-            subtitle: Text('Recommended for bugs'),
+            title: Text(HpiL11n.of(context)['includeLogs']),
+            subtitle: Text(HpiL11n.of(context)['includeLogsInfo']),
             value: sendLogs,
             onChanged: (checked) => setState(() {
               sendLogs = checked;
@@ -77,7 +77,8 @@ class _FeedbackDialogState extends State<FeedbackDialog>
             child: RaisedButton(
               color: Theme.of(context).primaryColor,
               child: !isSending
-                  ? Text('Submit', style: TextStyle(color: Colors.white))
+                  ? Text(HpiL11n.of(context)['submit'],
+                      style: TextStyle(color: Colors.white))
                   : Row(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
