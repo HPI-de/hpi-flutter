@@ -12,6 +12,13 @@ class HpiL11n {
         .then((strings) => _localizedValues = Map.from(loadYaml(strings)));
   }
 
+  Future<void> _loadStrings() async {
+    var lc = locale.languageCode;
+    var strings = await rootBundle.loadString(
+        'assets/localizations/strings_${lc != null ? lc : "en"}.yaml');
+    _localizedValues = _localizedValues = Map.from(loadYaml(strings));
+  }
+
   final Locale locale;
   Map<String, String> _localizedValues;
 
@@ -30,7 +37,11 @@ class HpiL11n {
   static HpiL11n of(BuildContext context) =>
       Localizations.of<HpiL11n>(context, HpiL11n);
 
-  String operator [](String key) => _localizedValues[key] ?? loadFallbacks(key);
+  String operator [](String key) {
+    // This is only a temporary solution to stop errors from appearing.
+    if (_localizedValues == null) return key;
+    return _localizedValues[key] ?? loadFallbacks(key);
+  }
 }
 
 class HpiLocalizationsDelegate extends LocalizationsDelegate<HpiL11n> {
