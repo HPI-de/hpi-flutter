@@ -34,7 +34,7 @@ class OpenHpiFragment extends StatelessWidget {
         if (!snapshot.hasData)
           return Center(
             child: snapshot.hasError
-                ? Text(snapshot.error)
+                ? Text(snapshot.error.toString())
                 : CircularProgressIndicator(),
           );
         return ListView.separated(
