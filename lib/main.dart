@@ -7,6 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/route.dart';
 import 'package:provider/provider.dart';
+import 'package:screenshot/screenshot.dart';
 
 import 'app/services/navigation.dart';
 import 'app/widgets/hpi_theme.dart';
@@ -27,6 +28,9 @@ void main() async {
         'https://hpi.de/fileadmin/templates/fonts/9de9709d-f77a-44ad-96b9-6fea586f7efb.ttf'));
   await fontLoader.load();
 
+  // Used by feedback to capture the whole app
+  final screenshotController = ScreenshotController();
+
   runApp(
     MultiProvider(
       providers: [
@@ -36,8 +40,16 @@ void main() async {
         Provider<Uri>(
           builder: (_) => Uri.parse("172.18.132.7"),
         ),
+        Provider<ScreenshotController>(
+          builder: (_) => screenshotController,
+        ),
       ],
-      child: HpiApp(hpiLocalizationsDelegate: delegate),
+      child: Screenshot(
+        controller: screenshotController,
+        child: HpiApp(
+          hpiLocalizationsDelegate: delegate,
+        ),
+      ),
     ),
   );
 }

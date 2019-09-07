@@ -24,7 +24,7 @@ dependencies:
   yaml: ^2.1.16
 
   # UI
-  intl: ^0.15.8
+  intl: ^0.16.0
   flutter_html: ^0.10.4
   timeago: ^2.0.18
   outline_material_icons: ^0.1.0
@@ -32,6 +32,7 @@ dependencies:
   fluttery: ^0.0.8
   align_positioned: ^1.0.8
   cached_network_image: ^1.1.1
+  screenshot: ^0.1.1
 
 dev_dependencies:
   flutter_test:

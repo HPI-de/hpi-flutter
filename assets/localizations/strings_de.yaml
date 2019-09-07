@@ -29,9 +29,10 @@ authors: AUTOREN
 categories: KATEGORIEN
 tags: STICHWORTE
 # Feedback
+feedback: Feedback
+sendFeedback: Feedback senden
 yourMessage: Deine Nachricht
-includeContactDetails: Deine Kontaktinformationen mitschicken
-includeContactDetailsInfo: Hiermit sehen wir Deinen Namen und Deine E-Mail-Adresse. Empfohlen für Fehlermeldungen und Fragen
+pleaseEnterMessage: Bitte gib eine Nachricht ein.
 includeLogs: Screenshots und Logdateien mitschicken
 includeLogsInfo: Empfohlen für Fehlermeldungen
 submit: Abschicken

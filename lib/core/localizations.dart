@@ -4,23 +4,22 @@ import 'package:yaml/yaml.dart';
 import 'package:flutter/services.dart';
 
 class HpiL11n {
-  HpiL11n(this.locale) {
-    var lc = locale.languageCode;
-    rootBundle
-        .loadString(
-            'assets/localizations/strings_${lc != null ? lc : "en"}.yaml')
-        .then((strings) => _localizedValues = Map.from(loadYaml(strings)));
-  }
+  HpiL11n(this.locale);
 
-  Future<void> _loadStrings() async {
+  final Locale locale;
+  Map<String, String> _localizedValues;
+
+  /// This function is invoked by the main scaffold to load the appropriate translations.
+  /// This has to be used to make sure that pages don't try to use translations before
+  /// they have been loaded from storage as loading happens asynchronously.
+  Future<bool> loadStrings() async {
+    if (_localizedValues != null) return true;
     var lc = locale.languageCode;
     var strings = await rootBundle.loadString(
         'assets/localizations/strings_${lc != null ? lc : "en"}.yaml');
     _localizedValues = _localizedValues = Map.from(loadYaml(strings));
+    return true;
   }
-
-  final Locale locale;
-  Map<String, String> _localizedValues;
 
   String loadFallbacks(String key) {
     print('String "$key" was not found in locale ${locale.languageCode}');
@@ -37,11 +36,7 @@ class HpiL11n {
   static HpiL11n of(BuildContext context) =>
       Localizations.of<HpiL11n>(context, HpiL11n);
 
-  String operator [](String key) {
-    // This is only a temporary solution to stop errors from appearing.
-    if (_localizedValues == null) return key;
-    return _localizedValues[key] ?? loadFallbacks(key);
-  }
+  String operator [](String key) => _localizedValues[key] ?? loadFallbacks(key);
 }
 
 class HpiLocalizationsDelegate extends LocalizationsDelegate<HpiL11n> {

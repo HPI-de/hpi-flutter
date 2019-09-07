@@ -28,26 +28,33 @@ class MainScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBar,
-      body: body,
-      floatingActionButton: floatingActionButton,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          children: <Widget>[
-            IconButton(
-              icon: Icon(OMIcons.menu),
-              onPressed: () {
-                _openNavDrawer(context);
-              },
+    return FutureBuilder<bool>(
+        future: HpiL11n.of(context).loadStrings(),
+        builder: (context, snapshot) {
+          return Scaffold(
+            appBar: appBar,
+            body: (snapshot.hasData)
+                ? body
+                : Center(child: CircularProgressIndicator()),
+            floatingActionButton: floatingActionButton,
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            bottomNavigationBar: BottomAppBar(
+              child: Row(
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(OMIcons.menu),
+                    onPressed: () {
+                      _openNavDrawer(context);
+                    },
+                  ),
+                  Spacer(),
+                  ...bottomActions.iter,
+                ],
+              ),
             ),
-            Spacer(),
-            ...bottomActions.iter,
-          ],
-        ),
-      ),
-    );
+          );
+        });
   }
 
   void _openNavDrawer(BuildContext context) {

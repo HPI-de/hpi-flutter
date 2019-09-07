@@ -29,9 +29,10 @@ authors: AUTHORS
 categories: CATEGORIES
 tags: TAGS
 # Feedback
+feedback: Feedback
+sendFeedback: Send Feedback
 yourMessage: Your message
-includeContactDetails: Include your contact details
-contactDetailsInfo: This will show us your name and e-mail address. Recommended e.g. for bug reports and questions
+pleaseEnterMessage: Please enter a message.
 includeLogs: Include screenshot and logs
 includeLogsInfo: Recommended for bugs
 submit: Submit
