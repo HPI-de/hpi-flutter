@@ -129,7 +129,6 @@ class ArticleView extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasError) print(snapshot.error);
 
-          // TODO: update once Article.view_count is nullable
           var theme = Theme.of(context).textTheme.caption;
           return Text.rich(
             TextSpan(children: <InlineSpan>[

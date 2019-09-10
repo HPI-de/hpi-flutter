@@ -60,7 +60,18 @@ class ArticlePreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        CachedNetworkImage(imageUrl: article.cover.source),
+        AspectRatio(
+          aspectRatio: 16 / 9,
+          child: article.cover != null
+              ? CachedNetworkImage(
+                  fit: BoxFit.cover,
+                  imageUrl: article.cover.source,
+                )
+              : Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Image.asset('assets/logo/logo_text.png'),
+                ),
+        ),
         Positioned.fill(
           child: _buildScrim(
             child: _buildLaunchable(
