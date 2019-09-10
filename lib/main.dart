@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
@@ -14,11 +13,10 @@ import 'app/widgets/hpi_theme.dart';
 
 Future<ByteData> fetchFont(String url) async {
   final response = await http.get(url);
-  if (response.statusCode == 200) {
+  if (response.statusCode == 200)
     return ByteData.view(response.bodyBytes.buffer);
-  } else {
+  else
     throw Exception('Failed to load font');
-  }
 }
 
 void main() async {
@@ -89,10 +87,11 @@ const _brandColorOrangeSwatch = MaterialColor(
 const _brandColorYellow = 0xFFF6A804;
 
 class HpiApp extends StatelessWidget {
-  final LocalizationsDelegate hpiLocalizationsDelegate;
+  final HpiLocalizationsDelegate hpiLocalizationsDelegate;
 
-  const HpiApp({prefix0.Key key, this.hpiLocalizationsDelegate})
-      : super(key: key);
+  const HpiApp({@required this.hpiLocalizationsDelegate, Key key})
+      : assert(hpiLocalizationsDelegate != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -161,10 +160,9 @@ class HpiApp extends StatelessWidget {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
-        supportedLocales: [
-          const Locale('en'),
-          const Locale('de'),
-        ],
+        supportedLocales: hpiLocalizationsDelegate.supportedLanguages
+            .map((l) => Locale(l))
+            .asList(),
       ),
     );
   }

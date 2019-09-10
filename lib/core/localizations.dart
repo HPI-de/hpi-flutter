@@ -1,51 +1,57 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:kt_dart/kt.dart';
 import 'package:yaml/yaml.dart';
 import 'package:flutter/services.dart';
 
 class HpiL11n {
-  HpiL11n(this.locale);
+  HpiL11n._(this.locale, this.values, this.fallbacks)
+      : assert(locale != null),
+        assert(values != null);
 
   final Locale locale;
-  Map<String, String> _localizedValues;
+  KtMap<String, String> values;
+  KtMap<String, String> fallbacks;
 
-  /// This function is invoked by the main scaffold to load the appropriate translations.
-  /// This has to be used to make sure that pages don't try to use translations before
-  /// they have been loaded from storage as loading happens asynchronously.
-  Future<bool> loadStrings() async {
-    if (_localizedValues != null) return true;
-    var lc = locale.languageCode;
-    var strings = await rootBundle.loadString(
-        'assets/localizations/strings_${lc != null ? lc : "en"}.yaml');
-    _localizedValues = _localizedValues = Map.from(loadYaml(strings));
-    return true;
-  }
+  static Future<HpiL11n> load(Locale locale) async {
+    // Load translations
+    var lc = locale.languageCode ?? "en";
+    var strings = await rootBundle
+        .loadString(
+            'assets/localizations/strings_${lc != null ? lc : "en"}.yaml')
+        .then((s) => KtMap.from(loadYaml(s)));
 
-  String loadFallbacks(String key) {
-    print('String "$key" was not found in locale ${locale.languageCode}');
-    rootBundle
-        .loadString('assets/localizations/strings_en.yaml')
-        .then((strings) {
-      YamlMap fallbackStrings = loadYaml(strings);
-      fallbackStrings.forEach((k, v) =>
-          !_localizedValues.keys.contains(k) ? _localizedValues[k] = v : null);
-    });
-    return _localizedValues[key] ?? key;
+    // Load fallbacks
+    KtMap<String, String> fallbacks;
+    if (lc != "en")
+      fallbacks = await rootBundle
+          .loadString('assets/localizations/strings_en.yaml')
+          .then((s) => KtMap.from(loadYaml(s)));
+
+    return HpiL11n._(locale, strings, fallbacks);
   }
 
   static HpiL11n of(BuildContext context) =>
       Localizations.of<HpiL11n>(context, HpiL11n);
 
-  String operator [](String key) => _localizedValues[key] ?? loadFallbacks(key);
+  String operator [](String key) {
+    var value = values[key];
+    if (value != null) return value;
+    print('String "$key" was not found in locale $locale');
+
+    if (fallbacks != null) return fallbacks[key];
+    return null;
+  }
 }
 
 class HpiLocalizationsDelegate extends LocalizationsDelegate<HpiL11n> {
-  @override
-  bool isSupported(Locale locale) => ['en', 'de'].contains(locale.languageCode);
+  final supportedLanguages = KtList.of('en', 'de');
 
   @override
-  Future<HpiL11n> load(Locale locale) =>
-      SynchronousFuture<HpiL11n>(HpiL11n(locale));
+  bool isSupported(Locale locale) =>
+      supportedLanguages.contains(locale.languageCode);
+
+  @override
+  Future<HpiL11n> load(Locale locale) => HpiL11n.load(locale);
 
   @override
   bool shouldReload(LocalizationsDelegate<HpiL11n> old) => false;

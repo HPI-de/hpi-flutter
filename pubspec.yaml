@@ -12,8 +12,6 @@ dependencies:
 
   # General
   kt_dart: ^0.6.2
-  flutter_localizations:
-    sdk: flutter
 
   # Data
   protobuf: ^0.13.15
@@ -24,7 +22,9 @@ dependencies:
   yaml: ^2.1.16
 
   # UI
-  intl: ^0.16.0
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.15.8
   flutter_html: ^0.10.4
   timeago: ^2.0.18
   outline_material_icons: ^0.1.0
