@@ -21,7 +21,7 @@ class NewsPage extends StatelessWidget {
           slivers: <Widget>[
             HpiSliverAppBar(
               floating: true,
-              title: Text(HpiL11n.of(context)['news']),
+              title: Text(HpiL11n.get(context, 'news')),
             ),
             Builder(builder: (c) => _buildArticleList(c)),
           ],

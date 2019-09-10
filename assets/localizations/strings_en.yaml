@@ -1,38 +1,62 @@
+# General
+loading: Loading…
+error: An error occurred. Please try again.
+submit: Submit
+sending: Sending…
+language.en: English
+language.de: German
+
+# Dashboard
 dashboard: Dashboard
-courses: Courses
-food: Food
-myhpi: MyHPI
-news: News
-tools: Tools
-openhpiCourses: openHPI courses
-menuToday: Today's menu
-# Courses
-currentCourses: Current courses
-allCourses: All courses
-teletaskEnabled: This course is on tele-TASK
-programsModules: Programs & Modules
-description: Description
-requirements: Requirements
-learning: Learning
-examination: Examination
-dates: Dates
-literature: Literature
-allStatementsWithoutGuarantee: All statements without guarantee
-reportAnError: Report an Error
-hoursPerWeek: h/week
-Lecture: Lecture
-Seminar: Seminar
-Block Seminar: Block Seminar
-Exercise: Exercise
-# News
-authors: AUTHORS
-categories: CATEGORIES
-tags: TAGS
+
+# Course
+course: Courses
+course/tab.current: Current courses
+course/tab.all: All courses
+course/course.loading: Loading course…
+course/course.details: "%i ECTS · %i h/week"
+course/course.teleTask: This course is on tele-TASK
+course/course.programsModules: Programs & Modules
+course/course.description: Description
+course/course.requirements: Requirements
+course/course.learning: Learning
+course/course.examination: Examination
+course/course.dates: Dates
+course/course.literature: Literature
+course/course.noGuarantee: All statements without guarantee
+course/course.reportError: Report an Error
+course/course.type.lecture: Lecture
+course/course.type.seminar: Seminar
+course/course.type.blockSeminar: Block Seminar
+course/course.type.exercise: Exercise
+course/semester.winter: Winter Term %i
+course/semester.summer: Summer Term %i
+
 # Feedback
 feedback: Feedback
-sendFeedback: Send Feedback
-yourMessage: Your message
-pleaseEnterMessage: Please enter a message.
-includeLogs: Include screenshot and logs
-includeLogsInfo: Recommended for bugs
-submit: Submit
+feedback/action: Send feedback
+feedback/message: Your message
+feedback/message.missing: Please enter a message
+feedback/includeLogs: Include screenshot and logs
+feedback/includeLogs.desc: Recommended for bugs
+feedback/sent: Your fedback was submitted. Thanks!
+
+# Food
+food: Food
+food/fragment.title: Today's menu
+
+# News
+news: News
+news/article.loading: Loading article…
+news/article.authors: AUTHORS
+news/article.categories: CATEGORIES
+news/article.tags: TAGS
+
+# MyHPI
+myhpi: MyHPI
+
+# openHPI
+openHpi/fragment.title: openHPI courses
+
+# Tools
+tools: Tools

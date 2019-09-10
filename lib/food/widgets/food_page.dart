@@ -23,7 +23,7 @@ class FoodPage extends StatelessWidget {
           slivers: <Widget>[
             HpiSliverAppBar(
               floating: true,
-              title: Text(HpiL11n.of(context)['food']),
+              title: Text(HpiL11n.get(context, 'food')),
             ),
             Builder(
               builder: (context) => _buildRestaurantList(context),

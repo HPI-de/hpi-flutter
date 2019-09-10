@@ -1,40 +1,22 @@
+import 'package:flutter/widgets.dart';
+import 'package:hpi_flutter/core/localizations.dart';
+
 import 'data/course.dart';
 
-String courseTypeToString(Type type) {
-  switch (type) {
-    case Type.LECTURE:
-      return 'Lecture';
-    case Type.SEMINAR:
-      return 'Seminar';
-    case Type.BLOCK_SEMINAR:
-      return 'Block seminar';
-    case Type.EXERCISE:
-      return 'Exercise';
-    default:
-      return null;
-  }
+String courseTypeToString(BuildContext context, Type type) {
+  assert(context != null);
+  assert(type != null);
+
+  return HpiL11n.get(context, 'course/course.type.${enumToKey(type)}');
 }
 
-String getLanguage(String abbreviation) {
-  switch (abbreviation) {
-    case 'de':
-      return 'German';
-    case 'en':
-      return 'English';
-    default:
-      return 'Unknown';
-  }
-}
+String semesterToString(BuildContext context, Semester semester) {
+  assert(context != null);
+  assert(semester != null);
 
-String semesterToString(Semester semester) {
-  String term;
-  switch (semester.term) {
-    case Term.WINTER:
-      term = "Winter Term";
-      break;
-    case Term.SUMMER:
-      term = "Summer Term";
-      break;
-  }
-  return "$term ${semester.year}";
+  return HpiL11n.get(
+    context,
+    'course/semester.${enumToKey(semester.term)}',
+    args: [semester.year],
+  );
 }

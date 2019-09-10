@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:kt_dart/kt.dart';
+import 'package:sprintf/sprintf.dart';
 import 'package:yaml/yaml.dart';
 import 'package:flutter/services.dart';
 
@@ -15,32 +18,67 @@ class HpiL11n {
   static Future<HpiL11n> load(Locale locale) async {
     // Load translations
     var lc = locale.languageCode ?? "en";
-    var strings = await rootBundle
+    final strings = await rootBundle
         .loadString(
             'assets/localizations/strings_${lc != null ? lc : "en"}.yaml')
-        .then((s) => KtMap.from(loadYaml(s)));
+        .then((s) => KtMap<String, String>.from(Map.from(loadYaml(s))));
 
     // Load fallbacks
     KtMap<String, String> fallbacks;
     if (lc != "en")
       fallbacks = await rootBundle
           .loadString('assets/localizations/strings_en.yaml')
-          .then((s) => KtMap.from(loadYaml(s)));
+          .then((s) => KtMap.from(Map.from(loadYaml(s))));
 
     return HpiL11n._(locale, strings, fallbacks);
   }
 
   static HpiL11n of(BuildContext context) =>
       Localizations.of<HpiL11n>(context, HpiL11n);
+  static String get(
+    BuildContext context,
+    String key, {
+    String fallback,
+    List<dynamic> args,
+  }) =>
+      Localizations.of<HpiL11n>(context, HpiL11n)(
+        key,
+        fallback: fallback,
+        args: args,
+      );
 
-  String operator [](String key) {
+  String call(String key, {String fallback, List<dynamic> args}) {
+    assert(key != null);
+
+    // Load
     var value = values[key];
-    if (value != null) return value;
-    print('String "$key" was not found in locale $locale');
+    if (value == null) print('String "$key" was not found in locale $locale');
 
-    if (fallbacks != null) return fallbacks[key];
-    return null;
+    // Try fallback
+    if (value == null && fallback != null) value = fallback;
+
+    // Try fallback resources
+    if (value == null && fallbacks != null) value = fallbacks[key];
+
+    // Still not found
+    if (value == null) {
+      final index = max(key.lastIndexOf('.'), key.lastIndexOf('/')) + 1;
+      value = key.substring(max(index, 0));
+    }
+
+    // Apply formatting
+    if (args != null) value = sprintf(value, args);
+
+    return value;
   }
+}
+
+String enumToKey(Object enumValue) {
+  assert(enumValue != null);
+
+  final string = enumValue.toString();
+  final key = string.substring(string.indexOf('.') + 1);
+  return key[0].toLowerCase() + key.substring(1);
 }
 
 class HpiLocalizationsDelegate extends LocalizationsDelegate<HpiL11n> {

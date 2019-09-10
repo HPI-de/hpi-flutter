@@ -54,32 +54,32 @@ class MainScaffold extends StatelessWidget {
         children: <Widget>[
           NavigationItem(
             icon: OMIcons.home,
-            text: HpiL11n.of(context)['dashboard'],
+            text: HpiL11n.get(context, 'dashboard'),
             route: Route.dashboard,
           ),
           NavigationItem(
             icon: OMIcons.school,
-            text: HpiL11n.of(context)['courses'],
+            text: HpiL11n.get(context, 'course'),
             route: Route.courses,
           ),
           NavigationItem(
             icon: OMIcons.restaurantMenu,
-            text: HpiL11n.of(context)['food'],
+            text: HpiL11n.get(context, 'food'),
             route: Route.food,
           ),
           NavigationItem(
             icon: HpiIcons.myhpi,
-            text: HpiL11n.of(context)['myhpi'],
+            text: HpiL11n.get(context, 'myhpi'),
             route: Route.myhpi,
           ),
           NavigationItem(
             icon: HpiIcons.newspaper,
-            text: HpiL11n.of(context)['news'],
+            text: HpiL11n.get(context, 'news'),
             route: Route.news,
           ),
           NavigationItem(
             icon: HpiIcons.tools,
-            text: HpiL11n.of(context)['tools'],
+            text: HpiL11n.get(context, 'tools'),
             route: Route.tools,
           ),
           SizedBox(height: 12),

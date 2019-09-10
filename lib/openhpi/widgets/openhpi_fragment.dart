@@ -15,7 +15,7 @@ class OpenHpiFragment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DashboardFragment(
-      title: HpiL11n.of(context)['openhpiCourses'],
+      title: HpiL11n.get(context, 'openHpi/fragment.title'),
       child: Provider<OpenHpiBloc>(
         builder: (_) => OpenHpiBloc(),
         child: SizedBox(

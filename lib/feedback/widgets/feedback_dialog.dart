@@ -78,14 +78,14 @@ class _FeedbackDialogState extends State<FeedbackDialog>
         maxLines: 8,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
-          labelText: HpiL11n.of(context)['yourMessage'],
+          labelText: HpiL11n.get(context, 'feedback/message'),
         ),
         onChanged: (m) {
           message = m;
         },
         validator: (m) {
           if (isNullOrBlank(m))
-            return HpiL11n.of(context)['pleaseEnterMessage'];
+            return HpiL11n.get(context, 'feedback/message.missing');
           return null;
         },
       ),
@@ -103,8 +103,8 @@ class _FeedbackDialogState extends State<FeedbackDialog>
       ), */
       CheckboxListTile(
         controlAffinity: ListTileControlAffinity.leading,
-        title: Text(HpiL11n.of(context)['includeLogs']),
-        subtitle: Text(HpiL11n.of(context)['includeLogsInfo']),
+        title: Text(HpiL11n.get(context, 'feedback/includeLogs')),
+        subtitle: Text(HpiL11n.get(context, 'feedback/includeLogs.desc')),
         value: includeScreenshotAndLogs,
         onChanged: (checked) => setState(() {
           includeScreenshotAndLogs = checked;
@@ -113,8 +113,8 @@ class _FeedbackDialogState extends State<FeedbackDialog>
       Align(
         alignment: Alignment.centerRight,
         child: LoadingButton(
-          text: HpiL11n.of(context)['submit'],
-          loadingText: 'Sending...',
+          text: HpiL11n.get(context, 'submit'),
+          loadingText: HpiL11n.get(context, 'sending'),
           isLoading: isSending,
           onPressed: _send,
           color: Theme.of(context).primaryColor,
@@ -128,7 +128,7 @@ class _FeedbackDialogState extends State<FeedbackDialog>
 
     setState(() {
       isSending = true;
-      Uri screenUri = Uri.https("mobiledev.hpi.de",
+      Uri screenUri = Uri.https('mobiledev.hpi.de',
           Provider.of<NavigationService>(context).lastKnownRoute.name);
       Feedback.create(
         message.trim(),
@@ -156,9 +156,8 @@ class _FeedbackDialogState extends State<FeedbackDialog>
       isSending = false;
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text(
-          successful
-              ? "Your fedback was submitted. Thanks!"
-              : "An error occurred. Please try again.",
+          HpiL11n.get(
+              context, successful ? 'feedback/sent' : 'error'),
         ),
       ));
     });

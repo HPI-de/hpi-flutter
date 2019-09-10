@@ -33,7 +33,7 @@ class FoodFragment extends StatelessWidget {
         var menuItems = snapshot.data;
         var restaurantId = snapshot.data[0].restaurantId;
         return RestaurantMenu(
-          prefix: HpiL11n.of(context)['menuToday'] + ' - ',
+          prefix: HpiL11n.get(context, 'food/fragment.title') + ' - ',
           restaurantId: restaurantId,
           menuItems:
               menuItems.filter((item) => item.restaurantId == restaurantId),
