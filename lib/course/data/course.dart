@@ -66,13 +66,13 @@ class CourseSeries {
   static Type typeFromProto(proto.CourseSeries_Type type) {
     switch (type) {
       case proto.CourseSeries_Type.LECTURE:
-        return Type.LECTURE;
+        return Type.Lecture;
       case proto.CourseSeries_Type.SEMINAR:
-        return Type.SEMINAR;
+        return Type.Seminar;
       case proto.CourseSeries_Type.BLOCK_SEMINAR:
-        return Type.BLOCK_SEMINAR;
+        return Type.BlockSeminar;
       case proto.CourseSeries_Type.EXERCISE:
-        return Type.EXERCISE;
+        return Type.Exercise;
       default:
         return null;
     }
@@ -80,13 +80,13 @@ class CourseSeries {
 
   static proto.CourseSeries_Type typeToProto(Type type) {
     switch (type) {
-      case Type.LECTURE:
+      case Type.Lecture:
         return proto.CourseSeries_Type.LECTURE;
-      case Type.SEMINAR:
+      case Type.Seminar:
         return proto.CourseSeries_Type.SEMINAR;
-      case Type.BLOCK_SEMINAR:
+      case Type.BlockSeminar:
         return proto.CourseSeries_Type.BLOCK_SEMINAR;
-      case Type.EXERCISE:
+      case Type.Exercise:
         return proto.CourseSeries_Type.EXERCISE;
       default:
         return null;
@@ -95,10 +95,10 @@ class CourseSeries {
 }
 
 enum Type {
-  LECTURE,
-  SEMINAR,
-  BLOCK_SEMINAR,
-  EXERCISE,
+  Lecture,
+  Seminar,
+  BlockSeminar,
+  Exercise,
 }
 
 @immutable
@@ -132,9 +132,9 @@ class Semester {
   static Term termFromProto(proto.Semester_Term term) {
     switch (term) {
       case proto.Semester_Term.WINTER:
-        return Term.WINTER;
+        return Term.Winter;
       case proto.Semester_Term.SUMMER:
-        return Term.SUMMER;
+        return Term.Summer;
       default:
         return null;
     }
@@ -142,9 +142,9 @@ class Semester {
 
   static proto.Semester_Term termToProto(Term term) {
     switch (term) {
-      case Term.WINTER:
+      case Term.Winter:
         return proto.Semester_Term.WINTER;
-      case Term.SUMMER:
+      case Term.Summer:
         return proto.Semester_Term.SUMMER;
       default:
         return null;
@@ -153,8 +153,8 @@ class Semester {
 }
 
 enum Term {
-  WINTER,
-  SUMMER,
+  Winter,
+  Summer,
 }
 
 @immutable

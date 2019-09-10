@@ -4,6 +4,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/app/widgets/utils.dart';
+import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/news/data/article.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
@@ -32,7 +33,7 @@ class ArticlePage extends StatelessWidget {
                 context,
                 snapshot,
                 appBarElevated: true,
-                loadingTitle: 'Loading article…',
+                loadingTitle: HpiL11n.get(context, 'news/article.loading'),
               );
 
             return MainScaffold(
@@ -92,21 +93,21 @@ class ArticleView extends StatelessWidget {
                 if (article.authorIds.isNotEmpty())
                   ..._buildChipSection(
                     context,
-                    "AUTHORS",
+                    HpiL11n.get(context, 'news/article.authors'),
                     article.authorIds,
                     (a) => Chip(label: Text(a)),
                   ),
                 if (article.categories.isNotEmpty())
                   ..._buildChipSection(
                     context,
-                    "CATEGORIES",
+                    HpiL11n.get(context, 'news/article.categories'),
                     article.categories,
                     (c) => Chip(label: Text(c.name)),
                   ),
                 if (article.tags.isNotEmpty())
                   ..._buildChipSection(
                     context,
-                    "TAGS",
+                    HpiL11n.get(context, 'news/article.tags'),
                     article.tags,
                     (t) => Chip(label: Text(t.name)),
                   ),

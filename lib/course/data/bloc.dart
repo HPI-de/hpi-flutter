@@ -24,8 +24,9 @@ class CourseBloc {
   Stream<KtList<CourseSeries>> getAllCourseSeries() {
     return Stream.fromFuture(
             _client.listCourseSeries(ListCourseSeriesRequest()))
-        .map((r) =>
-            KtList.from(r.courseSeries).map((c) => CourseSeries.fromProto(c)));
+        .map((r) => KtList.from(r.courseSeries)
+            .map((c) => CourseSeries.fromProto(c))
+            .sortedBy((cs) => cs.title));
   }
 
   Stream<CourseSeries> getCourseSeries(String id) {
@@ -42,8 +43,10 @@ class CourseBloc {
   }
 
   Stream<KtList<Course>> getCourses() {
-    return Stream.fromFuture(_client.listCourses(ListCoursesRequest()))
-        .map((r) => KtList.from(r.courses).map((c) => Course.fromProto(c)));
+    return Stream.fromFuture(_client.listCourses(ListCoursesRequest())).map(
+        (r) => KtList.from(r.courses)
+            .map((c) => Course.fromProto(c))
+            .sortedBy((c) => c.id));
   }
 
   Stream<Course> getCourse(String id) {

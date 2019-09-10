@@ -19,9 +19,13 @@ dependencies:
   rxdart: ^0.22.1+1
   provider: ^3.0.0+1
   http: ^0.12.0+2
+  yaml: ^2.1.16
 
   # UI
+  flutter_localizations:
+    sdk: flutter
   intl: ^0.15.8
+  sprintf: ^4.0.2
   flutter_html: ^0.10.4
   timeago: ^2.0.18
   outline_material_icons: ^0.1.0
@@ -43,6 +47,8 @@ flutter:
 
   assets:
     - assets/logo/logo_text.png
+    - assets/localizations/strings_de.yaml
+    - assets/localizations/strings_en.yaml
 
   fonts:
   - family:  HpiIcons

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart' hide Route;
-import 'package:flutter/widgets.dart' hide Route;
 import 'package:hpi_flutter/app/services/navigation.dart';
 import 'package:hpi_flutter/core/hpi_icons.dart';
+import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/route.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
@@ -54,27 +54,32 @@ class MainScaffold extends StatelessWidget {
         children: <Widget>[
           NavigationItem(
             icon: OMIcons.home,
-            text: "Dashboard",
+            text: HpiL11n.get(context, 'dashboard'),
             route: Route.dashboard,
           ),
           NavigationItem(
             icon: OMIcons.school,
-            text: "Courses",
+            text: HpiL11n.get(context, 'course'),
             route: Route.courses,
           ),
           NavigationItem(
+            icon: OMIcons.restaurantMenu,
+            text: HpiL11n.get(context, 'food'),
+            route: Route.food,
+          ),
+          NavigationItem(
             icon: HpiIcons.myhpi,
-            text: "MyHPI",
+            text: HpiL11n.get(context, 'myhpi'),
             route: Route.myhpi,
           ),
           NavigationItem(
             icon: HpiIcons.newspaper,
-            text: "News",
+            text: HpiL11n.get(context, 'news'),
             route: Route.news,
           ),
           NavigationItem(
             icon: HpiIcons.tools,
-            text: "Tools",
+            text: HpiL11n.get(context, 'tools'),
             route: Route.tools,
           ),
           SizedBox(height: 12),

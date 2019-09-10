@@ -2,6 +2,8 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/app/widgets/utils.dart';
+import 'package:hpi_flutter/core/localizations.dart';
+import 'package:hpi_flutter/core/widgets/utils.dart';
 import 'package:hpi_flutter/course/data/bloc.dart';
 import 'package:hpi_flutter/route.dart';
 import 'package:kt_dart/collection.dart';
@@ -29,7 +31,7 @@ class CoursePage extends StatelessWidget {
                   floating: true,
                   pinned: true,
                   forceElevated: innerBoxIsScrolled,
-                  title: Text('Courses'),
+                  title: Text(HpiL11n.get(context, 'course')),
                   bottom: TabBar(
                     indicatorColor: Theme.of(context).primaryColor,
                     labelColor: Theme.of(context).primaryColor,
@@ -39,8 +41,8 @@ class CoursePage extends StatelessWidget {
                         .color
                         .withOpacity(0.7),
                     tabs: [
-                      Tab(text: "Current courses"),
-                      Tab(text: "All courses"),
+                      Tab(text: HpiL11n.get(context, 'course/tab.current')),
+                      Tab(text: HpiL11n.get(context, 'course/tab.all')),
                     ],
                   ),
                 ),
@@ -97,7 +99,7 @@ class CourseList extends StatelessWidget {
                     return ListTile(
                       title: Text(snapshot.hasError
                           ? snapshot.error.toString()
-                          : 'Loading...'),
+                          : HpiL11n.get(context, 'loading')),
                     );
 
                   return ListTile(
@@ -139,14 +141,19 @@ class CourseSeriesList extends StatelessWidget {
                   ListTile(
                     leading: Icon(OMIcons.info),
                     title: Text(
-                        '${courseSeries.ects} ECTS · ${courseSeries.hoursPerWeek} h/week'),
+                      HpiL11n.get(
+                        context,
+                        'course/course.details',
+                        args: [courseSeries.ects, courseSeries.hoursPerWeek],
+                      ),
+                    ),
                     subtitle: Text(courseSeries.types
-                        .map((t) => courseTypeToString(t))
+                        .map((t) => courseTypeToString(context, t))
                         .joinToString(separator: ' · ')),
                   ),
                   ListTile(
                     leading: Icon(OMIcons.language),
-                    title: Text(getLanguage(courseSeries.language)),
+                    title: Text(getLanguage(context, courseSeries.language)),
                   ),
                 ],
               );

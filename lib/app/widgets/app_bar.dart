@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/feedback/widgets/feedback_dialog.dart';
 
-class HpiAppBar extends StatelessWidget {
+class HpiAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget leading;
   final bool automaticallyImplyLeading;
   final Widget title;
@@ -22,11 +23,14 @@ class HpiAppBar extends StatelessWidget {
   final double titleSpacing;
   final double toolbarOpacity;
   final double bottomOpacity;
+  @override
+  Size get preferredSize =>
+      Size.fromHeight(kToolbarHeight + (bottom?.preferredSize?.height ?? 0.0));
 
   const HpiAppBar({
     Key key,
     this.leading,
-    this.automaticallyImplyLeading,
+    this.automaticallyImplyLeading = true,
     this.title,
     this.actions,
     this.flexibleSpace,
@@ -38,11 +42,11 @@ class HpiAppBar extends StatelessWidget {
     this.iconTheme,
     this.actionsIconTheme,
     this.textTheme,
-    this.primary,
+    this.primary = true,
     this.centerTitle,
-    this.titleSpacing,
-    this.toolbarOpacity,
-    this.bottomOpacity,
+    this.titleSpacing = NavigationToolbar.kMiddleSpacing,
+    this.toolbarOpacity = 1.0,
+    this.bottomOpacity = 1.0,
     this.menuItems,
     this.menuItemHandler,
   })  : assert(automaticallyImplyLeading != null),
@@ -86,7 +90,7 @@ class HpiAppBar extends StatelessWidget {
           if (menuItems != null) ...menuItems,
           PopupMenuItem(
             value: 'app.feedback',
-            child: Text('Feedback'),
+            child: Text(HpiL11n.get(context, 'feedback/action')),
           )
         ],
       ));
@@ -189,7 +193,7 @@ class HpiSliverAppBar extends StatelessWidget {
           if (menuItems != null) ...menuItems,
           PopupMenuItem(
             value: 'app.feedback',
-            child: Text('Send Feedback'),
+            child: Text(HpiL11n.get(context, 'feedback/action')),
           )
         ],
       ));

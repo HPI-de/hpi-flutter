@@ -1,5 +1,6 @@
 import 'package:align_positioned/align_positioned.dart';
 import 'package:flutter/material.dart';
+import 'package:hpi_flutter/food/widgets/food_fragment.dart';
 import 'package:hpi_flutter/news/widgets/news_fragment.dart';
 
 import 'package:hpi_flutter/openhpi/widgets/openhpi_fragment.dart';
@@ -16,12 +17,19 @@ class DashboardPage extends StatelessWidget {
         padding:
             EdgeInsets.fromLTRB(16, MediaQuery.of(context).padding.top, 16, 32),
         children: <Widget>[
-          ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 200, maxHeight: 100),
-            child: Image.asset('assets/logo/logo_text.png'),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Align(
+              alignment: Alignment.topRight,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 200, maxHeight: 100),
+                child: Image.asset('assets/logo/logo_text.png'),
+              ),
+            ),
           ),
           OpenHpiFragment(),
           NewsFragment(),
+          FoodFragment(),
         ].expand((child) sync* {
           yield const SizedBox(height: 16);
           yield child;

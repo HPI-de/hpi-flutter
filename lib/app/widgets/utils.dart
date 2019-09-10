@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hpi_flutter/core/localizations.dart';
 
 Widget buildAppBarTitle({@required Widget title, Widget subtitle}) {
   assert(title != null);
@@ -15,17 +16,18 @@ Widget buildAppBarTitle({@required Widget title, Widget subtitle}) {
 
 Widget buildLoadingErrorScaffold(
     BuildContext context, AsyncSnapshot<dynamic> snapshot,
-    {bool appBarElevated = false, String loadingTitle = 'Loading…'}) {
+    {bool appBarElevated = false, String loadingTitle}) {
   assert(context != null);
   assert(snapshot != null);
   assert(appBarElevated != null);
-  assert(loadingTitle != null);
 
   return Scaffold(
     appBar: AppBar(
       elevation: appBarElevated ? null : 0,
       backgroundColor: appBarElevated ? Theme.of(context).cardColor : null,
-      title: Text(snapshot.hasError ? 'Error' : loadingTitle),
+      title: Text(snapshot.hasError
+          ? HpiL11n.get(context, 'error')
+          : (loadingTitle ?? HpiL11n.get(context, 'loading'))),
     ),
     body: Center(
       child: snapshot.hasError

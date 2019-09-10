@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
+import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/news/data/article.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +21,7 @@ class NewsPage extends StatelessWidget {
           slivers: <Widget>[
             HpiSliverAppBar(
               floating: true,
-              title: Text('News'),
+              title: Text(HpiL11n.get(context, 'news')),
             ),
             Builder(builder: (c) => _buildArticleList(c)),
           ],
