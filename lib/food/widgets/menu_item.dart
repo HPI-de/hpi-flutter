@@ -40,16 +40,6 @@ class MenuItemView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(item.title, style: Theme.of(context).textTheme.body1),
-                  if (item.substitution != null) ...[
-                    SizedBox(height: 4),
-                    Text(
-                      'alternativ: ${item.substitution.title}',
-                      style: Theme.of(context)
-                          .textTheme
-                          .body1
-                          .copyWith(color: Colors.black54),
-                    ),
-                  ]
                 ],
               ),
             ),
@@ -127,7 +117,6 @@ class MenuItemDetails extends StatelessWidget {
                 item.title,
                 style: Theme.of(context).textTheme.subhead,
               ),
-              Text(item.substitution.title ?? ''),
               // TODO: Add proper labels
               /*Wrap(
                 children: item.labelIds

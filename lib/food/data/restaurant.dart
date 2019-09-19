@@ -1,5 +1,5 @@
 import 'package:hpi_flutter/core/data/utils.dart';
-import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/food/v1test/restaurant.pb.dart'
+import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/food/v1test/food.pb.dart'
     as proto;
 import 'package:kt_dart/collection.dart';
 import 'package:meta/meta.dart';
@@ -31,7 +31,7 @@ class MenuItem {
   final String restaurantId;
   final DateTime date;
   final String title;
-  final Substitution substitution;
+
   final Map<String, double> prices;
   final String counter;
   final KtSet<String> labelIds;
@@ -41,7 +41,6 @@ class MenuItem {
     @required this.restaurantId,
     @required this.date,
     @required this.title,
-    @required this.substitution,
     @required this.prices,
     @required this.counter,
     @required this.labelIds,
@@ -53,7 +52,6 @@ class MenuItem {
           restaurantId: item.restaurantId,
           date: dateToDateTime(item.date),
           title: item.title,
-          substitution: Substitution.fromProto(item.substitution),
           prices: {
             for (var type in item.prices.keys)
               type: moneyToDouble(item.prices[type])
@@ -67,34 +65,10 @@ class MenuItem {
       ..restaurantId = restaurantId
       ..date = dateTimeToDate(date)
       ..title = title
-      ..substitution = substitution.toProto()
       ..prices.addAll(
           {for (var type in prices.keys) type: doubleToMoney(prices[type])})
       ..counter = counter
       ..labelIds.addAll(labelIds.iter);
-  }
-}
-
-@immutable
-class Substitution {
-  final String title;
-  final KtList<String> labelIds;
-
-  Substitution({
-    this.title,
-    this.labelIds,
-  });
-
-  Substitution.fromProto(proto.MenuItem_Substitution substitution)
-      : this(
-          title: substitution.title,
-          labelIds: KtList.from(substitution.labelIds),
-        );
-
-  proto.MenuItem_Substitution toProto() {
-    return proto.MenuItem_Substitution()
-      ..title = title
-      ..labelIds.addAll(labelIds.asList());
   }
 }
 
