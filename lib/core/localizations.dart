@@ -19,8 +19,7 @@ class HpiL11n {
     // Load translations
     var lc = locale.languageCode ?? "en";
     final strings = await rootBundle
-        .loadString(
-            'assets/localizations/strings_${lc != null ? lc : "en"}.yaml')
+        .loadString('assets/localizations/strings_$lc.yaml')
         .then((s) => KtMap<String, String>.from(Map.from(loadYaml(s))));
 
     // Load fallbacks

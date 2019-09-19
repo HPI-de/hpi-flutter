@@ -70,9 +70,7 @@ class CountdownTimer {
 
   Duration get remaining =>
       isDone ? Duration.zero : _total + _additionalTime - _stopwatch.elapsed;
-  bool get isDone =>
-      state == CountdownTimerState.running &&
-      _total + _additionalTime - _stopwatch.elapsed < _zeroDelta;
+  bool get isDone => _total + _additionalTime - _stopwatch.elapsed < _zeroDelta;
 
   CountdownTimer(this._total, this.updateFrequency)
       : assert(_total != null),
