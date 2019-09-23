@@ -118,16 +118,16 @@ class MenuItemDetails extends StatelessWidget {
                 style: Theme.of(context).textTheme.subhead,
               ),
               // TODO: Add proper labels
-              /*Wrap(
+              Wrap(
                 children: item.labelIds
                     .map((id) => _buildChip(context, id))
                     .iter
                     .toList(),
-              ),*/
+              ),
             ],
           ),
         ),
-        Text('${item.prices["student"].toStringAsFixed(2)} €'),
+        Text('${item.prices["students"].toStringAsFixed(2)} €'),
       ],
     );
   }
