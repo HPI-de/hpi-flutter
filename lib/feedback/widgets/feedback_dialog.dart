@@ -1,4 +1,12 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Feedback;
+import 'package:hpi_flutter/app/services/navigation.dart';
+import 'package:hpi_flutter/core/localizations.dart';
+import 'package:hpi_flutter/core/utils.dart';
+import 'package:hpi_flutter/core/widgets/loading_button.dart';
+import 'package:hpi_flutter/feedback/data/bloc.dart';
+import 'package:hpi_flutter/feedback/data/feedback.dart';
+import 'package:provider/provider.dart';
+import 'package:screenshot/screenshot.dart';
 
 class FeedbackDialog extends StatefulWidget {
   static void show(BuildContext context,
@@ -6,15 +14,25 @@ class FeedbackDialog extends StatefulWidget {
     assert(context != null);
 
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
-      builder: (context) => FeedbackDialog(
-        title: title,
-        feedbackType: feedbackType,
+      builder: (context) => ProxyProvider<Uri, FeedbackBloc>(
+        builder: (_, serverUrl, __) => FeedbackBloc(serverUrl),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: FeedbackDialog._(
+              title: title,
+              feedbackType: feedbackType,
+            ),
+          ),
+        ),
       ),
     );
   }
 
-  const FeedbackDialog({Key key, this.title = 'Feedback', this.feedbackType})
+  const FeedbackDialog._({Key key, this.title = 'Feedback', this.feedbackType})
       : assert(title != null),
         super(key: key);
 
@@ -27,83 +45,121 @@ class FeedbackDialog extends StatefulWidget {
 
 class _FeedbackDialogState extends State<FeedbackDialog>
     with TickerProviderStateMixin {
-  bool includeContact = false;
-  bool sendLogs = false;
+  String message = "";
+  bool includeContact = true;
+  bool includeScreenshotAndLogs = true;
   bool isSending = false;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            widget.title,
-            style: Theme.of(context).textTheme.display1,
-          ),
-          SizedBox(height: 16),
-          TextField(
-            minLines: 4,
-            maxLines: 8,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Your message',
-            ),
-          ),
-          SizedBox(height: 16),
-          CheckboxListTile(
-            controlAffinity: ListTileControlAffinity.leading,
-            title: Text('Include your contact details'),
-            subtitle: Text(
-                'This will show us your name and e-mail address. Recommended e.g. for bug reports and questions'),
-            value: includeContact,
-            onChanged: (checked) => setState(() {
-              includeContact = checked;
-            }),
-          ),
-          CheckboxListTile(
-            controlAffinity: ListTileControlAffinity.leading,
-            title: Text('Include screenshot and logs'),
-            subtitle: Text('Recommended for bugs'),
-            value: sendLogs,
-            onChanged: (checked) => setState(() {
-              sendLogs = checked;
-            }),
-          ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: RaisedButton(
-              color: Theme.of(context).primaryColor,
-              child: !isSending
-                  ? Text('Submit', style: TextStyle(color: Colors.white))
-                  : Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        SizedBox(
-                          height: 16,
-                          width: 16,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            backgroundColor: Colors.white,
-                          ),
-                        ),
-                        SizedBox(width: 8),
-                        Text('Sending…', style: TextStyle(color: Colors.white)),
-                      ],
-                    ),
-              onPressed: isSending
-                  ? null
-                  : () => setState(() {
-                        isSending = true;
-                        Future.delayed(Duration(seconds: 2))
-                            .then((_) => Navigator.pop(context));
-                      }),
-            ),
-          )
-        ],
+      child: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: _buildFormContent(),
+        ),
       ),
     );
+  }
+
+  List<Widget> _buildFormContent() {
+    return [
+      Text(
+        widget.title,
+        style: Theme.of(context).textTheme.display1,
+      ),
+      SizedBox(height: 16),
+      TextFormField(
+        minLines: 4,
+        maxLines: 8,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: HpiL11n.get(context, 'feedback/message'),
+        ),
+        onChanged: (m) {
+          message = m;
+        },
+        validator: (m) {
+          if (isNullOrBlank(m))
+            return HpiL11n.get(context, 'feedback/message.missing');
+          return null;
+        },
+      ),
+      SizedBox(height: 16),
+      // TODO: enable when login is implemented
+      /* CheckboxListTile(
+        controlAffinity: ListTileControlAffinity.leading,
+        title: Text('Include your contact details'),
+        subtitle: Text(
+            'This will show us your name and e-mail address. Recommended e.g. for bug reports and questions'),
+        value: includeContact,
+        onChanged: (checked) => setState(() {
+          includeContact = checked;
+        }),
+      ), */
+      CheckboxListTile(
+        controlAffinity: ListTileControlAffinity.leading,
+        title: Text(HpiL11n.get(context, 'feedback/includeLogs')),
+        subtitle: Text(HpiL11n.get(context, 'feedback/includeLogs.desc')),
+        value: includeScreenshotAndLogs,
+        onChanged: (checked) => setState(() {
+          includeScreenshotAndLogs = checked;
+        }),
+      ),
+      Align(
+        alignment: Alignment.centerRight,
+        child: LoadingButton(
+          text: HpiL11n.get(context, 'submit'),
+          loadingText: HpiL11n.get(context, 'sending'),
+          isLoading: isSending,
+          onPressed: _send,
+          color: Theme.of(context).primaryColor,
+        ),
+      ),
+    ];
+  }
+
+  void _send() {
+    if (!_formKey.currentState.validate()) return;
+
+    setState(() {
+      isSending = true;
+      Uri screenUri = Uri.https('mobiledev.hpi.de',
+          Provider.of<NavigationService>(context).lastKnownRoute.name);
+      Feedback.create(
+        message.trim(),
+        screenUri,
+        includeContact,
+        includeScreenshotAndLogs,
+        Provider.of<ScreenshotController>(context),
+        includeScreenshotAndLogs,
+      ).then((f) {
+        Provider.of<FeedbackBloc>(context).sendFeedback(f);
+      }).then((f) {
+        _onSent(true);
+      }).catchError((e) {
+        print(e);
+        _onSent(false);
+      });
+      Future.delayed(Duration(seconds: 2)).then((_) => Navigator.pop(context));
+    });
+  }
+
+  void _onSent(bool successful) {
+    assert(successful != null);
+
+    setState(() {
+      isSending = false;
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(
+          HpiL11n.get(
+              context, successful ? 'feedback/sent' : 'error'),
+        ),
+      ));
+    });
   }
 }

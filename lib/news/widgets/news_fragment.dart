@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart' hide Route;
 import 'package:hpi_flutter/app/widgets/dashboard_page.dart';
+import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/news/data/article.dart';
 import 'package:hpi_flutter/news/data/bloc.dart';
 import 'package:hpi_flutter/news/utils.dart';
@@ -13,7 +14,7 @@ class NewsFragment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DashboardFragment(
-      title: 'News',
+      title: HpiL11n.get(context, 'news'),
       child: ProxyProvider<Uri, NewsBloc>(
         builder: (_, serverUrl, __) => NewsBloc(serverUrl),
         child: SizedBox(
@@ -59,7 +60,18 @@ class ArticlePreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        CachedNetworkImage(imageUrl: article.cover.source),
+        AspectRatio(
+          aspectRatio: 16 / 9,
+          child: article.cover != null
+              ? CachedNetworkImage(
+                  fit: BoxFit.cover,
+                  imageUrl: article.cover.source,
+                )
+              : Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Image.asset('assets/logo/logo_text.png'),
+                ),
+        ),
         Positioned.fill(
           child: _buildScrim(
             child: _buildLaunchable(

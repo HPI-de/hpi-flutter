@@ -1,0 +1,62 @@
+# General
+loading: Lädt…
+error: Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.
+submit: Abschicken
+sending: Sendet…
+language.en: Englisch
+language.de: Deutsch
+
+# Dashboard
+dashboard: Übersicht
+
+# Course
+course: Kurse
+course/tab.current: Aktuelle Kurse
+course/tab.all: Alle Kurse
+course/course.loading: Kurs lädt…
+course/course.details: "%i ECTS · %i h/Woche"
+course/course.teleTask: Dieser Kurs ist auf tele-TASK
+course/course.programsModules: Studiengänge & Module
+course/course.description: Beschreibung
+course/course.requirements: Voraussetzungen
+course/course.learning: Lehrinhalte
+course/course.examination: Leistungserfassung
+course/course.dates: Termine
+course/course.literature: Literatur
+course/course.noGuarantee: Alle Angaben ohne Gewähr
+course/course.reportError: Fehler melden
+course/course.type.lecture: Vorlesung
+course/course.type.seminar: Seminar
+course/course.type.blockSeminar: Blockseminar
+course/course.type.exercise: Übung
+course/semester.winter: Wintersemester %i
+course/semester.summer: Sommersemester %i
+
+# Feedback
+feedback: Feedback
+feedback/action: Feedback senden
+feedback/message: Deine Nachricht
+feedback/message.missing: Bitte gib eine Nachricht ein
+feedback/includeLogs: Screenshots und Logdateien mitsenden
+feedback/includeLogs.desc: Empfohlen für Fehlermeldungen
+feedback/sent: Ihr Feedback wurde abgeschickt. Vielen Dank!
+
+# Food
+food: Speisepläne
+food/fragment.title: Heutiges Essensangebot
+
+# News
+news: Neuigkeiten
+news/article.loading: Artikel lädt…
+news/article.authors: AUTOREN
+news/article.categories: KATEGORIEN
+news/article.tags: STICHWORTE
+
+# MyHPI
+myhpi: MyHPI
+
+# openHPI
+openHpi/fragment.title: openHPI-Kurse
+
+# Tools
+tools: Werkzeuge

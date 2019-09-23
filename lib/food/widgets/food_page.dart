@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:grpc/grpc.dart';
 import 'package:hpi_flutter/app/widgets/app_bar.dart';
+import 'package:hpi_flutter/core/localizations.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:provider/provider.dart';
 
@@ -22,7 +23,7 @@ class FoodPage extends StatelessWidget {
           slivers: <Widget>[
             HpiSliverAppBar(
               floating: true,
-              title: Text('Food'),
+              title: Text(HpiL11n.get(context, 'food')),
             ),
             Builder(
               builder: (context) => _buildRestaurantList(context),

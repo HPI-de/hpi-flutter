@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/food/bloc.dart';
 import 'package:hpi_flutter/food/data/restaurant.dart';
 import 'package:hpi_flutter/food/widgets/restaurant_menu.dart';
@@ -31,7 +33,6 @@ class FoodFragment extends StatelessWidget {
         var menuItems = snapshot.data;
         var restaurantId = snapshot.data[0].restaurantId;
         return RestaurantMenu(
-          prefix: "Today's menu - ",
           restaurantId: restaurantId,
           menuItems:
               menuItems.filter((item) => item.restaurantId == restaurantId),

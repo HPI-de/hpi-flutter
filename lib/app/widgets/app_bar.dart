@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/feedback/widgets/feedback_dialog.dart';
 
 class HpiAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -29,7 +30,7 @@ class HpiAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HpiAppBar({
     Key key,
     this.leading,
-    this.automaticallyImplyLeading,
+    this.automaticallyImplyLeading = true,
     this.title,
     this.actions,
     this.flexibleSpace,
@@ -41,11 +42,11 @@ class HpiAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.iconTheme,
     this.actionsIconTheme,
     this.textTheme,
-    this.primary,
+    this.primary = true,
     this.centerTitle,
-    this.titleSpacing,
-    this.toolbarOpacity,
-    this.bottomOpacity,
+    this.titleSpacing = NavigationToolbar.kMiddleSpacing,
+    this.toolbarOpacity = 1.0,
+    this.bottomOpacity = 1.0,
     this.menuItems,
     this.menuItemHandler,
   })  : assert(automaticallyImplyLeading != null),
@@ -79,22 +80,17 @@ class HpiAppBar extends StatelessWidget implements PreferredSizeWidget {
       bottomOpacity: bottomOpacity,
     )..actions.add(PopupMenuButton(
         onSelected: (selected) {
-          if (selected == 'Feedback') {
-            showModalBottomSheet(
-                context: context, builder: (context) => FeedbackDialog());
-          } else {
+          if (selected == 'app.feedback')
+            FeedbackDialog.show(context);
+          else
             menuItemHandler(selected);
-          }
         },
         icon: Icon(Icons.more_vert),
         itemBuilder: (context) => [
           if (menuItems != null) ...menuItems,
           PopupMenuItem(
-            value: 'Feedback',
-            child: Row(children: [
-              Icon(Icons.feedback),
-              Text('Feedback'),
-            ]),
+            value: 'app.feedback',
+            child: Text(HpiL11n.get(context, 'feedback/action')),
           )
         ],
       ));
@@ -187,22 +183,17 @@ class HpiSliverAppBar extends StatelessWidget {
       snap: snap,
     )..actions.add(PopupMenuButton(
         onSelected: (selected) {
-          if (selected == 'Feedback') {
-            showModalBottomSheet(
-                context: context, builder: (context) => FeedbackDialog());
-          } else {
+          if (selected == 'app.feedback')
+            FeedbackDialog.show(context);
+          else
             menuItemHandler(selected);
-          }
         },
         icon: Icon(Icons.more_vert),
         itemBuilder: (context) => [
           if (menuItems != null) ...menuItems,
           PopupMenuItem(
-            value: 'Feedback',
-            child: Row(children: [
-              Icon(Icons.feedback),
-              Text('Feedback'),
-            ]),
+            value: 'app.feedback',
+            child: Text(HpiL11n.get(context, 'feedback/action')),
           )
         ],
       ));

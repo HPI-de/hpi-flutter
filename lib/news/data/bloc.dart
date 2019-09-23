@@ -23,10 +23,9 @@ class NewsBloc {
 
   Stream<KtList<Article>> getArticles() {
     return Stream.fromFuture(_client.listArticles(ListArticlesRequest())).map(
-      (r) => KtList.from(r.articles)
-          .map((a) => Article.fromProto(a))
-          .sortedByDescending((a) => a.publishDate),
-    );
+        (r) => KtList.from(r.articles)
+            .map((a) => Article.fromProto(a))
+            .sortedByDescending((a) => a.publishDate));
   }
 
   Stream<Article> getArticle(String id) {
