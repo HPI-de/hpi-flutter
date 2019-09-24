@@ -43,7 +43,8 @@ feedback/sent: Ihr Feedback wurde abgeschickt. Vielen Dank!
 
 # Food
 food: Speisepläne
-food/fragment.title: Heutiges Essensangebot
+food/fragment.title: Essensangebot
+food/offer: Angebot
 
 # News
 news: Neuigkeiten

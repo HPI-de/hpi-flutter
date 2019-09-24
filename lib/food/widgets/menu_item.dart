@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:grpc/grpc.dart';
+import 'package:hpi_flutter/core/localizations.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:provider/provider.dart';
 
@@ -13,9 +13,10 @@ class MenuItemView extends StatelessWidget {
   MenuItemView(this.item) : assert(item != null);
 
   void _showDetails(BuildContext context) {
+    var _foodBloc = Provider.of<FoodBloc>(context);
     showModalBottomSheet(
       context: context,
-      builder: (_) => MenuItemDetails(item),
+      builder: (context) => MenuItemDetails(item, _foodBloc),
     );
   }
 
@@ -94,8 +95,9 @@ class LabelView extends StatelessWidget {
 
 class MenuItemDetails extends StatelessWidget {
   final MenuItem item;
+  final FoodBloc foodBloc;
 
-  MenuItemDetails(this.item) : assert(item != null);
+  MenuItemDetails(this.item, this.foodBloc) : assert(item != null);
 
   @override
   Widget build(BuildContext context) {
@@ -110,15 +112,15 @@ class MenuItemDetails extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(
-                'Food ${item.counter}',
+                '${HpiL11n.get(context, "food/offer")} ${item.counter}',
                 style: Theme.of(context).textTheme.headline,
               ),
               Text(
                 item.title,
                 style: Theme.of(context).textTheme.subhead,
               ),
-              // TODO: Add proper labels
               Wrap(
+                spacing: 8,
                 children: item.labelIds
                     .map((id) => _buildChip(context, id))
                     .iter
@@ -133,17 +135,21 @@ class MenuItemDetails extends StatelessWidget {
   }
 
   Widget _buildChip(BuildContext context, String id) {
-    return Chip(avatar: FlutterLogo(), label: Text(id));
-    /*return StreamBuilder<Label>(
-      stream: Provider.of<FoodBloc>(context).getLabel(id),
-      builder: (_, snapshot) {
-        if (!snapshot.hasData) return Container();
-        var label = snapshot.data;
-        return Chip(
-          avatar: FlutterLogo(),
-          label: Text(label.title),
-        );
-      }
-    );*/
+    return StreamBuilder<Label>(
+        stream: foodBloc.getLabel(id),
+        builder: (_, snapshot) {
+          if (!snapshot.hasData)
+            return Chip(
+              avatar: Icon(Icons.restaurant),
+              label: Text(id),
+            );
+          var label = snapshot.data;
+          return Chip(
+            avatar: (label.icon.isNotEmpty)
+                ? Image.network(label.icon)
+                : Icon(Icons.restaurant),
+            label: Text(label.title),
+          );
+        });
   }
 }
