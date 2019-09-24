@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:grpc/grpc.dart';
+import 'package:hpi_flutter/core/data/utils.dart';
+import 'package:hpi_flutter/hpi_cloud_apis/google/type/date.pb.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/food/v1test/food_service.pbgrpc.dart';
 import 'package:kt_dart/collection.dart';
 
@@ -22,7 +24,8 @@ class FoodBloc {
         );
 
   Stream<KtList<MenuItem>> getMenuItems() {
-    return Stream.fromFuture(_client.listMenuItems(ListMenuItemsRequest()))
+    return Stream.fromFuture(_client.listMenuItems(
+            ListMenuItemsRequest()..date = dateTimeToDate(DateTime.now())))
         .map((r) => KtList.from(r.items).map((i) => MenuItem.fromProto(i)));
   }
 
