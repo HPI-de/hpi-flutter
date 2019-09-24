@@ -34,6 +34,7 @@ dependencies:
   align_positioned: ^1.0.8
   cached_network_image: ^1.1.1
   screenshot: ^0.1.1
+  flutter_pagewise: ^1.2.3
 
 dev_dependencies:
   flutter_test:

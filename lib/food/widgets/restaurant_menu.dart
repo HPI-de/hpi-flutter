@@ -46,7 +46,7 @@ class RestaurantMenu extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 child: Text(
-                  prefix + snapshot.data?.title ?? '-',
+                  prefix + (snapshot.data?.title ?? '-'),
                   style:
                       Theme.of(context).textTheme.title.copyWith(fontSize: 20),
                 ),

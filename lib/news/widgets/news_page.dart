@@ -3,8 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/news/data/article.dart';
-import 'package:kt_dart/collection.dart';
+import 'package:hpi_flutter/core/widgets/paginated_sliver_list.dart';
 import 'package:provider/provider.dart';
 
 import '../data/bloc.dart';
@@ -31,25 +30,10 @@ class NewsPage extends StatelessWidget {
   }
 
   Widget _buildArticleList(BuildContext context) {
-    return StreamBuilder<KtList<Article>>(
-      stream: Provider.of<NewsBloc>(context).getArticles(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData)
-          return SliverFillRemaining(
-            child: Center(
-              child: snapshot.hasError
-                  ? Text(snapshot.error.toString())
-                  : CircularProgressIndicator(),
-            ),
-          );
-
-        return SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) => ArticlePreview(snapshot.data[index]),
-            childCount: snapshot.data.size,
-          ),
-        );
-      },
+    return PaginatedSliverList(
+      pageSize: 10,
+      dataLoader: Provider.of<NewsBloc>(context).getArticles,
+      itemBuilder: (_, article, __) => ArticlePreview(article),
     );
   }
 }
