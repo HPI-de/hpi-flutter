@@ -144,6 +144,31 @@ class _AboutSection extends StatelessWidget {
               Navigator.pushNamed(context, Route.settingsPrivacyPolicy.name);
             },
           ),
+          FutureBuilder<PackageInfo>(
+            future: PackageInfo.fromPlatform(),
+            builder: (context, snapshot) {
+              final version = snapshot.hasData
+                  ? '${snapshot.data.version}+${snapshot.data.buildNumber}'
+                  : HpiL11n.get(context, 'settings/about.version.error');
+              return AboutListTile(
+                icon: Image.asset(
+                  'assets/logo/logo.png',
+                  width: 32,
+                  height: 32,
+                ),
+                applicationName:
+                    HpiL11n.get(context, 'settings/about.about.name'),
+                applicationVersion: version,
+                applicationLegalese:
+                    HpiL11n.get(context, 'settings/about.about.legalese'),
+                applicationIcon: Image.asset(
+                  'assets/logo/logo.png',
+                  width: 48,
+                  height: 48,
+                ),
+              );
+            },
+          ),
         ],
       ),
     );
