@@ -21,7 +21,76 @@ class SettingsPage extends StatelessWidget {
       body: Material(
         child: CustomScrollView(
           slivers: <Widget>[
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.all(8),
+                child: _MobileDevAd(),
+              ),
+            ),
             _AboutSection(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _MobileDevAd extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final onPrimary = Theme.of(context).colorScheme.onPrimary;
+    return Card(
+      color: Theme.of(context).primaryColor,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 16, top: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: Text(
+                HpiL11n.get(context, 'settings/ad.title'),
+                style: Theme.of(context).textTheme.headline.copyWith(
+                      color: onPrimary,
+                    ),
+              ),
+            ),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          HpiL11n.get(context, 'settings/ad.text'),
+                          style: Theme.of(context).textTheme.body1.copyWith(
+                                color: onPrimary,
+                              ),
+                        ),
+                        SizedBox(height: 16),
+                        OutlineButton(
+                          borderSide: BorderSide(
+                            color: onPrimary.withOpacity(0.6),
+                          ),
+                          highlightedBorderColor: onPrimary,
+                          textColor: onPrimary,
+                          onPressed: () {
+                            launch(HpiL11n.get(context, 'settings/ad.link'));
+                          },
+                          child: HpiL11n.text(context, 'settings/ad.button'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(width: 8),
+                Image.asset(
+                  'assets/logo/mobileDev sheep.png',
+                  height: 192,
+                ),
+              ],
+            ),
           ],
         ),
       ),

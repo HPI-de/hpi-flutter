@@ -51,6 +51,7 @@ flutter:
 
   assets:
     - assets/logo/logo_text.png
+    - assets/logo/mobileDev sheep.png
     - assets/localizations/strings_de.yaml
     - assets/localizations/strings_en.yaml
     - assets/privacyPolicy.md
