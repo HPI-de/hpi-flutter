@@ -5,6 +5,7 @@ import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/core/localizations.dart';
+import 'package:hpi_flutter/feedback/widgets/feedback_dialog.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -21,12 +22,7 @@ class SettingsPage extends StatelessWidget {
       body: Material(
         child: CustomScrollView(
           slivers: <Widget>[
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.all(8),
-                child: _MobileDevAd(),
-              ),
-            ),
+            SliverToBoxAdapter(child: _MobileDevAd()),
             _AboutSection(),
           ],
         ),
@@ -38,8 +34,10 @@ class SettingsPage extends StatelessWidget {
 class _MobileDevAd extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    assert(context != null);
+
     final onPrimary = Theme.of(context).colorScheme.onPrimary;
-    return Card(
+    return Material(
       color: Theme.of(context).primaryColor,
       child: Padding(
         padding: const EdgeInsets.only(left: 16, top: 16),
@@ -137,41 +135,59 @@ class _AboutSection extends StatelessWidget {
               HpiL11n.get(context, 'settings/about.imprint.desc'),
             ),
           ),
-          ListTile(
-            leading: Icon(OMIcons.notes),
-            title: HpiL11n.text(context, 'settings/about.privacyPolicy'),
-            onTap: () {
-              Navigator.pushNamed(context, Route.settingsPrivacyPolicy.name);
-            },
-          ),
-          FutureBuilder<PackageInfo>(
-            future: PackageInfo.fromPlatform(),
-            builder: (context, snapshot) {
-              final version = snapshot.hasData
-                  ? '${snapshot.data.version}+${snapshot.data.buildNumber}'
-                  : HpiL11n.get(context, 'settings/about.version.error');
-              return AboutListTile(
-                icon: Image.asset(
-                  'assets/logo/logo.png',
-                  width: 32,
-                  height: 32,
-                ),
-                applicationName:
-                    HpiL11n.get(context, 'settings/about.about.name'),
-                applicationVersion: version,
-                applicationLegalese:
-                    HpiL11n.get(context, 'settings/about.about.legalese'),
-                applicationIcon: Image.asset(
-                  'assets/logo/logo.png',
-                  width: 48,
-                  height: 48,
-                ),
-              );
-            },
+          Wrap(
+            alignment: WrapAlignment.center,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: _buildBottomButtons(context),
           ),
         ],
       ),
     );
+  }
+
+  List<Widget> _buildBottomButtons(BuildContext context) {
+    assert(context != null);
+
+    return <Widget>[
+      FlatButton(
+        onPressed: () {
+          Navigator.pushNamed(context, Route.settingsPrivacyPolicy.name);
+        },
+        child: HpiL11n.text(context, 'settings/about.privacyPolicy'),
+      ),
+      Text('⋅', style: Theme.of(context).textTheme.headline),
+      FlatButton(
+        onPressed: () {
+          PackageInfo.fromPlatform()
+              .then(
+                (p) => '${p.version}+${p.buildNumber}',
+                onError: (_) =>
+                    HpiL11n.get(context, 'settings/about.version.error'),
+              )
+              .then((version) => showLicensePage(
+                    context: context,
+                    applicationName:
+                        HpiL11n.get(context, 'settings/about.licenses.name'),
+                    applicationVersion: version,
+                    applicationIcon: Image.asset(
+                      'assets/logo/logo.png',
+                      width: 48,
+                      height: 48,
+                    ),
+                    applicationLegalese: HpiL11n.get(
+                        context, 'settings/about.licenses.legalese'),
+                  ));
+        },
+        child: HpiL11n.text(context, 'settings/about.licenses'),
+      ),
+      Text('⋅', style: Theme.of(context).textTheme.headline),
+      FlatButton(
+        onPressed: () {
+          FeedbackDialog.show(context);
+        },
+        child: HpiL11n.text(context, 'feedback/action'),
+      ),
+    ];
   }
 }
 

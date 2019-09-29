@@ -84,9 +84,10 @@ settings/about.imprint.desc: |-
   Telefax: +49 (0)331 / 5509-129
   E-Mail: klub-mobiledeveloper-sprecher@hpi.de
   Webseite: https://mobiledev.hpi.de
-settings/about.privacyPolicy: Privacy Policy
-settings/about.about.name: Hpi-App
-settings/about.legalese: |-
+settings/about.privacyPolicy: Datenschutzerklärung
+settings/about.licenses: Lizenzen
+settings/about.licenses.name: Hpi-App
+settings/about.licenses.legalese: |-
   Copyright 2019 hpi_flutter
 
   Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
