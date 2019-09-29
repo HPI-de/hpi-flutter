@@ -52,6 +52,25 @@ class MainScaffold extends StatelessWidget {
       builder: (context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: Row(
+              children: <Widget>[
+                SizedBox(width: 16),
+                Image.asset('assets/logo/logo_text.png', height: 56),
+                Spacer(),
+                IconButton(
+                  icon: Icon(OMIcons.settings),
+                  iconSize: 32,
+                  padding: EdgeInsets.all(8),
+                  onPressed: () {
+                    Navigator.popAndPushNamed(context, Route.settings.name);
+                  },
+                ),
+              ],
+            ),
+          ),
+          Divider(indent: 8, endIndent: 8),
           NavigationItem(
             icon: OMIcons.home,
             text: HpiL11n.get(context, 'dashboard'),
@@ -91,9 +110,11 @@ class MainScaffold extends StatelessWidget {
 
 @immutable
 class NavigationItem extends StatelessWidget {
-  const NavigationItem(
-      {@required this.icon, @required this.text, @required this.route})
-      : assert(icon != null),
+  const NavigationItem({
+    @required this.icon,
+    @required this.text,
+    @required this.route,
+  })  : assert(icon != null),
         assert(text != null),
         assert(route != null);
 

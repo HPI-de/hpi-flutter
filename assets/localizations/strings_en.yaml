@@ -60,3 +60,24 @@ openHpi/fragment.title: openHPI courses
 
 # Tools
 tools: Tools
+tools.timer: Timer
+
+# Settings
+settings: Settings
+settings/about.version: Version
+settings/about.version.error: Error while loading version information
+settings/about.contributors: Contributors
+settings/about.contributors.desc: Felix Auringer, Marcel Garus, Maximilian Stiede, Clemens Tiedt, Ronja Wagner, Jonas Wanke
+settings/about.openSource: This app is open source
+settings/about.openSource.link: https://github.com/HPI-de/hpi_flutter
+settings/about.imprint: Imprint
+settings/about.imprint.desc: |-
+  Club MobileDev of the
+  Hasso Plattner Institute for Digital Engineering gGmbH
+  Prof.-Dr.-Helmert-Str. 2-3
+  14482 Potsdam
+  Phone: +49 (0)331 / 5509-0
+  Fax: +49 (0)331 / 5509-129
+  Email: klub-mobiledeveloper-sprecher@hpi.de
+  Website: https://mobiledev.hpi.de
+settings/about.privacyPolicy: Privacy Policy
