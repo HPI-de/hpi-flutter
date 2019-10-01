@@ -5,8 +5,11 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/route.dart';
+import 'package:hpi_flutter/crash_reporting/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
+
+import 'dart:async';
 
 import 'app/services/navigation.dart';
 import 'app/widgets/hpi_theme.dart';
@@ -20,36 +23,53 @@ Future<ByteData> fetchFont(String url) async {
 }
 
 void main() async {
-  var delegate = HpiLocalizationsDelegate();
-  var fontLoader = FontLoader('Neo Sans')
-    ..addFont(fetchFont(
-        'https://hpi.de/fileadmin/templates/fonts/9de9709d-f77a-44ad-96b9-6fea586f7efb.ttf'));
-  await fontLoader.load();
+  // This captures errors reported by the Flutter framework.
+  FlutterError.onError = (FlutterErrorDetails details) async {
+    if (isInDebugMode) {
+      // In development mode simply print to console.
+      FlutterError.dumpErrorToConsole(details);
+    } else {
+      // In production mode report to the application zone.
+      Zone.current.handleUncaughtError(details.exception, details.stack);
+    }
+  };
 
-  // Used by feedback to capture the whole app
-  final screenshotController = ScreenshotController();
+  // run in custom zone for catching errors
+  runZoned<Future<void>>(() async {
+    var delegate = HpiLocalizationsDelegate();
+    var fontLoader = FontLoader('Neo Sans')
+      ..addFont(fetchFont(
+          'https://hpi.de/fileadmin/templates/fonts/9de9709d-f77a-44ad-96b9-6fea586f7efb.ttf'));
+    await fontLoader.load();
 
-  runApp(
-    MultiProvider(
-      providers: [
-        Provider<NavigationService>(
-          builder: (_) => NavigationService(),
-        ),
-        Provider<Uri>(
-          builder: (_) => Uri.parse("172.18.132.7"),
-        ),
-        Provider<ScreenshotController>(
-          builder: (_) => screenshotController,
-        ),
-      ],
-      child: Screenshot(
-        controller: screenshotController,
-        child: HpiApp(
-          hpiLocalizationsDelegate: delegate,
+    // Used by feedback to capture the whole app
+    final screenshotController = ScreenshotController();
+
+    runApp(
+      MultiProvider(
+        providers: [
+          Provider<NavigationService>(
+            builder: (_) => NavigationService(),
+          ),
+          Provider<Uri>(
+            builder: (_) => Uri.parse("172.18.132.7"),
+          ),
+          Provider<ScreenshotController>(
+            builder: (_) => screenshotController,
+          ),
+        ],
+        child: Screenshot(
+          controller: screenshotController,
+          child: HpiApp(
+            hpiLocalizationsDelegate: delegate,
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }, onError: (error, stackTrace) async {
+    // call 'reportError' function if an error occurs
+    await reportError(error, stackTrace);
+  });
 }
 
 const _brandColorRed = 0xFFB1063A;

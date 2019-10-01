@@ -97,7 +97,7 @@ class CourseList extends StatelessWidget {
 
           return ListTile(
             title: Text(snapshot.data.title),
-            subtitle: Text(course.lecturer),
+            subtitle: Text(course.lecturers.joinToString()),
             onTap: () {
               Navigator.of(context)
                   .pushNamed(Route.coursesDetail.name, arguments: course.id);
