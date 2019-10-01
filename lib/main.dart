@@ -5,7 +5,7 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/route.dart';
-import 'package:hpi_flutter/crash_reporting/utils.dart';
+import 'package:hpi_flutter/crashreporting/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
 
