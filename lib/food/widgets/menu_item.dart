@@ -9,8 +9,12 @@ import '../bloc.dart';
 
 class MenuItemView extends StatelessWidget {
   final MenuItem item;
+  final bool showCounter;
 
-  MenuItemView(this.item) : assert(item != null);
+  MenuItemView(
+    this.item, {
+    this.showCounter = true,
+  }) : assert(item != null);
 
   void _showDetails(BuildContext context) {
     var _foodBloc = Provider.of<FoodBloc>(context);
@@ -31,18 +35,13 @@ class MenuItemView extends StatelessWidget {
             SizedBox(
               width: 32,
               child: Text(
-                item.counter,
+                (showCounter) ? item.counter : ' ',
                 style:
                     Theme.of(context).textTheme.caption.copyWith(fontSize: 20),
               ),
             ),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(item.title, style: Theme.of(context).textTheme.body1),
-                ],
-              ),
+              child: Text(item.title, style: Theme.of(context).textTheme.body1),
             ),
             SizedBox(width: 8),
             _buildLabels(item.labelIds),
@@ -110,6 +109,7 @@ class MenuItemDetails extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
                 '${HpiL11n.get(context, "food/offer")} ${item.counter}',
