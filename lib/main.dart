@@ -12,11 +12,27 @@ import 'app/services/navigation.dart';
 import 'app/widgets/hpi_theme.dart';
 
 Future<ByteData> fetchFont(String url) async {
-  final response = await http.get(url);
-  if (response.statusCode == 200)
+  //added handler for network connectivity  check
+  try {
+  final result = await InternetAddress.lookup('google.com');
+  if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+    print('connected');
+    
+    //if connected, then proceed
+    final response = await http.get(url);
+      if (response.statusCode == 200)
     return ByteData.view(response.bodyBytes.buffer);
   else
     throw Exception('Failed to load font');
+    
+  }
+} on SocketException catch (_) {
+    //handle the exeption here.
+    // you can add toast message/ snackbar to notify 'there no internet, try again'
+  print('not connected'); 
+}
+  
+
 }
 
 void main() async {
