@@ -1,7 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.hpi.android">
 
-    <!-- added permission -->
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
