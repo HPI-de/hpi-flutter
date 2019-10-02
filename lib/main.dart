@@ -12,7 +12,7 @@ import 'app/services/navigation.dart';
 import 'app/widgets/hpi_theme.dart';
 
 Future<ByteData> fetchFont(String url) async {
-  //added handler for network connectivity  check
+  //added handler for network connectivity check
   try {
   final result = await InternetAddress.lookup('google.com');
   if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
@@ -23,8 +23,7 @@ Future<ByteData> fetchFont(String url) async {
       if (response.statusCode == 200)
     return ByteData.view(response.bodyBytes.buffer);
   else
-    throw Exception('Failed to load font');
-    
+    throw Exception('Failed to load font');    
   }
 } on SocketException catch (_) {
     //handle the exeption here.
