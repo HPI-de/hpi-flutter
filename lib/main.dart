@@ -12,23 +12,15 @@ import 'app/services/navigation.dart';
 import 'app/widgets/hpi_theme.dart';
 
 Future<ByteData> fetchFont(String url) async {
-  try {
-  final result = await InternetAddress.lookup('hpi.de');
-  if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-    print('connected');
-    
+  try { 
     final response = await http.get(url);
       if (response.statusCode == 200)
     return ByteData.view(response.bodyBytes.buffer);
   else
-    throw Exception('Failed to load font');    
+    throw Exception('Failed to load font');
+  } on SocketException catch (_) {
+      var fontLoader = FontLoader('HpiIcons').load();
   }
-} on SocketException catch (_) {
- var fontLoader = FontLoader('HpiIcons').load();
-  print('not connected'); 
-}
-  
-
 }
 
 void main() async {
