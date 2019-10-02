@@ -3,6 +3,7 @@ loading: Loading…
 error: An error occurred. Please try again.
 submit: Submit
 sending: Sending…
+currency.eur: "%.2f €"
 language.en: English
 language.de: German
 
@@ -44,7 +45,7 @@ feedback/sent: Your fedback was submitted. Thanks!
 # Food
 food: Food
 food/fragment.title: Today's menu
-food/offer: Offer
+food/offer: Offer %s
 
 # News
 news: News

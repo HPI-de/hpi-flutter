@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:grpc/grpc.dart';
 import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/core/localizations.dart';
+import 'package:hpi_flutter/food/data/bloc.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/widgets/main_scaffold.dart';
-import '../bloc.dart';
 import '../data/restaurant.dart';
 import 'restaurant_menu.dart';
 
@@ -15,7 +14,6 @@ import 'restaurant_menu.dart';
 class FoodPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: use the actual grpc client channel as below
     return ProxyProvider<Uri, FoodBloc>(
       builder: (_, serverUrl, __) => FoodBloc(serverUrl),
       child: MainScaffold(

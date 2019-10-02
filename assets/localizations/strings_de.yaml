@@ -3,6 +3,7 @@ loading: Lädt…
 error: Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.
 submit: Abschicken
 sending: Sendet…
+currency.eur: "%.2f €"
 language.en: Englisch
 language.de: Deutsch
 
@@ -44,7 +45,7 @@ feedback/sent: Ihr Feedback wurde abgeschickt. Vielen Dank!
 # Food
 food: Speisepläne
 food/fragment.title: Essensangebot
-food/offer: Angebot
+food/offer: Angebot %s
 
 # News
 news: Neuigkeiten

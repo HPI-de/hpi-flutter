@@ -14,9 +14,22 @@ Widget buildAppBarTitle({@required Widget title, Widget subtitle}) {
   );
 }
 
+Widget buildLoadingError(AsyncSnapshot<dynamic> snapshot) {
+  assert(snapshot != null);
+
+  return Center(
+    child: snapshot.hasError
+        ? Text(snapshot.error.toString())
+        : CircularProgressIndicator(),
+  );
+}
+
 Widget buildLoadingErrorScaffold(
-    BuildContext context, AsyncSnapshot<dynamic> snapshot,
-    {bool appBarElevated = false, String loadingTitle}) {
+  BuildContext context,
+  AsyncSnapshot<dynamic> snapshot, {
+  bool appBarElevated = false,
+  String loadingTitle,
+}) {
   assert(context != null);
   assert(snapshot != null);
   assert(appBarElevated != null);
@@ -29,11 +42,7 @@ Widget buildLoadingErrorScaffold(
           ? HpiL11n.get(context, 'error')
           : (loadingTitle ?? HpiL11n.get(context, 'loading'))),
     ),
-    body: Center(
-      child: snapshot.hasError
-          ? Text(snapshot.error.toString())
-          : CircularProgressIndicator(),
-    ),
+    body: buildLoadingError(snapshot),
   );
 }
 
@@ -41,10 +50,6 @@ Widget buildLoadingErrorSliver(AsyncSnapshot<dynamic> snapshot) {
   assert(snapshot != null);
 
   return SliverFillRemaining(
-    child: Center(
-      child: snapshot.hasError
-          ? Text(snapshot.error.toString())
-          : CircularProgressIndicator(),
-    ),
+    child: buildLoadingError(snapshot),
   );
 }

@@ -31,7 +31,6 @@ class MenuItem {
   final String restaurantId;
   final DateTime date;
   final String title;
-
   final Map<String, double> prices;
   final String counter;
   final KtSet<String> labelIds;

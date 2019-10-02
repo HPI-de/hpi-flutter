@@ -4,7 +4,7 @@ import 'package:hpi_flutter/core/data/utils.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/food/v1test/food_service.pbgrpc.dart';
 import 'package:kt_dart/collection.dart';
 
-import 'data/restaurant.dart';
+import 'restaurant.dart';
 
 @immutable
 class FoodBloc {
@@ -22,9 +22,11 @@ class FoodBloc {
           ),
         );
 
-  Stream<KtList<MenuItem>> getMenuItems() {
-    return Stream.fromFuture(_client.listMenuItems(
-            ListMenuItemsRequest()..date = dateTimeToDate(DateTime.now())))
+  Stream<KtList<MenuItem>> getMenuItems({String restaurantId}) {
+    final req = ListMenuItemsRequest()..date = dateTimeToDate(DateTime.now());
+    if (restaurantId != null) req.restaurantId = restaurantId;
+
+    return Stream.fromFuture(_client.listMenuItems(req))
         .map((r) => KtList.from(r.items).map((i) => MenuItem.fromProto(i)));
   }
 
@@ -35,6 +37,7 @@ class FoodBloc {
   }
 
   Stream<Restaurant> getRestaurant(String id) {
+    assert(id != null);
     return Stream.fromFuture(
             _client.getRestaurant(GetRestaurantRequest()..id = id))
         .map((s) => Restaurant.fromProto(s));
