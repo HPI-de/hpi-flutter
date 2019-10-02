@@ -123,7 +123,7 @@ class _AboutSection extends StatelessWidget {
           ListTile(
             leading: Icon(OMIcons.code),
             title: HpiL11n.text(context, 'settings/about.openSource'),
-            trailing: Icon(OMIcons.openInBrowser),
+            trailing: Icon(OMIcons.openInNew),
             onTap: () {
               launch(HpiL11n.get(context, 'settings/about.openSource.link'));
             },

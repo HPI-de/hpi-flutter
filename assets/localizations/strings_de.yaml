@@ -39,7 +39,7 @@ feedback/message: Deine Nachricht
 feedback/message.missing: Bitte gib eine Nachricht ein
 feedback/includeLogs: Screenshots und Logdateien mitsenden
 feedback/includeLogs.desc: Empfohlen bei Problemen
-feedback/sent: Ihr Feedback wurde abgeschickt. Vielen Dank!
+feedback/sent: Dein Feedback wurde abgeschickt. Vielen Dank!
 
 # Food
 food: Speisepläne

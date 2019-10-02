@@ -49,8 +49,7 @@ class MainScaffold extends StatelessWidget {
   void _openNavDrawer(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      builder: (context) => Column(
-        mainAxisSize: MainAxisSize.min,
+      builder: (context) => ListView(
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(8),
