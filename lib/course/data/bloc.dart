@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:grpc/grpc.dart';
+import 'package:hpi_flutter/core/widgets/paginated_sliver_list.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/course/v1test/course_service.pbgrpc.dart';
 import 'package:kt_dart/collection.dart';
 
@@ -21,12 +22,18 @@ class CourseBloc {
 
   final CourseServiceClient _client;
 
-  Stream<KtList<CourseSeries>> getAllCourseSeries() {
-    return Stream.fromFuture(
-            _client.listCourseSeries(ListCourseSeriesRequest()))
-        .map((r) => KtList.from(r.courseSeries)
-            .map((c) => CourseSeries.fromProto(c))
-            .sortedBy((cs) => cs.title));
+  Stream<PaginationResponse<CourseSeries>> getAllCourseSeries({
+    int pageSize,
+    String pageToken,
+  }) {
+    final request = ListCourseSeriesRequest()
+      ..pageSize = pageSize ?? 0
+      ..pageToken = pageToken ?? '';
+    return Stream.fromFuture(_client.listCourseSeries(request))
+        .map((r) => PaginationResponse(
+              KtList.from(r.courseSeries).map((a) => CourseSeries.fromProto(a)),
+              r.nextPageToken,
+            ));
   }
 
   Stream<CourseSeries> getCourseSeries(String id) {
@@ -42,11 +49,18 @@ class CourseBloc {
         .map((c) => Semester.fromProto(c));
   }
 
-  Stream<KtList<Course>> getCourses() {
-    return Stream.fromFuture(_client.listCourses(ListCoursesRequest())).map(
-        (r) => KtList.from(r.courses)
-            .map((c) => Course.fromProto(c))
-            .sortedBy((c) => c.id));
+  Stream<PaginationResponse<Course>> getCourses({
+    int pageSize,
+    String pageToken,
+  }) {
+    final request = ListCoursesRequest()
+      ..pageSize = pageSize ?? 0
+      ..pageToken = pageToken ?? '';
+    return Stream.fromFuture(_client.listCourses(request))
+        .map((r) => PaginationResponse(
+              KtList.from(r.courses).map((a) => Course.fromProto(a)),
+              r.nextPageToken,
+            ));
   }
 
   Stream<Course> getCourse(String id) {
