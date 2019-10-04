@@ -135,7 +135,7 @@ class CourseDetailPage extends StatelessWidget {
       _buildElevatedTile(
         context,
         leading: OMIcons.personOutline,
-        title: course.lecturer,
+        title: course.lecturers.joinToString(),
         subtitle: course.assistants.joinToString(),
       ),
       _buildElevatedTile(
