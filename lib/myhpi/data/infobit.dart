@@ -1,70 +1,69 @@
 import 'package:flutter/foundation.dart';
+import 'package:hpi_flutter/core/data/image.dart';
+import 'package:immutable_proto/immutable_proto.dart';
 import 'package:kt_dart/collection.dart';
+import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/common/v1test/image.pb.dart'
+    as proto;
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/myhpi/v1test/info_bit.pb.dart'
     as proto;
 
-@immutable
-class InfoBit {
-  final String id;
-  final String title;
-  final String description;
-  final KtList<String> actionIds;
+part 'infobit.g.dart';
 
-  InfoBit({
-    @required this.id,
-    @required this.title,
-    @required this.description,
-    @required this.actionIds,
-  })  : assert(id != null),
-        assert(title != null),
-        assert(description != null),
-        assert(actionIds != null);
+@ImmutableProto(proto.InfoBit)
+class MutableInfoBit {
+  @required
+  String id;
+  String parentId;
+  @required
+  String title;
+  String subtitle;
+  proto.Image cover;
+  String description;
+  proto.InfoBit_ChildDisplay childDisplay;
+  KtList<String> actionIds;
+  KtList<String> tagIds;
+}
 
-  InfoBit.fromProto(proto.InfoBit infoBit)
-      : this(
-            id: infoBit.id,
-            title: infoBit.title,
-            description: infoBit.description,
-            actionIds: KtList.from(infoBit.actionIds));
-
-  proto.InfoBit toProto() {
-    return proto.InfoBit()
-      ..id = id
-      ..title = title
-      ..description = description
-      ..actionIds.addAll(actionIds.iter);
-  }
+@ImmutableProto(proto.InfoBitTag)
+class MutableInfoBitTag {
+  @required
+  String id;
+  @required
+  String title;
 }
 
 @immutable
 abstract class Action {
   final String id;
   final String title;
+  final String icon;
 
   Action({
     @required this.id,
     @required this.title,
+    this.icon,
   })  : assert(id != null),
         assert(title != null);
 
   Action._fromProto(proto.Action action)
-      : this(id: action.id, title: action.title);
+      : this(id: action.id, title: action.title, icon: action.icon);
 
   factory Action.fromProto(proto.Action action) {
     switch (action.whichType()) {
       case proto.Action_Type.text:
-        return ActionText.fromProto(action);
+        return TextAction.fromProto(action);
       case proto.Action_Type.link:
-        return ActionLink.fromProto(action);
+        return LinkAction.fromProto(action);
       default:
         return null;
     }
   }
 
   proto.Action toProto() {
-    var action = proto.Action()
+    final action = proto.Action()
       ..id = id
       ..title = title;
+    if (icon != null) action.icon = icon;
     _writeToProto(action);
     return action;
   }
@@ -73,17 +72,18 @@ abstract class Action {
 }
 
 @immutable
-class ActionText extends Action {
+class TextAction extends Action {
   final String content;
 
-  ActionText({
+  TextAction({
     @required String id,
     @required String title,
+    String icon,
     @required this.content,
   })  : assert(content != null),
-        super(id: id, title: title);
+        super(id: id, title: title, icon: icon);
 
-  ActionText.fromProto(proto.Action action)
+  TextAction.fromProto(proto.Action action)
       : assert(action.text != null),
         content = action.text.content,
         super._fromProto(action);
@@ -95,17 +95,18 @@ class ActionText extends Action {
 }
 
 @immutable
-class ActionLink extends Action {
+class LinkAction extends Action {
   final String url;
 
-  ActionLink({
+  LinkAction({
     @required String id,
     @required String title,
+    String icon,
     @required this.url,
   })  : assert(url != null),
-        super(id: id, title: title);
+        super(id: id, title: title, icon: icon);
 
-  ActionLink.fromProto(proto.Action action)
+  LinkAction.fromProto(proto.Action action)
       : assert(action.link != null),
         url = action.link.url,
         super._fromProto(action);
