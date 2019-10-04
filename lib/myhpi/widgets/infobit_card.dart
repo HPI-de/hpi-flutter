@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart' hide Action, Route;
 import 'package:flutter_html/flutter_html.dart';
+import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/core/utils.dart';
 import 'package:hpi_flutter/core/widgets/chip_group.dart';
 import 'package:hpi_flutter/core/widgets/image_widget.dart';
 import 'package:hpi_flutter/core/widgets/pagination.dart';
 import 'package:hpi_flutter/core/widgets/preview_box.dart';
+import 'package:hpi_flutter/core/widgets/scrim_around.dart';
 import 'package:hpi_flutter/core/widgets/stream_chip.dart';
 import 'package:hpi_flutter/myhpi/data/bloc.dart';
 import 'package:hpi_flutter/myhpi/data/infobit.dart';
@@ -33,10 +35,7 @@ class InfoBitCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
-              child: _buildHead(context),
-            ),
+            _buildHead(context),
             _buildChildren(context),
             _buildFoot(context),
             SizedBox(height: 8),
@@ -49,30 +48,64 @@ class InfoBitCard extends StatelessWidget {
   Widget _buildHead(BuildContext context) {
     assert(context != null);
 
+    final title = [
+      Text(
+        infoBit.title,
+        style: Theme.of(context).textTheme.headline,
+      ),
+      if (infoBit.subtitle != null)
+        Text(
+          infoBit.subtitle,
+          style: Theme.of(context).textTheme.subhead,
+        ),
+    ];
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          infoBit.title,
-          style: Theme.of(context).textTheme.headline,
+        if (infoBit.cover != null)
+          Stack(
+            children: <Widget>[
+              AspectRatio(
+                aspectRatio: 16 / 9,
+                child: ImageWidget(infoBit.cover),
+              ),
+              Positioned.fill(
+                child: ScrimAround(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: title,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        Padding(
+          padding:
+              EdgeInsets.fromLTRB(16, infoBit.cover == null ? 0 : 8, 16, 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              if (infoBit.cover == null) ...title,
+              SizedBox(height: 4),
+              if (infoBit.description != null)
+                Html(
+                  data: infoBit.description,
+                  onLinkTap: (url) async {
+                    if (await canLaunch(url)) await launch(url);
+                  },
+                  defaultTextStyle: Theme.of(context)
+                      .textTheme
+                      .body1
+                      .copyWith(color: Colors.black.withOpacity(0.6)),
+                ),
+            ],
+          ),
         ),
-        if (infoBit.subtitle != null)
-          Text(
-            infoBit.subtitle,
-            style: Theme.of(context).textTheme.caption,
-          ),
-        SizedBox(height: 4),
-        if (infoBit.description != null)
-          Html(
-            data: infoBit.description,
-            onLinkTap: (url) async {
-              if (await canLaunch(url)) await launch(url);
-            },
-            defaultTextStyle: Theme.of(context)
-                .textTheme
-                .body1
-                .copyWith(color: Colors.black.withOpacity(0.6)),
-          ),
       ],
     );
   }

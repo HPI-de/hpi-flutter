@@ -6,6 +6,7 @@ import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/core/widgets/chip_group.dart';
 import 'package:hpi_flutter/core/widgets/image_widget.dart';
 import 'package:hpi_flutter/core/widgets/pagination.dart';
+import 'package:hpi_flutter/core/widgets/scrim_around.dart';
 import 'package:hpi_flutter/core/widgets/stream_chip.dart';
 import 'package:hpi_flutter/myhpi/data/bloc.dart';
 import 'package:hpi_flutter/myhpi/data/infobit.dart';
@@ -102,8 +103,7 @@ class InfoBitPage extends StatelessWidget {
     assert(context != null);
     assert(infoBit != null);
 
-    final title = //Text(infoBit.title);
-        buildAppBarTitle(
+    final title = buildAppBarTitle(
       context: context,
       title: Text(infoBit.title),
       subtitle: infoBit.subtitle != null ? Text(infoBit.subtitle) : null,
@@ -120,7 +120,7 @@ class InfoBitPage extends StatelessWidget {
       flexibleSpace: HpiFlexibleSpaceBar(
         title: title,
         background: DecoratedBox(
-          decoration: bottomScrim(Brightness.light),
+          decoration: ScrimAround.simpleBottomScrim(Brightness.light),
           position: DecorationPosition.foreground,
           child: ImageWidget(infoBit.cover),
         ),

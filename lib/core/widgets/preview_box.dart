@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hpi_flutter/app/widgets/utils.dart';
 
+import 'scrim_around.dart';
+
 @immutable
 class PreviewBox extends StatelessWidget {
   const PreviewBox({
@@ -27,12 +29,12 @@ class PreviewBox extends StatelessWidget {
           child: background,
         ),
         Positioned.fill(
-          child: DecoratedBox(
-            decoration: bottomScrim(Brightness.dark),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: onTap,
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: onTap,
+              child: ScrimAround(
+                brightness: Brightness.dark,
                 child: _buildOverlayContent(context),
               ),
             ),

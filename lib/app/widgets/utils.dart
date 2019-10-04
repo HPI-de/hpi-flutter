@@ -73,18 +73,3 @@ Widget buildLoadingErrorSliver(AsyncSnapshot<dynamic> snapshot) {
     child: buildLoadingError(snapshot),
   );
 }
-
-BoxDecoration bottomScrim(Brightness brightness) {
-  return BoxDecoration(
-    gradient: LinearGradient(
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-      colors: [
-        Colors.transparent,
-        brightness == Brightness.dark
-            ? Colors.black.withOpacity(0.5)
-            : Colors.white.withOpacity(0.5),
-      ],
-    ),
-  );
-}
