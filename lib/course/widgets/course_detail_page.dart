@@ -72,6 +72,7 @@ class CourseDetailPage extends StatelessWidget {
               floating: true,
               backgroundColor: Theme.of(context).cardColor,
               title: buildAppBarTitle(
+                context: context,
                 title: Text(courseSeries.title),
                 subtitle: StreamBuilder<Semester>(
                   stream: bloc.getSemester(course.semesterId),
@@ -79,7 +80,6 @@ class CourseDetailPage extends StatelessWidget {
                     snapshot.data != null
                         ? semesterToString(context, snapshot.data)
                         : course.semesterId,
-                    style: Theme.of(context).textTheme.subhead,
                   ),
                 ),
               ),

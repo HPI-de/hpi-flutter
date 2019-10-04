@@ -59,6 +59,7 @@ class PreviewBox extends StatelessWidget {
             style:
                 Theme.of(context).textTheme.body1.copyWith(color: Colors.white),
             maxLines: 3,
+            overflow: TextOverflow.ellipsis,
             child: title,
           ),
           DefaultTextStyle(
@@ -67,6 +68,7 @@ class PreviewBox extends StatelessWidget {
                 .caption
                 .copyWith(color: Colors.white),
             maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             child: caption,
           ),
         ],

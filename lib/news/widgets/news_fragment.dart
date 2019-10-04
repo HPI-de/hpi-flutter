@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart' hide Route;
 import 'package:hpi_flutter/app/widgets/dashboard_page.dart';
 import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/core/widgets/paginated_sliver_list.dart';
+import 'package:hpi_flutter/core/widgets/pagination.dart';
 import 'package:hpi_flutter/core/widgets/preview_box.dart';
 import 'package:hpi_flutter/news/data/article.dart';
 import 'package:hpi_flutter/news/data/bloc.dart';

@@ -1,13 +1,14 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart' hide Action;
+import 'package:flutter/material.dart' hide Action, Route;
 import 'package:flutter_html/flutter_html.dart';
-import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/core/utils.dart';
 import 'package:hpi_flutter/core/widgets/chip_group.dart';
-import 'package:hpi_flutter/core/widgets/paginated_sliver_list.dart';
+import 'package:hpi_flutter/core/widgets/image_widget.dart';
+import 'package:hpi_flutter/core/widgets/pagination.dart';
 import 'package:hpi_flutter/core/widgets/preview_box.dart';
+import 'package:hpi_flutter/core/widgets/stream_chip.dart';
 import 'package:hpi_flutter/myhpi/data/bloc.dart';
 import 'package:hpi_flutter/myhpi/data/infobit.dart';
+import 'package:hpi_flutter/route.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -22,16 +23,25 @@ class InfoBitCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.all(8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: _buildHead(context),
-          ),
-          _buildChildren(context),
-          _buildFoot(context),
-        ].where((w) => w != null).toList(),
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).pushNamed(
+            Route.myhpiInfoBit.name,
+            arguments: infoBit.id,
+          );
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
+              child: _buildHead(context),
+            ),
+            _buildChildren(context),
+            _buildFoot(context),
+            SizedBox(height: 8),
+          ].where((w) => w != null).toList(),
+        ),
       ),
     );
   }
@@ -46,15 +56,18 @@ class InfoBitCard extends StatelessWidget {
           infoBit.title,
           style: Theme.of(context).textTheme.headline,
         ),
-        if (!isNullOrBlank(infoBit.subtitle))
+        if (infoBit.subtitle != null)
           Text(
             infoBit.subtitle,
             style: Theme.of(context).textTheme.caption,
           ),
         SizedBox(height: 4),
-        if (!isNullOrBlank(infoBit.description))
+        if (infoBit.description != null)
           Html(
             data: infoBit.description,
+            onLinkTap: (url) async {
+              if (await canLaunch(url)) await launch(url);
+            },
             defaultTextStyle: Theme.of(context)
                 .textTheme
                 .body1
@@ -79,7 +92,7 @@ class InfoBitCard extends StatelessWidget {
         break;
     }
     return Padding(
-      padding: EdgeInsets.only(bottom: 8),
+      padding: EdgeInsets.only(top: 8),
       child: child,
     );
   }
@@ -96,28 +109,19 @@ class InfoBitCard extends StatelessWidget {
 
         return Column(
           children: <Widget>[
-            ...snapshot.data.items
-                .map((i) => ListTile(
-                      leading: i.cover != null
-                          ? Image.network(
-                              i.cover.source,
-                              fit: BoxFit.cover,
-                              width: 56 * 16 / 9,
-                              height: 56,
-                            )
-                          : null,
-                      title: Text(i.title, maxLines: 1),
-                      subtitle: !isNullOrBlank(i.subtitle)
-                          ? Text(i.subtitle, maxLines: 2)
-                          : null,
-                    ))
-                .asList(),
+            ...snapshot.data.items.map((i) => InfoBitListTile(i)).asList(),
             if (!isNullOrBlank(snapshot.data.nextPageToken))
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: OutlineButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(
+                        Route.myhpiInfoBit.name,
+                        arguments: infoBit.id,
+                      );
+                    },
                     child: Text('More...'),
                   ),
                 ),
@@ -133,32 +137,17 @@ class InfoBitCard extends StatelessWidget {
 
     return SizedBox(
       height: 150,
-      child: Builder(
-        builder: (context) => PaginatedListView(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.all(8),
-          pageSize: 5,
-          dataLoader: ({pageSize, pageToken}) {
-            return Provider.of<MyHpiBloc>(context).getInfoBits(
-                parentId: infoBit.id, pageSize: pageSize, pageToken: pageToken);
-          },
-          itemBuilder: (_, i, __) => Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: PreviewBox(
-              background: i.cover != null
-                  ? CachedNetworkImage(
-                      fit: BoxFit.cover,
-                      imageUrl: i.cover.source,
-                    )
-                  : Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Image.asset('assets/logo/logo_text.png'),
-                    ),
-              title: Text(i.title),
-              caption: Text(i.subtitle),
-              onTap: () {},
-            ),
-          ),
+      child: PaginatedListView(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.all(8),
+        pageSize: 5,
+        dataLoader: ({pageSize, pageToken}) {
+          return Provider.of<MyHpiBloc>(context).getInfoBits(
+              parentId: infoBit.id, pageSize: pageSize, pageToken: pageToken);
+        },
+        itemBuilder: (_, i, __) => Padding(
+          padding: const EdgeInsets.only(right: 8),
+          child: InfoBitPreviewBox(i),
         ),
       ),
     );
@@ -170,55 +159,44 @@ class InfoBitCard extends StatelessWidget {
     if (infoBit.actionIds.isEmpty() && infoBit.tagIds.isEmpty()) return null;
 
     return Padding(
-      padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
+      padding: EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           ChipGroup(
-            children: infoBit.actionIds
-                .map((a) => StreamBuilder<Action>(
-                      stream: Provider.of<MyHpiBloc>(context).getAction(a),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) return Container();
-                        if (!snapshot.hasData)
-                          return Chip(
-                            label: Text(HpiL11n.get(context, 'loading')),
-                          );
-                        return _buildActionChip(context, snapshot.data);
-                      },
-                    ))
-                .asList(),
+            children:
+                infoBit.actionIds.map((a) => InfoBitActionChip(a)).asList(),
           ),
           ChipGroup(
-            children: <Widget>[
-              Text('Tags:'),
-              ...infoBit.tagIds
-                  .map((t) => StreamBuilder<InfoBitTag>(
-                        stream: Provider.of<MyHpiBloc>(context).getTag(t),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) return Container();
-                          return Chip(
-                            label: Text(
-                              snapshot.data?.title ??
-                                  HpiL11n.get(context, 'loading'),
-                            ),
-                          );
-                        },
-                      ))
-                  .iter,
-            ],
+            leading: Text('Tags:'),
+            children: infoBit.tagIds
+                .map((t) => StreamChip<InfoBitTag>(
+                      stream: Provider.of<MyHpiBloc>(context).getTag(t),
+                      labelBuilder: (i) => Text(i.title),
+                    ))
+                .asList(),
           )
         ],
       ),
     );
   }
+}
 
-  Widget _buildActionChip(BuildContext context, Action action) {
-    assert(action != null);
+class InfoBitActionChip extends StatelessWidget {
+  const InfoBitActionChip(this.actionId, {Key key})
+      : assert(actionId != null),
+        super(key: key);
 
-    return ActionChip(
-      label: Text(action.title),
-      onPressed: () async {
+  final String actionId;
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamActionChip<Action>(
+      stream: Provider.of<MyHpiBloc>(context).getAction(actionId),
+      labelBuilder: (a) => Text(a.title),
+      onPressed: (action) async {
+        if (action == null) return;
+
         if (action is TextAction)
           Navigator.push(
             context,
@@ -233,6 +211,69 @@ class InfoBitCard extends StatelessWidget {
           );
         else if (action is LinkAction && await canLaunch(action.url))
           await launch(action.url);
+      },
+    );
+  }
+}
+
+class InfoBitListTile extends StatelessWidget {
+  const InfoBitListTile(this.infoBit, {Key key})
+      : assert(infoBit != null),
+        super(key: key);
+
+  final InfoBit infoBit;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: infoBit.cover != null
+          ? ImageWidget(
+              infoBit.cover,
+              width: 56 * 16 / 9,
+              height: 56,
+              fallbackShowLogo: false,
+            )
+          : null,
+      title: Text(
+        infoBit.title,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+      subtitle: infoBit.subtitle != null
+          ? Text(
+              infoBit.subtitle,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            )
+          : null,
+      onTap: () {
+        Navigator.of(context).pushNamed(
+          Route.myhpiInfoBit.name,
+          arguments: infoBit.id,
+        );
+      },
+    );
+  }
+}
+
+class InfoBitPreviewBox extends StatelessWidget {
+  const InfoBitPreviewBox(this.infoBit, {Key key})
+      : assert(infoBit != null),
+        super(key: key);
+
+  final InfoBit infoBit;
+
+  @override
+  Widget build(BuildContext context) {
+    return PreviewBox(
+      background: ImageWidget(infoBit.cover),
+      title: Text(infoBit.title),
+      caption: Text(infoBit.subtitle),
+      onTap: () {
+        Navigator.of(context).pushNamed(
+          Route.myhpiInfoBit.name,
+          arguments: infoBit.id,
+        );
       },
     );
   }

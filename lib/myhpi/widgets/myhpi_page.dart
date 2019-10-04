@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
-import 'package:hpi_flutter/core/widgets/paginated_sliver_list.dart';
+import 'package:hpi_flutter/core/localizations.dart';
+import 'package:hpi_flutter/core/widgets/pagination.dart';
 import 'package:hpi_flutter/myhpi/data/bloc.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +16,7 @@ class MyHpiPage extends StatelessWidget {
       child: MainScaffold(
         body: CustomScrollView(slivers: <Widget>[
           HpiSliverAppBar(
-            title: Text('MyHPI'),
+            title: Text(HpiL11n.get(context, 'myhpi')),
           ),
           InfoBitList(),
         ]),
