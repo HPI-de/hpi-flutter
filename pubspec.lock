@@ -212,13 +212,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  fluttery:
-    dependency: "direct main"
-    description:
-      name: fluttery
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.8"
   front_end:
     dependency: transitive
     description:
