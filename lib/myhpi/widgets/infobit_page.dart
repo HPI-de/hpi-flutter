@@ -4,6 +4,7 @@ import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/core/widgets/chip_group.dart';
+import 'package:hpi_flutter/core/widgets/image_widget.dart';
 import 'package:hpi_flutter/core/widgets/pagination.dart';
 import 'package:hpi_flutter/core/widgets/stream_chip.dart';
 import 'package:hpi_flutter/myhpi/data/bloc.dart';
@@ -43,14 +44,7 @@ class InfoBitPage extends StatelessWidget {
         final infoBit = snapshot.data;
         return CustomScrollView(
           slivers: <Widget>[
-            HpiSliverAppBar(
-              title: buildAppBarTitle(
-                context: context,
-                title: Text(infoBit.title),
-                subtitle:
-                    infoBit.subtitle != null ? Text(infoBit.subtitle) : null,
-              ),
-            ),
+            _buildAppBar(context, infoBit),
             SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
@@ -101,6 +95,36 @@ class InfoBitPage extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+
+  Widget _buildAppBar(BuildContext context, InfoBit infoBit) {
+    assert(context != null);
+    assert(infoBit != null);
+
+    final title = //Text(infoBit.title);
+        buildAppBarTitle(
+      context: context,
+      title: Text(infoBit.title),
+      subtitle: infoBit.subtitle != null ? Text(infoBit.subtitle) : null,
+    );
+
+    if (infoBit.cover == null)
+      return HpiSliverAppBar(
+        title: title,
+      );
+
+    return HpiSliverAppBar(
+      expandedHeight: MediaQuery.of(context).size.width / 16 * 9,
+      pinned: true,
+      flexibleSpace: HpiFlexibleSpaceBar(
+        title: title,
+        background: DecoratedBox(
+          decoration: bottomScrim(Brightness.light),
+          position: DecorationPosition.foreground,
+          child: ImageWidget(infoBit.cover),
+        ),
+      ),
     );
   }
 

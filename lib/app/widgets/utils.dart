@@ -12,10 +12,18 @@ Widget buildAppBarTitle({
   if (subtitle == null) return title;
 
   return Column(
+    mainAxisSize: MainAxisSize.min,
     mainAxisAlignment: MainAxisAlignment.center,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      title,
+      DefaultTextStyle(
+        style: Theme.of(context).textTheme.title.copyWith(
+              color: Colors.black87,
+            ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        child: title,
+      ),
       DefaultTextStyle(
         style: Theme.of(context).textTheme.subhead,
         maxLines: 1,
@@ -63,5 +71,20 @@ Widget buildLoadingErrorSliver(AsyncSnapshot<dynamic> snapshot) {
 
   return SliverFillRemaining(
     child: buildLoadingError(snapshot),
+  );
+}
+
+BoxDecoration bottomScrim(Brightness brightness) {
+  return BoxDecoration(
+    gradient: LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+        Colors.transparent,
+        brightness == Brightness.dark
+            ? Colors.black.withOpacity(0.5)
+            : Colors.white.withOpacity(0.5),
+      ],
+    ),
   );
 }

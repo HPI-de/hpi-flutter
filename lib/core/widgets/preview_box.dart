@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hpi_flutter/app/widgets/utils.dart';
 
 @immutable
 class PreviewBox extends StatelessWidget {
@@ -27,12 +28,7 @@ class PreviewBox extends StatelessWidget {
         ),
         Positioned.fill(
           child: DecoratedBox(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Colors.transparent, Colors.black45],
-            )),
+            decoration: bottomScrim(Brightness.dark),
             child: Material(
               color: Colors.transparent,
               child: InkWell(
