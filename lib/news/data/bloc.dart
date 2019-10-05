@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:grpc/grpc.dart';
+import 'package:hpi_flutter/core/widgets/pagination.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/news/v1test/news_service.pbgrpc.dart';
 import 'package:kt_dart/collection.dart';
 
@@ -21,11 +22,18 @@ class NewsBloc {
 
   final NewsServiceClient _client;
 
-  Stream<KtList<Article>> getArticles() {
-    return Stream.fromFuture(_client.listArticles(ListArticlesRequest())).map(
-        (r) => KtList.from(r.articles)
-            .map((a) => Article.fromProto(a))
-            .sortedByDescending((a) => a.publishDate));
+  Stream<PaginationResponse<Article>> getArticles({
+    int pageSize,
+    String pageToken,
+  }) {
+    final request = ListArticlesRequest()
+      ..pageSize = pageSize ?? 0
+      ..pageToken = pageToken ?? '';
+    return Stream.fromFuture(_client.listArticles(request))
+        .map((r) => PaginationResponse(
+              KtList.from(r.articles).map((a) => Article.fromProto(a)),
+              r.nextPageToken,
+            ));
   }
 
   Stream<Article> getArticle(String id) {

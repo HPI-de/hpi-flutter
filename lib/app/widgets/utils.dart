@@ -1,15 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 
-Widget buildAppBarTitle({@required Widget title, Widget subtitle}) {
+Widget buildAppBarTitle({
+  @required BuildContext context,
+  @required Widget title,
+  Widget subtitle,
+}) {
+  assert(context != null);
   assert(title != null);
 
+  if (subtitle == null) return title;
+
   return Column(
+    mainAxisSize: MainAxisSize.min,
     mainAxisAlignment: MainAxisAlignment.center,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      title,
-      subtitle,
+      DefaultTextStyle(
+        style: Theme.of(context).textTheme.title.copyWith(
+              color: Colors.black87,
+            ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        child: title,
+      ),
+      DefaultTextStyle(
+        style: Theme.of(context).textTheme.subhead,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        child: subtitle,
+      ),
     ],
   );
 }
