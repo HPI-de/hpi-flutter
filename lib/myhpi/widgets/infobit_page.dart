@@ -50,24 +50,31 @@ class InfoBitPage extends StatelessWidget {
             SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
-                child: Html(
-                  data: infoBit.description,
-                  onLinkTap: (url) async {
-                    if (await canLaunch(url)) await launch(url);
-                  },
-                ),
+                child: infoBit.content != null
+                    ? Html(
+                        data: infoBit.content,
+                        onLinkTap: (url) async {
+                          if (await canLaunch(url)) await launch(url);
+                        },
+                      )
+                    : Text(infoBit.description),
               ),
             ),
-            if (infoBit.childDisplay != InfoBitChildDisplay.none)
+            if (infoBit.childDisplay != null &&
+                infoBit.childDisplay != InfoBitChildDisplay.none)
               _buildChildren(context, infoBit),
             if (infoBit.parentId != null) _buildParentLink(context, infoBit),
             SliverPadding(
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
+              padding: EdgeInsets.fromLTRB(
+                16,
+                infoBit.actionIds.isNotEmpty() || infoBit.tagIds.isNotEmpty()
+                    ? 16
+                    : 0,
+                16,
+                16,
+              ),
               sliver: SliverList(
                 delegate: SliverChildListDelegate.fixed([
-                  if (infoBit.actionIds.isNotEmpty() ||
-                      infoBit.tagIds.isNotEmpty())
-                    SizedBox(height: 16),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: ChipGroup(
@@ -135,21 +142,24 @@ class InfoBitPage extends StatelessWidget {
     assert(context != null);
     assert(infoBit != null);
 
-    Widget child;
     switch (infoBit.childDisplay) {
       case InfoBitChildDisplay.list:
-        child = PaginatedSliverList<InfoBit>(
-          pageSize: 15,
-          dataLoader: ({pageSize, pageToken}) {
-            return Provider.of<MyHpiBloc>(context).getInfoBits(
-                parentId: infoBit.id, pageSize: pageSize, pageToken: pageToken);
-          },
-          itemBuilder: (_, infoBit, __) => InfoBitListTile(infoBit),
+        return SliverPadding(
+          padding: EdgeInsets.only(top: 16),
+          sliver: PaginatedSliverList<InfoBit>(
+            pageSize: 15,
+            dataLoader: ({pageSize, pageToken}) {
+              return Provider.of<MyHpiBloc>(context).getInfoBits(
+                  parentId: infoBit.id,
+                  pageSize: pageSize,
+                  pageToken: pageToken);
+            },
+            itemBuilder: (_, infoBit, __) => InfoBitListTile(infoBit),
+          ),
         );
-        break;
       case InfoBitChildDisplay.previews:
-        child = SliverPadding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
+        return SliverPadding(
+          padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
           sliver: PaginatedSliverGrid<InfoBit>.extent(
             maxCrossAxisExtent: 500,
             childAspectRatio: 16 / 9,
@@ -164,14 +174,11 @@ class InfoBitPage extends StatelessWidget {
             itemBuilder: (_, infoBit, __) => InfoBitPreviewBox(infoBit),
           ),
         );
-        break;
       default:
+        assert(false,
+            '_buildChildren must not be called for InfoBitChildDisplay.none');
         break;
     }
-    return SliverPadding(
-      padding: EdgeInsets.only(bottom: 8),
-      sliver: child,
-    );
   }
 
   Widget _buildParentLink(BuildContext context, InfoBit infoBit) {

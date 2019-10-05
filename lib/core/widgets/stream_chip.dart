@@ -8,6 +8,7 @@ class StreamChip<T> extends StatelessWidget {
     Key key,
     this.loadingLabel,
     @required this.stream,
+    this.avatarBuilder,
     @required this.labelBuilder,
   })  : assert(stream != null),
         assert(labelBuilder != null),
@@ -15,6 +16,7 @@ class StreamChip<T> extends StatelessWidget {
 
   final Widget loadingLabel;
   final Stream<T> stream;
+  final Widget Function(T) avatarBuilder;
   final Widget Function(T) labelBuilder;
 
   @override
@@ -25,6 +27,9 @@ class StreamChip<T> extends StatelessWidget {
         if (snapshot.hasError) return Container();
 
         return Chip(
+          avatar: snapshot.hasData && avatarBuilder != null
+              ? avatarBuilder(snapshot.data)
+              : null,
           label: snapshot.hasData
               ? labelBuilder(snapshot.data)
               : (loadingLabel ?? Text(HpiL11n.get(context, 'loading'))),
@@ -40,6 +45,7 @@ class StreamActionChip<T> extends StatelessWidget {
     Key key,
     this.loadingLabel,
     @required this.stream,
+    this.avatarBuilder,
     @required this.labelBuilder,
     @required this.onPressed,
   })  : assert(stream != null),
@@ -49,6 +55,7 @@ class StreamActionChip<T> extends StatelessWidget {
 
   final Widget loadingLabel;
   final Stream<T> stream;
+  final Widget Function(T) avatarBuilder;
   final Widget Function(T) labelBuilder;
   final void Function(T) onPressed;
 
@@ -60,6 +67,9 @@ class StreamActionChip<T> extends StatelessWidget {
         if (snapshot.hasError) return Container();
 
         return ActionChip(
+          avatar: snapshot.hasData && avatarBuilder != null
+              ? avatarBuilder(snapshot.data)
+              : null,
           label: snapshot.hasData
               ? labelBuilder(snapshot.data)
               : (loadingLabel ?? Text(HpiL11n.get(context, 'loading'))),

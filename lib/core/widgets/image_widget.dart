@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hpi_flutter/core/data/image.dart' as hpi;
@@ -41,6 +43,31 @@ class ImageWidget extends StatelessWidget {
         height: height,
         imageUrl: image.source,
       ),
+    );
+  }
+}
+
+class IconWidget extends StatelessWidget {
+  IconWidget(
+    this.icon, {
+    this.color,
+    this.size,
+    this.fit = BoxFit.contain,
+  })  : assert(icon != null);
+
+  final Uint8List icon;
+  final Color color;
+  final double size;
+  final BoxFit fit;
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.memory(
+      icon,
+      color: color,
+      fit: fit,
+      width: size,
+      height: size,
     );
   }
 }

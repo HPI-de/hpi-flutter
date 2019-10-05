@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/foundation.dart';
 import 'package:hpi_flutter/core/data/image.dart';
 import 'package:immutable_proto/immutable_proto.dart';
@@ -18,7 +20,10 @@ class MutableInfoBit {
   String title;
   String subtitle;
   proto.Image cover;
+  @required
   String description;
+  String content;
+  @required
   proto.InfoBit_ChildDisplay childDisplay;
   KtList<String> actionIds;
   KtList<String> tagIds;
@@ -36,7 +41,7 @@ class MutableInfoBitTag {
 abstract class Action {
   final String id;
   final String title;
-  final String icon;
+  final Uint8List icon;
 
   Action({
     @required this.id,
@@ -46,7 +51,11 @@ abstract class Action {
         assert(title != null);
 
   Action._fromProto(proto.Action action)
-      : this(id: action.id, title: action.title, icon: action.icon);
+      : this(
+          id: action.id,
+          title: action.title,
+          icon: Uint8List.fromList(action.icon),
+        );
 
   factory Action.fromProto(proto.Action action) {
     switch (action.whichType()) {
@@ -63,7 +72,7 @@ abstract class Action {
     final action = proto.Action()
       ..id = id
       ..title = title;
-    if (icon != null) action.icon = icon;
+    if (icon != null) action.icon = icon.toList();
     _writeToProto(action);
     return action;
   }
@@ -78,7 +87,7 @@ class TextAction extends Action {
   TextAction({
     @required String id,
     @required String title,
-    String icon,
+    Uint8List icon,
     @required this.content,
   })  : assert(content != null),
         super(id: id, title: title, icon: icon);
@@ -101,7 +110,7 @@ class LinkAction extends Action {
   LinkAction({
     @required String id,
     @required String title,
-    String icon,
+    Uint8List icon,
     @required this.url,
   })  : assert(url != null),
         super(id: id, title: title, icon: icon);

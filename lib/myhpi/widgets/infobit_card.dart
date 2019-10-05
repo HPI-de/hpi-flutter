@@ -93,12 +93,9 @@ class InfoBitCard extends StatelessWidget {
               if (infoBit.cover == null) ...title,
               SizedBox(height: 4),
               if (infoBit.description != null)
-                Html(
-                  data: infoBit.description,
-                  onLinkTap: (url) async {
-                    if (await canLaunch(url)) await launch(url);
-                  },
-                  defaultTextStyle: Theme.of(context)
+                Text(
+                  infoBit.description,
+                  style: Theme.of(context)
                       .textTheme
                       .body1
                       .copyWith(color: Colors.black.withOpacity(0.6)),
@@ -226,6 +223,7 @@ class InfoBitActionChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamActionChip<Action>(
       stream: Provider.of<MyHpiBloc>(context).getAction(actionId),
+      avatarBuilder: (a) => IconWidget(a.icon),
       labelBuilder: (a) => Text(a.title),
       onPressed: (action) async {
         if (action == null) return;
