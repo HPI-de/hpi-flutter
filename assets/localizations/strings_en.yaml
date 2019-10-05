@@ -3,6 +3,7 @@ loading: Loading…
 error: An error occurred. Please try again.
 submit: Submit
 sending: Sending…
+mode: More…
 language.en: English
 language.de: German
 
@@ -54,6 +55,9 @@ news/article.tags: TAGS
 
 # MyHPI
 myhpi: MyHPI
+myhpi/infoBit.tags.leading: "Tags:"
+myhpi/infoBit.tags.title: Tags
+myhpi/infoBit.parent: Found under
 
 # openHPI
 openHpi/fragment.title: openHPI courses

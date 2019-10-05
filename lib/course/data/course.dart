@@ -162,21 +162,21 @@ class Course {
   final String id;
   final String courseSeriesId;
   final String semesterId;
-  final String lecturer;
-  final KtSet<String> assistants;
+  final KtList<String> lecturers;
+  final KtList<String> assistants;
   final String website;
 
   Course({
     @required this.id,
     @required this.courseSeriesId,
     @required this.semesterId,
-    @required this.lecturer,
+    @required this.lecturers,
     @required this.assistants,
     this.website,
   })  : assert(id != null),
         assert(courseSeriesId != null),
         assert(semesterId != null),
-        assert(lecturer != null),
+        assert(lecturers != null),
         assert(assistants != null);
 
   Course.fromProto(proto.Course course)
@@ -184,8 +184,8 @@ class Course {
           id: course.id,
           courseSeriesId: course.courseSeriesId,
           semesterId: course.semesterId,
-          lecturer: course.lecturer,
-          assistants: KtSet.from(course.assistants),
+          lecturers: KtList.from(course.lecturers),
+          assistants: KtList.from(course.assistants),
           website: course.website,
         );
 
@@ -194,7 +194,7 @@ class Course {
       ..id = id
       ..courseSeriesId = courseSeriesId
       ..semesterId = semesterId
-      ..lecturer = lecturer
+      ..lecturers.addAll(lecturers.iter)
       ..assistants.addAll(assistants.iter)
       ..website = website;
   }
