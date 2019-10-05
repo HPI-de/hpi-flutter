@@ -11,6 +11,7 @@ import 'course/widgets/course_detail_page.dart';
 import 'myhpi/widgets/infobit_page.dart';
 import 'news/widgets/article_page.dart';
 import 'news/widgets/news_page.dart';
+import 'onboarding/widgets/onboarding_page.dart';
 import 'tools/widgets/timer_page.dart';
 
 @immutable
@@ -31,13 +32,14 @@ class Route {
         if (route == courses) return CoursePage();
         if (route == coursesDetail)
           return CourseDetailPage(settings.arguments as String);
+        if (route == food) return FoodPage();
         if (route == myhpi) return MyHpiPage();
         if (route == myhpiInfoBit)
           return InfoBitPage(infoBitId: settings.arguments as String);
         if (route == news) return NewsPage();
         if (route == newsArticle)
           return ArticlePage(settings.arguments as String);
-        if (route == food) return FoodPage();
+        if (route == onboarding) return OnboardingPage();
         if (route == tools) return TimerPage();
         if (route == toolsTimer) return TimerPage();
 
@@ -62,14 +64,26 @@ class Route {
   static const dashboard = const Route._internal('/');
   static const courses = const Route._internal('/courses');
   static const coursesDetail = const Route._internal('/courses/courseId');
+  static const food = const Route._internal('/food');
   static const myhpi = const Route._internal('/myhpi');
   static const myhpiInfoBit = const Route._internal('/myhpi/infoBitId');
   static const news = const Route._internal('/news');
   static const newsArticle = const Route._internal('/news/articleId');
-  static const food = const Route._internal('/food');
+  static const onboarding = const Route._internal('onboarding');
   static const tools = const Route._internal('/tools');
   static const toolsTimer = const Route._internal('/tools/timer');
 
-  static KtList<Route> values = KtList.of(dashboard, courses, coursesDetail,
-      myhpi, myhpiInfoBit, news, newsArticle, food, tools, toolsTimer);
+  static KtList<Route> values = KtList.from([
+    dashboard,
+    courses,
+    coursesDetail,
+    food,
+    myhpi,
+    myhpiInfoBit,
+    news,
+    newsArticle,
+    onboarding,
+    tools,
+    toolsTimer,
+  ]);
 }

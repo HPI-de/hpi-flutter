@@ -51,6 +51,9 @@ flutter:
 
   assets:
     - assets/logo/logo_text.png
+    - assets/logo/logo_caption_white.png
+    - assets/logo/logo_captionWhite.png
+    - assets/images/welcome_mrNet.png
     - assets/localizations/strings_de.yaml
     - assets/localizations/strings_en.yaml
 

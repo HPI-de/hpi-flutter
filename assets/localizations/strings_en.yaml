@@ -62,5 +62,31 @@ myhpi/infoBit.parent: Found under
 # openHPI
 openHpi/fragment.title: openHPI courses
 
+# Onboarding
+onboarding/start.title: Welcome to the HPI-App!
+onboarding/start.subtitle: Thanks for trying out the beta version of the new HPI-APP, developed by the MobileDev-Club.
+onboarding/privacyPolicy.prefix: I agree to the
+onboarding/privacyPolicy.suffix: "."
+onboarding/aboutMyself.title: "Please describe yourself to customize this app:"
+onboarding/aboutMyself.text.1: "I'm a "
+onboarding/aboutMyself.text.2: " studying "
+onboarding/aboutMyself.text.3: " in semester "
+onboarding/aboutMyself.text.4: "%i"
+onboarding/aboutMyself.text.5: 
+onboarding/aboutMyself.text.6: "."
+onboarding/role.student: student
+onboarding/role.phdStudent: PhD student
+onboarding/role.postdoc: postdoc
+onboarding/role.prof: professor
+onboarding/role.lecturer: lecturer
+onboarding/role.staff: staff member
+onboarding/courseOfStudies.baItse: BA-ITSE
+onboarding/courseOfStudies.maCs: MA-CS
+onboarding/courseOfStudies.maDe: MA-DE
+onboarding/courseOfStudies.maDh: MA-DH
+onboarding/courseOfStudies.maItse: MA-ITSE
+onboarding/next: Next
+onboarding/done: Done!
+
 # Tools
 tools: Tools
