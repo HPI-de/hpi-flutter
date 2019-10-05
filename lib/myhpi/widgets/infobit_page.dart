@@ -3,6 +3,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/app/widgets/utils.dart';
+import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/core/widgets/chip_group.dart';
 import 'package:hpi_flutter/core/widgets/image_widget.dart';
 import 'package:hpi_flutter/core/widgets/pagination.dart';
@@ -79,7 +80,9 @@ class InfoBitPage extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: Builder(
                       builder: (context) => ChipGroup(
-                        title: Text('Tags'),
+                        title: Text(
+                          HpiL11n.get(context, 'myhpi/infoBit.tags.title'),
+                        ),
                         children: infoBit.tagIds
                             .map((t) => StreamChip<InfoBitTag>(
                                   stream:
@@ -182,7 +185,7 @@ class InfoBitPage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Text(
-              'Found under',
+              HpiL11n.get(context, 'myhpi/infoBit.parent'),
               style: Theme.of(context).textTheme.overline,
             ),
           ),

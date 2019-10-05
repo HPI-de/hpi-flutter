@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart' hide Action, Route;
 import 'package:flutter_html/flutter_html.dart';
-import 'package:hpi_flutter/app/widgets/utils.dart';
+import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/core/utils.dart';
 import 'package:hpi_flutter/core/widgets/chip_group.dart';
 import 'package:hpi_flutter/core/widgets/image_widget.dart';
@@ -86,7 +86,7 @@ class InfoBitCard extends StatelessWidget {
           ),
         Padding(
           padding:
-              EdgeInsets.fromLTRB(16, infoBit.cover == null ? 0 : 8, 16, 0),
+              EdgeInsets.fromLTRB(16, infoBit.cover == null ? 8 : 0, 16, 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -155,7 +155,7 @@ class InfoBitCard extends StatelessWidget {
                         arguments: infoBit.id,
                       );
                     },
-                    child: Text('More...'),
+                    child: Text(HpiL11n.get(context, 'more')),
                   ),
                 ),
               ),
@@ -201,11 +201,11 @@ class InfoBitCard extends StatelessWidget {
                 infoBit.actionIds.map((a) => InfoBitActionChip(a)).asList(),
           ),
           ChipGroup(
-            leading: Text('Tags:'),
+            leading: Text(HpiL11n.get(context, 'myhpi/infoBit.tags.leading')),
             children: infoBit.tagIds
                 .map((t) => StreamChip<InfoBitTag>(
                       stream: Provider.of<MyHpiBloc>(context).getTag(t),
-                      labelBuilder: (i) => Text(i.title),
+                      labelBuilder: (t) => Text(t.title),
                     ))
                 .asList(),
           )
