@@ -1,60 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hpi_flutter/app/widgets/hpi_theme.dart';
+import 'package:hpi_flutter/app/widgets/dashboard_page.dart';
+import 'package:hpi_flutter/core/localizations.dart';
+import 'package:hpi_flutter/food/data/bloc.dart';
 import 'package:kt_dart/kt.dart';
 import 'package:provider/provider.dart';
 
 import '../data/restaurant.dart';
-import '../bloc.dart';
 import 'menu_item.dart';
 
 @immutable
 class RestaurantMenu extends StatelessWidget {
-  final String prefix;
   final String restaurantId;
   final KtList<MenuItem> menuItems;
 
-  RestaurantMenu(
-      {@required this.restaurantId, @required this.menuItems, this.prefix = ''})
+  RestaurantMenu({@required this.restaurantId, @required this.menuItems})
       : assert(restaurantId != null),
         assert(menuItems != null);
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Material(
-          child: Padding(
-            padding: EdgeInsets.only(top: 16, left: 16),
-            child: Material(
-              color: Colors.white,
-              elevation: 4,
-              child: Column(
-                children: <Widget>[
-                  const SizedBox(height: 16),
-                  ...menuItems.map((item) => MenuItemView(item)).iter,
-                ],
-              ),
-            ),
-          ),
+    return DashboardFragment(
+      title: StreamBuilder<Restaurant>(
+        stream: Provider.of<FoodBloc>(context).getRestaurant(restaurantId),
+        builder: (context, snapshot) => Text(
+          (snapshot.hasData)
+              ? snapshot.data.title
+              : HpiL11n.get(context, 'loading'),
         ),
-        Material(
-          color: HpiTheme.of(context).tertiary,
-          child: StreamBuilder<Restaurant>(
-            stream: Provider.of<FoodBloc>(context).getRestaurant(restaurantId),
-            builder: (_, snapshot) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                child: Text(
-                  prefix + snapshot.data?.title ?? '-',
-                  style:
-                      Theme.of(context).textTheme.title.copyWith(fontSize: 20),
-                ),
-              );
-            },
-          ),
-        ),
-      ],
+      ),
+      child: Column(
+        children: <Widget>[
+          const SizedBox(height: 16),
+          ..._buildItemGroups(menuItems).iter,
+        ],
+      ),
     );
+  }
+
+  KtList<Widget> _buildItemGroups(KtList<MenuItem> items) {
+    assert(items != null);
+
+    return items.groupBy((i) => i.counter).toList().flatMap(
+          (e) =>
+              KtList.of(MenuItemView(e.second.first())) +
+              e.second.drop(1).map((i) => MenuItemView(i, showCounter: false)),
+        );
   }
 }

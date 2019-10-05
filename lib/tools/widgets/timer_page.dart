@@ -3,8 +3,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart' hide Route;
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
-import 'package:fluttery/animations.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
+import 'package:hpi_flutter/core/widgets/radial_drag_gesture_detector.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:rxdart/rxdart.dart';

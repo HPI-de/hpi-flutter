@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart' hide Route;
 import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
-import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/core/localizations.dart';
+import 'package:hpi_flutter/core/widgets/pagination.dart';
 import 'package:hpi_flutter/core/widgets/utils.dart';
 import 'package:hpi_flutter/course/data/bloc.dart';
 import 'package:hpi_flutter/route.dart';
@@ -81,42 +81,32 @@ class CoursePage extends StatelessWidget {
 class CourseList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<KtList<Course>>(
-      stream: Provider.of<CourseBloc>(context).getCourses(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return buildLoadingErrorSliver(snapshot);
+    return PaginatedSliverList<Course>(
+      dataLoader: Provider.of<CourseBloc>(context).getCourses,
+      itemBuilder: (context, course, __) => StreamBuilder<CourseSeries>(
+        stream: Provider.of<CourseBloc>(context)
+            .getCourseSeries(course.courseSeriesId),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData)
+            return ListTile(
+              title: Text(snapshot.hasError
+                  ? snapshot.error.toString()
+                  : HpiL11n.get(context, 'loading')),
+            );
 
-        return SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              var course = snapshot.data[index];
-
-              return StreamBuilder<CourseSeries>(
-                stream: Provider.of<CourseBloc>(context)
-                    .getCourseSeries(course.courseSeriesId),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData)
-                    return ListTile(
-                      title: Text(snapshot.hasError
-                          ? snapshot.error.toString()
-                          : HpiL11n.get(context, 'loading')),
-                    );
-
-                  return ListTile(
-                    title: Text(snapshot.data.title),
-                    subtitle: Text(course.lecturer),
-                    onTap: () {
-                      Navigator.of(context).pushNamed(Route.coursesDetail.name,
-                          arguments: course.id);
-                    },
-                  );
-                },
-              );
+          return ListTile(
+            title: Text(snapshot.data.title),
+            subtitle: Text(
+              course.lecturers.joinToString(),
+              maxLines: 1,
+            ),
+            onTap: () {
+              Navigator.of(context)
+                  .pushNamed(Route.coursesDetail.name, arguments: course.id);
             },
-            childCount: snapshot.data.size,
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
@@ -124,44 +114,31 @@ class CourseList extends StatelessWidget {
 class CourseSeriesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<KtList<CourseSeries>>(
-      stream: Provider.of<CourseBloc>(context).getAllCourseSeries(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return buildLoadingErrorSliver(snapshot);
-
-        return SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              var courseSeries = snapshot.data[index];
-
-              return ExpansionTile(
-                key: PageStorageKey(courseSeries.id),
-                title: Text(courseSeries.title),
-                children: <Widget>[
-                  ListTile(
-                    leading: Icon(OMIcons.info),
-                    title: Text(
-                      HpiL11n.get(
-                        context,
-                        'course/course.details',
-                        args: [courseSeries.ects, courseSeries.hoursPerWeek],
-                      ),
-                    ),
-                    subtitle: Text(courseSeries.types
-                        .map((t) => courseTypeToString(context, t))
-                        .joinToString(separator: ' · ')),
-                  ),
-                  ListTile(
-                    leading: Icon(OMIcons.language),
-                    title: Text(getLanguage(context, courseSeries.language)),
-                  ),
-                ],
-              );
-            },
-            childCount: snapshot.data.size,
+    return PaginatedSliverList<CourseSeries>(
+      dataLoader: Provider.of<CourseBloc>(context).getAllCourseSeries,
+      itemBuilder: (context, courseSeries, __) => ExpansionTile(
+        key: PageStorageKey(courseSeries.id),
+        title: Text(courseSeries.title),
+        children: <Widget>[
+          ListTile(
+            leading: Icon(OMIcons.info),
+            title: Text(
+              HpiL11n.get(
+                context,
+                'course/course.details',
+                args: [courseSeries.ects, courseSeries.hoursPerWeek],
+              ),
+            ),
+            subtitle: Text(courseSeries.types
+                .map((t) => courseTypeToString(context, t))
+                .joinToString(separator: ' · ')),
           ),
-        );
-      },
+          ListTile(
+            leading: Icon(OMIcons.language),
+            title: Text(getLanguage(context, courseSeries.language)),
+          ),
+        ],
+      ),
     );
   }
 }
