@@ -47,6 +47,14 @@ Widget _buildRestaurantList(BuildContext context) {
         );
       if (!snapshot.hasData) return Placeholder();
 
+      if (snapshot.data.isEmpty()) {
+        return SliverFillRemaining(
+          child: Center(
+            child: Text(HpiL11n.get(context, 'food/noMenu')),
+          ),
+        );
+      }
+
       var menuItems = snapshot.data;
       var allRestaurants =
           menuItems.map((item) => item.restaurantId).toSet().toList();

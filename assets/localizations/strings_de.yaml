@@ -47,6 +47,7 @@ feedback/sent: Ihr Feedback wurde abgeschickt. Vielen Dank!
 food: Speisepläne
 food/fragment.title: Essensangebot
 food/offer: Angebot %s
+food/noMenu: Zur Zeit ist kein Speiseplan verfügbar
 
 # News
 news: Neuigkeiten

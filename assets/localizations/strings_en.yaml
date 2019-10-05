@@ -47,6 +47,7 @@ feedback/sent: Your fedback was submitted. Thanks!
 food: Food
 food/fragment.title: Today's menu
 food/offer: Offer %s
+food/noMenu: Currently, there is no menu data available
 
 # News
 news: News
