@@ -45,7 +45,9 @@ class MenuItemView extends StatelessWidget {
               child: Text(item.title, style: Theme.of(context).textTheme.body1),
             ),
             SizedBox(width: 8),
-            _buildLabels(item.labelIds),
+            // Currently, label icons aren't sent by the server.
+            // Once they are, this code will be added back.
+            // _buildLabels(item.labelIds),
           ],
         ),
       ),
@@ -147,19 +149,10 @@ class MenuItemDetails extends StatelessWidget {
     return StreamBuilder<Label>(
         stream: foodBloc.getLabel(id),
         builder: (_, snapshot) {
-          if (!snapshot.hasData)
-            return Chip(
-              avatar: Icon(Icons.restaurant),
-              label: Text(id),
-            );
+          if (!snapshot.hasData) return Chip(label: Text(id));
 
           final label = snapshot.data;
-          return Chip(
-            avatar: (label.icon.isNotEmpty)
-                ? Image.network(label.icon)
-                : Icon(Icons.restaurant),
-            label: Text(label.title),
-          );
+          return Chip(label: Text(label.title));
         });
   }
 }

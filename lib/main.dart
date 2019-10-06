@@ -7,6 +7,7 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/route.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
 
@@ -26,10 +27,10 @@ Future<ByteData> _downloadFontToCache() async {
   } else {
     // Download the font.
     final response = await http.get(fontUrl);
-    file.writeAsBytes(response.bodyBytes);
-    if (response.statusCode == 200)
+    if (response.statusCode == 200) {
+      file.writeAsBytes(response.bodyBytes);
       return ByteData.view(response.bodyBytes.buffer);
-    else
+    } else
       throw Exception('Failed to load font');
   }
 }
