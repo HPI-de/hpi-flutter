@@ -23,14 +23,16 @@ class Paginated<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return builder(PagewiseLoadController<T>(
       pageSize: pageSize,
-      pageFuture: (page) {
+      pageFuture: (page) async {
         assert(_tokens.containsKey(page));
-        return dataLoader(pageSize: pageSize, pageToken: _tokens[page])
-            .first
-            .then((r) {
-          _tokens[page + 1] = r.nextPageToken;
-          return r.items.asList();
-        });
+        if (page > 0 && _tokens[page] == null) return [];
+
+        final res = await dataLoader(
+          pageSize: pageSize,
+          pageToken: _tokens[page],
+        ).first;
+        _tokens[page + 1] = res.nextPageToken;
+        return res.items.asList();
       },
     ));
   }
@@ -67,6 +69,47 @@ class PaginatedSliverList<T> extends Paginated<T> {
           pageSize: pageSize,
           dataLoader: dataLoader,
           builder: (controller) => PagewiseSliverList(
+            pageLoadController: controller,
+            itemBuilder: itemBuilder,
+          ),
+          itemBuilder: itemBuilder,
+        );
+}
+
+@immutable
+class PaginatedSliverGrid<T> extends Paginated<T> {
+  PaginatedSliverGrid.count({
+    @required int crossAxisCount,
+    int pageSize = 20,
+    @required PaginationDataLoader<T> dataLoader,
+    @required ItemBuilder<T> itemBuilder,
+  }) : super(
+          pageSize: pageSize,
+          dataLoader: dataLoader,
+          builder: (controller) => PagewiseSliverGrid.count(
+            crossAxisCount: crossAxisCount,
+            pageLoadController: controller,
+            itemBuilder: itemBuilder,
+          ),
+          itemBuilder: itemBuilder,
+        );
+  PaginatedSliverGrid.extent({
+    @required double maxCrossAxisExtent,
+    double childAspectRatio = 1,
+    double spacing = 0,
+    double crossAxisSpacing,
+    double mainAxisSpacing,
+    int pageSize = 20,
+    @required PaginationDataLoader<T> dataLoader,
+    @required ItemBuilder<T> itemBuilder,
+  }) : super(
+          pageSize: pageSize,
+          dataLoader: dataLoader,
+          builder: (controller) => PagewiseSliverGrid.extent(
+            maxCrossAxisExtent: maxCrossAxisExtent,
+            childAspectRatio: childAspectRatio,
+            crossAxisSpacing: crossAxisSpacing ?? spacing,
+            mainAxisSpacing: mainAxisSpacing ?? spacing,
             pageLoadController: controller,
             itemBuilder: itemBuilder,
           ),

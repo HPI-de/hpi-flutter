@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart' hide Route;
 import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
-import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/core/widgets/paginated_sliver_list.dart';
+import 'package:hpi_flutter/core/widgets/pagination.dart';
 import 'package:hpi_flutter/core/widgets/utils.dart';
 import 'package:hpi_flutter/course/data/bloc.dart';
 import 'package:hpi_flutter/route.dart';
@@ -97,7 +96,10 @@ class CourseList extends StatelessWidget {
 
           return ListTile(
             title: Text(snapshot.data.title),
-            subtitle: Text(course.lecturers.joinToString()),
+            subtitle: Text(
+              course.lecturers.joinToString(),
+              maxLines: 1,
+            ),
             onTap: () {
               Navigator.of(context)
                   .pushNamed(Route.coursesDetail.name, arguments: course.id);

@@ -15,11 +15,13 @@ import 'app/services/navigation.dart';
 import 'app/widgets/hpi_theme.dart';
 
 Future<ByteData> fetchFont(String url) async {
-  final response = await http.get(url);
-  if (response.statusCode == 200)
-    return ByteData.view(response.bodyBytes.buffer);
-  else
-    throw Exception('Failed to load font');
+  try {
+    final response = await http.get(url);
+    if (response.statusCode == 200)
+      return ByteData.view(response.bodyBytes.buffer);
+    else
+      throw Exception('Failed to load font');
+  } catch (e) {}
 }
 
 void main() async {
@@ -138,6 +140,9 @@ class HpiApp extends StatelessWidget {
       theme.typography.geometryThemeFor(ScriptCategory.englishLike),
     );
     theme = theme.copyWith(
+      cardTheme: theme.cardTheme.copyWith(
+        shape: BeveledRectangleBorder(),
+      ),
       chipTheme: theme.chipTheme.copyWith(
         backgroundColor: Colors.transparent,
         shape: StadiumBorder(side: BorderSide(color: Colors.black12)),

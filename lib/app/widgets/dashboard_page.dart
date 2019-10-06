@@ -45,7 +45,7 @@ class DashboardFragment extends StatelessWidget {
       : assert(title != null),
         assert(child != null);
 
-  final String title;
+  final Widget title;
   final Widget child;
 
   @override
@@ -72,9 +72,9 @@ class DashboardFragment extends StatelessWidget {
                 ),
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  child: Text(
-                    title,
+                  child: DefaultTextStyle(
                     style: Theme.of(context).textTheme.title,
+                    child: title,
                   ),
                 ),
               ),

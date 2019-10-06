@@ -162,8 +162,8 @@ class Course {
   final String id;
   final String courseSeriesId;
   final String semesterId;
-  final KtSet<String> lecturers;
-  final KtSet<String> assistants;
+  final KtList<String> lecturers;
+  final KtList<String> assistants;
   final String website;
 
   Course({
@@ -184,8 +184,8 @@ class Course {
           id: course.id,
           courseSeriesId: course.courseSeriesId,
           semesterId: course.semesterId,
-          lecturers: KtSet.from(course.lecturers),
-          assistants: KtSet.from(course.assistants),
+          lecturers: KtList.from(course.lecturers),
+          assistants: KtList.from(course.assistants),
           website: course.website,
         );
 

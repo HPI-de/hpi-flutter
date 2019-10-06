@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:grpc/grpc.dart';
-import 'package:hpi_flutter/core/widgets/paginated_sliver_list.dart';
+import 'package:hpi_flutter/core/widgets/pagination.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/news/v1test/news_service.pbgrpc.dart';
 import 'package:kt_dart/collection.dart';
 
