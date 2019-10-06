@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
@@ -11,24 +13,38 @@ import 'package:screenshot/screenshot.dart';
 import 'app/services/navigation.dart';
 import 'app/widgets/hpi_theme.dart';
 
-Future<ByteData> fetchFont(String url) async {
-  try { 
-    final response = await http.get(url);
-      if (response.statusCode == 200)
-    return ByteData.view(response.bodyBytes.buffer);
-  else
-    throw Exception('Failed to load font');
-  } on SocketException catch (_) {
-      var fontLoader = FontLoader('HpiIcons').load();
+const fontUrl =
+    'https://hpi.de/fileadmin/templates/fonts/9de9709d-f77a-44ad-96b9-6fea586f7efb.ttf';
+
+Future<ByteData> _downloadFontToCache() async {
+  final file = File('${(await getTemporaryDirectory()).path}/NeoSans.ttf');
+
+  if (await file.exists()) {
+    // We already downloaded a cached version of the font, so just use that.
+    final bytes = file.readAsBytesSync();
+    return ByteData.view(bytes.buffer);
+  } else {
+    // Download the font.
+    final response = await http.get(fontUrl);
+    file.writeAsBytes(response.bodyBytes);
+    if (response.statusCode == 200)
+      return ByteData.view(response.bodyBytes.buffer);
+    else
+      throw Exception('Failed to load font');
   }
 }
 
 void main() async {
   var delegate = HpiLocalizationsDelegate();
-  var fontLoader = FontLoader('Neo Sans')
-    ..addFont(fetchFont(
-        'https://hpi.de/fileadmin/templates/fonts/9de9709d-f77a-44ad-96b9-6fea586f7efb.ttf'));
-  await fontLoader.load();
+  try {
+    var fontLoader = FontLoader('Neo Sans')..addFont(_downloadFontToCache());
+    await fontLoader.load();
+  } catch (_) {
+    // We do nothing here as it's not a big problem if the font isn't
+    // downloaded yet—we can just use the default this time. Of course, we
+    // automatically try to download the font the next time the app gets
+    // started.
+  }
 
   // Used by feedback to capture the whole app
   final screenshotController = ScreenshotController();
