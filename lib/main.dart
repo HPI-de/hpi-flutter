@@ -11,6 +11,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/services/navigation.dart';
 import 'app/widgets/hpi_theme.dart';
+import 'app/widgets/utils.dart';
+import 'onboarding/widgets/onboarding_page.dart';
 
 Future<ByteData> fetchFont(String url) async {
   final response = await http.get(url);
@@ -41,9 +43,6 @@ void main() async {
         ),
         Provider<ScreenshotController>(
           builder: (_) => screenshotController,
-        ),
-        FutureProvider<SharedPreferences>(
-          builder: (_) => SharedPreferences.getInstance(),
         ),
       ],
       child: Screenshot(
@@ -151,22 +150,40 @@ class HpiApp extends StatelessWidget {
 
     return HpiTheme(
       tertiary: Color(0xFFF6A804),
-      child: MaterialApp(
-        title: 'HPI',
-        theme: theme,
-        initialRoute: Route.dashboard.name,
-        onGenerateRoute: Route.generateRoute,
-        navigatorObservers: [
-          NavigationObserver(Provider.of<NavigationService>(context)),
-        ],
-        localizationsDelegates: [
-          hpiLocalizationsDelegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
-        supportedLocales: hpiLocalizationsDelegate.supportedLanguages
-            .map((l) => Locale(l))
-            .asList(),
+      child: FutureBuilder<SharedPreferences>(
+        future: SharedPreferences.getInstance(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return buildLoadingError(snapshot);
+
+          final sharedPreferences = snapshot.data;
+          // To show onboarding again, uncomment the following line:
+          // sharedPreferences.remove(OnboardingPage.KEY_COMPLETED);
+
+          return Provider<SharedPreferences>(
+            builder: (_) => sharedPreferences,
+            child: Builder(
+              builder: (context) => MaterialApp(
+                title: 'HPI',
+                theme: theme,
+                initialRoute: OnboardingPage.isOnboardingCompleted(context)
+                    ? Route.dashboard.name
+                    : Route.onboarding.name,
+                onGenerateRoute: Route.generateRoute,
+                navigatorObservers: [
+                  NavigationObserver(Provider.of<NavigationService>(context)),
+                ],
+                localizationsDelegates: [
+                  hpiLocalizationsDelegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                ],
+                supportedLocales: hpiLocalizationsDelegate.supportedLanguages
+                    .map((l) => Locale(l))
+                    .asList(),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
