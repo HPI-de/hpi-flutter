@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../route.dart';
+import 'scrollable_markdown.dart';
 
 class SettingsPage extends StatelessWidget {
   @override
@@ -232,6 +233,34 @@ class _AboutSection extends StatelessWidget {
 }
 
 class PrivacyPolicyPage extends StatelessWidget {
+  static void showBottomSheet(BuildContext context) {
+    assert(context != null);
+
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (context) => DraggableScrollableSheet(
+        expand: false,
+        builder: (context, scrollController) => 
+        FutureBuilder<String>(
+          future: rootBundle.loadString('assets/privacyPolicy.md'),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) return buildLoadingError(snapshot);
+
+            return
+             ScrollableMarkdown(
+              scrollController: scrollController,
+              data: snapshot.data,
+              onTapLink: (url) {
+                launch(url);
+              },
+            );
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MainScaffold(

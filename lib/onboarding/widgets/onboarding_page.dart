@@ -93,7 +93,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     .subhead
                     .copyWith(color: HpiTheme.of(context).tertiary),
               ),
-              onPressed: () {}, // TODO
+              onPressed: () {
+                PrivacyPolicyPage.showBottomSheet(context);
+              },
             ),
           ),
           TextSpan(
