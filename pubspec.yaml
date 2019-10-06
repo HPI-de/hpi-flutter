@@ -27,7 +27,7 @@ dependencies:
   # UI
   flutter_localizations:
     sdk: flutter
-  intl: ^0.16.0
+  intl: ">=0.15.8 <0.17.0"
   sprintf: ^4.0.2
   flutter_html: ^0.10.4
   timeago: ^2.0.18
