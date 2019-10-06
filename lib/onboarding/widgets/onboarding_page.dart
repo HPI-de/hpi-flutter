@@ -15,10 +15,9 @@ class OnboardingPage extends StatefulWidget {
   static const KEY_PRIVACY_POLICY = 'onboarding.privacyPolicy';
   static final privacyPolicyDate = DateTime.utc(2019, 10, 01);
 
-  static bool isOnboardingCompleted(BuildContext context) {
-    assert(context != null);
-    return Provider.of<SharedPreferences>(context).getInt(KEY_COMPLETED) !=
-        null;
+  static bool isOnboardingCompleted(SharedPreferences sharedPreferences) {
+    assert(sharedPreferences != null);
+    return sharedPreferences.getInt(KEY_COMPLETED) != null;
   }
 
   @override
@@ -176,9 +175,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               builder: (context, snapshot) {
                 if (!snapshot.hasData) return buildLoadingError(snapshot);
 
-                return AboutMyself(
-                  sharedPreferencesPrefix: 'onboarding.',
-                );
+                return AboutMyself();
               },
             ),
           ],

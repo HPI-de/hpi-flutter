@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/core/utils.dart';
 import 'package:kt_dart/collection.dart';
@@ -9,17 +8,30 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 @immutable
 class AboutMyself extends StatefulWidget {
-  static const KEY_ROLE = 'role';
-  static const KEY_COURSE_OF_STUDIES = 'courseOfStudies';
-  static const KEY_SEMESTER = 'semester';
+  static const KEY_ROLE = 'onboarding.role';
+  static const KEY_COURSE_OF_STUDIES = 'onboarding.courseOfStudies';
+  static const KEY_SEMESTER = 'onboarding.semester';
+
+  static Role getRole(SharedPreferences sharedPreferences) {
+    assert(sharedPreferences != null);
+    return stringToEnum(sharedPreferences.getString(KEY_ROLE), Role.values);
+  }
+
+  static CourseOfStudies getCourseOfStudies(
+      SharedPreferences sharedPreferences) {
+    assert(sharedPreferences != null);
+    return stringToEnum(sharedPreferences.getString(KEY_COURSE_OF_STUDIES),
+        CourseOfStudies.values);
+  }
+
+  static int getSemester(SharedPreferences sharedPreferences) {
+    assert(sharedPreferences != null);
+    return sharedPreferences.getInt(KEY_SEMESTER);
+  }
 
   const AboutMyself({
     Key key,
-    this.sharedPreferencesPrefix = '',
-  })  : assert(sharedPreferencesPrefix != null),
-        super(key: key);
-
-  final String sharedPreferencesPrefix;
+  }) : super(key: key);
 
   @override
   _AboutMyselfState createState() => _AboutMyselfState();
@@ -48,12 +60,11 @@ class _AboutMyselfState extends State<AboutMyself> {
 
   @override
   Widget build(BuildContext context) {
-    final role =
-        _getEnum(context, AboutMyself.KEY_ROLE, Role.values) ?? Role.student;
-    final courseOfStudies = _getEnum(context, AboutMyself.KEY_COURSE_OF_STUDIES,
-            CourseOfStudies.values) ??
+    final sharedPreferences = Provider.of<SharedPreferences>(context);
+    final role = AboutMyself.getRole(sharedPreferences) ?? Role.student;
+    final courseOfStudies = AboutMyself.getCourseOfStudies(sharedPreferences) ??
         CourseOfStudies.baItse;
-    final semester = _getInt(context, AboutMyself.KEY_SEMESTER) ?? 1;
+    final semester = AboutMyself.getSemester(sharedPreferences) ?? 1;
 
     return DefaultTextStyle(
       style: Theme.of(context).textTheme.headline.copyWith(
@@ -111,35 +122,14 @@ class _AboutMyselfState extends State<AboutMyself> {
     assert(context != null);
     assert(key != null);
 
-    Provider.of<SharedPreferences>(context)
-        .setString(widget.sharedPreferencesPrefix + key, enumToString(value));
-  }
-
-  E _getEnum<E>(BuildContext context, String key, List<E> enumValues) {
-    assert(context != null);
-    assert(key != null);
-    assert(enumValues != null);
-
-    return stringToEnum(
-        Provider.of<SharedPreferences>(context)
-            .getString(widget.sharedPreferencesPrefix + key),
-        enumValues);
+    Provider.of<SharedPreferences>(context).setString(key, enumToString(value));
   }
 
   void _setInt(BuildContext context, String key, int value) {
     assert(context != null);
     assert(key != null);
 
-    Provider.of<SharedPreferences>(context)
-        .setInt(widget.sharedPreferencesPrefix + key, value);
-  }
-
-  int _getInt<E>(BuildContext context, String key) {
-    assert(context != null);
-    assert(key != null);
-
-    return Provider.of<SharedPreferences>(context)
-        .getInt(widget.sharedPreferencesPrefix + key);
+    Provider.of<SharedPreferences>(context).setInt(key, value);
   }
 
   int _maxSemesterCount(CourseOfStudies cos) {

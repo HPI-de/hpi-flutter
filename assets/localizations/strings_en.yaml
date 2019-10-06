@@ -98,6 +98,7 @@ tools.timer: Timer
 # Settings
 settings: Settings
 settings/ad.title: Interested in programming apps?
+settings/ad.title.nonStudent: This app was developed by the MobileDev-Club
 settings/ad.text: This app was developed by the MobileDev-Club using Flutter. We meet regularly and are looking forward for new members!
 settings/ad.button: Join us :)
 settings/ad.link: https://t.me/hpi_mobiledev

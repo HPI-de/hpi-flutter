@@ -164,26 +164,25 @@ class HpiApp extends StatelessWidget {
 
           return Provider<SharedPreferences>(
             builder: (_) => sharedPreferences,
-            child: Builder(
-              builder: (context) => MaterialApp(
-                title: 'HPI',
-                theme: theme,
-                initialRoute: OnboardingPage.isOnboardingCompleted(context)
-                    ? Route.dashboard.name
-                    : Route.onboarding.name,
-                onGenerateRoute: Route.generateRoute,
-                navigatorObservers: [
-                  NavigationObserver(Provider.of<NavigationService>(context)),
-                ],
-                localizationsDelegates: [
-                  hpiLocalizationsDelegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                ],
-                supportedLocales: hpiLocalizationsDelegate.supportedLanguages
-                    .map((l) => Locale(l))
-                    .asList(),
-              ),
+            child: MaterialApp(
+              title: 'HPI',
+              theme: theme,
+              initialRoute:
+                  OnboardingPage.isOnboardingCompleted(sharedPreferences)
+                      ? Route.dashboard.name
+                      : Route.onboarding.name,
+              onGenerateRoute: Route.generateRoute,
+              navigatorObservers: [
+                NavigationObserver(Provider.of<NavigationService>(context)),
+              ],
+              localizationsDelegates: [
+                hpiLocalizationsDelegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+              ],
+              supportedLocales: hpiLocalizationsDelegate.supportedLanguages
+                  .map((l) => Locale(l))
+                  .asList(),
             ),
           );
         },
