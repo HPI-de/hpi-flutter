@@ -50,6 +50,7 @@ class MainScaffold extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       builder: (context) => ListView(
+        shrinkWrap: true,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(8),

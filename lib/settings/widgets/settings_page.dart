@@ -202,7 +202,7 @@ class PrivacyPolicyPage extends StatelessWidget {
         future: rootBundle.loadString('assets/privacyPolicy.md'),
         builder: (context, snapshot) {
           if (!snapshot.hasData)
-            return buildLoadingErrorBody(context, snapshot);
+            return buildLoadingError(snapshot);
 
           return Markdown(
             data: snapshot.data,
