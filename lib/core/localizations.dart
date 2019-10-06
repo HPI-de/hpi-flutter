@@ -45,6 +45,13 @@ class HpiL11n {
         fallback: fallback,
         args: args,
       );
+  static Text text(
+    BuildContext context,
+    String key, {
+    String fallback,
+    List<dynamic> args,
+  }) =>
+      Text(get(context, key, fallback: fallback, args: args));
 
   String call(String key, {String fallback, List<dynamic> args}) {
     assert(key != null);
