@@ -24,7 +24,7 @@ class RestaurantMenu extends StatelessWidget {
       title: StreamBuilder<Restaurant>(
         stream: Provider.of<FoodBloc>(context).getRestaurant(restaurantId),
         builder: (context, snapshot) => Text(
-          (snapshot.hasData)
+          snapshot.hasData
               ? snapshot.data.title
               : HpiL11n.get(context, 'loading'),
         ),

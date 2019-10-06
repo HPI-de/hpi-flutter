@@ -36,7 +36,7 @@ class MenuItemView extends StatelessWidget {
             SizedBox(
               width: 32,
               child: Text(
-                (showCounter) ? item.counter : ' ',
+                showCounter ? item.counter : ' ',
                 style:
                     Theme.of(context).textTheme.caption.copyWith(fontSize: 20),
               ),
