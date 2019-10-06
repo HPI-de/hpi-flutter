@@ -67,7 +67,7 @@ openHpi/fragment.title: openHPI courses
 
 # Onboarding
 onboarding/start.title: Welcome to the HPI-App!
-onboarding/start.subtitle: Thanks for trying out the beta version of the new HPI-APP, developed by the MobileDev-Club.
+onboarding/start.subtitle: Thanks for trying out the beta version of the new HPI-App, developed by the MobileDev-Club.
 onboarding/privacyPolicy.prefix: I agree to the
 onboarding/privacyPolicy.suffix: "."
 onboarding/aboutMyself.title: "Please describe yourself to customize this app:"

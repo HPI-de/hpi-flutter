@@ -2,6 +2,7 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:hpi_flutter/app/widgets/hpi_theme.dart';
 import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/core/localizations.dart';
+import 'package:hpi_flutter/settings/widgets/settings_page.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -50,9 +51,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          FractionallySizedBox(
-            widthFactor: 0.8,
-            child: Image.asset('assets/logo/logo_captionWhite.png'),
+          ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 400),
+            child: FractionallySizedBox(
+              widthFactor: 0.8,
+              child: Image.asset('assets/logo/logo_captionWhite.png'),
+            ),
           ),
           SizedBox(height: 96),
           Text(
@@ -87,7 +91,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
             child: FlatButton(
               padding: EdgeInsets.symmetric(horizontal: 8),
               child: Text(
-                'Privacy Policy',
+                HpiL11n.get(context, 'settings/about.privacyPolicy'),
                 style: Theme.of(context)
                     .textTheme
                     .subhead
@@ -131,7 +135,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Image.asset('assets/images/welcome_mrNet.png'),
+          ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 400),
+            child: Image.asset('assets/images/welcome_mrNet.png'),
+          ),
           SizedBox(height: 48),
           Builder(
             builder: (context) => InkWell(

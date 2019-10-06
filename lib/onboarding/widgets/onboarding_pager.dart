@@ -58,6 +58,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
           NotificationListener<ScrollUpdateNotification>(
             onNotification: (n) {
               setState(() {
+                if (n.metrics is! PageMetrics) return;
                 _page = (n.metrics as PageMetrics).page;
               });
               return false;
@@ -130,13 +131,16 @@ class _OnboardingPagerState extends State<OnboardingPager> {
           });
         return true;
       },
-      child: Padding(
-        padding: EdgeInsets.only(bottom: _bottomBarHeight) + page.padding,
-        child: Center(
-          child: DefaultTextStyle(
-            style: TextStyle(),
-            textAlign: TextAlign.center,
-            child: page.child,
+      child: Center(
+        child: SingleChildScrollView(
+          physics: ClampingScrollPhysics(),
+          child: Padding(
+            padding: EdgeInsets.only(bottom: _bottomBarHeight) + page.padding,
+            child: DefaultTextStyle(
+              style: TextStyle(),
+              textAlign: TextAlign.center,
+              child: page.child,
+            ),
           ),
         ),
       ),
