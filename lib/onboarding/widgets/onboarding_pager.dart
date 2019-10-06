@@ -37,7 +37,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
   void initState() {
     super.initState();
 
-    _canContinue = widget.pages.map((p) => !p.hasValidation);
+    _canContinue = widget.pages.map((p) => p.canContinue);
     _pageLimit ??= widget.pages.size;
     _formKeys ??= widget.pages.map((_) => GlobalKey());
   }
@@ -124,15 +124,15 @@ class _OnboardingPagerState extends State<OnboardingPager> {
 
     return NotificationListener<PageNotification>(
       onNotification: (n) {
-        setState(() {
-          _canContinue[index] = n.canContinue;
-        });
+        if (_canContinue[index] != n.canContinue)
+          setState(() {
+            _canContinue[index] = n.canContinue;
+          });
         return true;
       },
       child: Padding(
         padding: EdgeInsets.only(bottom: _bottomBarHeight) + page.padding,
-        child: Align(
-          alignment: Alignment(0, 0.3),
+        child: Center(
           child: DefaultTextStyle(
             style: TextStyle(),
             textAlign: TextAlign.center,
@@ -218,14 +218,14 @@ class Page {
     @required this.color,
     @required this.child,
     this.padding = const EdgeInsets.all(32),
-    this.hasValidation = false,
+    this.canContinue = true,
   })  : assert(color != null),
         assert(child != null),
         assert(padding != null),
-        assert(hasValidation != null);
+        assert(canContinue != null);
 
   final Color color;
   final Widget child;
   final EdgeInsets padding;
-  final bool hasValidation;
+  final bool canContinue;
 }

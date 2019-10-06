@@ -7,6 +7,7 @@ import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/route.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/services/navigation.dart';
 import 'app/widgets/hpi_theme.dart';
@@ -40,6 +41,9 @@ void main() async {
         ),
         Provider<ScreenshotController>(
           builder: (_) => screenshotController,
+        ),
+        FutureProvider<SharedPreferences>(
+          builder: (_) => SharedPreferences.getInstance(),
         ),
       ],
       child: Screenshot(

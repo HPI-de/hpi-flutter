@@ -21,6 +21,7 @@ dependencies:
   provider: ^3.0.0+1
   http: ^0.12.0+2
   yaml: ^2.1.16
+  shared_preferences: ^0.5.3+4
 
   # UI
   flutter_localizations:

@@ -1,19 +1,31 @@
 import 'package:flutter/material.dart' hide Route;
 import 'package:hpi_flutter/app/widgets/hpi_theme.dart';
+import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 import 'package:kt_dart/collection.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../route.dart';
 import 'about_myself.dart';
 import 'onboarding_pager.dart';
 
 class OnboardingPage extends StatefulWidget {
+  static const KEY_COMPLETED = 'onboarding.completed';
+  static const KEY_PRIVACY_POLICY = 'onboarding.privacyPolicy';
+  static final privacyPolicyDate = DateTime.utc(2019, 10, 01);
+
+  static bool isOnboardingCompleted(BuildContext context) {
+    assert(context != null);
+    return Provider.of<SharedPreferences>(context).getInt(KEY_COMPLETED) !=
+        null;
+  }
+
   @override
   _OnboardingPageState createState() => _OnboardingPageState();
 }
 
 class _OnboardingPageState extends State<OnboardingPage> {
-  bool accepted = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +35,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
           _buildPrivacyPolicyPage(),
           _buildAboutMyselfPage(),
         ]),
-        onFinish: () {
+        onFinish: () async {
+          final sp = await SharedPreferences.getInstance();
+          await sp.setInt(OnboardingPage.KEY_COMPLETED,
+              DateTime.now().millisecondsSinceEpoch);
           Navigator.of(context).pushReplacementNamed(Route.dashboard.name);
         },
       ),
@@ -89,16 +104,29 @@ class _OnboardingPageState extends State<OnboardingPage> {
       ),
       style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
     );
-    final onChanged = (BuildContext context, bool value) {
-      PageNotification(value).dispatch(context);
+
+    final acceptedVersion = Provider.of<SharedPreferences>(context)
+        .getInt(OnboardingPage.KEY_PRIVACY_POLICY);
+    final accepted = acceptedVersion != null &&
+        !DateTime.fromMillisecondsSinceEpoch(acceptedVersion, isUtc: true)
+            .isBefore(OnboardingPage.privacyPolicyDate);
+
+    final onChanged = (BuildContext context, [bool newValue]) {
+      newValue ??= !accepted;
+
+      PageNotification(newValue).dispatch(context);
       setState(() {
-        accepted = value;
+        Provider.of<SharedPreferences>(context).setInt(
+            OnboardingPage.KEY_PRIVACY_POLICY,
+            newValue
+                ? OnboardingPage.privacyPolicyDate.millisecondsSinceEpoch
+                : null);
       });
     };
 
     return Page(
       color: Theme.of(context).primaryColor,
-      hasValidation: true,
+      canContinue: accepted,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -106,7 +134,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           SizedBox(height: 48),
           Builder(
             builder: (context) => InkWell(
-              onTap: () => onChanged(context, !accepted),
+              onTap: () => onChanged(context),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -143,7 +171,16 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   ),
             ),
             SizedBox(height: 32),
-            AboutMyself(),
+            FutureBuilder<SharedPreferences>(
+              future: SharedPreferences.getInstance(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) return buildLoadingError(snapshot);
+
+                return AboutMyself(
+                  sharedPreferencesPrefix: 'onboarding.',
+                );
+              },
+            ),
           ],
         ),
       ),

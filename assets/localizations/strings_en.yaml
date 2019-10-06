@@ -72,7 +72,7 @@ onboarding/aboutMyself.text.1: "I'm a "
 onboarding/aboutMyself.text.2: " studying "
 onboarding/aboutMyself.text.3: " in semester "
 onboarding/aboutMyself.text.4: "%i"
-onboarding/aboutMyself.text.5: 
+onboarding/aboutMyself.text.5: ""
 onboarding/aboutMyself.text.6: "."
 onboarding/role.student: student
 onboarding/role.phdStudent: PhD student
