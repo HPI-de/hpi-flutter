@@ -121,6 +121,9 @@ class HpiApp extends StatelessWidget {
       theme.typography.geometryThemeFor(ScriptCategory.englishLike),
     );
     theme = theme.copyWith(
+      cardTheme: theme.cardTheme.copyWith(
+        shape: BeveledRectangleBorder(),
+      ),
       chipTheme: theme.chipTheme.copyWith(
         backgroundColor: Colors.transparent,
         shape: StadiumBorder(side: BorderSide(color: Colors.black12)),

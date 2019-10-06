@@ -3,6 +3,7 @@ loading: Lädt…
 error: Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.
 submit: Abschicken
 sending: Sendet…
+currency.eur: "%.2f €"
 mode: Mehr…
 language.en: Englisch
 language.de: Deutsch
@@ -39,12 +40,14 @@ feedback/action: Feedback senden
 feedback/message: Deine Nachricht
 feedback/message.missing: Bitte gib eine Nachricht ein
 feedback/includeLogs: Screenshots und Logdateien mitsenden
-feedback/includeLogs.desc: Empfohlen für Fehlermeldungen
-feedback/sent: Ihr Feedback wurde abgeschickt. Vielen Dank!
+feedback/includeLogs.desc: Empfohlen bei Problemen
+feedback/sent: Dein Feedback wurde abgeschickt. Vielen Dank!
 
 # Food
 food: Speisepläne
-food/fragment.title: Heutiges Essensangebot
+food/fragment.title: Essensangebot
+food/offer: Angebot %s
+food/noMenu: Zur Zeit ist kein Speiseplan verfügbar
 
 # News
 news: Neuigkeiten
@@ -90,3 +93,37 @@ onboarding/done: Fertig!
 
 # Tools
 tools: Werkzeuge
+tools.timer: Timer
+
+# Settings
+settings: Einstellungen
+settings/ad.title: Du möchtest Apps programmieren?
+settings/ad.text: Diese App wurde vom MobileDev-Klub mithilfe von Flutter entwickelt. Wir treffen uns regelmäßig und freuen uns auf neue Mitglieder!
+settings/ad.button: Beitreten :)
+settings/ad.link: https://t.me/hpi_mobiledev
+settings/about.version: Version
+settings/about.version.error: Fehler beim Laden der Versionsinformationen
+settings/about.contributors: Mitwirkende
+settings/about.contributors.desc: Felix Auringer, Marcel Garus, Maximilian Stiede, Clemens Tiedt, Ronja Wagner, Jonas Wanke
+settings/about.openSource: Diese App ist Open Source
+settings/about.openSource.link: https://github.com/HPI-de/hpi_flutter
+settings/about.imprint: Impressum
+settings/about.imprint.desc: |-
+  Klub MobileDev des
+  Hasso-Plattner-Institut für Digital Engineering gGmbH
+  Prof.-Dr.-Helmert-Str. 2-3
+  14482 Potsdam
+  Telefon: +49 (0)331 / 5509-0
+  Telefax: +49 (0)331 / 5509-129
+  E-Mail: klub-mobiledeveloper-sprecher@hpi.de
+  Webseite: https://mobiledev.hpi.de
+settings/about.privacyPolicy: Datenschutzerklärung
+settings/about.licenses: Lizenzen
+settings/about.licenses.name: Hpi-App
+settings/about.licenses.legalese: |-
+  Copyright 2019 hpi_flutter
+
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
