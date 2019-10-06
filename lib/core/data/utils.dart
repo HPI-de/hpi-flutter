@@ -35,7 +35,7 @@ Date dateTimeToDate(DateTime dateTime) {
 }
 
 double moneyToDouble(Money money) {
-  return money.nanos / 1000000000.0;
+  return money.units.toDouble() + (money.nanos / 1000000000.0);
 }
 
 Money doubleToMoney(double doubleValue) {
