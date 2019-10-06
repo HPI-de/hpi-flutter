@@ -21,6 +21,7 @@ dependencies:
   provider: ^3.0.0+1
   http: ^0.12.0+2
   yaml: ^2.1.16
+  package_info: ^0.4.0+6
 
   # UI
   flutter_localizations:
@@ -35,6 +36,7 @@ dependencies:
   cached_network_image: ^1.1.1
   screenshot: ^0.1.1
   flutter_pagewise: ^1.2.3
+  flutter_markdown: ^0.2.0
 
 dev_dependencies:
   flutter_test:
@@ -50,9 +52,12 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/logo/logo.png
     - assets/logo/logo_text.png
+    - assets/logo/mobileDev sheep.png
     - assets/localizations/strings_de.yaml
     - assets/localizations/strings_en.yaml
+    - assets/privacyPolicy.md
 
   fonts:
   - family:  HpiIcons
