@@ -7,6 +7,7 @@ import 'app/widgets/main_scaffold.dart';
 import 'course/widgets/course_detail_page.dart';
 import 'course/widgets/course_page.dart';
 import 'food/widgets/food_page.dart';
+import 'myhpi/widgets/infobit_page.dart';
 import 'myhpi/widgets/myhpi_page.dart';
 import 'news/widgets/article_page.dart';
 import 'news/widgets/news_page.dart';
@@ -33,6 +34,8 @@ class Route {
         if (route == coursesDetail)
           return CourseDetailPage(settings.arguments as String);
         if (route == myhpi) return MyHpiPage();
+        if (route == myhpiInfoBit)
+          return InfoBitPage(infoBitId: settings.arguments as String);
         if (route == news) return NewsPage();
         if (route == newsArticle)
           return ArticlePage(settings.arguments as String);
@@ -65,6 +68,7 @@ class Route {
   static const courses = const Route._internal('/courses');
   static const coursesDetail = const Route._internal('/courses/courseId');
   static const myhpi = const Route._internal('/myhpi');
+  static const myhpiInfoBit = const Route._internal('/myhpi/infoBitId');
   static const news = const Route._internal('/news');
   static const newsArticle = const Route._internal('/news/articleId');
   static const food = const Route._internal('/food');
@@ -80,6 +84,7 @@ class Route {
     courses,
     coursesDetail,
     myhpi,
+    myhpiInfoBit,
     news,
     newsArticle,
     food,

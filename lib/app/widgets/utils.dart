@@ -1,22 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 
-Widget buildAppBarTitle({@required Widget title, Widget subtitle}) {
+Widget buildAppBarTitle({
+  @required BuildContext context,
+  @required Widget title,
+  Widget subtitle,
+}) {
+  assert(context != null);
   assert(title != null);
 
+  if (subtitle == null) return title;
+
   return Column(
+    mainAxisSize: MainAxisSize.min,
     mainAxisAlignment: MainAxisAlignment.center,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      title,
-      subtitle,
+      DefaultTextStyle(
+        style: Theme.of(context).textTheme.title.copyWith(
+              color: Colors.black87,
+            ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        child: title,
+      ),
+      DefaultTextStyle(
+        style: Theme.of(context).textTheme.subhead,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        child: subtitle,
+      ),
     ],
   );
 }
 
-Widget buildLoadingErrorBody(
-    BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-  assert(context != null);
+Widget buildLoadingError(AsyncSnapshot<dynamic> snapshot) {
   assert(snapshot != null);
 
   return Center(
@@ -44,7 +62,7 @@ Widget buildLoadingErrorScaffold(
           ? HpiL11n.get(context, 'error')
           : (loadingTitle ?? HpiL11n.get(context, 'loading'))),
     ),
-    body: buildLoadingErrorBody(context, snapshot),
+    body: buildLoadingError(snapshot),
   );
 }
 
@@ -52,10 +70,6 @@ Widget buildLoadingErrorSliver(AsyncSnapshot<dynamic> snapshot) {
   assert(snapshot != null);
 
   return SliverFillRemaining(
-    child: Center(
-      child: snapshot.hasError
-          ? Text(snapshot.error.toString())
-          : CircularProgressIndicator(),
-    ),
+    child: buildLoadingError(snapshot),
   );
 }

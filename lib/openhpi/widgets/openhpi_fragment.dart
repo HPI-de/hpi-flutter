@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hpi_flutter/app/widgets/dashboard_page.dart';
+import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter/widgets.dart';
@@ -15,7 +16,7 @@ class OpenHpiFragment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DashboardFragment(
-      title: HpiL11n.get(context, 'openHpi/fragment.title'),
+      title: Text(HpiL11n.get(context, 'openHpi/fragment.title')),
       child: Provider<OpenHpiBloc>(
         builder: (_) => OpenHpiBloc(),
         child: SizedBox(
@@ -33,11 +34,7 @@ class OpenHpiFragment extends StatelessWidget {
       stream: Provider.of<OpenHpiBloc>(context).getAnnouncedCourses(),
       builder: (context, snapshot) {
         if (!snapshot.hasData)
-          return Center(
-            child: snapshot.hasError
-                ? Text(snapshot.error.toString())
-                : CircularProgressIndicator(),
-          );
+          return buildLoadingError(snapshot);
 
         return ListView.separated(
           padding: EdgeInsets.all(8),
