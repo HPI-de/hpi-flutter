@@ -1,6 +1,6 @@
+import 'package:cached_listview/cached_listview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:grpc/grpc.dart';
 import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 import 'package:kt_dart/collection.dart';
@@ -25,9 +25,7 @@ class FoodPage extends StatelessWidget {
               floating: true,
               title: Text(HpiL11n.get(context, 'food')),
             ),
-            Builder(
-              builder: (context) => _buildRestaurantList(context),
-            ),
+            Builder(builder: (context) => _buildRestaurantList(context)),
           ],
         ),
       ),
@@ -36,6 +34,34 @@ class FoodPage extends StatelessWidget {
 }
 
 Widget _buildRestaurantList(BuildContext context) {
+  return CachedCustomScrollView<MenuItem>(
+    controller: Provider.of<FoodBloc>(context).menuItems,
+    sliverBuilder: (context, update) {
+      assert(update.hasData || update.hasError);
+
+      if (update.hasError && !update.hasData) {
+        return [
+          SliverFillRemaining(
+            child: Center(child: Text('${update.error}')),
+          )
+        ];
+      }
+
+      return [
+        if (update.hasError)
+          SliverList(
+            delegate: SliverChildListDelegate([
+              Material(
+                elevation: 8,
+                child: Text("You're currently viewing cached offline data."),
+              ),
+            ]),
+          ),
+        if (update.hasData)
+          _buildMenuSlivers(context, KtList.from(update.data)),
+      ];
+    },
+  );
   return StreamBuilder<KtList<MenuItem>>(
     stream: Provider.of<FoodBloc>(context).getMenuItems(),
     builder: (context, snapshot) {
@@ -50,20 +76,23 @@ Widget _buildRestaurantList(BuildContext context) {
       if (!snapshot.hasData) return Placeholder();
 
       var menuItems = snapshot.data;
-      var allRestaurants =
-          menuItems.map((item) => item.restaurantId).toSet().toList();
-      return SliverList(
-        delegate: SliverChildBuilderDelegate(
-            (context, index) => Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: RestaurantMenu(
-                    restaurantId: allRestaurants[index],
-                    menuItems: menuItems.filter(
-                        (item) => item.restaurantId == allRestaurants[index]),
-                  ),
-                ),
-            childCount: allRestaurants.size),
-      );
     },
+  );
+}
+
+Widget _buildMenuSlivers(BuildContext context, KtList<MenuItem> items) {
+  var allRestaurants = items.map((item) => item.restaurantId).toSet().toList();
+  return SliverList(
+    delegate: SliverChildBuilderDelegate(
+      (context, index) => Padding(
+        padding: const EdgeInsets.all(16),
+        child: RestaurantMenu(
+          restaurantId: allRestaurants[index],
+          menuItems: items
+              .filter((item) => item.restaurantId == allRestaurants[index]),
+        ),
+      ),
+      childCount: allRestaurants.size,
+    ),
   );
 }

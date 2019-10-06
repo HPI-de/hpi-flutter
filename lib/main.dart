@@ -1,15 +1,18 @@
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart' hide Route;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/route.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
 
 import 'app/services/navigation.dart';
 import 'app/widgets/hpi_theme.dart';
+import 'food/data/restaurant.dart';
 
 Future<ByteData> fetchFont(String url) async {
   final response = await http.get(url);
@@ -19,12 +22,22 @@ Future<ByteData> fetchFont(String url) async {
     throw Exception('Failed to load font');
 }
 
+Future<void> initializeHive() async {
+  Hive
+    ..registerAdapter(MenuItemAdapter(), 40)
+    ..registerAdapter(RestaurantAdapter(), 41)
+    ..registerAdapter(LabelAdapter(), 42)
+    ..init((await getApplicationDocumentsDirectory()).path);
+}
+
 void main() async {
+  await initializeHive();
+
   var delegate = HpiLocalizationsDelegate();
-  var fontLoader = FontLoader('Neo Sans')
+  /*var fontLoader = FontLoader('Neo Sans')
     ..addFont(fetchFont(
         'https://hpi.de/fileadmin/templates/fonts/9de9709d-f77a-44ad-96b9-6fea586f7efb.ttf'));
-  await fontLoader.load();
+  await fontLoader.load();*/
 
   // Used by feedback to capture the whole app
   final screenshotController = ScreenshotController();

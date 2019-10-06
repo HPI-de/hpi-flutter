@@ -1,12 +1,20 @@
+import 'package:hive/hive.dart';
+import 'package:hpi_flutter/core/data/entity.dart';
 import 'package:hpi_flutter/core/data/utils.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/food/v1test/food.pb.dart'
     as proto;
 import 'package:kt_dart/collection.dart';
 import 'package:meta/meta.dart';
 
+part 'restaurant.g.dart';
+
 @immutable
-class Restaurant {
+@HiveType()
+class Restaurant implements Entity {
+  @HiveField(0)
   final String id;
+
+  @HiveField(1)
   final String title;
 
   const Restaurant({@required this.id, @required this.title})
@@ -26,14 +34,27 @@ class Restaurant {
 }
 
 @immutable
-class MenuItem {
+@HiveType()
+class MenuItem implements Entity {
+  @HiveField(0)
   final String id;
+
+  @HiveField(1)
   final String restaurantId;
+
+  @HiveField(2)
   final DateTime date;
+
+  @HiveField(3)
   final String title;
 
+  @HiveField(4)
   final Map<String, double> prices;
+
+  @HiveField(5)
   final String counter;
+
+  @HiveField(6)
   final KtSet<String> labelIds;
 
   const MenuItem({
@@ -73,9 +94,15 @@ class MenuItem {
 }
 
 @immutable
-class Label {
+@HiveType()
+class Label implements Entity {
+  @HiveField(0)
   final String id;
+
+  @HiveField(1)
   final String title;
+
+  @HiveField(2)
   final String icon;
 
   const Label({@required this.id, @required this.title, @required this.icon})
