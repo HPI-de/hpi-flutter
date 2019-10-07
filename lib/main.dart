@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'dart:ui';
 import 'package:http/http.dart' as http;
@@ -6,6 +8,7 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/route.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,20 +18,45 @@ import 'app/widgets/hpi_theme.dart';
 import 'app/widgets/utils.dart';
 import 'onboarding/widgets/onboarding_page.dart';
 
-Future<ByteData> fetchFont(String url) async {
-  final response = await http.get(url);
-  if (response.statusCode == 200)
-    return ByteData.view(response.bodyBytes.buffer);
-  else
-    throw Exception('Failed to load font');
+Future<ByteData> _downloadFontToCache(String filename, String url) async {
+  final file = File('${(await getTemporaryDirectory()).path}/$filename');
+
+  if (await file.exists()) {
+    // We already downloaded a cached version of the font, so just use that.
+    final bytes = file.readAsBytesSync();
+    return ByteData.view(bytes.buffer);
+  } else {
+    // Download the font.
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      file.writeAsBytes(response.bodyBytes);
+      return ByteData.view(response.bodyBytes.buffer);
+    } else
+      throw Exception('Failed to load font');
+  }
 }
 
 void main() async {
   var delegate = HpiLocalizationsDelegate();
-  var fontLoader = FontLoader('Neo Sans')
-    ..addFont(fetchFont(
-        'https://hpi.de/fileadmin/templates/fonts/9de9709d-f77a-44ad-96b9-6fea586f7efb.ttf'));
-  await fontLoader.load();
+  try {
+    const fontBaseUrl = 'https://hpi.de/fileadmin/templates/fonts';
+
+    // We should load the different font files for bold and normal style into
+    // the same font name with different weights, but it seems like this
+    // feature is not supported yet: https://github.com/flutter/flutter/issues/42084
+    // So, for now we only load the non-bold font.
+    var fontLoader = FontLoader('Neo Sans')
+      //..addFont(_downloadFontToCache('neo_sans_bold.ttf',
+      //    '$fontBaseUrl/9de9709d-f77a-44ad-96b9-6fea586f7efb.ttf'))
+      ..addFont(_downloadFontToCache('neo_sans.ttf',
+          '$fontBaseUrl/504947d7-98d6-4ce3-b301-33b0deb9e0e4.ttf'));
+    await fontLoader.load();
+  } catch (_) {
+    // We do nothing here as it's not a big problem if the font isn't
+    // downloaded yet—we can just use the default this time. Of course, we
+    // automatically try to download the font the next time the app gets
+    // started.
+  }
 
   // Used by feedback to capture the whole app
   // final screenshotController = ScreenshotController();
