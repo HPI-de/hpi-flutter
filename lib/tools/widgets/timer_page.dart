@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart' hide Route;
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/core/localizations.dart';
@@ -71,9 +72,7 @@ class CountdownTimer {
 
   Duration get remaining =>
       isDone ? Duration.zero : _total + _additionalTime - _stopwatch.elapsed;
-  bool get isDone =>
-      state == CountdownTimerState.ready &&
-      _total + _additionalTime - _stopwatch.elapsed < _zeroDelta;
+  bool get isDone => _total + _additionalTime - _stopwatch.elapsed < _zeroDelta;
 
   CountdownTimer(this._total, this.updateFrequency)
       : assert(_total != null),
@@ -140,6 +139,7 @@ class CountdownTimer {
     if (isDone) {
       _timer?.cancel();
       _state.value = CountdownTimerState.ready;
+      FlutterRingtonePlayer.playNotification();
     }
     _updates.value = remaining;
   }

@@ -12,7 +12,6 @@ import 'package:hpi_flutter/myhpi/data/bloc.dart';
 import 'package:hpi_flutter/myhpi/data/infobit.dart';
 import 'package:hpi_flutter/route.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class InfoBitCard extends StatelessWidget {
   const InfoBitCard(this.infoBit, {Key key})
@@ -240,8 +239,7 @@ class InfoBitActionChip extends StatelessWidget {
               ),
             ),
           );
-        else if (action is LinkAction && await canLaunch(action.url))
-          await launch(action.url);
+        else if (action is LinkAction) await tryLaunch(action.url);
       },
     );
   }

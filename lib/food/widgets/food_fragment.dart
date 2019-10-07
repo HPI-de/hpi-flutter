@@ -32,11 +32,11 @@ class FoodFragment extends StatelessWidget {
         if (snapshot.data.isEmpty()) {
           return DashboardFragment(
             title: Text(HpiL11n.get(context, 'food')),
-            child: Center(
-                child: Padding(
+            child: Container(
+              alignment: Alignment.center,
               padding: const EdgeInsets.all(16.0),
               child: Text(HpiL11n.get(context, 'food/noMenu')),
-            )),
+            ),
           );
         }
 

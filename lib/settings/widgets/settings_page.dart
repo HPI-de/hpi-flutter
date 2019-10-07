@@ -5,12 +5,16 @@ import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/core/localizations.dart';
+import 'package:hpi_flutter/core/utils.dart';
 import 'package:hpi_flutter/feedback/widgets/feedback_dialog.dart';
+import 'package:hpi_flutter/onboarding/widgets/about_myself.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:package_info/package_info.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../route.dart';
+import 'scrollable_markdown.dart';
 
 class SettingsPage extends StatelessWidget {
   @override
@@ -34,63 +38,100 @@ class SettingsPage extends StatelessWidget {
 class _MobileDevAd extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    assert(context != null);
+    final role = AboutMyself.getRole(Provider.of<SharedPreferences>(context));
+    final theme = Theme.of(context);
+    final onPrimary = theme.colorScheme.onPrimary;
+    final l11n = HpiL11n.of(context);
 
-    final onPrimary = Theme.of(context).colorScheme.onPrimary;
+    final content = role == Role.student
+        ? _buildStudent(context, theme, onPrimary, l11n)
+        : _buildNonStudent(context, theme, onPrimary, l11n);
+
     return Material(
-      color: Theme.of(context).primaryColor,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 16, top: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(right: 16),
-              child: Text(
-                HpiL11n.get(context, 'settings/ad.title'),
-                style: Theme.of(context).textTheme.headline.copyWith(
-                      color: onPrimary,
-                    ),
-              ),
+      color: theme.primaryColor,
+      child: content,
+    );
+  }
+
+  Widget _buildStudent(
+    BuildContext context,
+    ThemeData theme,
+    Color onPrimary,
+    HpiL11n l11n,
+  ) {
+    assert(context != null);
+    assert(theme != null);
+    assert(onPrimary != null);
+    assert(l11n != null);
+
+    return Padding(
+      padding: const EdgeInsets.only(left: 16, top: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: Text(
+              HpiL11n.get(context, 'settings/ad.title'),
+              style: theme.textTheme.headline.copyWith(color: onPrimary),
             ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                          HpiL11n.get(context, 'settings/ad.text'),
-                          style: Theme.of(context).textTheme.body1.copyWith(
-                                color: onPrimary,
-                              ),
+          ),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        HpiL11n.get(context, 'settings/ad.text'),
+                        style: theme.textTheme.body1.copyWith(color: onPrimary),
+                      ),
+                      SizedBox(height: 16),
+                      OutlineButton(
+                        borderSide: BorderSide(
+                          color: onPrimary.withOpacity(0.6),
                         ),
-                        SizedBox(height: 16),
-                        OutlineButton(
-                          borderSide: BorderSide(
-                            color: onPrimary.withOpacity(0.6),
-                          ),
-                          highlightedBorderColor: onPrimary,
-                          textColor: onPrimary,
-                          onPressed: () {
-                            launch(HpiL11n.get(context, 'settings/ad.link'));
-                          },
-                          child: HpiL11n.text(context, 'settings/ad.button'),
-                        ),
-                      ],
-                    ),
+                        highlightedBorderColor: onPrimary,
+                        textColor: onPrimary,
+                        onPressed: () {
+                          tryLaunch(HpiL11n.get(context, 'settings/ad.link'));
+                        },
+                        child: HpiL11n.text(context, 'settings/ad.button'),
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(width: 8),
-                Image.asset(
-                  'assets/logo/mobileDev sheep.png',
-                  height: 192,
-                ),
-              ],
-            ),
-          ],
-        ),
+              ),
+              SizedBox(width: 8),
+              Image.asset(
+                'assets/logo/mobileDev sheep.png',
+                height: 192,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNonStudent(
+    BuildContext context,
+    ThemeData theme,
+    Color onPrimary,
+    HpiL11n l11n,
+  ) {
+    assert(context != null);
+    assert(theme != null);
+    assert(onPrimary != null);
+    assert(l11n != null);
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      child: Text(
+        HpiL11n.get(context, 'settings/ad.title.nonStudent'),
+        style: theme.textTheme.subhead.copyWith(color: onPrimary),
+        textAlign: TextAlign.center,
       ),
     );
   }
@@ -125,7 +166,7 @@ class _AboutSection extends StatelessWidget {
             title: HpiL11n.text(context, 'settings/about.openSource'),
             trailing: Icon(OMIcons.openInNew),
             onTap: () {
-              launch(HpiL11n.get(context, 'settings/about.openSource.link'));
+              tryLaunch(HpiL11n.get(context, 'settings/about.openSource.link'));
             },
           ),
           ListTile(
@@ -192,6 +233,30 @@ class _AboutSection extends StatelessWidget {
 }
 
 class PrivacyPolicyPage extends StatelessWidget {
+  static void showBottomSheet(BuildContext context) {
+    assert(context != null);
+
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (context) => DraggableScrollableSheet(
+        expand: false,
+        builder: (context, scrollController) => FutureBuilder<String>(
+          future: rootBundle.loadString('assets/privacyPolicy.md'),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) return buildLoadingError(snapshot);
+
+            return ScrollableMarkdown(
+              scrollController: scrollController,
+              data: snapshot.data,
+              onTapLink: tryLaunch,
+            );
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MainScaffold(
@@ -201,14 +266,11 @@ class PrivacyPolicyPage extends StatelessWidget {
       body: FutureBuilder<String>(
         future: rootBundle.loadString('assets/privacyPolicy.md'),
         builder: (context, snapshot) {
-          if (!snapshot.hasData)
-            return buildLoadingError(snapshot);
+          if (!snapshot.hasData) return buildLoadingError(snapshot);
 
           return Markdown(
             data: snapshot.data,
-            onTapLink: (url) {
-              launch(url);
-            },
+            onTapLink: tryLaunch,
           );
         },
       ),

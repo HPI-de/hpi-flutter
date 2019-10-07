@@ -14,6 +14,7 @@ dependencies:
   kt_dart: ^0.6.2
 
   # Data
+  path_provider: ^1.3.0
   protobuf: ^1.0.0
   immutable_proto: ^0.0.4
   grpc: ^2.1.2
@@ -21,13 +22,14 @@ dependencies:
   provider: ^3.0.0+1
   http: ^0.12.0+2
   yaml: ^2.1.16
+  shared_preferences: ^0.5.3+4
   package_info: ^0.4.0+6
   device_info: ^0.4.0+3
 
   # UI
   flutter_localizations:
     sdk: flutter
-  intl: ^0.16.0
+  intl: ">=0.15.8 <0.17.0"
   sprintf: ^4.0.2
   flutter_html: ^0.10.4
   timeago: ^2.0.18
@@ -36,6 +38,7 @@ dependencies:
   align_positioned: ^1.0.8
   cached_network_image: ^1.1.1
   screenshot: ^0.1.1
+  flutter_ringtone_player: ^1.0.3
   flutter_pagewise: ^1.2.3
   flutter_markdown: ^0.2.0
 
@@ -48,22 +51,23 @@ dev_dependencies:
 
   flutter_launcher_icons: ^0.7.2+1
 
-
 flutter:
   uses-material-design: true
 
   assets:
-    - assets/logo/logo.png
-    - assets/logo/logo_text.png
+    - assets/logo/logo.png # colored logo
+    - assets/logo/logo_text.png # colored logo with gray text
+    - assets/logo/logo_captionWhite.png # colored logo with white text and caption
     - assets/logo/mobileDev sheep.png
+    - assets/images/onboarding/mrNet.png
     - assets/localizations/strings_de.yaml
     - assets/localizations/strings_en.yaml
     - assets/privacyPolicy.md
 
   fonts:
-  - family:  HpiIcons
-    fonts:
-      - asset: fonts/HpiIcons.ttf
+    - family: HpiIcons
+      fonts:
+        - asset: fonts/HpiIcons.ttf
 
 flutter_icons:
   android: true
