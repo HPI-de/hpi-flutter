@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'dart:ui';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart' hide Route;
@@ -10,9 +11,12 @@ import 'package:hpi_flutter/route.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/services/navigation.dart';
 import 'app/widgets/hpi_theme.dart';
+import 'app/widgets/utils.dart';
+import 'onboarding/widgets/onboarding_page.dart';
 
 Future<ByteData> _downloadFontToCache(String filename, String url) async {
   final file = File('${(await getTemporaryDirectory()).path}/$filename');
@@ -55,7 +59,7 @@ void main() async {
   }
 
   // Used by feedback to capture the whole app
-  final screenshotController = ScreenshotController();
+  // final screenshotController = ScreenshotController();
 
   runApp(
     MultiProvider(
@@ -178,22 +182,39 @@ class HpiApp extends StatelessWidget {
 
     return HpiTheme(
       tertiary: Color(0xFFF6A804),
-      child: MaterialApp(
-        title: 'HPI',
-        theme: theme,
-        initialRoute: Route.dashboard.name,
-        onGenerateRoute: Route.generateRoute,
-        navigatorObservers: [
-          NavigationObserver(Provider.of<NavigationService>(context)),
-        ],
-        localizationsDelegates: [
-          hpiLocalizationsDelegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
-        supportedLocales: hpiLocalizationsDelegate.supportedLanguages
-            .map((l) => Locale(l))
-            .asList(),
+      child: FutureBuilder<SharedPreferences>(
+        future: SharedPreferences.getInstance(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return buildLoadingError(snapshot);
+
+          final sharedPreferences = snapshot.data;
+          // To show onboarding again, uncomment the following line:
+          OnboardingPage.clearOnboardingCompleted(sharedPreferences);
+
+          return Provider<SharedPreferences>(
+            builder: (_) => sharedPreferences,
+            child: MaterialApp(
+              title: 'HPI',
+              theme: theme,
+              initialRoute:
+                  OnboardingPage.isOnboardingCompleted(sharedPreferences)
+                      ? Route.dashboard.name
+                      : Route.onboarding.name,
+              onGenerateRoute: Route.generateRoute,
+              navigatorObservers: [
+                NavigationObserver(Provider.of<NavigationService>(context)),
+              ],
+              localizationsDelegates: [
+                hpiLocalizationsDelegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+              ],
+              supportedLocales: hpiLocalizationsDelegate.supportedLanguages
+                  .map((l) => Locale(l))
+                  .asList(),
+            ),
+          );
+        },
       ),
     );
   }

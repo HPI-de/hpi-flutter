@@ -65,6 +65,32 @@ myhpi/infoBit.parent: Gefunden unter
 # openHPI
 openHpi/fragment.title: openHPI-Kurse
 
+# Onboarding
+onboarding/start.title: Willkommen in der HPI-App!
+onboarding/start.subtitle: Vielen Dank für das Ausprobieren der Betaversion der neuen HPI-App, entwickelt vom MobileDev-Klub.
+onboarding/privacyPolicy.prefix: Ich stimme der
+onboarding/privacyPolicy.suffix: zu.
+onboarding/aboutMyself.title: "Bitte beschreibe dich selbst, um die App an dich anzupassen:"
+onboarding/aboutMyself.text.1: "Ich bin ein/e "
+onboarding/aboutMyself.text.2: " und studiere "
+onboarding/aboutMyself.text.3: " im "
+onboarding/aboutMyself.text.4: "%i."
+onboarding/aboutMyself.text.5:  " Semester"
+onboarding/aboutMyself.text.6: "."
+onboarding/role.student: StudentIn
+onboarding/role.phdStudent: DoktorandIn
+onboarding/role.postdoc: Postdoc
+onboarding/role.prof: ProfessorIn
+onboarding/role.lecturer: DozentIn
+onboarding/role.staff: MitarbeiterIn
+onboarding/courseOfStudies.baItse: BA-ITSE
+onboarding/courseOfStudies.maCs: MA-CS
+onboarding/courseOfStudies.maDe: MA-DE
+onboarding/courseOfStudies.maDh: MA-DH
+onboarding/courseOfStudies.maItse: MA-ITSE
+onboarding/next: Weiter
+onboarding/done: Fertig!
+
 # Tools
 tools: Werkzeuge
 tools.timer: Timer
@@ -72,6 +98,7 @@ tools.timer: Timer
 # Settings
 settings: Einstellungen
 settings/ad.title: Du möchtest Apps programmieren?
+settings/ad.title.nonStudent: Diese App wurde entwickelt vom MobileDev-Klub
 settings/ad.text: Diese App wurde vom MobileDev-Klub mithilfe von Flutter entwickelt. Wir treffen uns regelmäßig und freuen uns auf neue Mitglieder!
 settings/ad.button: Beitreten :)
 settings/ad.link: https://t.me/hpi_mobiledev

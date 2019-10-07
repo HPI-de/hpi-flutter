@@ -11,6 +11,7 @@ import 'myhpi/widgets/infobit_page.dart';
 import 'myhpi/widgets/myhpi_page.dart';
 import 'news/widgets/article_page.dart';
 import 'news/widgets/news_page.dart';
+import 'onboarding/widgets/onboarding_page.dart';
 import 'settings/widgets/settings_page.dart';
 import 'tools/widgets/timer_page.dart';
 
@@ -33,13 +34,14 @@ class Route {
         if (route == courses) return CoursePage();
         if (route == coursesDetail)
           return CourseDetailPage(settings.arguments as String);
+        if (route == food) return FoodPage();
         if (route == myhpi) return MyHpiPage();
         if (route == myhpiInfoBit)
           return InfoBitPage(infoBitId: settings.arguments as String);
         if (route == news) return NewsPage();
         if (route == newsArticle)
           return ArticlePage(settings.arguments as String);
-        if (route == food) return FoodPage();
+        if (route == onboarding) return OnboardingPage();
         if (route == tools) return TimerPage();
         if (route == toolsTimer) return TimerPage();
 
@@ -67,11 +69,14 @@ class Route {
   static const dashboard = const Route._internal('/');
   static const courses = const Route._internal('/courses');
   static const coursesDetail = const Route._internal('/courses/courseId');
+  static const food = const Route._internal('/food');
   static const myhpi = const Route._internal('/myhpi');
   static const myhpiInfoBit = const Route._internal('/myhpi/infoBitId');
   static const news = const Route._internal('/news');
   static const newsArticle = const Route._internal('/news/articleId');
-  static const food = const Route._internal('/food');
+  // We don't want onboarding to be understood as a deep link which would push
+  // the dashboard page in the stack for first time users. Hence no '/'-prefix.
+  static const onboarding = const Route._internal('onboarding');
   static const tools = const Route._internal('/tools');
   static const toolsTimer = const Route._internal('/tools/timer');
 
@@ -83,11 +88,12 @@ class Route {
     dashboard,
     courses,
     coursesDetail,
+    food,
     myhpi,
     myhpiInfoBit,
     news,
     newsArticle,
-    food,
+    onboarding,
     tools,
     toolsTimer,
     settings,
