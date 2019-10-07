@@ -60,7 +60,7 @@ void main() async {
   }
 
   // Used by feedback to capture the whole app
-  // final screenshotController = ScreenshotController();
+  final screenshotController = ScreenshotController();
 
   runApp(
     MultiProvider(
