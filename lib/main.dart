@@ -25,6 +25,8 @@ Future<ByteData> fetchFont(String url) async {
 }
 
 void main() async {
+  const serverUrl = "172.18.132.7";
+
   // This captures errors reported by the Flutter framework.
   FlutterError.onError = (FlutterErrorDetails details) async {
     if (isInDebugMode) {
@@ -54,7 +56,7 @@ void main() async {
             builder: (_) => NavigationService(),
           ),
           Provider<Uri>(
-            builder: (_) => Uri.parse("172.18.132.7"),
+            builder: (_) => Uri.parse(serverUrl),
           ),
           Provider<ScreenshotController>(
             builder: (_) => screenshotController,
@@ -69,8 +71,7 @@ void main() async {
       ),
     );
   }, onError: (error, stackTrace) async {
-    // call 'reportError' function if an error occurs
-    await reportError(error, stackTrace);
+    await reportError(error, stackTrace, Uri.parse(serverUrl));
   });
 }
 
