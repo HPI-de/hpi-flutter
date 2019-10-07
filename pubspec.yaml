@@ -16,7 +16,7 @@ dependencies:
   # Data
   path_provider: ^1.3.0
   protobuf: ^1.0.0
-  immutable_proto: ^0.0.4
+  immutable_proto: ^0.0.5+1
   grpc: ^2.1.2
   rxdart: ^0.22.1+1
   provider: ^3.0.0+1
@@ -46,7 +46,7 @@ dev_dependencies:
     sdk: flutter
 
   build_runner: ^1.0.0
-  immutable_proto_generator: ^0.0.4
+  immutable_proto_generator: ^0.0.5+1
 
   flutter_launcher_icons: ^0.7.2+1
 
