@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:align_positioned/align_positioned.dart';
 import 'package:flutter/material.dart';
+import 'package:hpi_flutter/core/localizations.dart';
+import 'package:hpi_flutter/feedback/widgets/feedback_dialog.dart';
 import 'package:hpi_flutter/food/widgets/food_fragment.dart';
 import 'package:hpi_flutter/news/widgets/news_fragment.dart';
 
 import 'package:hpi_flutter/openhpi/widgets/openhpi_fragment.dart';
+import 'package:kt_dart/collection.dart';
 
 import 'hpi_theme.dart';
 import 'main_scaffold.dart';
@@ -13,6 +18,18 @@ class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MainScaffold(
+      bottomActions: KtList.from([
+        PopupMenuButton(
+          onSelected: (_) => FeedbackDialog.show(context),
+          icon: Icon(Icons.more_vert),
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              value: 'app.feedback',
+              child: Text(HpiL11n.get(context, 'feedback/action')),
+            ),
+          ],
+        ),
+      ]),
       body: ListView(
         padding:
             EdgeInsets.fromLTRB(16, MediaQuery.of(context).padding.top, 16, 32),

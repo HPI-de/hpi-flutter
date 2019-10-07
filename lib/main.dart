@@ -31,8 +31,9 @@ Future<ByteData> _downloadFontToCache(String filename, String url) async {
     if (response.statusCode == 200) {
       file.writeAsBytes(response.bodyBytes);
       return ByteData.view(response.bodyBytes.buffer);
-    } else
+    } else {
       throw Exception('Failed to load font');
+    }
   }
 }
 
