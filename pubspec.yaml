@@ -27,7 +27,7 @@ dependencies:
   # UI
   flutter_localizations:
     sdk: flutter
-  intl: ">=0.15.8 <0.17.0"
+  intl: ^0.16.0
   sprintf: ^4.0.2
   flutter_html: ^0.10.4
   timeago: ^2.0.18
@@ -48,6 +48,7 @@ dev_dependencies:
 
   flutter_launcher_icons: ^0.7.2+1
 
+
 flutter:
   uses-material-design: true
 
@@ -63,9 +64,9 @@ flutter:
     - assets/privacyPolicy.md
 
   fonts:
-    - family: HpiIcons
-      fonts:
-        - asset: fonts/HpiIcons.ttf
+  - family: HpiIcons
+    fonts:
+      - asset: fonts/HpiIcons.ttf
 
 flutter_icons:
   android: true
