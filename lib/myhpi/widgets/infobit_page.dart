@@ -53,9 +53,7 @@ class InfoBitPage extends StatelessWidget {
                 child: infoBit.content != null
                     ? Html(
                         data: infoBit.content,
-                        onLinkTap: (url) async {
-                          await tryLaunch(url);
-                        },
+                        onLinkTap: tryLaunch,
                       )
                     : Text(infoBit.description),
               ),
