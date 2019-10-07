@@ -53,12 +53,11 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/logo/logo.png
-    - assets/logo/logo_text.png
-    - assets/logo/logo_caption_white.png
-    - assets/logo/logo_captionWhite.png
+    - assets/logo/logo.png # colored logo
+    - assets/logo/logo_text.png # colored logo with gray text
+    - assets/logo/logo_captionWhite.png # colored logo with white text and caption
     - assets/logo/mobileDev sheep.png
-    - assets/images/welcome_mrNet.png
+    - assets/images/onboarding/mrNet.png
     - assets/localizations/strings_de.yaml
     - assets/localizations/strings_en.yaml
     - assets/privacyPolicy.md

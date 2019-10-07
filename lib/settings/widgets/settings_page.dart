@@ -5,13 +5,13 @@ import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/core/localizations.dart';
+import 'package:hpi_flutter/core/utils.dart';
 import 'package:hpi_flutter/feedback/widgets/feedback_dialog.dart';
 import 'package:hpi_flutter/onboarding/widgets/about_myself.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../route.dart';
 import 'scrollable_markdown.dart';
@@ -95,7 +95,7 @@ class _MobileDevAd extends StatelessWidget {
                         highlightedBorderColor: onPrimary,
                         textColor: onPrimary,
                         onPressed: () {
-                          launch(HpiL11n.get(context, 'settings/ad.link'));
+                          tryLaunch(HpiL11n.get(context, 'settings/ad.link'));
                         },
                         child: HpiL11n.text(context, 'settings/ad.button'),
                       ),
@@ -166,7 +166,7 @@ class _AboutSection extends StatelessWidget {
             title: HpiL11n.text(context, 'settings/about.openSource'),
             trailing: Icon(OMIcons.openInNew),
             onTap: () {
-              launch(HpiL11n.get(context, 'settings/about.openSource.link'));
+              tryLaunch(HpiL11n.get(context, 'settings/about.openSource.link'));
             },
           ),
           ListTile(
@@ -241,19 +241,15 @@ class PrivacyPolicyPage extends StatelessWidget {
       context: context,
       builder: (context) => DraggableScrollableSheet(
         expand: false,
-        builder: (context, scrollController) => 
-        FutureBuilder<String>(
+        builder: (context, scrollController) => FutureBuilder<String>(
           future: rootBundle.loadString('assets/privacyPolicy.md'),
           builder: (context, snapshot) {
             if (!snapshot.hasData) return buildLoadingError(snapshot);
 
-            return
-             ScrollableMarkdown(
+            return ScrollableMarkdown(
               scrollController: scrollController,
               data: snapshot.data,
-              onTapLink: (url) {
-                launch(url);
-              },
+              onTapLink: tryLaunch,
             );
           },
         ),
@@ -274,9 +270,7 @@ class PrivacyPolicyPage extends StatelessWidget {
 
           return Markdown(
             data: snapshot.data,
-            onTapLink: (url) {
-              launch(url);
-            },
+            onTapLink: tryLaunch,
           );
         },
       ),

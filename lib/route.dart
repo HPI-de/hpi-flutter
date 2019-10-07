@@ -74,6 +74,8 @@ class Route {
   static const myhpiInfoBit = const Route._internal('/myhpi/infoBitId');
   static const news = const Route._internal('/news');
   static const newsArticle = const Route._internal('/news/articleId');
+  // We don't want onboarding to be understood as a deep link which would push
+  // the dashboard page in the stack for first time users. Hence no '/'-prefix.
   static const onboarding = const Route._internal('onboarding');
   static const tools = const Route._internal('/tools');
   static const toolsTimer = const Route._internal('/tools/timer');

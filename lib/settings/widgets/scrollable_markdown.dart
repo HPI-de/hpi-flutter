@@ -3,8 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
+/// Almost identical to [Markdown], but this widget allows you to set a custom
+/// [ScrollableMarkdown.scrollController].
 class ScrollableMarkdown extends MarkdownWidget {
-  /// Creates a scrolling widget that parses and displays Markdown.
   const ScrollableMarkdown({
     Key key,
     String data,
@@ -12,7 +13,7 @@ class ScrollableMarkdown extends MarkdownWidget {
     SyntaxHighlighter syntaxHighlighter,
     MarkdownTapLinkCallback onTapLink,
     Directory imageDirectory,
-    this.padding: const EdgeInsets.all(16.0),
+    this.padding: const EdgeInsets.all(16),
     this.scrollController,
   }) : super(
           key: key,

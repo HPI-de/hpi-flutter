@@ -8,25 +8,48 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 @immutable
 class AboutMyself extends StatefulWidget {
-  static const KEY_ROLE = 'onboarding.role';
-  static const KEY_COURSE_OF_STUDIES = 'onboarding.courseOfStudies';
-  static const KEY_SEMESTER = 'onboarding.semester';
+  static const _keyRole = 'onboarding.role';
+  static const _keyCourseOfStudies = 'onboarding.courseOfStudies';
+  static const _keySemester = 'onboarding.semester';
 
   static Role getRole(SharedPreferences sharedPreferences) {
     assert(sharedPreferences != null);
-    return stringToEnum(sharedPreferences.getString(KEY_ROLE), Role.values);
+    return stringToEnum(sharedPreferences.getString(_keyRole), Role.values);
+  }
+
+  static Future<bool> _setRole(
+      SharedPreferences sharedPreferences, Role value) {
+    assert(sharedPreferences != null);
+    return sharedPreferences.setString(_keyRole, enumToString(value));
   }
 
   static CourseOfStudies getCourseOfStudies(
       SharedPreferences sharedPreferences) {
     assert(sharedPreferences != null);
-    return stringToEnum(sharedPreferences.getString(KEY_COURSE_OF_STUDIES),
+    return stringToEnum(sharedPreferences.getString(_keyCourseOfStudies),
         CourseOfStudies.values);
+  }
+
+  static Future<bool> _setCourseOfStudies(
+    SharedPreferences sharedPreferences,
+    CourseOfStudies value,
+  ) {
+    assert(sharedPreferences != null);
+    return sharedPreferences.setString(
+        _keyCourseOfStudies, enumToString(value));
   }
 
   static int getSemester(SharedPreferences sharedPreferences) {
     assert(sharedPreferences != null);
-    return sharedPreferences.getInt(KEY_SEMESTER);
+    return sharedPreferences.getInt(_keySemester);
+  }
+
+  static Future<bool> _setSemester(
+    SharedPreferences sharedPreferences,
+    int value,
+  ) {
+    assert(sharedPreferences != null);
+    return sharedPreferences.setInt(_keySemester, value);
   }
 
   const AboutMyself({
@@ -61,10 +84,21 @@ class _AboutMyselfState extends State<AboutMyself> {
   @override
   Widget build(BuildContext context) {
     final sharedPreferences = Provider.of<SharedPreferences>(context);
-    final role = AboutMyself.getRole(sharedPreferences) ?? Role.student;
-    final courseOfStudies = AboutMyself.getCourseOfStudies(sharedPreferences) ??
-        CourseOfStudies.baItse;
-    final semester = AboutMyself.getSemester(sharedPreferences) ?? 1;
+    var role = AboutMyself.getRole(sharedPreferences);
+    if (role == null) {
+      role = Role.student;
+      AboutMyself._setRole(sharedPreferences, role);
+    }
+    var courseOfStudies = AboutMyself.getCourseOfStudies(sharedPreferences);
+    if (courseOfStudies == null) {
+      courseOfStudies = CourseOfStudies.baItse;
+      AboutMyself._setCourseOfStudies(sharedPreferences, courseOfStudies);
+    }
+    var semester = AboutMyself.getSemester(sharedPreferences);
+    if (semester == null) {
+      semester = 1;
+      AboutMyself._setSemester(sharedPreferences, semester);
+    }
 
     return DefaultTextStyle(
       style: Theme.of(context).textTheme.headline.copyWith(
@@ -79,7 +113,7 @@ class _AboutMyselfState extends State<AboutMyself> {
             _buildDropdown<Role>(
               items: _roleValues,
               value: role,
-              onChanged: (r) => _setEnum(context, AboutMyself.KEY_ROLE, r),
+              onChanged: (r) => AboutMyself._setRole(sharedPreferences, r),
             ),
             if (role == Role.student) ...[
               TextSpan(text: _l11n('onboarding/aboutMyself.text.2')),
@@ -87,8 +121,8 @@ class _AboutMyselfState extends State<AboutMyself> {
                 items: _courseOfStudiesValues,
                 value: courseOfStudies,
                 onChanged: (c) {
-                  _setEnum(context, AboutMyself.KEY_COURSE_OF_STUDIES, c);
-                  _setInt(context, AboutMyself.KEY_SEMESTER,
+                  AboutMyself._setCourseOfStudies(sharedPreferences, c);
+                  AboutMyself._setSemester(sharedPreferences,
                       semester.clamp(1, _maxSemesterCount(c)));
                 },
               ),
@@ -107,7 +141,7 @@ class _AboutMyselfState extends State<AboutMyself> {
                   ),
                   value: semester,
                   onChanged: (s) =>
-                      _setInt(context, AboutMyself.KEY_SEMESTER, s)),
+                      AboutMyself._setSemester(sharedPreferences, s)),
               TextSpan(text: _l11n('onboarding/aboutMyself.text.5')),
             ],
             TextSpan(text: _l11n('onboarding/aboutMyself.text.6')),
@@ -116,20 +150,6 @@ class _AboutMyselfState extends State<AboutMyself> {
         textAlign: TextAlign.center,
       ),
     );
-  }
-
-  void _setEnum(BuildContext context, String key, Object value) {
-    assert(context != null);
-    assert(key != null);
-
-    Provider.of<SharedPreferences>(context).setString(key, enumToString(value));
-  }
-
-  void _setInt(BuildContext context, String key, int value) {
-    assert(context != null);
-    assert(key != null);
-
-    Provider.of<SharedPreferences>(context).setInt(key, value);
   }
 
   int _maxSemesterCount(CourseOfStudies cos) {

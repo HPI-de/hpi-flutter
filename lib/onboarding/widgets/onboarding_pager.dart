@@ -27,7 +27,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
   double _page = 0;
   int get _pageFull => _page.floor();
   double get _pagePart => _page - _pageFull;
-  bool get _lastPage => _page.round() == widget.pages.size - 1;
+  bool get _isLastPage => _page.round() == widget.pages.size - 1;
 
   KtMutableList<bool> _canContinue;
   int _pageLimit;
@@ -91,7 +91,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
               ),
             ),
           ),
-          _lastPage
+          _isLastPage
               ? Align(
                   alignment: Alignment.bottomRight,
                   child: SizedBox(
@@ -149,7 +149,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
 
   Widget _buildNavigationButton({
     @required Alignment alignment,
-    void Function() onPressed,
+    VoidCallback onPressed,
     @required IconData icon,
   }) {
     assert(alignment != null);

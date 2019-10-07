@@ -13,7 +13,6 @@ import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../utils.dart';
 import 'elevated_expansion_tile.dart';
@@ -128,8 +127,7 @@ class CourseDetailPage extends StatelessWidget {
           title: HpiL11n.of(context)('course/course.teleTask'),
           trailing: OMIcons.openInNew,
           onTap: () async {
-            if (await canLaunch(courseDetail.teletask))
-              await launch(courseDetail.teletask);
+            await tryLaunch(courseDetail.teletask);
           },
         ),
       _buildElevatedTile(
@@ -233,9 +231,7 @@ class CourseDetailPage extends StatelessWidget {
         Html(
           padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           data: content,
-          onLinkTap: (url) async {
-            if (await canLaunch(url)) await launch(url);
-          },
+          onLinkTap: tryLaunch,
         )
       ],
     );

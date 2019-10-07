@@ -12,13 +12,20 @@ import 'about_myself.dart';
 import 'onboarding_pager.dart';
 
 class OnboardingPage extends StatefulWidget {
-  static const KEY_COMPLETED = 'onboarding.completed';
-  static const KEY_PRIVACY_POLICY = 'onboarding.privacyPolicy';
-  static final privacyPolicyDate = DateTime.utc(2019, 10, 01);
+  static const _keyCompleted = 'onboarding.completed';
+  static const _keyPrivacyPolicy = 'onboarding.privacyPolicy';
+  static final _privacyPolicyDate = DateTime.utc(2019, 10, 01);
 
   static bool isOnboardingCompleted(SharedPreferences sharedPreferences) {
     assert(sharedPreferences != null);
-    return sharedPreferences.getInt(KEY_COMPLETED) != null;
+    return sharedPreferences.getInt(_keyCompleted) != null;
+  }
+
+  static Future<bool> clearOnboardingCompleted(
+    SharedPreferences sharedPreferences,
+  ) async {
+    assert(sharedPreferences != null);
+    return sharedPreferences.remove(_keyCompleted);
   }
 
   @override
@@ -36,8 +43,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
           _buildAboutMyselfPage(),
         ]),
         onFinish: () async {
-          final sp = await SharedPreferences.getInstance();
-          await sp.setInt(OnboardingPage.KEY_COMPLETED,
+          await Provider.of<SharedPreferences>(context).setInt(
+              OnboardingPage._keyCompleted,
               DateTime.now().millisecondsSinceEpoch);
           Navigator.of(context).pushReplacementNamed(Route.dashboard.name);
         },
@@ -108,13 +115,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
         ],
       ),
       style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
+      textAlign: TextAlign.left,
     );
 
     final acceptedVersion = Provider.of<SharedPreferences>(context)
-        .getInt(OnboardingPage.KEY_PRIVACY_POLICY);
+        .getInt(OnboardingPage._keyPrivacyPolicy);
     final accepted = acceptedVersion != null &&
         !DateTime.fromMillisecondsSinceEpoch(acceptedVersion, isUtc: true)
-            .isBefore(OnboardingPage.privacyPolicyDate);
+            .isBefore(OnboardingPage._privacyPolicyDate);
 
     final onChanged = (BuildContext context, [bool newValue]) {
       newValue ??= !accepted;
@@ -122,9 +130,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
       PageNotification(newValue).dispatch(context);
       setState(() {
         Provider.of<SharedPreferences>(context).setInt(
-            OnboardingPage.KEY_PRIVACY_POLICY,
+            OnboardingPage._keyPrivacyPolicy,
             newValue
-                ? OnboardingPage.privacyPolicyDate.millisecondsSinceEpoch
+                ? OnboardingPage._privacyPolicyDate.millisecondsSinceEpoch
                 : null);
       });
     };
@@ -137,7 +145,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
         children: <Widget>[
           ConstrainedBox(
             constraints: BoxConstraints(maxWidth: 400),
-            child: Image.asset('assets/images/welcome_mrNet.png'),
+            child: Image.asset('assets/images/onboarding/mrNet.png'),
           ),
           SizedBox(height: 48),
           Builder(
@@ -153,7 +161,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     onChanged: (v) => onChanged(context, v),
                     activeColor: HpiTheme.of(context).tertiary,
                   ),
-                  privacyPolicyText,
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[privacyPolicyText],
+                    ),
+                  ),
                 ],
               ),
             ),

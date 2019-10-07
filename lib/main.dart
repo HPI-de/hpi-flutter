@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'dart:ui';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart' hide Route;
@@ -30,7 +31,7 @@ void main() async {
   await fontLoader.load();
 
   // Used by feedback to capture the whole app
-  final screenshotController = ScreenshotController();
+  // final screenshotController = ScreenshotController();
 
   runApp(
     MultiProvider(
@@ -160,7 +161,7 @@ class HpiApp extends StatelessWidget {
 
           final sharedPreferences = snapshot.data;
           // To show onboarding again, uncomment the following line:
-          // sharedPreferences.remove(OnboardingPage.KEY_COMPLETED);
+          OnboardingPage.clearOnboardingCompleted(sharedPreferences);
 
           return Provider<SharedPreferences>(
             builder: (_) => sharedPreferences,
