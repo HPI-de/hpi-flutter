@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:hpi_flutter/crashreporting/data/crashreporting.dart';
 import 'package:kt_dart/kt.dart';
 import 'package:package_info/package_info.dart';
-import 'package:provider/provider.dart';
 
 import 'data/bloc.dart';
 
@@ -26,7 +25,7 @@ Future<void> reportError(
     final platformInfo = await getDeviceAndOS();
     String log;
     try {
-      log = await MethodChannel("feedback").invokeMethod('getLog');
+      log = await MethodChannel('feedback').invokeMethod('getLog');
     } on PlatformException catch (e) {
       log = 'Error getting log: ${e.message}';
     }

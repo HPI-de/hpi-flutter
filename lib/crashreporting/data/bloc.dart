@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:meta/meta.dart';
 import 'package:grpc/grpc.dart';
 import 'package:hpi_flutter/crashreporting/data/crashreporting.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/crashreporting/v1test/service.pbgrpc.dart';
