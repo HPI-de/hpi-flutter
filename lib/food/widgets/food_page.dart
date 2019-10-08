@@ -15,7 +15,8 @@ class FoodPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<Uri, FoodBloc>(
-      builder: (_, serverUrl, __) => FoodBloc(serverUrl),
+      builder: (_, serverUrl, __) =>
+          FoodBloc(serverUrl, Localizations.localeOf(context)),
       child: MainScaffold(
         body: CustomScrollView(
           slivers: <Widget>[

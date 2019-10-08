@@ -14,7 +14,8 @@ class NewsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<Uri, NewsBloc>(
-      builder: (_, serverUrl, __) => NewsBloc(serverUrl),
+      builder: (_, serverUrl, __) =>
+          NewsBloc(serverUrl, Localizations.localeOf(context)),
       child: MainScaffold(
         body: CustomScrollView(
           slivers: <Widget>[
