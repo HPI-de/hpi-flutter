@@ -75,7 +75,7 @@ onboarding/aboutMyself.text.1: "Ich bin ein/e "
 onboarding/aboutMyself.text.2: " und studiere "
 onboarding/aboutMyself.text.3: " im "
 onboarding/aboutMyself.text.4: "%i."
-onboarding/aboutMyself.text.5:  " Semester"
+onboarding/aboutMyself.text.5: " Semester"
 onboarding/aboutMyself.text.6: "."
 onboarding/role.student: StudentIn
 onboarding/role.phdStudent: DoktorandIn
@@ -110,14 +110,25 @@ settings/about.openSource: Diese App ist Open Source
 settings/about.openSource.link: https://github.com/HPI-de/hpi_flutter
 settings/about.imprint: Impressum
 settings/about.imprint.desc: |-
-  Klub MobileDev des
   Hasso-Plattner-Institut für Digital Engineering gGmbH
   Prof.-Dr.-Helmert-Str. 2-3
   14482 Potsdam
-  Telefon: +49 (0)331 / 5509-0
-  Telefax: +49 (0)331 / 5509-129
-  E-Mail: klub-mobiledeveloper-sprecher@hpi.de
-  Webseite: https://mobiledev.hpi.de
+
+  Telefon: +49 (0) 331 / 5509-0
+  Fax: +49 (0) 331 / 5509-129
+  E-Mail: hpi-info@hpi.de
+  Webseite: www.hpi.de
+
+  Vertretungsberechtigte Geschäftsführer:
+  Prof. Dr. Christoph Meinel
+  Registergericht: Amtsgericht Potsdam
+  Registernummer: HRB 12184
+
+  Inhaltlich Verantwortliche:
+  MobileDev-Klub, HPI, HPImgzn-Klub, Mensa Griebnitzsee, Ulf's Café
+
+  Rechtliche Hinweise:
+  Der MobileDev-Klub und das Hasso-Plattner-Institut (HPI) überprüfen und aktualisieren regelmäßig die Inhalte ihrer Websites und Apps. Trotz größtmöglicher Sorgfalt können wir nicht ausschließen, dass einzelne Informationen auf unseren Seiten oder in dieser App veraltet oder nicht zutreffend sind. Daher können wir keine Haftung für Aktualität, Genauigkeit und Vollständigkeit der publizierten Informationen übernehmen. Das gleiche gilt für alle Websites, die von den HPI-Seiten sowie dieser App über Hyperlinks erreichbar sind, sowie für Inhalte, die von Dritten, insbesondere des HPImgzn-Klubs, der Mensa Griebnitzsee und Ulf's Café, stammen. Für alle diese Links und Inhalte gilt: Wir erklären ausdrücklich, dass wir keinen Einfluss auf die Gestaltung und die Inhalte der verlinkten Seiten bzw. die in die App eingebundenen Inhalte haben. Deshalb distanzieren wir uns hiermit ausdrücklich von allen Inhalten aller verlinkten Seiten sowie den in die App eingebundenen Inhalten von Dritten und machen uns ihre Inhalte nicht zu Eigen. Diese Erklärung gilt für alle auf unserer Seite angebrachten Links zu fremden Seiten sowie für die Inhalte dieser App. Für den Inhalt dieser verlinkten Seiten sowie der App-Inhalte Dritter sind weder das HPI noch der MobileDev-Klub verantwortlich. Weiterhin behalten sich HPI und MobileDev-Klub jederzeit Änderungen und Ergänzungen der angezeigten Informationen vor. Inhalt und Struktur der HPI-Website sind durch das Copyright geschützt. Die Weiterverwendung von Informationen und Daten, vor allem die Verwendung von Texten und Illustrationen ist nur nach unserer Zustimmung zulässig.
 settings/about.privacyPolicy: Datenschutzerklärung
 settings/about.licenses: Lizenzen
 settings/about.licenses.name: Hpi-App

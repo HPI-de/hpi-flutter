@@ -110,14 +110,25 @@ settings/about.openSource: This app is open source
 settings/about.openSource.link: https://github.com/HPI-de/hpi_flutter
 settings/about.imprint: Imprint
 settings/about.imprint.desc: |-
-  Club MobileDev of the
   Hasso Plattner Institute for Digital Engineering gGmbH
   Prof.-Dr.-Helmert-Str. 2-3
   14482 Potsdam
-  Phone: +49 (0)331 / 5509-0
-  Fax: +49 (0)331 / 5509-129
-  Email: klub-mobiledeveloper-sprecher@hpi.de
-  Website: https://mobiledev.hpi.de
+
+  Telephone: +49 (0) 331 / 5509-0
+  Fax: +49 (0) 331 / 5509-129
+  E-Mail: hpi-info@hpi.de
+  Website: www.hpi.de
+
+  Authorized Managing Directors:
+  Prof. Dr. Christoph Meinel
+  Register court: Amtsgericht Potsdam
+  Registration number: HRB 12184
+
+  Responsible for content:
+  MobileDev Club, HPI, HPImgzn Club, Mensa Griebnitzsee, Ulf's Café 
+
+  Legal notice:
+  The MobileDev Club and the Hasso Plattner Institute (HPI) regularly update and review the content of their websites and apps. Despite our utmost care, we can not exclude that individual information on our pages or in this app may be outdated or plainly wrong. Therefore, we cannot be held responsible for timeliness, accuracy and completeness of the published information. The same applies to all websites that are referenced by the HPI pages as well as this app, as well as to content, especially that of third parties, in particular of the HPImgzn club, Mensa Griebnitzsee and Ulf's Café. For all these links and contents the following conditions apply: We expressively declare that we have no influence on the design and content of the linked pages as well as on third-party content in the app. For the content of these linked pages and third-party app content, neither the HPI nor the MobileDev club are responsible. The HPI and the MobileDev club may change or add information at any time without notice. The reuse of information and data, especially the use of texts and illustrations are only permitted after our approval.
 settings/about.privacyPolicy: Privacy Policy
 settings/about.licenses: Licenses
 settings/about.licenses.name: Hpi-App
