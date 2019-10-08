@@ -138,6 +138,28 @@ class _MobileDevAd extends StatelessWidget {
 }
 
 class _AboutSection extends StatelessWidget {
+  void _showImprint(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (context) => DraggableScrollableSheet(
+        expand: false,
+        builder: (context, scrollController) => ListView(
+          padding: const EdgeInsets.all(16),
+          controller: scrollController,
+          children: <Widget>[
+            Text(
+              HpiL11n.get(context, 'settings/about.imprint.desc'),
+              style: textTheme.body1,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SliverList(
@@ -172,9 +194,7 @@ class _AboutSection extends StatelessWidget {
           ListTile(
             leading: Icon(OMIcons.person),
             title: HpiL11n.text(context, 'settings/about.imprint'),
-            subtitle: SelectableText(
-              HpiL11n.get(context, 'settings/about.imprint.desc'),
-            ),
+            onTap: () => _showImprint(context),
           ),
           Wrap(
             alignment: WrapAlignment.center,
