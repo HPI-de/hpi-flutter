@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:fixnum/fixnum.dart';
+import 'package:grpc/grpc.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/google/protobuf/timestamp.pb.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/google/type/date.pb.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/google/type/money.pb.dart';
@@ -42,4 +45,12 @@ Money doubleToMoney(double doubleValue) {
   return Money()
     ..currencyCode = 'EUR'
     ..nanos = (doubleValue * 1000000000).round();
+}
+
+CallOptions createCallOptions(Locale locale) {
+  assert(locale != null);
+
+  return CallOptions(
+    metadata: {'Accept-Language': locale.toLanguageTag()},
+  );
 }

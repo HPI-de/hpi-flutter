@@ -66,6 +66,8 @@ void main() async {
       var fontLoader = FontLoader('Neo Sans')
         ..addFont(_downloadFontToCache('neo_sans.ttf',
             '$fontBaseUrl/9de9709d-f77a-44ad-96b9-6fea586f7efb.ttf'));
+      //..addFont(_downloadFontToCache('neo_sans_bold.ttf',
+      //    '$fontBaseUrl/9de9709d-f77a-44ad-96b9-6fea586f7efb.ttf'))
       await fontLoader.load();
     } catch (_) {
       // We do nothing here as it's not a big problem if the font isn't
@@ -208,7 +210,7 @@ class HpiApp extends StatelessWidget {
 
           final sharedPreferences = snapshot.data;
           // To show onboarding again, uncomment the following line:
-          OnboardingPage.clearOnboardingCompleted(sharedPreferences);
+          // OnboardingPage.clearOnboardingCompleted(sharedPreferences);
 
           return Provider<SharedPreferences>(
             builder: (_) => sharedPreferences,
