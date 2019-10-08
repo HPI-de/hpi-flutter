@@ -22,7 +22,7 @@ String semesterToString(BuildContext context, Semester semester) {
 }
 
 String buildProgramInfo(CourseDetail courseDetail) {
-  String programInfo;
+  String programInfo = '';
   courseDetail.programs.forEach((k, v) {
     programInfo +=
         '$k\v${v.programs.joinToString(separator: "\n", transform: (p) => "\t\t\t\t$p")}';
