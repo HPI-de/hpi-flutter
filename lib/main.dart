@@ -38,6 +38,8 @@ Future<ByteData> _downloadFontToCache(String filename, String url) async {
 }
 
 void main() async {
+  //Required for font caching
+  WidgetsFlutterBinding.ensureInitialized();
   var delegate = HpiLocalizationsDelegate();
   try {
     const fontBaseUrl = 'https://hpi.de/fileadmin/templates/fonts';
