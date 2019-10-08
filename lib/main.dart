@@ -60,7 +60,7 @@ void main() async {
   }
 
   // Used by feedback to capture the whole app
-  // final screenshotController = ScreenshotController();
+  final screenshotController = ScreenshotController();
 
   runApp(
     MultiProvider(
@@ -190,7 +190,7 @@ class HpiApp extends StatelessWidget {
 
           final sharedPreferences = snapshot.data;
           // To show onboarding again, uncomment the following line:
-          OnboardingPage.clearOnboardingCompleted(sharedPreferences);
+          // OnboardingPage.clearOnboardingCompleted(sharedPreferences);
 
           return Provider<SharedPreferences>(
             builder: (_) => sharedPreferences,
