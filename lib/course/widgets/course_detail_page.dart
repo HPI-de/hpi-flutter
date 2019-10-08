@@ -145,7 +145,15 @@ class CourseDetailPage extends StatelessWidget {
         context,
         leading: OMIcons.viewModule,
         title: HpiL11n.get(context, 'course/course.programsModules'),
-        subtitle: buildProgramInfo(courseDetail),
+        subtitle: courseDetail.programs
+            .map((program) =>
+                program.key +
+                '\v' +
+                program.value.joinToString(
+                  separator: '\n',
+                  transform: (v) => '\t\t\t\t$v',
+                ))
+            .joinToString(separator: '\n'),
       ),
       _buildCourseInfoTile(
           context, OMIcons.subject, 'description', courseDetail.description),
