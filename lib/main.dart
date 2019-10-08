@@ -8,10 +8,13 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/route.dart';
+import 'package:hpi_flutter/crashreporting/utils.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'dart:async';
 
 import 'app/services/navigation.dart';
 import 'app/widgets/hpi_theme.dart';
@@ -38,51 +41,68 @@ Future<ByteData> _downloadFontToCache(String filename, String url) async {
 }
 
 void main() async {
-  var delegate = HpiLocalizationsDelegate();
-  try {
-    const fontBaseUrl = 'https://hpi.de/fileadmin/templates/fonts';
+  const fontBaseUrl = 'https://hpi.de/fileadmin/templates/fonts';
+  const serverUrl = "172.18.132.7";
 
-    // We should load the different font files for bold and normal style into
-    // the same font name with different weights, but it seems like this
-    // feature is not supported yet: https://github.com/flutter/flutter/issues/42084
-    // So, for now we only load the non-bold font.
-    var fontLoader = FontLoader('Neo Sans')
+  // This captures errors reported by the Flutter framework.
+  FlutterError.onError = (FlutterErrorDetails details) async {
+    if (isInDebugMode) {
+      // In development mode simply print to console.
+      FlutterError.dumpErrorToConsole(details);
+    } else {
+      // In production mode report to the application zone.
+      Zone.current.handleUncaughtError(details.exception, details.stack);
+    }
+  };
+
+  // run in custom zone for catching errors
+  runZoned<Future<void>>(() async {
+    var delegate = HpiLocalizationsDelegate();
+    try {
+      // We should load the different font files for bold and normal style into
+      // the same font name with different weights, but it seems like this
+      // feature is not supported yet: https://github.com/flutter/flutter/issues/42084
+      // So, for now we only load the non-bold font.
+      var fontLoader = FontLoader('Neo Sans')
+        ..addFont(_downloadFontToCache('neo_sans.ttf',
+            '$fontBaseUrl/9de9709d-f77a-44ad-96b9-6fea586f7efb.ttf'));
       //..addFont(_downloadFontToCache('neo_sans_bold.ttf',
       //    '$fontBaseUrl/9de9709d-f77a-44ad-96b9-6fea586f7efb.ttf'))
-      ..addFont(_downloadFontToCache('neo_sans.ttf',
-          '$fontBaseUrl/504947d7-98d6-4ce3-b301-33b0deb9e0e4.ttf'));
-    await fontLoader.load();
-  } catch (_) {
-    // We do nothing here as it's not a big problem if the font isn't
-    // downloaded yet—we can just use the default this time. Of course, we
-    // automatically try to download the font the next time the app gets
-    // started.
-  }
+      await fontLoader.load();
+    } catch (_) {
+      // We do nothing here as it's not a big problem if the font isn't
+      // downloaded yet—we can just use the default this time. Of course, we
+      // automatically try to download the font the next time the app gets
+      // started.
+    }
 
-  // Used by feedback to capture the whole app
-  final screenshotController = ScreenshotController();
+    // Used by feedback to capture the whole app
+    final screenshotController = ScreenshotController();
 
-  runApp(
-    MultiProvider(
-      providers: [
-        Provider<NavigationService>(
-          builder: (_) => NavigationService(),
-        ),
-        Provider<Uri>(
-          builder: (_) => Uri.parse("172.18.132.7"),
-        ),
-        Provider<ScreenshotController>(
-          builder: (_) => screenshotController,
-        ),
-      ],
-      child: Screenshot(
-        controller: screenshotController,
-        child: HpiApp(
-          hpiLocalizationsDelegate: delegate,
+    runApp(
+      MultiProvider(
+        providers: [
+          Provider<NavigationService>(
+            builder: (_) => NavigationService(),
+          ),
+          Provider<Uri>(
+            builder: (_) => Uri.parse(serverUrl),
+          ),
+          Provider<ScreenshotController>(
+            builder: (_) => screenshotController,
+          ),
+        ],
+        child: Screenshot(
+          controller: screenshotController,
+          child: HpiApp(
+            hpiLocalizationsDelegate: delegate,
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }, onError: (error, stackTrace) async {
+    await reportError(error, stackTrace, Uri.parse(serverUrl));
+  });
 }
 
 const _brandColorRed = 0xFFB1063A;
@@ -190,7 +210,7 @@ class HpiApp extends StatelessWidget {
 
           final sharedPreferences = snapshot.data;
           // To show onboarding again, uncomment the following line:
-          OnboardingPage.clearOnboardingCompleted(sharedPreferences);
+          // OnboardingPage.clearOnboardingCompleted(sharedPreferences);
 
           return Provider<SharedPreferences>(
             builder: (_) => sharedPreferences,
