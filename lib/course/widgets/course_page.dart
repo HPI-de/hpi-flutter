@@ -84,29 +84,30 @@ class CourseList extends StatelessWidget {
   Widget build(BuildContext context) {
     return PaginatedSliverList<Course>(
       dataLoader: Provider.of<CourseBloc>(context).getCourses,
-      itemBuilder: (context, course, __) => StreamBuilder<CourseSeries>(
-        stream: Provider.of<CourseBloc>(context)
-            .getCourseSeries(course.courseSeriesId),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData)
-            return ListTile(
-              title: Text(snapshot.hasError
-                  ? snapshot.error.toString()
-                  : HpiL11n.get(context, 'loading')),
-            );
+      itemBuilder: (context, course, __) => Builder(
+        builder: (context) => StreamBuilder<CourseSeries>(
+          stream: Provider.of<CourseBloc>(context)
+              .getCourseSeries(course.courseSeriesId),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData)
+              return ListTile(
+                title: Text(snapshot.error?.toString() ??
+                    HpiL11n.get(context, 'loading')),
+              );
 
-          return ListTile(
-            title: Text(snapshot.data.title),
-            subtitle: Text(
-              course.lecturers.joinToString(),
-              maxLines: 1,
-            ),
-            onTap: () {
-              Navigator.of(context)
-                  .pushNamed(Route.coursesDetail.name, arguments: course.id);
-            },
-          );
-        },
+            return ListTile(
+              title: Text(snapshot.data.title),
+              subtitle: Text(
+                course.lecturers.joinToString(),
+                maxLines: 1,
+              ),
+              onTap: () {
+                Navigator.of(context)
+                    .pushNamed(Route.coursesDetail.name, arguments: course.id);
+              },
+            );
+          },
+        ),
       ),
     );
   }
@@ -127,7 +128,7 @@ class CourseSeriesList extends StatelessWidget {
               HpiL11n.get(
                 context,
                 'course/course.details',
-                args: [courseSeries.ects, courseSeries.hoursPerWeek],
+                args: [courseSeries.ects ?? 0, courseSeries.hoursPerWeek],
               ),
             ),
             subtitle: Text(courseSeries.types
