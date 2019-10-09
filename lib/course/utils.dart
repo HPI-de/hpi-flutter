@@ -3,7 +3,7 @@ import 'package:hpi_flutter/core/localizations.dart';
 
 import 'data/course.dart';
 
-String courseTypeToString(BuildContext context, Type type) {
+String courseTypeToString(BuildContext context, CourseSeriesType type) {
   assert(context != null);
   assert(type != null);
 
@@ -19,4 +19,13 @@ String semesterToString(BuildContext context, Semester semester) {
     'course/semester.${enumToKey(semester.term)}',
     args: [semester.year],
   );
+}
+
+String buildProgramInfo(CourseDetail courseDetail) {
+  String programInfo = '';
+  courseDetail.programs.forEach((k, v) {
+    programInfo +=
+        '$k\v${v.programs.joinToString(separator: "\n", transform: (p) => "\t\t\t\t$p")}';
+  });
+  return programInfo;
 }
