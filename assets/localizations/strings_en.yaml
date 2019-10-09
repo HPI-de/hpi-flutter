@@ -70,6 +70,7 @@ onboarding/start.title: Welcome to the HPI app!
 onboarding/start.subtitle: Thanks for trying out the beta version of the new HPI app, developed by the MobileDev-Club.
 onboarding/privacyPolicy.prefix: I agree to the
 onboarding/privacyPolicy.suffix: "."
+onboarding/crashReporting: Send anonymized crash reports.
 onboarding/aboutMyself.title: "Please describe yourself to customize this app:"
 onboarding/aboutMyself.text.1: "I'm a "
 onboarding/aboutMyself.text.2: " studying "
