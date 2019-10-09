@@ -14,6 +14,7 @@ import 'onboarding_pager.dart';
 class OnboardingPage extends StatefulWidget {
   static const _keyCompleted = 'onboarding.completed';
   static const _keyPrivacyPolicy = 'onboarding.privacyPolicy';
+  static const _keyCrashReporting = 'onboarding.crashReporting';
   static final _privacyPolicyDate = DateTime.utc(2019, 10, 01);
 
   static bool isOnboardingCompleted(SharedPreferences sharedPreferences) {
@@ -118,16 +119,19 @@ class _OnboardingPageState extends State<OnboardingPage> {
       textAlign: TextAlign.left,
     );
 
-    final acceptedVersion = Provider.of<SharedPreferences>(context)
+    final privacyPolicyVersion = Provider.of<SharedPreferences>(context)
         .getInt(OnboardingPage._keyPrivacyPolicy);
-    final accepted = acceptedVersion != null &&
-        !DateTime.fromMillisecondsSinceEpoch(acceptedVersion, isUtc: true)
+    final privacyPolicyAccepted = privacyPolicyVersion != null &&
+        !DateTime.fromMillisecondsSinceEpoch(privacyPolicyVersion, isUtc: true)
             .isBefore(OnboardingPage._privacyPolicyDate);
+    final crashReportingAccepted = Provider.of<SharedPreferences>(context)
+            .getBool(OnboardingPage._keyCrashReporting) ??
+        false;
 
-    final onChanged = (BuildContext context, [bool newValue]) {
-      newValue ??= !accepted;
+    final onPrivacyPolicyChanged = (BuildContext context, [bool newValue]) {
+      newValue ??= !privacyPolicyAccepted;
 
-      PageNotification(newValue).dispatch(context);
+      PageNotification(newValue && crashReportingAccepted).dispatch(context);
       setState(() {
         Provider.of<SharedPreferences>(context).setInt(
             OnboardingPage._keyPrivacyPolicy,
@@ -137,28 +141,38 @@ class _OnboardingPageState extends State<OnboardingPage> {
       });
     };
 
+    final onCrashReportingChanged = (BuildContext context, [bool newValue]) {
+      newValue ??= !crashReportingAccepted;
+
+      PageNotification(privacyPolicyAccepted && newValue).dispatch(context);
+      setState(() {
+        Provider.of<SharedPreferences>(context)
+            .setBool(OnboardingPage._keyCrashReporting, newValue);
+      });
+    };
+
     return Page(
       color: Theme.of(context).primaryColor,
-      canContinue: accepted,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 400),
-            child: Image.asset('assets/images/onboarding/mrNet.png'),
-          ),
-          SizedBox(height: 48),
-          Builder(
-            builder: (context) => InkWell(
-              onTap: () => onChanged(context),
+      canContinue: privacyPolicyAccepted && crashReportingAccepted,
+      child: Builder(
+        builder: (context) => Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 400),
+              child: Image.asset('assets/images/onboarding/mrNet.png'),
+            ),
+            SizedBox(height: 48),
+            InkWell(
+              onTap: () => onPrivacyPolicyChanged(context),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.baseline,
                 textBaseline: TextBaseline.ideographic,
                 children: <Widget>[
                   Checkbox(
-                    value: accepted,
-                    onChanged: (v) => onChanged(context, v),
+                    value: privacyPolicyAccepted,
+                    onChanged: (v) => onPrivacyPolicyChanged(context, v),
                     activeColor: HpiTheme.of(context).tertiary,
                   ),
                   Flexible(
@@ -170,8 +184,24 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 ],
               ),
             ),
-          ),
-        ],
+            InkWell(
+              onTap: () => onCrashReportingChanged(context),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                // crossAxisAlignment: CrossAxisAlignment.center,
+                // textBaseline: TextBaseline.ideographic,
+                children: <Widget>[
+                  Checkbox(
+                    value: crashReportingAccepted,
+                    onChanged: (v) => onCrashReportingChanged(context, v),
+                    activeColor: HpiTheme.of(context).tertiary,
+                  ),
+                  HpiL11n.text(context, 'onboarding/crashReporting'),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
