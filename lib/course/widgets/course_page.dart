@@ -90,9 +90,8 @@ class CourseList extends StatelessWidget {
           builder: (context, snapshot) {
             if (!snapshot.hasData)
               return ListTile(
-                title: Text(snapshot.hasError
-                    ? snapshot.error.toString()
-                    : HpiL11n.get(context, 'loading')),
+                title: Text(snapshot.error?.toString() ??
+                    HpiL11n.get(context, 'loading')),
               );
 
             return ListTile(
