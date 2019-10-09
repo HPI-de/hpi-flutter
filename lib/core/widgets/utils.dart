@@ -6,5 +6,5 @@ String getLanguage(BuildContext context, String abbreviation) {
   assert(context != null);
   assert(abbreviation != null);
 
-  return HpiL11n.get(context, 'language.$abbreviation');
+  return HpiL11n.get(context, 'language.${abbreviation.toLowerCase()}');
 }

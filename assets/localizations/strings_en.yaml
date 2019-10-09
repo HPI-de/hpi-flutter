@@ -31,6 +31,7 @@ course/course.type.lecture: Lecture
 course/course.type.seminar: Seminar
 course/course.type.blockSeminar: Block Seminar
 course/course.type.exercise: Exercise
+course/course.type.project: Project
 course/semester.winter: Winter Term %i
 course/semester.summer: Summer Term %i
 
