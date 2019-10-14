@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart' hide Route;
+import 'package:flutter/material.dart' as prefix0;
 import 'package:hpi_flutter/app/services/navigation.dart';
 import 'package:hpi_flutter/core/hpi_icons.dart';
 import 'package:hpi_flutter/core/localizations.dart';
+import 'package:hpi_flutter/core/utils.dart';
 import 'package:hpi_flutter/route.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
@@ -53,11 +55,18 @@ class MainScaffold extends StatelessWidget {
         shrinkWrap: true,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.fromLTRB(0, 8, 8, 0),
             child: Row(
               children: <Widget>[
-                SizedBox(width: 16),
-                Image.asset('assets/logo/logo_text.png', height: 56),
+                FlatButton(
+                  child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child:
+                          Image.asset('assets/logo/logo_text.png', height: 50)),
+                  onPressed: () {
+                    tryLaunch('https://hpi.de');
+                  },
+                ),
                 Spacer(),
                 IconButton(
                   icon: Icon(OMIcons.settings),
@@ -70,7 +79,7 @@ class MainScaffold extends StatelessWidget {
               ],
             ),
           ),
-          Divider(indent: 8, endIndent: 8),
+          Divider(indent: 8, endIndent: 8, thickness: 1),
           NavigationItem(
             icon: OMIcons.home,
             text: HpiL11n.get(context, 'dashboard'),

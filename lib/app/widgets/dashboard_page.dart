@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:align_positioned/align_positioned.dart';
 import 'package:flutter/material.dart';
 import 'package:hpi_flutter/core/localizations.dart';
+import 'package:hpi_flutter/core/utils.dart';
 import 'package:hpi_flutter/feedback/widgets/feedback_dialog.dart';
 import 'package:hpi_flutter/food/widgets/food_fragment.dart';
 import 'package:hpi_flutter/news/widgets/news_fragment.dart';
@@ -34,15 +35,20 @@ class DashboardPage extends StatelessWidget {
         padding:
             EdgeInsets.fromLTRB(16, MediaQuery.of(context).padding.top, 16, 32),
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Align(
-              alignment: Alignment.topRight,
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: 200, maxHeight: 100),
-                child: Image.asset('assets/logo/logo_text.png'),
+          FlatButton(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Align(
+                alignment: Alignment.topRight,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: 200, maxHeight: 100),
+                  child: Image.asset('assets/logo/logo_text.png'),
+                ),
               ),
             ),
+            onPressed: () {
+              tryLaunch('https://hpi.de');
+            },
           ),
           OpenHpiFragment(),
           NewsFragment(),
