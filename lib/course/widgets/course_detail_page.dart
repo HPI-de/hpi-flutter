@@ -13,6 +13,7 @@ import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:share/share.dart';
 
 import '../utils.dart';
 import 'elevated_expansion_tile.dart';
@@ -83,6 +84,20 @@ class CourseDetailPage extends StatelessWidget {
                   ),
                 ),
               ),
+              menuItems: [
+                PopupMenuItem(
+                    value: 'share', child: HpiL11n.text(context, 'share')),
+                PopupMenuItem(
+                    value: 'openInBrowser',
+                    child: HpiL11n.text(context, 'openInBrowser')),
+              ],
+              menuItemHandler: (value) async {
+                if (value == 'share') {
+                  Share.share(course.website);
+                } else if (value == 'openInBrowser') {
+                  await tryLaunch(course.website);
+                }
+              },
             ),
             SliverList(
               delegate: SliverChildListDelegate(
