@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/core/localizations.dart';
+import 'package:hpi_flutter/food/data/bloc.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/widgets/main_scaffold.dart';
-import '../bloc.dart';
 import '../data/restaurant.dart';
 import 'restaurant_menu.dart';
 
@@ -15,9 +15,9 @@ import 'restaurant_menu.dart';
 class FoodPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: use the actual grpc client channel as below
     return ProxyProvider<Uri, FoodBloc>(
-      builder: (_, serverUrl, __) => FoodBloc(serverUrl),
+      builder: (_, serverUrl, __) =>
+          FoodBloc(serverUrl, Localizations.localeOf(context)),
       child: MainScaffold(
         body: CustomScrollView(
           slivers: <Widget>[
@@ -74,6 +74,14 @@ Widget _buildRestaurantList(BuildContext context) {
           ),
         );
       if (!snapshot.hasData) return Placeholder();
+
+      if (snapshot.data.isEmpty()) {
+        return SliverFillRemaining(
+          child: Center(
+            child: Text(HpiL11n.get(context, 'food/noMenu')),
+          ),
+        );
+      }
 
       var menuItems = snapshot.data;
     },

@@ -13,7 +13,6 @@ import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../utils.dart';
 import 'elevated_expansion_tile.dart';
@@ -27,7 +26,8 @@ class CourseDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<Uri, CourseBloc>(
-      builder: (_, serverUrl, __) => CourseBloc(serverUrl),
+      builder: (_, serverUrl, __) =>
+          CourseBloc(serverUrl, Localizations.localeOf(context)),
       child: MainScaffold(
         body: Builder(
           builder: (context) => _buildScaffold(context),
@@ -72,6 +72,7 @@ class CourseDetailPage extends StatelessWidget {
               floating: true,
               backgroundColor: Theme.of(context).cardColor,
               title: buildAppBarTitle(
+                context: context,
                 title: Text(courseSeries.title),
                 subtitle: StreamBuilder<Semester>(
                   stream: bloc.getSemester(course.semesterId),
@@ -79,7 +80,6 @@ class CourseDetailPage extends StatelessWidget {
                     snapshot.data != null
                         ? semesterToString(context, snapshot.data)
                         : course.semesterId,
-                    style: Theme.of(context).textTheme.subhead,
                   ),
                 ),
               ),
@@ -128,14 +128,13 @@ class CourseDetailPage extends StatelessWidget {
           title: HpiL11n.of(context)('course/course.teleTask'),
           trailing: OMIcons.openInNew,
           onTap: () async {
-            if (await canLaunch(courseDetail.teletask))
-              await launch(courseDetail.teletask);
+            await tryLaunch(courseDetail.teletask);
           },
         ),
       _buildElevatedTile(
         context,
         leading: OMIcons.personOutline,
-        title: course.lecturer,
+        title: course.lecturers.joinToString(),
         subtitle: course.assistants.joinToString(),
       ),
       _buildElevatedTile(
@@ -147,15 +146,7 @@ class CourseDetailPage extends StatelessWidget {
         context,
         leading: OMIcons.viewModule,
         title: HpiL11n.get(context, 'course/course.programsModules'),
-        subtitle: courseDetail.programs
-            .map((program) =>
-                program.key +
-                '\v' +
-                program.value.joinToString(
-                  separator: '\n',
-                  transform: (v) => '\t\t\t\t$v',
-                ))
-            .joinToString(separator: '\n'),
+        subtitle: buildProgramInfo(courseDetail),
       ),
       _buildCourseInfoTile(
           context, OMIcons.subject, 'description', courseDetail.description),
@@ -233,9 +224,7 @@ class CourseDetailPage extends StatelessWidget {
         Html(
           padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           data: content,
-          onLinkTap: (url) async {
-            if (await canLaunch(url)) await launch(url);
-          },
+          onLinkTap: tryLaunch,
         )
       ],
     );

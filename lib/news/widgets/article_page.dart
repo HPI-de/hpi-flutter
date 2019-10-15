@@ -5,11 +5,12 @@ import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/core/localizations.dart';
+import 'package:hpi_flutter/core/utils.dart';
+import 'package:hpi_flutter/core/widgets/chip_group.dart';
 import 'package:hpi_flutter/news/data/article.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../data/bloc.dart';
 import '../utils.dart';
@@ -23,7 +24,8 @@ class ArticlePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<Uri, NewsBloc>(
-      builder: (_, serverUrl, __) => NewsBloc(serverUrl),
+      builder: (_, serverUrl, __) =>
+          NewsBloc(serverUrl, Localizations.localeOf(context)),
       child: Builder(
         builder: (context) => StreamBuilder<Article>(
           stream: Provider.of<NewsBloc>(context).getArticle(articleId),
@@ -83,7 +85,7 @@ class ArticleView extends StatelessWidget {
                 Html(
                   data: article.content,
                   onLinkTap: (url) async {
-                    if (await canLaunch(url)) await launch(url);
+                    await tryLaunch(url);
                   },
                 ),
                 if (article.authorIds.isNotEmpty() ||
@@ -91,21 +93,21 @@ class ArticleView extends StatelessWidget {
                     article.tags.isNotEmpty())
                   SizedBox(height: 16),
                 if (article.authorIds.isNotEmpty())
-                  ..._buildChipSection(
+                  _buildChipSection(
                     context,
                     HpiL11n.get(context, 'news/article.authors'),
                     article.authorIds,
                     (a) => Chip(label: Text(a)),
                   ),
                 if (article.categories.isNotEmpty())
-                  ..._buildChipSection(
+                  _buildChipSection(
                     context,
                     HpiL11n.get(context, 'news/article.categories'),
                     article.categories,
                     (c) => Chip(label: Text(c.name)),
                   ),
                 if (article.tags.isNotEmpty())
-                  ..._buildChipSection(
+                  _buildChipSection(
                     context,
                     HpiL11n.get(context, 'news/article.tags'),
                     article.tags,
@@ -152,19 +154,23 @@ class ArticleView extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildChipSection<T>(BuildContext context, String title,
-      KtCollection<T> items, Widget Function(T) chipBuilder) {
-    return <Widget>[
-      SizedBox(height: 4),
-      Text(
-        title,
-        style: Theme.of(context).textTheme.overline,
-      ),
-      Wrap(
-        spacing: 8,
-        runSpacing: 8,
+  Widget _buildChipSection<T>(
+    BuildContext context,
+    String title,
+    KtCollection<T> items,
+    Widget Function(T) chipBuilder,
+  ) {
+    assert(context != null);
+    assert(title != null);
+    assert(items != null);
+    assert(chipBuilder != null);
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 4),
+      child: ChipGroup(
+        title: Text(title),
         children: items.map((i) => chipBuilder(i)).asList(),
-      )
-    ];
+      ),
+    );
   }
 }

@@ -1,25 +1,43 @@
+import 'dart:io';
+import 'dart:ui';
+
 import 'package:flutter/services.dart';
-import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart' hide Route;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/route.dart';
+import 'package:hpi_flutter/crashreporting/utils.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'dart:async';
 
 import 'app/services/navigation.dart';
 import 'app/widgets/hpi_theme.dart';
-import 'food/data/restaurant.dart';
+import 'app/widgets/utils.dart';
+import 'onboarding/widgets/onboarding_page.dart';
 
-Future<ByteData> fetchFont(String url) async {
-  final response = await http.get(url);
-  if (response.statusCode == 200)
-    return ByteData.view(response.bodyBytes.buffer);
-  else
-    throw Exception('Failed to load font');
+Future<ByteData> _downloadFontToCache(String filename, String url) async {
+  final file = File('${(await getTemporaryDirectory()).path}/$filename');
+
+  if (await file.exists()) {
+    // We already downloaded a cached version of the font, so just use that.
+    final bytes = file.readAsBytesSync();
+    return ByteData.view(bytes.buffer);
+  } else {
+    // Download the font.
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      file.writeAsBytes(response.bodyBytes);
+      return ByteData.view(response.bodyBytes.buffer);
+    } else {
+      throw Exception('Failed to load font');
+    }
+  }
 }
 
 Future<void> initializeHive() async {
@@ -31,38 +49,70 @@ Future<void> initializeHive() async {
 }
 
 void main() async {
-  await initializeHive();
+  //Required for font caching
+  WidgetsFlutterBinding.ensureInitialized();
+  const fontBaseUrl = 'https://hpi.de/fileadmin/templates/fonts';
+  const serverUrl = "172.18.132.7";
 
-  var delegate = HpiLocalizationsDelegate();
-  /*var fontLoader = FontLoader('Neo Sans')
-    ..addFont(fetchFont(
-        'https://hpi.de/fileadmin/templates/fonts/9de9709d-f77a-44ad-96b9-6fea586f7efb.ttf'));
-  await fontLoader.load();*/
+  // This captures errors reported by the Flutter framework.
+  FlutterError.onError = (FlutterErrorDetails details) async {
+    if (isInDebugMode) {
+      // In development mode simply print to console.
+      FlutterError.dumpErrorToConsole(details);
+    } else {
+      // In production mode report to the application zone.
+      Zone.current.handleUncaughtError(details.exception, details.stack);
+    }
+  };
 
-  // Used by feedback to capture the whole app
-  final screenshotController = ScreenshotController();
+  // run in custom zone for catching errors
+  runZoned<Future<void>>(() async {
+    var delegate = HpiLocalizationsDelegate();
+    try {
+      // We should load the different font files for bold and normal style into
+      // the same font name with different weights, but it seems like this
+      // feature is not supported yet: https://github.com/flutter/flutter/issues/42084
+      // So, for now we only load the non-bold font.
+      var fontLoader = FontLoader('Neo Sans')
+        ..addFont(_downloadFontToCache('neo_sans.ttf',
+            '$fontBaseUrl/9de9709d-f77a-44ad-96b9-6fea586f7efb.ttf'));
+      //..addFont(_downloadFontToCache('neo_sans_bold.ttf',
+      //    '$fontBaseUrl/9de9709d-f77a-44ad-96b9-6fea586f7efb.ttf'))
+      await fontLoader.load();
+    } catch (_) {
+      // We do nothing here as it's not a big problem if the font isn't
+      // downloaded yet—we can just use the default this time. Of course, we
+      // automatically try to download the font the next time the app gets
+      // started.
+    }
 
-  runApp(
-    MultiProvider(
-      providers: [
-        Provider<NavigationService>(
-          builder: (_) => NavigationService(),
-        ),
-        Provider<Uri>(
-          builder: (_) => Uri.parse("172.18.132.7"),
-        ),
-        Provider<ScreenshotController>(
-          builder: (_) => screenshotController,
-        ),
-      ],
-      child: Screenshot(
-        controller: screenshotController,
-        child: HpiApp(
-          hpiLocalizationsDelegate: delegate,
+    // Used by feedback to capture the whole app
+    final screenshotController = ScreenshotController();
+
+    runApp(
+      MultiProvider(
+        providers: [
+          Provider<NavigationService>(
+            builder: (_) => NavigationService(),
+          ),
+          Provider<Uri>(
+            builder: (_) => Uri.parse(serverUrl),
+          ),
+          Provider<ScreenshotController>(
+            builder: (_) => screenshotController,
+          ),
+        ],
+        child: Screenshot(
+          controller: screenshotController,
+          child: HpiApp(
+            hpiLocalizationsDelegate: delegate,
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }, onError: (error, stackTrace) async {
+    await reportError(error, stackTrace, Uri.parse(serverUrl));
+  });
 }
 
 const _brandColorRed = 0xFFB1063A;
@@ -131,6 +181,9 @@ class HpiApp extends StatelessWidget {
       theme.typography.geometryThemeFor(ScriptCategory.englishLike),
     );
     theme = theme.copyWith(
+      cardTheme: theme.cardTheme.copyWith(
+        shape: BeveledRectangleBorder(),
+      ),
       chipTheme: theme.chipTheme.copyWith(
         backgroundColor: Colors.transparent,
         shape: StadiumBorder(side: BorderSide(color: Colors.black12)),
@@ -160,22 +213,39 @@ class HpiApp extends StatelessWidget {
 
     return HpiTheme(
       tertiary: Color(0xFFF6A804),
-      child: MaterialApp(
-        title: 'HPI',
-        theme: theme,
-        initialRoute: Route.dashboard.name,
-        onGenerateRoute: Route.generateRoute,
-        navigatorObservers: [
-          NavigationObserver(Provider.of<NavigationService>(context)),
-        ],
-        localizationsDelegates: [
-          hpiLocalizationsDelegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
-        supportedLocales: hpiLocalizationsDelegate.supportedLanguages
-            .map((l) => Locale(l))
-            .asList(),
+      child: FutureBuilder<SharedPreferences>(
+        future: SharedPreferences.getInstance(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return buildLoadingError(snapshot);
+
+          final sharedPreferences = snapshot.data;
+          // To show onboarding again, uncomment the following line:
+          // OnboardingPage.clearOnboardingCompleted(sharedPreferences);
+
+          return Provider<SharedPreferences>(
+            builder: (_) => sharedPreferences,
+            child: MaterialApp(
+              title: 'HPI',
+              theme: theme,
+              initialRoute:
+                  OnboardingPage.isOnboardingCompleted(sharedPreferences)
+                      ? Route.dashboard.name
+                      : Route.onboarding.name,
+              onGenerateRoute: Route.generateRoute,
+              navigatorObservers: [
+                NavigationObserver(Provider.of<NavigationService>(context)),
+              ],
+              localizationsDelegates: [
+                hpiLocalizationsDelegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+              ],
+              supportedLocales: hpiLocalizationsDelegate.supportedLanguages
+                  .map((l) => Locale(l))
+                  .asList(),
+            ),
+          );
+        },
       ),
     );
   }

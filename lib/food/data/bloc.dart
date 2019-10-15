@@ -1,6 +1,10 @@
-import 'package:cached_listview/cached_listview.dart';
+import 'dart:ui';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter_cached/flutter_cached.dart';
 import 'package:grpc/grpc.dart';
 import 'package:hpi_flutter/core/data/grpc_downloader.dart';
+import 'package:hpi_flutter/core/data/utils.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/food/v1test/food_service.pbgrpc.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/food/v1test/food.pb.dart'
     as proto;
@@ -8,14 +12,33 @@ import 'package:repository/repository.dart';
 import 'package:meta/meta.dart';
 import 'package:repository_hive/repository_hive.dart';
 
-import 'data/restaurant.dart';
+import 'restaurant.dart';
 
 @immutable
 class FoodBloc {
-  final FoodServiceClient client;
-  final CacheController<MenuItem> menuItems;
-  final Repository<Restaurant> restaurants;
-  final Repository<Label> labels;
+  final FoodServiceClient _client;
+
+  FoodBloc(Uri serverUrl, Locale locale)
+      : assert(serverUrl != null),
+        assert(locale != null),
+        _client = FoodServiceClient(
+          ClientChannel(
+            serverUrl.toString(),
+            port: 50065,
+            options: ChannelOptions(
+              credentials: ChannelCredentials.insecure(),
+            ),
+          ),
+          options: createCallOptions(locale),
+        );
+
+  Stream<KtList<MenuItem>> getMenuItems({String restaurantId}) {
+    final req = ListMenuItemsRequest()..date = dateTimeToDate(DateTime.now());
+    if (restaurantId != null) req.restaurantId = restaurantId;
+
+    return Stream.fromFuture(_client.listMenuItems(req))
+        .map((r) => KtList.from(r.items).map((i) => MenuItem.fromProto(i)));
+  }
 
   FoodBloc._({
     @required this.client,
@@ -24,25 +47,12 @@ class FoodBloc {
     @required this.labels,
   });
 
-  factory FoodBloc(Uri serverUrl) {
-    final client = FoodServiceClient(
-      ClientChannel(
-        serverUrl.toString(),
-        port: 50065,
-        options: ChannelOptions(credentials: ChannelCredentials.insecure()),
-      ),
-    );
-
-    final menuItemsCache = HiveRepository<MenuItem>('menu_items');
-    final menuItems = CacheController(
-        fetcher: () async =>
-            (await client.listMenuItems(ListMenuItemsRequest()))
-                .items
-                .map((item) => MenuItem.fromProto(item)),
-        loadFromCache: () => menuItemsCache.fetchAllItems().first,
-        saveToCache: (items) async {
-          for (var item in items) menuItemsCache.update(item.id, item);
-        });
+  Stream<Restaurant> getRestaurant(String id) {
+    assert(id != null);
+    return Stream.fromFuture(
+            _client.getRestaurant(GetRestaurantRequest()..id = id))
+        .map((s) => Restaurant.fromProto(s));
+  }
 
     final restaurants = CachedRepository<Restaurant>(
       strategy: CacheStrategy.alwaysFetchFromSource,

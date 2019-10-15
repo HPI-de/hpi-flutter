@@ -17,7 +17,8 @@ class FeedbackDialog extends StatefulWidget {
       isScrollControlled: true,
       context: context,
       builder: (context) => ProxyProvider<Uri, FeedbackBloc>(
-        builder: (_, serverUrl, __) => FeedbackBloc(serverUrl),
+        builder: (_, serverUrl, __) =>
+            FeedbackBloc(serverUrl, Localizations.localeOf(context)),
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.only(
@@ -156,8 +157,7 @@ class _FeedbackDialogState extends State<FeedbackDialog>
       isSending = false;
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text(
-          HpiL11n.get(
-              context, successful ? 'feedback/sent' : 'error'),
+          HpiL11n.get(context, successful ? 'feedback/sent' : 'error'),
         ),
       ));
     });

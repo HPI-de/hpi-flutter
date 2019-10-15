@@ -2,8 +2,11 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart' hide Route;
-import 'package:fluttery/animations.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
+import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
+import 'package:hpi_flutter/core/localizations.dart';
+import 'package:hpi_flutter/core/widgets/radial_drag_gesture_detector.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:rxdart/rxdart.dart';
@@ -22,8 +25,8 @@ class TimerPage extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
 
         return MainScaffold(
-          appBar: AppBar(
-            title: Text('Timer'),
+          appBar: HpiAppBar(
+            title: HpiL11n.text(context, 'tools.timer'),
           ),
           body: Center(
             child: Padding(
@@ -69,9 +72,7 @@ class CountdownTimer {
 
   Duration get remaining =>
       isDone ? Duration.zero : _total + _additionalTime - _stopwatch.elapsed;
-  bool get isDone =>
-      state == CountdownTimerState.ready &&
-      _total + _additionalTime - _stopwatch.elapsed < _zeroDelta;
+  bool get isDone => _total + _additionalTime - _stopwatch.elapsed < _zeroDelta;
 
   CountdownTimer(this._total, this.updateFrequency)
       : assert(_total != null),
@@ -138,6 +139,7 @@ class CountdownTimer {
     if (isDone) {
       _timer?.cancel();
       _state.value = CountdownTimerState.ready;
+      FlutterRingtonePlayer.playNotification();
     }
     _updates.value = remaining;
   }
