@@ -78,10 +78,16 @@ class ArticleView extends StatelessWidget {
                 child: HpiL11n.text(context, 'openInBrowser')),
           ],
           menuItemHandler: (value) async {
-            if (value == 'share') {
-              Share.share(article.link.toString());
-            } else if (value == 'openInBrowser') {
-              await tryLaunch(article.link.toString());
+            switch (value) {
+              case 'share':
+                Share.share(article.link.toString());
+                break;
+              case 'openInBrowser':
+                await tryLaunch(article.link.toString());
+                break;
+              default:
+                assert(false);
+                break;
             }
           },
         ),

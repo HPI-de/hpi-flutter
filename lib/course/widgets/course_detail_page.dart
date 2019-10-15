@@ -92,10 +92,16 @@ class CourseDetailPage extends StatelessWidget {
                     child: HpiL11n.text(context, 'openInBrowser')),
               ],
               menuItemHandler: (value) async {
-                if (value == 'share') {
-                  Share.share(course.website);
-                } else if (value == 'openInBrowser') {
-                  await tryLaunch(course.website);
+                switch (value) {
+                  case 'share':
+                    Share.share(course.website);
+                    break;
+                  case 'openInBrowser':
+                    await tryLaunch(course.website);
+                    break;
+                  default:
+                    assert(false);
+                    break;
                 }
               },
             ),
