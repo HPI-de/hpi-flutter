@@ -1,9 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/feedback/v1test/feedback.pb.dart'
     as proto;
-import 'package:screenshot/screenshot.dart';
 
 @immutable
 class Feedback {
@@ -11,7 +12,7 @@ class Feedback {
   final String message;
   final Uri screenUri;
   final String user;
-  final List<int> screenshot;
+  final Uint8List screenshot;
   final String log;
 
   Feedback({
@@ -33,21 +34,12 @@ class Feedback {
           screenshot: feedback.screenshot,
           log: feedback.log,
         );
-  static create(
-      String message,
-      Uri screenUri,
-      bool includeContact,
-      bool includeScreenshot,
-      ScreenshotController controller,
-      bool includeLogs) async {
+  static create(String message, Uri screenUri, bool includeContact,
+      bool includeScreenshot, Uint8List screenshot, bool includeLogs) async {
     assert(message != null);
 
 // TODO: implement when login is available
     String user;
-
-    var screenshot = includeScreenshot
-        ? await controller.capture().then((f) => f.readAsBytes())
-        : null;
     String log;
     if (includeLogs)
       try {
