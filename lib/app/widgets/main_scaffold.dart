@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart' hide Route;
-import 'package:flutter/material.dart' as prefix0;
 import 'package:hpi_flutter/app/services/navigation.dart';
 import 'package:hpi_flutter/core/hpi_icons.dart';
 import 'package:hpi_flutter/core/localizations.dart';
@@ -63,9 +62,7 @@ class MainScaffold extends StatelessWidget {
                       padding: const EdgeInsets.all(8),
                       child:
                           Image.asset('assets/logo/logo_text.png', height: 50)),
-                  onPressed: () {
-                    tryLaunch('https://hpi.de');
-                  },
+                  onPressed: () => tryLaunch('https://hpi.de'),
                 ),
                 Spacer(),
                 IconButton(
