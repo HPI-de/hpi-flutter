@@ -138,7 +138,10 @@ class NavigationItem extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(4),
           onTap: () {
-            Navigator.popAndPushNamed(context, route.name);
+            var navigator = Navigator.of(context);
+            navigator
+              ..popUntil((_) => !navigator.canPop())
+              ..pushReplacementNamed(route.name);
           },
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
