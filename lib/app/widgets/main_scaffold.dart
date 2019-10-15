@@ -141,7 +141,7 @@ class NavigationItem extends StatelessWidget {
             var navigator = Navigator.of(context);
             navigator
               ..popUntil((_) => !navigator.canPop())
-              ..pushReplacementNamed(route.name);
+              ..pushNamed(route.name);
           },
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
