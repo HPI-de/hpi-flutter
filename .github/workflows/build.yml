@@ -18,5 +18,20 @@ jobs:
     - name: Install dependencies
       run: flutter pub get
 
+    - name: Create temp dir
+      run: mkdir ./temp
+    - name: Download HPI Cloud APIs
+      uses: Legion2/download-release-action@v2.1.0
+      with:
+        repository: HPI-de/hpi-cloud-apis
+        tag: '0.0.11'
+        path: ./temp
+        file: generated-dart.zip
+    - name: Unzip HPI Cloud APIs
+      run: unzip ./temp/generated-dart.zip -d ./lib
+
+    - name: Run code generator(s)
+      run: flutter pub run build_runner build
+
     - name: Build apk
       run: flutter build apk
