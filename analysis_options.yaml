@@ -1,0 +1,11 @@
+include: package:pedantic/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - lib/hpi_cloud_apis/**
+  strong-mode:
+    implicit-casts: false
+
+linter:
+  rules:
+    - camel_case_types

@@ -47,10 +47,15 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  # Data
   build_runner: ^1.0.0
   immutable_proto_generator: ^0.0.4
 
+  # UI
   flutter_launcher_icons: ^0.7.2+1
+
+  # Linter
+  pedantic: ^1.8.0+1
 
 flutter:
   uses-material-design: true
