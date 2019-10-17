@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: srvaroa/labeler@master
-      with:
+      env:
         GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
 
   assign-author:
@@ -16,7 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: samspills/assign-pr-to-author@v1.0
-      if: github.event_name == 'pull_request' && github.event.action == 'opened'
       with:
         repo-token: '${{ secrets.GITHUB_TOKEN }}'
 

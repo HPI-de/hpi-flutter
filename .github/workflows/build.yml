@@ -3,9 +3,9 @@ name: Build
 on: [push, pull_request]
 
 jobs:
-  build:
+  install:
+    name: Install
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v1
@@ -39,5 +39,32 @@ jobs:
     - name: Run code generator(s)
       run: flutter pub run build_runner build
 
+  build:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
     - name: Build apk
       run: flutter build apk
+
+  lint:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+    - name: Run linter
+      run: flutter analyze --write=./flutter_analyze_report.txt
+      continue-on-error: true
+
+    - name: Install ruby
+      uses: actions/setup-ruby@v1
+      if: github.event_name == 'pull_request'
+      with:
+        ruby-version: '2.6'
+    - run: |
+        gem install bundler
+        bundle install --without documentation
+    - name: Run danger on generated report
+      uses: MeilCli/danger-action@v1
+      if: github.event_name == 'pull_request'
+      with:
+        danger_file: Dangerfile
+        danger_id: 'danger-pr'
