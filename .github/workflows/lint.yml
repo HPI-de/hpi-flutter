@@ -48,10 +48,10 @@ jobs:
       if: github.event_name == 'pull_request'
       with:
         ruby-version: '2.6'
-    - run: |
+    - name: Install ruby gems
+      run: |
         gem install bundler
         bundle install --without documentation
-        head ./flutter_analyze_report.txt
       if: github.event_name == 'pull_request'
     - name: Run danger on generated report
       uses: MeilCli/danger-action@v1
