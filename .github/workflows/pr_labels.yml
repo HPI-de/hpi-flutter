@@ -1,0 +1,10 @@
+name: PR labels
+
+on: [pull_request]
+
+jobs:
+  type-labels:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: srvaroa/labeler@master

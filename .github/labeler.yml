@@ -1,0 +1,14 @@
+"T: build":
+  title: "^build"
+"T: chore":
+  title: "^chore"
+"T: ci":
+  title: "^ci"
+"T: docs":
+  title: "^docs"
+"T: feat":
+  title: "^feat"
+"T: fix":
+  title: "^fix"
+"T: refactor":
+  title: "^refactor"
