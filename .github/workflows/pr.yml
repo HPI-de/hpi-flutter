@@ -9,7 +9,7 @@ jobs:
     steps:
     - uses: srvaroa/labeler@master
       with:
-        config_path: ./github/type-labels.yml
+        config_path: .github/type-labels.yml
       env:
         GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
 
@@ -19,7 +19,7 @@ jobs:
     steps:
     - uses: actions/labeler@v2
       with:
-        configuration-path: ./github/component-labels.yml
+        configuration-path: .github/component-labels.yml
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
 
   assign-author:
