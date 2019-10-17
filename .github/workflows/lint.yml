@@ -43,12 +43,12 @@ jobs:
       run: flutter analyze --write=./flutter_analyze_report.txt
       continue-on-error: true
 
-    - name: Install ruby for danger
+    - name: Install ruby
       uses: actions/setup-ruby@v1
       if: github.event_name == 'pull_request'
       with:
         ruby-version: '2.6'
-    - run: bundle update --bundler
+    - run: bundle install --without documentation
     - name: Run danger on generated report
       uses: MeilCli/danger-action@v1
       if: github.event_name == 'pull_request'
