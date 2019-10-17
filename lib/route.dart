@@ -85,7 +85,7 @@ class Route {
 
   static const settings = Route._internal('/settings');
   static const settingsPrivacyPolicy =
-      const Route._internal('/settings/privacyPolicy');
+      Route._internal('/settings/privacyPolicy');
 
   static KtList<Route> values = KtList.from([
     dashboard,

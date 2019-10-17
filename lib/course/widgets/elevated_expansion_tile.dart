@@ -89,7 +89,6 @@ class _ElevatedExpansionTileState extends State<ElevatedExpansionTile>
   AnimationController _controller;
   Animation<double> _iconTurns;
   Animation<double> _heightFactor;
-  Animation<Color> _borderColor;
   Animation<Color> _headerColor;
   Animation<Color> _iconColor;
 
@@ -101,7 +100,6 @@ class _ElevatedExpansionTileState extends State<ElevatedExpansionTile>
     _controller = AnimationController(duration: _kExpand, vsync: this);
     _heightFactor = _controller.drive(_easeInTween);
     _iconTurns = _controller.drive(_halfTween.chain(_easeInTween));
-    _borderColor = _controller.drive(_borderColorTween.chain(_easeOutTween));
     _headerColor = _controller.drive(_headerColorTween.chain(_easeInTween));
     _iconColor = _controller.drive(_iconColorTween.chain(_easeInTween));
 
