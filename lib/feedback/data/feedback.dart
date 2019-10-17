@@ -49,12 +49,13 @@ class Feedback {
         ? await controller.capture().then((f) => f.readAsBytes())
         : null;
     String log;
-    if (includeLogs)
+    if (includeLogs) {
       try {
         log = await MethodChannel("feedback").invokeMethod("getLog");
       } on PlatformException catch (e) {
         log = "ERROR: PlatformException while reading log:\n$e";
       }
+    }
 
     Feedback f = Feedback(
       id: "",

@@ -30,13 +30,14 @@ class ArticlePage extends StatelessWidget {
         builder: (context) => StreamBuilder<Article>(
           stream: Provider.of<NewsBloc>(context).getArticle(articleId),
           builder: (context, snapshot) {
-            if (!snapshot.hasData)
+            if (!snapshot.hasData) {
               return buildLoadingErrorScaffold(
                 context,
                 snapshot,
                 appBarElevated: true,
                 loadingTitle: HpiL11n.get(context, 'news/article.loading'),
               );
+            }
 
             return MainScaffold(
               body: ArticleView(snapshot.data),

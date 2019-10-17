@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:align_positioned/align_positioned.dart';
 import 'package:flutter/material.dart';
 import 'package:hpi_flutter/core/localizations.dart';

@@ -118,10 +118,11 @@ class InfoBitPage extends StatelessWidget {
       subtitle: infoBit.subtitle != null ? Text(infoBit.subtitle) : null,
     );
 
-    if (infoBit.cover == null)
+    if (infoBit.cover == null) {
       return HpiSliverAppBar(
         title: title,
       );
+    }
 
     return HpiSliverAppBar(
       expandedHeight: MediaQuery.of(context).size.width / 16 * 9,
@@ -176,7 +177,7 @@ class InfoBitPage extends StatelessWidget {
       default:
         assert(false,
             '_buildChildren must not be called for InfoBitChildDisplay.none');
-        break;
+        return Container();
     }
   }
 

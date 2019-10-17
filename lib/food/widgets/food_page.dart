@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hpi_flutter/app/widgets/app_bar.dart';
+import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/food/data/bloc.dart';
 import 'package:kt_dart/collection.dart';
@@ -38,15 +39,7 @@ Widget _buildRestaurantList(BuildContext context) {
   return StreamBuilder<KtList<MenuItem>>(
     stream: Provider.of<FoodBloc>(context).getMenuItems(),
     builder: (context, snapshot) {
-      if (!snapshot.hasData)
-        return SliverFillRemaining(
-          child: Center(
-            child: snapshot.hasError
-                ? Text(snapshot.error)
-                : CircularProgressIndicator(),
-          ),
-        );
-      if (!snapshot.hasData) return Placeholder();
+      if (!snapshot.hasData) return buildLoadingErrorSliver(snapshot);
 
       if (snapshot.data.isEmpty()) {
         return SliverFillRemaining(

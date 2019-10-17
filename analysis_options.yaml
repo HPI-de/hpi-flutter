@@ -2,7 +2,9 @@ include: package:pedantic/analysis_options.yaml
 
 analyzer:
   exclude:
+    - lib/core/hpi_icons.dart
     - lib/hpi_cloud_apis/**
+    - lib/**/*.g.dart
   strong-mode:
     implicit-casts: false
 

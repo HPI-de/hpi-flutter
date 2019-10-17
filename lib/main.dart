@@ -10,6 +10,7 @@ import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/route.dart';
 import 'package:hpi_flutter/crashreporting/utils.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,7 +33,7 @@ Future<ByteData> _downloadFontToCache(String filename, String url) async {
     // Download the font.
     final response = await http.get(url);
     if (response.statusCode == 200) {
-      file.writeAsBytes(response.bodyBytes);
+      unawaited(file.writeAsBytes(response.bodyBytes));
       return ByteData.view(response.bodyBytes.buffer);
     } else {
       throw Exception('Failed to load font');
@@ -58,7 +59,7 @@ void main() async {
   };
 
   // run in custom zone for catching errors
-  runZoned<Future<void>>(() async {
+  await runZoned<Future<void>>(() async {
     var delegate = HpiLocalizationsDelegate();
     try {
       // We should load the different font files for bold and normal style into

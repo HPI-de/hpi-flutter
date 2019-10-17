@@ -24,10 +24,11 @@ class HpiL11n {
 
     // Load fallbacks
     KtMap<String, String> fallbacks;
-    if (lc != "en")
+    if (lc != "en") {
       fallbacks = await rootBundle
           .loadString('assets/localizations/strings_en.yaml')
           .then((s) => KtMap.from(Map.from(loadYaml(s))));
+    }
 
     return HpiL11n._(locale, strings, fallbacks);
   }

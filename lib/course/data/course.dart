@@ -395,8 +395,9 @@ class Course {
     course.assistants.addAll(assistants.iter);
     if (website != null) course.website = website;
     if (attendance != null) course.attendance = attendance.toProto();
-    if (enrollmentDeadline != null)
+    if (enrollmentDeadline != null) {
       course.enrollmentDeadline = enrollmentDeadline.toProto();
+    }
     return course;
   }
 
@@ -495,12 +496,13 @@ class CourseDetail {
     final courseDetail = proto.CourseDetail();
     if (courseId != null) courseDetail.courseId = courseId;
     if (teletask != null) courseDetail.teletask = teletask;
-    if (programs != null)
+    if (programs != null) {
       courseDetail.programs
         ..clear()
         ..addAll({
           for (var entry in programs.entries) entry.key: entry.value.toProto()
         });
+    }
     if (description != null) courseDetail.description = description;
     if (requirements != null) courseDetail.requirements = requirements;
     if (learning != null) courseDetail.learning = learning;

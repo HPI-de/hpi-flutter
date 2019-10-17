@@ -33,8 +33,9 @@ class OpenHpiFragment extends StatelessWidget {
     return StreamBuilder<KtList<OpenHpiCourse>>(
       stream: Provider.of<OpenHpiBloc>(context).getAnnouncedCourses(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData)
+        if (!snapshot.hasData) {
           return buildLoadingError(snapshot);
+        }
 
         return ListView.separated(
           padding: EdgeInsets.all(8),

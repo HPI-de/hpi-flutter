@@ -125,10 +125,11 @@ class _OnboardingPagerState extends State<OnboardingPager> {
 
     return NotificationListener<PageNotification>(
       onNotification: (n) {
-        if (_canContinue[index] != n.canContinue)
+        if (_canContinue[index] != n.canContinue) {
           setState(() {
             _canContinue[index] = n.canContinue;
           });
+        }
         return true;
       },
       child: Center(

@@ -92,7 +92,6 @@ class _ElevatedExpansionTileState extends State<ElevatedExpansionTile>
   Animation<Color> _borderColor;
   Animation<Color> _headerColor;
   Animation<Color> _iconColor;
-  Animation<Color> _backgroundColor;
 
   bool _isExpanded = false;
 
@@ -105,8 +104,6 @@ class _ElevatedExpansionTileState extends State<ElevatedExpansionTile>
     _borderColor = _controller.drive(_borderColorTween.chain(_easeOutTween));
     _headerColor = _controller.drive(_headerColorTween.chain(_easeInTween));
     _iconColor = _controller.drive(_iconColorTween.chain(_easeInTween));
-    _backgroundColor =
-        _controller.drive(_backgroundColorTween.chain(_easeOutTween));
 
     _isExpanded =
         PageStorage.of(context)?.readState(context) ?? widget.initiallyExpanded;
@@ -134,13 +131,12 @@ class _ElevatedExpansionTileState extends State<ElevatedExpansionTile>
       }
       PageStorage.of(context)?.writeState(context, _isExpanded);
     });
-    if (widget.onExpansionChanged != null)
+    if (widget.onExpansionChanged != null) {
       widget.onExpansionChanged(_isExpanded);
+    }
   }
 
   Widget _buildChildren(BuildContext context, Widget child) {
-    final Color borderSideColor = _borderColor.value ?? Colors.transparent;
-
     return Container(
       /*decoration: BoxDecoration(
         color: _backgroundColor.value ?? Colors.transparent,

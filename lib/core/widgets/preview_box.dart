@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hpi_flutter/app/widgets/utils.dart';
 
 import 'scrim_around.dart';
 

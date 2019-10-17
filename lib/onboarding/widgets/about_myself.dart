@@ -172,10 +172,11 @@ class _AboutMyselfState extends State<AboutMyself> {
         items: items,
         value: value,
         onChanged: (v) {
-          if (v != value)
+          if (v != value) {
             setState(() {
               onChanged(v);
             });
+          }
         },
       ),
     );
