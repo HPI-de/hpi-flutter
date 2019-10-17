@@ -1,0 +1,15 @@
+name: PR labels
+
+on: [pull_request]
+
+jobs:
+  add-type-labels:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: srvaroa/labeler@master
+
+  assign-author:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: samspills/assign-pr-to-author@v1.0
+        if: github.event_name == 'pull_request' && github.event.action == 'opened'
