@@ -40,4 +40,15 @@ jobs:
       run: flutter pub run build_runner build
 
     - name: Run linter
-      run: dartanalyzer .
+      run: flutter analyze --write=./flutter_analyze_report.txt
+
+    - uses: actions/setup-ruby@v1
+      if: github.event_name == 'pull_request'
+      with:
+        ruby-version: '2.6'
+    - name: Run danger on generated report
+      uses: MeilCli/danger-action@v1
+      if: github.event_name == 'pull_request'
+      with:
+        danger_file: Dangerfile
+        danger_id: 'danger-pr'

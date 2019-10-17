@@ -1,0 +1,14 @@
+name: PR title lint
+
+on: [pull_request]
+
+jobs:
+  pr-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: seferov/pr-lint-action@master
+      with:
+        title-regex: >-
+          ^\\s*(?<type>build|chore|ci|docs|feat|fix|refactor)(?:\\((?<scopes>(?:\\w|(?<=\\w)/(?=\\w))+?(?:,\\s*(?:\\w|(?<=\\w)/(?=\\w))+?)*?)\\))?:\\s*
+          (?<description>.*?)\\s*\$
