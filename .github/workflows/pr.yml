@@ -1,4 +1,4 @@
-name: PR labels
+name: PR
 
 on: [pull_request]
 
@@ -13,6 +13,7 @@ jobs:
 
   assign-author:
     name: Assign author
+    if: github.event.action == 'opened'
     runs-on: ubuntu-latest
     steps:
     - uses: samspills/assign-pr-to-author@v1.0
