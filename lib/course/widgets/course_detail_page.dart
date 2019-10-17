@@ -54,13 +54,14 @@ class CourseDetailPage extends StatelessWidget {
     return StreamBuilder<KtTriple<Course, CourseSeries, CourseDetail>>(
       stream: stream,
       builder: (context, snapshot) {
-        if (!snapshot.hasData)
+        if (!snapshot.hasData) {
           return buildLoadingErrorScaffold(
             context,
             snapshot,
             appBarElevated: true,
             loadingTitle: HpiL11n.get(context, 'course/course.loading'),
           );
+        }
 
         var course = snapshot.data.first;
         var courseSeries = snapshot.data.second;

@@ -41,8 +41,9 @@ class InfoBitPage extends StatelessWidget {
     return StreamBuilder<InfoBit>(
       stream: Provider.of<MyHpiBloc>(context).getInfoBit(infoBitId),
       builder: (context, snapshot) {
-        if (!snapshot.hasData)
+        if (!snapshot.hasData) {
           return buildLoadingErrorScaffold(context, snapshot);
+        }
 
         final infoBit = snapshot.data;
         return CustomScrollView(

@@ -89,11 +89,12 @@ class CourseList extends StatelessWidget {
           stream: Provider.of<CourseBloc>(context)
               .getCourseSeries(course.courseSeriesId),
           builder: (context, snapshot) {
-            if (!snapshot.hasData)
+            if (!snapshot.hasData) {
               return ListTile(
                 title: Text(snapshot.error?.toString() ??
                     HpiL11n.get(context, 'loading')),
               );
+            }
 
             return ListTile(
               title: Text(snapshot.data.title),

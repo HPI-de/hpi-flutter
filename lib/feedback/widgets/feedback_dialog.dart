@@ -85,8 +85,9 @@ class _FeedbackDialogState extends State<FeedbackDialog>
           message = m;
         },
         validator: (m) {
-          if (isNullOrBlank(m))
+          if (isNullOrBlank(m)) {
             return HpiL11n.get(context, 'feedback/message.missing');
+          }
           return null;
         },
       ),
