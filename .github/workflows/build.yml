@@ -10,7 +10,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v1
     - name: Setup
-      uses: ./.github/workflows/setup.yml
+      uses: ./.github/workflows/setup
 
     - name: Build apk
       run: flutter build apk
