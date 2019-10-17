@@ -40,7 +40,7 @@ jobs:
       run: flutter pub run build_runner build
 
     - name: Run linter
-      run: flutter analyze --write=./flutter_analyze_report.txt
+      run: flutter analyze > flutter_analyze_report.txt
       continue-on-error: true
 
     - name: Install ruby
@@ -51,6 +51,8 @@ jobs:
     - run: |
         gem install bundler
         bundle install --without documentation
+        head ./flutter_analyze_report.txt
+      if: github.event_name == 'pull_request'
     - name: Run danger on generated report
       uses: MeilCli/danger-action@v1
       if: github.event_name == 'pull_request'
