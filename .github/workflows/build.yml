@@ -7,8 +7,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v1
     - name: Setup
-      uses: ./setup.yml
+      uses: ./.github/workflows/setup.yml
 
     - name: Build apk
       run: flutter build apk
