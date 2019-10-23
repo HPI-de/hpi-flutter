@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart' hide Route;
@@ -19,6 +20,7 @@ import 'dart:async';
 import 'app/services/navigation.dart';
 import 'app/widgets/hpi_theme.dart';
 import 'app/widgets/utils.dart';
+import 'food/data/restaurant.dart';
 import 'onboarding/widgets/onboarding_page.dart';
 
 Future<ByteData> _downloadFontToCache(String filename, String url) async {

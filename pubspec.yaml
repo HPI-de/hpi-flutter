@@ -15,8 +15,8 @@ dependencies:
   analyzer: 0.38.2 # Not needed directly, for details see https://github.com/dart-lang/sdk/issues/38499
 
   # Data
-  flutter-cached: ^1.1.0
-  hive: ^1.0.0
+  flutter_cached: ^2.0.2
+  hive: ^1.1.1
   path_provider: ^1.3.0
   immutable_proto: ^0.0.4
   grpc: ^2.1.2

@@ -37,12 +37,26 @@ Widget buildAppBarTitle({
 Widget buildLoadingError(AsyncSnapshot<dynamic> snapshot) {
   assert(snapshot != null);
 
-  return Center(
-    child: snapshot.hasError
-        ? Text(snapshot.error.toString())
-        : CircularProgressIndicator(),
-  );
+  return snapshot.hasError
+      ? buildError(null, snapshot.hasError)
+      : Center(child: CircularProgressIndicator());
 }
+
+/// Builds a widget that shows an error to the user.
+// The BuildContext is not really needed, but its a good pratice to pass it to
+// build functions. This also allows us to directly pass in the function into
+// widgets that accept builder functions, like the [CachedBuilder]:
+//
+// ```dart
+// CachedBuilder(
+//   controller: ...,
+//   errorScreenBuilder: buildError,
+//   errorBannerBuilder: buildError,
+//   ...
+// ),
+// ```
+Widget buildError(BuildContext _, dynamic error) =>
+    Center(child: Text('$error'));
 
 Widget buildLoadingErrorScaffold(
   BuildContext context,

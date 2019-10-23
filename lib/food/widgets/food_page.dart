@@ -1,7 +1,8 @@
-import 'package:cached_listview/cached_listview.dart';
+import 'package:flutter_cached/flutter_cached.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hpi_flutter/app/widgets/app_bar.dart';
+import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/food/data/bloc.dart';
 import 'package:kt_dart/collection.dart';
@@ -34,56 +35,16 @@ class FoodPage extends StatelessWidget {
 }
 
 Widget _buildRestaurantList(BuildContext context) {
-  return CachedCustomScrollView<MenuItem>(
+  return CachedBuilder<KtList<MenuItem>>(
     controller: Provider.of<FoodBloc>(context).menuItems,
-    sliverBuilder: (context, update) {
-      assert(update.hasData || update.hasError);
-
-      if (update.hasError && !update.hasData) {
-        return [
-          SliverFillRemaining(
-            child: Center(child: Text('${update.error}')),
-          )
-        ];
+    errorScreenBuilder: buildError,
+    errorBannerBuilder: buildError,
+    builder: (context, items) {
+      if (items.isEmpty()) {
+        return Center(child: Text(HpiL11n.get(context, 'food/noMenu')));
+      } else {
+        return _buildMenuSlivers(context, items);
       }
-
-      return [
-        if (update.hasError)
-          SliverList(
-            delegate: SliverChildListDelegate([
-              Material(
-                elevation: 8,
-                child: Text("You're currently viewing cached offline data."),
-              ),
-            ]),
-          ),
-        if (update.hasData)
-          _buildMenuSlivers(context, KtList.from(update.data)),
-      ];
-    },
-  );
-  return StreamBuilder<KtList<MenuItem>>(
-    stream: Provider.of<FoodBloc>(context).getMenuItems(),
-    builder: (context, snapshot) {
-      if (!snapshot.hasData)
-        return SliverFillRemaining(
-          child: Center(
-            child: snapshot.hasError
-                ? Text(snapshot.error)
-                : CircularProgressIndicator(),
-          ),
-        );
-      if (!snapshot.hasData) return Placeholder();
-
-      if (snapshot.data.isEmpty()) {
-        return SliverFillRemaining(
-          child: Center(
-            child: Text(HpiL11n.get(context, 'food/noMenu')),
-          ),
-        );
-      }
-
-      var menuItems = snapshot.data;
     },
   );
 }
