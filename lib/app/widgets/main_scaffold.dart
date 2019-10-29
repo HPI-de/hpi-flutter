@@ -2,6 +2,7 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:hpi_flutter/app/services/navigation.dart';
 import 'package:hpi_flutter/core/hpi_icons.dart';
 import 'package:hpi_flutter/core/localizations.dart';
+import 'package:hpi_flutter/feedback/widgets/feedback_dialog.dart';
 import 'package:hpi_flutter/route.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
@@ -13,12 +14,16 @@ class MainScaffold extends StatelessWidget {
   final Widget body;
   final Widget floatingActionButton;
   final KtList<Widget> bottomActions;
+  final KtList<PopupMenuItem> menuItems;
+  final Function(dynamic) menuItemHandler;
 
   MainScaffold({
     this.appBar,
     @required this.body,
     this.floatingActionButton,
     KtList<Widget> bottomActions,
+    this.menuItems,
+    this.menuItemHandler,
   })  : assert(body != null),
         this.bottomActions = bottomActions ?? KtList.empty();
 
@@ -40,6 +45,22 @@ class MainScaffold extends StatelessWidget {
             ),
             Spacer(),
             ...bottomActions.iter,
+            PopupMenuButton(
+              onSelected: (selected) {
+                if (selected == 'app.feedback')
+                  FeedbackDialog.show(context);
+                else
+                  menuItemHandler(selected);
+              },
+              icon: Icon(Icons.more_vert),
+              itemBuilder: (context) => [
+                if (menuItems != null) ...menuItems.iter,
+                PopupMenuItem(
+                  value: 'app.feedback',
+                  child: Text(HpiL11n.get(context, 'feedback/action')),
+                )
+              ],
+            )
           ],
         ),
       ),

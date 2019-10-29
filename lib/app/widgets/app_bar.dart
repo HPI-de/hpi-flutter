@@ -80,22 +80,7 @@ class HpiAppBar extends StatelessWidget implements PreferredSizeWidget {
       titleSpacing: titleSpacing,
       toolbarOpacity: toolbarOpacity,
       bottomOpacity: bottomOpacity,
-    )..actions.add(PopupMenuButton(
-        onSelected: (selected) {
-          if (selected == 'app.feedback')
-            FeedbackDialog.show(context);
-          else
-            menuItemHandler(selected);
-        },
-        icon: Icon(Icons.more_vert),
-        itemBuilder: (context) => [
-          if (menuItems != null) ...menuItems,
-          PopupMenuItem(
-            value: 'app.feedback',
-            child: Text(HpiL11n.get(context, 'feedback/action')),
-          )
-        ],
-      ));
+    );
   }
 }
 
@@ -183,22 +168,7 @@ class HpiSliverAppBar extends StatelessWidget {
       pinned: pinned,
       shape: shape,
       snap: snap,
-    )..actions.add(PopupMenuButton(
-        onSelected: (selected) {
-          if (selected == 'app.feedback')
-            FeedbackDialog.show(context);
-          else
-            menuItemHandler(selected);
-        },
-        icon: Icon(Icons.more_vert),
-        itemBuilder: (context) => [
-          if (menuItems != null) ...menuItems,
-          PopupMenuItem(
-            value: 'app.feedback',
-            child: Text(HpiL11n.get(context, 'feedback/action')),
-          )
-        ],
-      ));
+    );
   }
 }
 

@@ -18,18 +18,6 @@ class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MainScaffold(
-      bottomActions: KtList.from([
-        PopupMenuButton(
-          onSelected: (_) => FeedbackDialog.show(context),
-          icon: Icon(Icons.more_vert),
-          itemBuilder: (context) => [
-            PopupMenuItem(
-              value: 'app.feedback',
-              child: Text(HpiL11n.get(context, 'feedback/action')),
-            ),
-          ],
-        ),
-      ]),
       body: ListView(
         padding:
             EdgeInsets.fromLTRB(16, MediaQuery.of(context).padding.top, 16, 32),
