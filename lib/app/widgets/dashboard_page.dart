@@ -35,17 +35,17 @@ class DashboardPage extends StatelessWidget {
         padding:
             EdgeInsets.fromLTRB(16, MediaQuery.of(context).padding.top, 16, 32),
         children: <Widget>[
-          FlatButton(
+          GestureDetector(
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               alignment: Alignment.topRight,
-              child: LimitedBox(
-                maxWidth: 200,
-                maxHeight: 100,
-                child: Image.asset('assets/logo/logo_text.png'),
+              child: Image.asset(
+                'assets/logo/logo_text.png',
+                width: 200,
+                height: 100,
               ),
             ),
-            onPressed: () => tryLaunch('https://hpi.de'),
+            onTap: () => tryLaunch('https://hpi.de'),
           ),
           OpenHpiFragment(),
           NewsFragment(),

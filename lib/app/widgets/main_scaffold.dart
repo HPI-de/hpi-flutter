@@ -57,12 +57,12 @@ class MainScaffold extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(0, 8, 8, 0),
             child: Row(
               children: <Widget>[
-                FlatButton(
+                GestureDetector(
                   child: Padding(
                       padding: const EdgeInsets.all(8),
                       child:
                           Image.asset('assets/logo/logo_text.png', height: 50)),
-                  onPressed: () => tryLaunch('https://hpi.de'),
+                  onTap: () => tryLaunch('https://hpi.de'),
                 ),
                 Spacer(),
                 IconButton(
