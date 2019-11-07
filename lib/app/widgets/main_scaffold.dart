@@ -139,9 +139,15 @@ class NavigationItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(4),
           onTap: () {
             var navigator = Navigator.of(context);
-            navigator
-              ..popUntil((_) => !navigator.canPop())
-              ..pushNamed(route.name);
+            var lastKnownRoute =
+                Provider.of<NavigationService>(context).lastKnownRoute;
+            if (lastKnownRoute.name != route.name) {
+              navigator
+                ..popUntil((_) => !navigator.canPop())
+                ..pushNamed(route.name);
+            } else {
+              navigator.pop();
+            }
           },
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
