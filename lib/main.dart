@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/services.dart';
-import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart' hide Route;
@@ -20,7 +19,7 @@ import 'dart:async';
 import 'app/services/navigation.dart';
 import 'app/widgets/hpi_theme.dart';
 import 'app/widgets/utils.dart';
-import 'food/data/restaurant.dart';
+import 'hive.dart';
 import 'onboarding/widgets/onboarding_page.dart';
 
 Future<ByteData> _downloadFontToCache(String filename, String url) async {
@@ -42,17 +41,11 @@ Future<ByteData> _downloadFontToCache(String filename, String url) async {
   }
 }
 
-Future<void> initializeHive() async {
-  Hive
-    ..registerAdapter(MenuItemAdapter(), 40)
-    ..registerAdapter(RestaurantAdapter(), 41)
-    ..registerAdapter(LabelAdapter(), 42)
-    ..init((await getApplicationDocumentsDirectory()).path);
-}
-
 void main() async {
-  //Required for font caching
   WidgetsFlutterBinding.ensureInitialized();
+
+  await initializeHive();
+
   const fontBaseUrl = 'https://hpi.de/fileadmin/templates/fonts';
   const serverUrl = "172.18.132.7";
 
