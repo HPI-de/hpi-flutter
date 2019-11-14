@@ -39,6 +39,7 @@ Widget _buildRestaurantList(BuildContext context) {
     controller: Provider.of<FoodBloc>(context).menuItems,
     errorScreenBuilder: buildError,
     errorBannerBuilder: buildError,
+    hasScrollBody: true,
     builder: (context, items) {
       if (items.isEmpty()) {
         return Center(child: Text(HpiL11n.get(context, 'food/noMenu')));
