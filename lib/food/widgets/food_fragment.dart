@@ -25,11 +25,16 @@ class FoodFragment extends StatelessWidget {
   Widget _buildMenu(BuildContext context) {
     assert(context != null);
 
-    return CachedBuilder<KtList<MenuItem>>(
+    return CachedRawBuilder<KtList<MenuItem>>(
       controller: Provider.of<FoodBloc>(context).menuItems,
-      errorScreenBuilder: buildError,
-      errorBannerBuilder: buildError,
-      builder: (context, menuItems) {
+      builder: (context, update) {
+        if (update.hasError) {
+          return Text('An error occurred: ${update.error}');
+        }
+        if (!update.hasData) {
+          return Center(child: CircularProgressIndicator());
+        }
+        final menuItems = update.data;
         if (menuItems.isEmpty()) {
           return DashboardFragment(
             title: Text(HpiL11n.get(context, 'food')),
