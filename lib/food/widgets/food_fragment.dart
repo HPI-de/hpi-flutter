@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cached/flutter_cached.dart';
+import 'package:hpi_flutter/app/services/storage.dart';
 import 'package:hpi_flutter/app/widgets/dashboard_page.dart';
-import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/food/data/bloc.dart';
 import 'package:hpi_flutter/food/data/restaurant.dart';
@@ -13,20 +13,23 @@ import 'package:provider/provider.dart';
 class FoodFragment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<Uri, FoodBloc>(
-      builder: (_, serverUrl, __) =>
-          FoodBloc(serverUrl, Localizations.localeOf(context)),
-      child: Builder(
-        builder: (context) => _buildMenu(context),
+    return ProxyProvider2<StorageService, Uri, FoodBloc>(
+      builder: (_, storage, serverUrl, __) {
+        print('Creating a food bloc.');
+        return FoodBloc(storage, serverUrl, Localizations.localeOf(context));
+      },
+      child: Consumer<FoodBloc>(
+        builder: (context, bloc, _) => _buildMenu(context, bloc),
       ),
     );
   }
 
-  Widget _buildMenu(BuildContext context) {
+  Widget _buildMenu(BuildContext context, FoodBloc bloc) {
     assert(context != null);
+    assert(bloc != null);
 
     return CachedRawBuilder<KtList<MenuItem>>(
-      controller: Provider.of<FoodBloc>(context).menuItems,
+      controller: bloc.fetchMenuItems(),
       builder: (context, update) {
         if (update.hasError) {
           return Text('An error occurred: ${update.error}');
@@ -40,16 +43,22 @@ class FoodFragment extends StatelessWidget {
             title: Text(HpiL11n.get(context, 'food')),
             child: Container(
               alignment: Alignment.center,
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(16.0),
               child: Text(HpiL11n.get(context, 'food/noMenu')),
             ),
           );
         }
 
         var restaurantId = menuItems[0].restaurantId;
-        return RestaurantMenu(
-          restaurantId: restaurantId,
-          menuItems: menuItems,
+        return CachedRawBuilder<KtList<Restaurant>>(
+          controller: bloc.fetchRestaurants(),
+          builder: (context, update) {
+            var restaurant = update.data.single((r) => r.id == restaurantId);
+            return RestaurantMenu(
+              restaurant: restaurant,
+              menuItems: menuItems,
+            );
+          },
         );
       },
     );

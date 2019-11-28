@@ -2,6 +2,8 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/services.dart';
+import 'package:hpi_flutter/app/services/storage.dart';
+import 'package:hpi_flutter/core/data/hive.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart' hide Route;
@@ -19,7 +21,6 @@ import 'dart:async';
 import 'app/services/navigation.dart';
 import 'app/widgets/hpi_theme.dart';
 import 'app/widgets/utils.dart';
-import 'hive.dart';
 import 'onboarding/widgets/onboarding_page.dart';
 
 Future<ByteData> _downloadFontToCache(String filename, String url) async {
@@ -83,12 +84,16 @@ void main() async {
 
     // Used by feedback to capture the whole app
     final screenshotController = ScreenshotController();
+    final storage = await StorageService.create();
 
     runApp(
       MultiProvider(
         providers: [
           Provider<NavigationService>(
             builder: (_) => NavigationService(),
+          ),
+          Provider<StorageService>(
+            builder: (_) => storage,
           ),
           Provider<Uri>(
             builder: (_) => Uri.parse(serverUrl),

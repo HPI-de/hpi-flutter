@@ -38,7 +38,7 @@ Widget buildLoadingError(AsyncSnapshot<dynamic> snapshot) {
   assert(snapshot != null);
 
   return snapshot.hasError
-      ? buildError(null, snapshot.hasError)
+      ? buildError(null, snapshot.error, null)
       : Center(child: CircularProgressIndicator());
 }
 
@@ -55,7 +55,7 @@ Widget buildLoadingError(AsyncSnapshot<dynamic> snapshot) {
 //   ...
 // ),
 // ```
-Widget buildError(BuildContext _, dynamic error) =>
+Widget buildError(BuildContext _, dynamic error, StackTrace stackTrace) =>
     Center(child: Text('$error'));
 
 Widget buildLoadingErrorScaffold(

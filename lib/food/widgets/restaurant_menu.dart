@@ -11,24 +11,17 @@ import 'menu_item.dart';
 
 @immutable
 class RestaurantMenu extends StatelessWidget {
-  final String restaurantId;
+  final Restaurant restaurant;
   final KtList<MenuItem> menuItems;
 
-  RestaurantMenu({@required this.restaurantId, @required this.menuItems})
-      : assert(restaurantId != null),
+  RestaurantMenu({@required this.restaurant, @required this.menuItems})
+      : assert(restaurant != null),
         assert(menuItems != null);
 
   @override
   Widget build(BuildContext context) {
     return DashboardFragment(
-      title: StreamBuilder<Restaurant>(
-        stream: Provider.of<FoodBloc>(context).getRestaurant(restaurantId),
-        builder: (context, snapshot) => Text(
-          snapshot.hasData
-              ? snapshot.data.title
-              : HpiL11n.get(context, 'loading'),
-        ),
-      ),
+      title: Text(restaurant?.title ?? HpiL11n.get(context, 'loading')),
       child: Column(
         children: <Widget>[
           const SizedBox(height: 16),

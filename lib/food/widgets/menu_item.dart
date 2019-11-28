@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/food/data/bloc.dart';
-import 'package:kt_dart/collection.dart';
 import 'package:provider/provider.dart';
 
 import '../data/restaurant.dart';
@@ -54,7 +53,7 @@ class MenuItemView extends StatelessWidget {
     );
   }
 
-  Widget _buildLabels(KtSet<String> labelIds) {
+  /*Widget _buildLabels(KtSet<String> labelIds) {
     final ids = labelIds.toList();
     if (ids.isEmpty()) return Container();
 
@@ -67,10 +66,10 @@ class MenuItemView extends StatelessWidget {
           ),
       ],
     );
-  }
+  }*/
 }
 
-class LabelView extends StatelessWidget {
+/*class LabelView extends StatelessWidget {
   final String labelId;
 
   LabelView(this.labelId) : assert(labelId != null);
@@ -96,7 +95,7 @@ class LabelView extends StatelessWidget {
       ),
     );
   }
-}
+}*/
 
 class MenuItemDetails extends StatelessWidget {
   final MenuItem item;
@@ -146,13 +145,14 @@ class MenuItemDetails extends StatelessWidget {
     assert(context != null);
     assert(id != null);
 
-    return StreamBuilder<Label>(
+    return Container();
+    /*return StreamBuilder<Label>(
         stream: foodBloc.getLabel(id),
         builder: (_, snapshot) {
           if (!snapshot.hasData) return Chip(label: Text(id));
 
           final label = snapshot.data;
           return Chip(label: Text(label.title));
-        });
+        });*/
   }
 }

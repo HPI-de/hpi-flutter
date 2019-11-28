@@ -1,6 +1,7 @@
 import 'package:flutter_cached/flutter_cached.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hpi_flutter/app/services/storage.dart';
 import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/core/localizations.dart';
@@ -16,9 +17,9 @@ import 'restaurant_menu.dart';
 class FoodPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<Uri, FoodBloc>(
-      builder: (_, serverUrl, __) =>
-          FoodBloc(serverUrl, Localizations.localeOf(context)),
+    return ProxyProvider2<StorageService, Uri, FoodBloc>(
+      builder: (_, storage, serverUrl, __) =>
+          FoodBloc(storage, serverUrl, Localizations.localeOf(context)),
       child: MainScaffold(
         body: CustomScrollView(
           slivers: <Widget>[
@@ -36,7 +37,7 @@ class FoodPage extends StatelessWidget {
 
 Widget _buildRestaurantList(BuildContext context) {
   return CachedBuilder<KtList<MenuItem>>(
-    controller: Provider.of<FoodBloc>(context).menuItems,
+    controller: Provider.of<FoodBloc>(context).fetchMenuItems(),
     errorScreenBuilder: buildError,
     errorBannerBuilder: buildError,
     hasScrollBody: true,
@@ -52,17 +53,27 @@ Widget _buildRestaurantList(BuildContext context) {
 
 Widget _buildMenuSlivers(BuildContext context, KtList<MenuItem> items) {
   var allRestaurants = items.map((item) => item.restaurantId).toSet().toList();
-  return SliverList(
-    delegate: SliverChildBuilderDelegate(
-      (context, index) => Padding(
-        padding: const EdgeInsets.all(16),
-        child: RestaurantMenu(
-          restaurantId: allRestaurants[index],
-          menuItems: items
-              .filter((item) => item.restaurantId == allRestaurants[index]),
+  var restaurants = Provider.of<FoodBloc>(context).fetchRestaurants();
+
+  return CachedRawBuilder(
+    controller: restaurants,
+    builder: (context, update) {
+      if (!update.hasData) {
+        return Container();
+      }
+      return SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (context, index) => Padding(
+            padding: const EdgeInsets.all(16),
+            child: RestaurantMenu(
+              restaurant: update.data[index],
+              menuItems: items
+                  .filter((item) => item.restaurantId == allRestaurants[index]),
+            ),
+          ),
+          childCount: allRestaurants.size,
         ),
-      ),
-      childCount: allRestaurants.size,
-    ),
+      );
+    },
   );
 }
