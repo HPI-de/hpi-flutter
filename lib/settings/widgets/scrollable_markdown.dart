@@ -13,7 +13,7 @@ class ScrollableMarkdown extends MarkdownWidget {
     SyntaxHighlighter syntaxHighlighter,
     MarkdownTapLinkCallback onTapLink,
     Directory imageDirectory,
-    this.padding: const EdgeInsets.all(16),
+    this.padding = const EdgeInsets.all(16),
     this.scrollController,
   }) : super(
           key: key,
@@ -30,7 +30,7 @@ class ScrollableMarkdown extends MarkdownWidget {
 
   @override
   Widget build(BuildContext context, List<Widget> children) {
-    return new ListView(
+    return ListView(
       padding: padding,
       children: children,
       controller: scrollController,

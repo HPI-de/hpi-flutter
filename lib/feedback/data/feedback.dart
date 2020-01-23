@@ -31,22 +31,29 @@ class Feedback {
           message: feedback.message,
           screenUri: Uri.tryParse(feedback.screenUri),
           user: feedback.user,
-          screenshot: feedback.screenshot,
+          screenshot: Uint8List.fromList(feedback.screenshot),
           log: feedback.log,
         );
-  static create(String message, Uri screenUri, bool includeContact,
-      bool includeScreenshot, Uint8List screenshot, bool includeLogs) async {
+  static Future<Feedback> create(
+    String message,
+    Uri screenUri,
+    bool includeContact,
+    bool includeScreenshot,
+    Uint8List screenshot,
+    bool includeLogs,
+  ) async {
     assert(message != null);
 
 // TODO: implement when login is available
     String user;
     String log;
-    if (includeLogs)
+    if (includeLogs) {
       try {
         log = await MethodChannel("feedback").invokeMethod("getLog");
       } on PlatformException catch (e) {
         log = "ERROR: PlatformException while reading log:\n$e";
       }
+    }
 
     Feedback f = Feedback(
       id: "",

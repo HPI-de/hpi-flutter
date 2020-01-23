@@ -11,6 +11,7 @@ import 'package:hpi_flutter/core/widgets/stream_chip.dart';
 import 'package:hpi_flutter/myhpi/data/bloc.dart';
 import 'package:hpi_flutter/myhpi/data/infobit.dart';
 import 'package:hpi_flutter/route.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 
 class InfoBitCard extends StatelessWidget {
@@ -166,7 +167,7 @@ class InfoBitCard extends StatelessWidget {
 
     return SizedBox(
       height: 150,
-      child: PaginatedListView(
+      child: PaginatedListView<InfoBit>(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.all(8),
         pageSize: 5,
@@ -227,8 +228,8 @@ class InfoBitActionChip extends StatelessWidget {
       onPressed: (action) async {
         if (action == null) return;
 
-        if (action is TextAction)
-          Navigator.push(
+        if (action is TextAction) {
+          unawaited(Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => Scaffold(
@@ -238,8 +239,10 @@ class InfoBitActionChip extends StatelessWidget {
                 ),
               ),
             ),
-          );
-        else if (action is LinkAction) await tryLaunch(action.url);
+          ));
+        } else {
+          if (action is LinkAction) await tryLaunch(action.url);
+        }
       },
     );
   }

@@ -10,6 +10,7 @@ import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/route.dart';
 import 'package:hpi_flutter/crashreporting/utils.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,7 +33,7 @@ Future<ByteData> _downloadFontToCache(String filename, String url) async {
     // Download the font.
     final response = await http.get(url);
     if (response.statusCode == 200) {
-      file.writeAsBytes(response.bodyBytes);
+      unawaited(file.writeAsBytes(response.bodyBytes));
       return ByteData.view(response.bodyBytes.buffer);
     } else {
       throw Exception('Failed to load font');
@@ -58,7 +59,7 @@ void main() async {
   };
 
   // run in custom zone for catching errors
-  runZoned<Future<void>>(() async {
+  await runZoned<Future<void>>(() async {
     var delegate = HpiLocalizationsDelegate();
     try {
       // We should load the different font files for bold and normal style into
@@ -85,13 +86,13 @@ void main() async {
       MultiProvider(
         providers: [
           Provider<NavigationService>(
-            builder: (_) => NavigationService(),
+            create: (_) => NavigationService(),
           ),
           Provider<Uri>(
-            builder: (_) => Uri.parse(serverUrl),
+            create: (_) => Uri.parse(serverUrl),
           ),
           Provider<ScreenshotController>(
-            builder: (_) => screenshotController,
+            create: (_) => screenshotController,
           ),
         ],
         child: Screenshot(
@@ -102,7 +103,7 @@ void main() async {
         ),
       ),
     );
-  }, onError: (error, stackTrace) async {
+  }, onError: (error, StackTrace stackTrace) async {
     await reportError(error, stackTrace, Uri.parse(serverUrl));
   });
 }
@@ -124,6 +125,7 @@ const _brandColorRedSwatch = MaterialColor(
   },
 );
 const _brandColorOrange = 0xFFDD6108;
+  // ignore: unused_element
 const _brandColorOrangeSwatch = MaterialColor(
   _brandColorOrange,
   <int, Color>{
@@ -139,6 +141,7 @@ const _brandColorOrangeSwatch = MaterialColor(
     900: Color(_brandColorOrange),
   },
 );
+  // ignore: unused_element
 const _brandColorYellow = 0xFFF6A804;
 
 class HpiApp extends StatelessWidget {
@@ -215,7 +218,7 @@ class HpiApp extends StatelessWidget {
           // OnboardingPage.clearOnboardingCompleted(sharedPreferences);
 
           return Provider<SharedPreferences>(
-            builder: (_) => sharedPreferences,
+            create: (_) => sharedPreferences,
             child: MaterialApp(
               title: 'HPI',
               theme: theme,

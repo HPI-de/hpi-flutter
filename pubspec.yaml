@@ -42,13 +42,18 @@ dependencies:
   flutter_pagewise: ^1.2.3
   flutter_markdown: ^0.2.0
 
+  # Linter
+  pedantic: ^1.8.0+1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  # Data
   build_runner: ^1.0.0
   immutable_proto_generator: ^0.0.4
 
+  # UI
   flutter_launcher_icons: ^0.7.2+1
 
 flutter:

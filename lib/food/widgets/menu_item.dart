@@ -54,6 +54,7 @@ class MenuItemView extends StatelessWidget {
     );
   }
 
+  // ignore: unused_element
   Widget _buildLabels(KtSet<String> labelIds) {
     final ids = labelIds.toList();
     if (ids.isEmpty()) return Container();

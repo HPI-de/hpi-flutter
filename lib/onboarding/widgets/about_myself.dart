@@ -123,7 +123,7 @@ class _AboutMyselfState extends State<AboutMyself> {
                 onChanged: (c) {
                   AboutMyself._setCourseOfStudies(sharedPreferences, c);
                   AboutMyself._setSemester(sharedPreferences,
-                      semester.clamp(1, _maxSemesterCount(c)));
+                      semester.clamp(1, _maxSemesterCount(c)).toInt());
                 },
               ),
               TextSpan(text: _l11n('onboarding/aboutMyself.text.3')),
@@ -172,10 +172,11 @@ class _AboutMyselfState extends State<AboutMyself> {
         items: items,
         value: value,
         onChanged: (v) {
-          if (v != value)
+          if (v != value) {
             setState(() {
               onChanged(v);
             });
+          }
         },
       ),
     );

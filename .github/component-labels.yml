@@ -1,0 +1,33 @@
+'C: app':
+- lib/main.dart
+- lib/app1/**/*
+
+'C: core':
+- lib/core/**/*
+
+'C: course':
+- lib/course/**/*
+
+'C: feedback':
+- lib/feedback/**/*
+
+'C: food':
+- lib/food/**/*
+
+'C: myhpi':
+- lib/myhpi/**/*
+
+'C: news':
+- lib/news/**/*
+
+'C: onboarding':
+- lib/onboarding/**/*
+
+'C: openhpi':
+- lib/openhpi/**/*
+
+'C: settings':
+- lib/settings/**/*
+
+'C: tools':
+- lib/tools/**/*

@@ -18,7 +18,7 @@ class CoursePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<Uri, CourseBloc>(
-      builder: (_, serverUrl, __) =>
+      update: (_, serverUrl, __) =>
           CourseBloc(serverUrl, Localizations.localeOf(context)),
       child: MainScaffold(
         body: DefaultTabController(
@@ -89,11 +89,12 @@ class CourseList extends StatelessWidget {
           stream: Provider.of<CourseBloc>(context)
               .getCourseSeries(course.courseSeriesId),
           builder: (context, snapshot) {
-            if (!snapshot.hasData)
+            if (!snapshot.hasData) {
               return ListTile(
                 title: Text(snapshot.error?.toString() ??
                     HpiL11n.get(context, 'loading')),
               );
+            }
 
             return ListTile(
               title: Text(snapshot.data.title),

@@ -24,19 +24,20 @@ class ArticlePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<Uri, NewsBloc>(
-      builder: (_, serverUrl, __) =>
+      update: (_, serverUrl, __) =>
           NewsBloc(serverUrl, Localizations.localeOf(context)),
       child: Builder(
         builder: (context) => StreamBuilder<Article>(
           stream: Provider.of<NewsBloc>(context).getArticle(articleId),
           builder: (context, snapshot) {
-            if (!snapshot.hasData)
+            if (!snapshot.hasData) {
               return buildLoadingErrorScaffold(
                 context,
                 snapshot,
                 appBarElevated: true,
                 loadingTitle: HpiL11n.get(context, 'news/article.loading'),
               );
+            }
 
             return MainScaffold(
               body: ArticleView(snapshot.data),
@@ -93,21 +94,21 @@ class ArticleView extends StatelessWidget {
                     article.tags.isNotEmpty())
                   SizedBox(height: 16),
                 if (article.authorIds.isNotEmpty())
-                  _buildChipSection(
+                  _buildChipSection<String>(
                     context,
                     HpiL11n.get(context, 'news/article.authors'),
                     article.authorIds,
                     (a) => Chip(label: Text(a)),
                   ),
                 if (article.categories.isNotEmpty())
-                  _buildChipSection(
+                  _buildChipSection<Category>(
                     context,
                     HpiL11n.get(context, 'news/article.categories'),
                     article.categories,
                     (c) => Chip(label: Text(c.name)),
                   ),
                 if (article.tags.isNotEmpty())
-                  _buildChipSection(
+                  _buildChipSection<Tag>(
                     context,
                     HpiL11n.get(context, 'news/article.tags'),
                     article.tags,

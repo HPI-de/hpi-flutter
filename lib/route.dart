@@ -32,15 +32,18 @@ class Route {
 
         if (route == dashboard) return DashboardPage();
         if (route == courses) return CoursePage();
-        if (route == coursesDetail)
+        if (route == coursesDetail) {
           return CourseDetailPage(settings.arguments as String);
+        }
         if (route == food) return FoodPage();
         if (route == myhpi) return MyHpiPage();
-        if (route == myhpiInfoBit)
+        if (route == myhpiInfoBit) {
           return InfoBitPage(infoBitId: settings.arguments as String);
+        }
         if (route == news) return NewsPage();
-        if (route == newsArticle)
+        if (route == newsArticle) {
           return ArticlePage(settings.arguments as String);
+        }
         if (route == onboarding) return OnboardingPage();
         if (route == tools) return TimerPage();
         if (route == toolsTimer) return TimerPage();
@@ -66,23 +69,23 @@ class Route {
 
   toString() => 'Routes.$name';
 
-  static const dashboard = const Route._internal('/');
-  static const courses = const Route._internal('/courses');
-  static const coursesDetail = const Route._internal('/courses/courseId');
-  static const food = const Route._internal('/food');
-  static const myhpi = const Route._internal('/myhpi');
-  static const myhpiInfoBit = const Route._internal('/myhpi/infoBitId');
-  static const news = const Route._internal('/news');
-  static const newsArticle = const Route._internal('/news/articleId');
+  static const dashboard = Route._internal('/');
+  static const courses = Route._internal('/courses');
+  static const coursesDetail = Route._internal('/courses/courseId');
+  static const food = Route._internal('/food');
+  static const myhpi = Route._internal('/myhpi');
+  static const myhpiInfoBit = Route._internal('/myhpi/infoBitId');
+  static const news = Route._internal('/news');
+  static const newsArticle = Route._internal('/news/articleId');
   // We don't want onboarding to be understood as a deep link which would push
   // the dashboard page in the stack for first time users. Hence no '/'-prefix.
-  static const onboarding = const Route._internal('onboarding');
-  static const tools = const Route._internal('/tools');
-  static const toolsTimer = const Route._internal('/tools/timer');
+  static const onboarding = Route._internal('onboarding');
+  static const tools = Route._internal('/tools');
+  static const toolsTimer = Route._internal('/tools/timer');
 
-  static const settings = const Route._internal('/settings');
+  static const settings = Route._internal('/settings');
   static const settingsPrivacyPolicy =
-      const Route._internal('/settings/privacyPolicy');
+      Route._internal('/settings/privacyPolicy');
 
   static KtList<Route> values = KtList.from([
     dashboard,
