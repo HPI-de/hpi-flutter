@@ -11,19 +11,22 @@ import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
 
 class FeedbackDialog extends StatefulWidget {
-  static void show(BuildContext context,
-      {String title = 'Feedback', String feedbackType}) async {
+  static void show(
+    BuildContext context, {
+    String title = 'Feedback',
+    String feedbackType,
+  }) async {
     assert(context != null);
 
     var currentScreenshot =
         await (await Provider.of<ScreenshotController>(context).capture())
             .readAsBytes();
 
-    showModalBottomSheet(
+    await showModalBottomSheet(
       isScrollControlled: true,
       context: context,
       builder: (context) => ProxyProvider<Uri, FeedbackBloc>(
-        builder: (_, serverUrl, __) =>
+        update: (_, serverUrl, __) =>
             FeedbackBloc(serverUrl, Localizations.localeOf(context)),
         child: SingleChildScrollView(
           child: Padding(

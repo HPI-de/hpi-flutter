@@ -24,7 +24,7 @@ class ArticlePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<Uri, NewsBloc>(
-      builder: (_, serverUrl, __) =>
+      update: (_, serverUrl, __) =>
           NewsBloc(serverUrl, Localizations.localeOf(context)),
       child: Builder(
         builder: (context) => StreamBuilder<Article>(

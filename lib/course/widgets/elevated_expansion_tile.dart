@@ -74,8 +74,6 @@ class ElevatedExpansionTile extends StatefulWidget {
 
 class _ElevatedExpansionTileState extends State<ElevatedExpansionTile>
     with SingleTickerProviderStateMixin {
-  static final Animatable<double> _easeOutTween =
-      CurveTween(curve: Curves.easeOut);
   static final Animatable<double> _easeInTween =
       CurveTween(curve: Curves.easeIn);
   static final Animatable<double> _halfTween =

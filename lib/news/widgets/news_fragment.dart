@@ -17,7 +17,7 @@ class NewsFragment extends StatelessWidget {
     return DashboardFragment(
       title: Text(HpiL11n.get(context, 'news')),
       child: ProxyProvider<Uri, NewsBloc>(
-        builder: (_, serverUrl, __) =>
+        update: (_, serverUrl, __) =>
             NewsBloc(serverUrl, Localizations.localeOf(context)),
         child: SizedBox(
           height: 150,

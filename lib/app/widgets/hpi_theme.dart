@@ -9,7 +9,7 @@ class HpiTheme extends InheritedWidget {
   final Color tertiary;
 
   factory HpiTheme.of(BuildContext context) =>
-      context.inheritFromWidgetOfExactType(HpiTheme) as HpiTheme;
+      context.dependOnInheritedWidgetOfExactType<HpiTheme>();
 
   @override
   bool updateShouldNotify(HpiTheme oldWidget) {

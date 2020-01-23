@@ -18,7 +18,7 @@ class OpenHpiFragment extends StatelessWidget {
     return DashboardFragment(
       title: Text(HpiL11n.get(context, 'openHpi/fragment.title')),
       child: Provider<OpenHpiBloc>(
-        builder: (_) => OpenHpiBloc(),
+        create: (_) => OpenHpiBloc(),
         child: SizedBox(
           height: 150,
           child: Builder(

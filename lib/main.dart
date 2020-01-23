@@ -86,13 +86,13 @@ void main() async {
       MultiProvider(
         providers: [
           Provider<NavigationService>(
-            builder: (_) => NavigationService(),
+            create: (_) => NavigationService(),
           ),
           Provider<Uri>(
-            builder: (_) => Uri.parse(serverUrl),
+            create: (_) => Uri.parse(serverUrl),
           ),
           Provider<ScreenshotController>(
-            builder: (_) => screenshotController,
+            create: (_) => screenshotController,
           ),
         ],
         child: Screenshot(
@@ -125,6 +125,7 @@ const _brandColorRedSwatch = MaterialColor(
   },
 );
 const _brandColorOrange = 0xFFDD6108;
+  // ignore: unused_element
 const _brandColorOrangeSwatch = MaterialColor(
   _brandColorOrange,
   <int, Color>{
@@ -140,6 +141,7 @@ const _brandColorOrangeSwatch = MaterialColor(
     900: Color(_brandColorOrange),
   },
 );
+  // ignore: unused_element
 const _brandColorYellow = 0xFFF6A804;
 
 class HpiApp extends StatelessWidget {
@@ -216,7 +218,7 @@ class HpiApp extends StatelessWidget {
           // OnboardingPage.clearOnboardingCompleted(sharedPreferences);
 
           return Provider<SharedPreferences>(
-            builder: (_) => sharedPreferences,
+            create: (_) => sharedPreferences,
             child: MaterialApp(
               title: 'HPI',
               theme: theme,

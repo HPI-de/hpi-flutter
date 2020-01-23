@@ -13,7 +13,7 @@ class MyHpiPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<Uri, MyHpiBloc>(
-      builder: (_, serverUrl, __) =>
+      update: (_, serverUrl, __) =>
           MyHpiBloc(serverUrl, Localizations.localeOf(context)),
       child: MainScaffold(
         body: CustomScrollView(slivers: <Widget>[

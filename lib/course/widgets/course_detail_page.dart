@@ -26,7 +26,7 @@ class CourseDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<Uri, CourseBloc>(
-      builder: (_, serverUrl, __) =>
+      update: (_, serverUrl, __) =>
           CourseBloc(serverUrl, Localizations.localeOf(context)),
       child: MainScaffold(
         body: Builder(
