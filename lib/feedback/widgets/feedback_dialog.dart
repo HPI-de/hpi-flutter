@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart' hide Feedback;
 import 'package:hpi_flutter/app/services/navigation.dart';
 import 'package:hpi_flutter/core/localizations.dart';
@@ -10,8 +12,12 @@ import 'package:screenshot/screenshot.dart';
 
 class FeedbackDialog extends StatefulWidget {
   static void show(BuildContext context,
-      {String title = 'Feedback', String feedbackType}) {
+      {String title = 'Feedback', String feedbackType}) async {
     assert(context != null);
+
+    var currentScreenshot =
+        await (await Provider.of<ScreenshotController>(context).capture())
+            .readAsBytes();
 
     showModalBottomSheet(
       isScrollControlled: true,
@@ -24,21 +30,23 @@ class FeedbackDialog extends StatefulWidget {
             padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).viewInsets.bottom),
             child: FeedbackDialog._(
-              title: title,
-              feedbackType: feedbackType,
-            ),
+                title: title,
+                feedbackType: feedbackType,
+                screenshot: currentScreenshot),
           ),
         ),
       ),
     );
   }
 
-  const FeedbackDialog._({Key key, this.title = 'Feedback', this.feedbackType})
+  const FeedbackDialog._(
+      {Key key, this.title = 'Feedback', this.feedbackType, this.screenshot})
       : assert(title != null),
         super(key: key);
 
   final String title;
   final String feedbackType;
+  final Uint8List screenshot;
 
   @override
   _FeedbackDialogState createState() => _FeedbackDialogState();
@@ -137,7 +145,7 @@ class _FeedbackDialogState extends State<FeedbackDialog>
         screenUri,
         includeContact,
         includeScreenshotAndLogs,
-        Provider.of<ScreenshotController>(context),
+        widget.screenshot,
         includeScreenshotAndLogs,
       ).then((f) {
         Provider.of<FeedbackBloc>(context).sendFeedback(f);

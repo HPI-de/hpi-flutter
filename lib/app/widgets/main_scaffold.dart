@@ -128,7 +128,7 @@ class NavigationItem extends StatelessWidget {
         route == Provider.of<NavigationService>(context).lastKnownRoute;
     var color = isActive
         ? Theme.of(context).primaryColor
-        : Theme.of(context).colorScheme.onSurface.withOpacity(0.87);
+        : Theme.of(context).colorScheme.onSurface.withOpacity(0.6);
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -138,7 +138,16 @@ class NavigationItem extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(4),
           onTap: () {
-            Navigator.popAndPushNamed(context, route.name);
+            var navigator = Navigator.of(context);
+            var lastKnownRoute =
+                Provider.of<NavigationService>(context).lastKnownRoute;
+            if (lastKnownRoute.name != route.name) {
+              navigator
+                ..popUntil((_) => !navigator.canPop())
+                ..pushNamed(route.name);
+            } else {
+              navigator.pop();
+            }
           },
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),

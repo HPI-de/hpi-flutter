@@ -218,12 +218,6 @@ class _InlineDropdownButton<T> extends StatelessWidget {
     final style = DefaultTextStyle.of(context).style;
 
     return DropdownButton(
-      selectedItemBuilder: (context) => items
-          .map((i) => DefaultTextStyle(
-                style: style,
-                child: i.child,
-              ))
-          .asList(),
       items: items
           .map((i) => DropdownMenuItem(
                 key: i.key,

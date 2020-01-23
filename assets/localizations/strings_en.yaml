@@ -107,7 +107,6 @@ settings/ad.link: https://t.me/hpi_mobiledev
 settings/about.version: Version
 settings/about.version.error: Error while loading version information
 settings/about.contributors: Contributors
-settings/about.contributors.desc: Felix Auringer, Marcel Garus, Maximilian Stiede, Clemens Tiedt, Ronja Wagner, Jonas Wanke
 settings/about.openSource: This app is open source
 settings/about.openSource.link: https://github.com/HPI-de/hpi_flutter
 settings/about.imprint: Imprint
@@ -141,3 +140,4 @@ settings/about.licenses.legalese: |-
 
   http://www.apache.org/licenses/LICENSE-2.0
   Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+settings/repeatOnboarding: Repeat onboarding
