@@ -27,57 +27,69 @@ class CourseBloc {
 
   final CourseServiceClient _client;
 
-  Stream<PaginationResponse<CourseSeries>> getAllCourseSeries({
+  Future<PaginationResponse<CourseSeries>> getAllCourseSeries({
     int pageSize,
     String pageToken,
-  }) {
+  }) async {
     final request = ListCourseSeriesRequest()
       ..pageSize = pageSize ?? 0
       ..pageToken = pageToken ?? '';
-    return Stream.fromFuture(_client.listCourseSeries(request))
-        .map((r) => PaginationResponse(
-              KtList.from(r.courseSeries).map((a) => CourseSeries.fromProto(a)),
-              r.nextPageToken,
-            ));
+    final response = await _client.listCourseSeries(request);
+
+    return PaginationResponse(
+      KtList.from(response.courseSeries).map((a) => CourseSeries.fromProto(a)),
+      response.nextPageToken,
+    );
   }
 
-  Stream<CourseSeries> getCourseSeries(String id) {
+  Future<CourseSeries> getCourseSeries(String id) async {
     assert(id != null);
-    return Stream.fromFuture(
-            _client.getCourseSeries(GetCourseSeriesRequest()..id = id))
-        .map((c) => CourseSeries.fromProto(c));
+
+    final request = GetCourseSeriesRequest()..id = id;
+    final response = await _client.getCourseSeries(request);
+
+    return CourseSeries.fromProto(response);
   }
 
-  Stream<Semester> getSemester(String id) {
+  Future<Semester> getSemester(String id) async {
     assert(id != null);
-    return Stream.fromFuture(_client.getSemester(GetSemesterRequest()..id = id))
-        .map((c) => Semester.fromProto(c));
+
+    final request = GetSemesterRequest()..id = id;
+    final response = await _client.getSemester(request);
+
+    return Semester.fromProto(response);
   }
 
-  Stream<PaginationResponse<Course>> getCourses({
+  Future<PaginationResponse<Course>> getCourses({
     int pageSize,
     String pageToken,
-  }) {
+  }) async {
     final request = ListCoursesRequest()
       ..pageSize = pageSize ?? 0
       ..pageToken = pageToken ?? '';
-    return Stream.fromFuture(_client.listCourses(request))
-        .map((r) => PaginationResponse(
-              KtList.from(r.courses).map((a) => Course.fromProto(a)),
-              r.nextPageToken,
-            ));
+    final response = await _client.listCourses(request);
+
+    return PaginationResponse(
+      KtList.from(response.courses).map((a) => Course.fromProto(a)),
+      response.nextPageToken,
+    );
   }
 
-  Stream<Course> getCourse(String id) {
+  Future<Course> getCourse(String id) async {
     assert(id != null);
-    return Stream.fromFuture(_client.getCourse(GetCourseRequest()..id = id))
-        .map((c) => Course.fromProto(c));
+
+    final request = GetCourseRequest()..id = id;
+    final response = await _client.getCourse(request);
+
+    return Course.fromProto(response);
   }
 
-  Stream<CourseDetail> getCourseDetail(String courseId) {
+  Future<CourseDetail> getCourseDetail(String courseId) async {
     assert(courseId != null);
-    return Stream.fromFuture(_client
-            .getCourseDetail(GetCourseDetailRequest()..courseId = courseId))
-        .map((c) => CourseDetail.fromProto(c));
+
+    final request = GetCourseDetailRequest()..courseId = courseId;
+    final response = await _client.getCourseDetail(request);
+
+    return CourseDetail.fromProto(response);
   }
 }

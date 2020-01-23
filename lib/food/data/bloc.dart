@@ -41,10 +41,13 @@ class FoodBloc {
     );
   }
 
-  CacheController<KtList<MenuItem>> fetchMenuItems() => fetchList(
+  CacheController<KtList<MenuItem>> fetchMenuItemsOfRestaurant(
+          String restaurantId) =>
+      fetchList(
         storage: storage,
         download: () async {
           final req = ListMenuItemsRequest()
+            ..restaurantId = restaurantId
             ..date = dateTimeToDate(DateTime.now());
           return (await client.listMenuItems(req)).items;
         },

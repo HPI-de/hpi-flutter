@@ -129,8 +129,8 @@ class InfoBitCard extends StatelessWidget {
   Widget _buildChildrenList(BuildContext context) {
     assert(context != null);
 
-    return StreamBuilder<PaginationResponse<InfoBit>>(
-      stream: Provider.of<MyHpiBloc>(context)
+    return FutureBuilder<PaginationResponse<InfoBit>>(
+      future: Provider.of<MyHpiBloc>(context)
           .getInfoBits(parentId: infoBit.id, pageSize: 3),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();

@@ -85,8 +85,8 @@ class CourseList extends StatelessWidget {
     return PaginatedSliverList<Course>(
       dataLoader: Provider.of<CourseBloc>(context).getCourses,
       itemBuilder: (context, course, __) => Builder(
-        builder: (context) => StreamBuilder<CourseSeries>(
-          stream: Provider.of<CourseBloc>(context)
+        builder: (context) => FutureBuilder<CourseSeries>(
+          future: Provider.of<CourseBloc>(context)
               .getCourseSeries(course.courseSeriesId),
           builder: (context, snapshot) {
             if (!snapshot.hasData)

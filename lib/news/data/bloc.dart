@@ -27,18 +27,19 @@ class NewsBloc {
 
   final NewsServiceClient _client;
 
-  Stream<PaginationResponse<Article>> getArticles({
+  Future<PaginationResponse<Article>> getArticles({
     int pageSize,
     String pageToken,
-  }) {
+  }) async {
     final request = ListArticlesRequest()
       ..pageSize = pageSize ?? 0
       ..pageToken = pageToken ?? '';
-    return Stream.fromFuture(_client.listArticles(request))
-        .map((r) => PaginationResponse(
-              KtList.from(r.articles).map((a) => Article.fromProto(a)),
-              r.nextPageToken,
-            ));
+    final response = await _client.listArticles(request);
+
+    return PaginationResponse(
+      KtList.from(response.articles).map((a) => Article.fromProto(a)),
+      response.nextPageToken,
+    );
   }
 
   Stream<Article> getArticle(String id) {

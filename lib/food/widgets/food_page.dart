@@ -21,57 +21,63 @@ class FoodPage extends StatelessWidget {
       builder: (_, storage, serverUrl, __) =>
           FoodBloc(storage, serverUrl, Localizations.localeOf(context)),
       child: MainScaffold(
-        body: CustomScrollView(
-          slivers: <Widget>[
-            HpiSliverAppBar(
-              floating: true,
-              title: Text(HpiL11n.get(context, 'food')),
-            ),
-            Builder(builder: (context) => _buildRestaurantList(context)),
-          ],
+        body: Consumer<FoodBloc>(
+          builder: (context, bloc, _) => _buildRestaurantList(context, bloc),
         ),
       ),
     );
   }
 }
 
-Widget _buildRestaurantList(BuildContext context) {
-  return CachedBuilder<KtList<MenuItem>>(
+Widget _buildRestaurantList(BuildContext context, FoodBloc bloc) {
+  return CachedBuilder<KtList<Restaurant>>(
+    controller: bloc.fetchRestaurants(),
+    errorScreenBuilder: buildError,
+    errorBannerBuilder: buildError,
+    loadingScreenBuilder: (_) => Center(child: CircularProgressIndicator()),
+    builder: (context, restaurants) {
+      return CustomScrollView(
+        slivers: <Widget>[
+          HpiSliverAppBar(
+            floating: true,
+            title: Text(HpiL11n.get(context, 'food')),
+          ),
+          for (final restaurant in restaurants.iter)
+            SliverToBoxAdapter(
+              child: _buildMenuItemsOfRestaurant(context, bloc, restaurant),
+            ),
+        ],
+      );
+    },
+  );
+  /*return CachedBuilder<KtList<MenuItem>>(
     controller: Provider.of<FoodBloc>(context).fetchMenuItems(),
     errorScreenBuilder: buildError,
     errorBannerBuilder: buildError,
-    hasScrollBody: true,
+    hasScrollBody: false,
     builder: (context, items) {
-      if (items.isEmpty()) {
-        return Center(child: Text(HpiL11n.get(context, 'food/noMenu')));
-      } else {
-        return _buildMenuSlivers(context, items);
-      }
+      
     },
-  );
+  );*/
 }
 
-Widget _buildMenuSlivers(BuildContext context, KtList<MenuItem> items) {
-  var allRestaurants = items.map((item) => item.restaurantId).toSet().toList();
-  var restaurants = Provider.of<FoodBloc>(context).fetchRestaurants();
-
-  return CachedRawBuilder(
-    controller: restaurants,
+Widget _buildMenuItemsOfRestaurant(
+    BuildContext context, FoodBloc bloc, Restaurant restaurant) {
+  return CachedRawBuilder<KtList<MenuItem>>(
+    controller: bloc.fetchMenuItemsOfRestaurant(restaurant.id)..fetch(),
     builder: (context, update) {
-      if (!update.hasData) {
-        return Container();
+      if (update.hasError) {
+        buildError(context, update.error, update.stackTrace);
       }
-      return SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (context, index) => Padding(
-            padding: const EdgeInsets.all(16),
-            child: RestaurantMenu(
-              restaurant: update.data[index],
-              menuItems: items
-                  .filter((item) => item.restaurantId == allRestaurants[index]),
-            ),
-          ),
-          childCount: allRestaurants.size,
+      if (update.data.isEmpty()) {
+        return Center(child: Text(HpiL11n.get(context, 'food/noMenu')));
+      }
+
+      return Padding(
+        padding: const EdgeInsets.all(16),
+        child: RestaurantMenu(
+          restaurant: restaurant,
+          menuItems: update.data,
         ),
       );
     },

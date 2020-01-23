@@ -40,19 +40,24 @@ class CourseDetailPage extends StatelessWidget {
     assert(context != null);
 
     var bloc = Provider.of<CourseBloc>(context);
-    var stream = Observable.combineLatest2(
-      Observable(bloc.getCourse(courseId)).switchMap(
-        (c) => bloc
-            .getCourseSeries(c.courseSeriesId)
-            .map((cs) => KtPair<Course, CourseSeries>(c, cs)),
-      ),
-      bloc.getCourseDetail(courseId),
-      (ccs, detail) => KtTriple<Course, CourseSeries, CourseDetail>(
-          ccs.first, ccs.second, detail),
-    );
 
-    return StreamBuilder<KtTriple<Course, CourseSeries, CourseDetail>>(
-      stream: stream,
+    return FutureBuilder<KtTriple<Course, CourseSeries, CourseDetail>>(
+      future: () async {
+        // A list of the course, the course series and details.
+        final allData = await Future.wait([
+          () async {
+            final course = await bloc.getCourse(courseId);
+            final series = await bloc.getCourseSeries(course.id);
+            return KtPair(course, series);
+          }(),
+          bloc.getCourseDetail(courseId),
+        ]);
+        return KtTriple<Course, CourseSeries, CourseDetail>(
+          (allData.first as KtPair).first,
+          (allData.first as KtPair).second,
+          allData.last,
+        );
+      }(),
       builder: (context, snapshot) {
         if (!snapshot.hasData)
           return buildLoadingErrorScaffold(
@@ -74,8 +79,8 @@ class CourseDetailPage extends StatelessWidget {
               title: buildAppBarTitle(
                 context: context,
                 title: Text(courseSeries.title),
-                subtitle: StreamBuilder<Semester>(
-                  stream: bloc.getSemester(course.semesterId),
+                subtitle: FutureBuilder<Semester>(
+                  future: bloc.getSemester(course.semesterId),
                   builder: (context, snapshot) => Text(
                     snapshot.data != null
                         ? semesterToString(context, snapshot.data)

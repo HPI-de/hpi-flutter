@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
+import 'package:flutter_cached/flutter_cached.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:kt_dart/collection.dart';
 
@@ -30,7 +33,7 @@ class Paginated<T> extends StatelessWidget {
         final res = await dataLoader(
           pageSize: pageSize,
           pageToken: _tokens[page],
-        ).first;
+        );
         _tokens[page + 1] = res.nextPageToken;
         return res.items.asList();
       },
@@ -117,7 +120,7 @@ class PaginatedSliverGrid<T> extends Paginated<T> {
         );
 }
 
-typedef PaginationDataLoader<T> = Stream<PaginationResponse<T>> Function({
+typedef PaginationDataLoader<T> = Future<PaginationResponse<T>> Function({
   int pageSize,
   String pageToken,
 });
@@ -130,4 +133,77 @@ class PaginationResponse<T> {
 
   final KtList<T> items;
   final String nextPageToken;
+}
+
+class CachedPaginatedController<Item> {
+  CachedPaginatedController(this.loader, {this.pageSize = 0})
+      : assert(loader != null),
+        assert(pageSize != null) {
+    _items = [];
+    _cachedItems = [];
+  }
+
+  final PaginationDataLoader<Item> loader;
+  final int pageSize;
+
+  List<Item> _items;
+  List<Item> _cachedItems;
+
+  String _nextPageToken;
+  bool get canLoadMore => _nextPageToken != '';
+
+  dynamic _error;
+
+  final _updatesController = StreamController<PaginationUpdate>();
+  Stream<PaginationUpdate> get updates => _updatesController.stream;
+
+  void dispose() => _updatesController.close();
+
+  Future<void> loadMore() async {
+    assert(canLoadMore);
+
+    try {
+      final response =
+          await loader(pageSize: pageSize, pageToken: _nextPageToken);
+      _items.addAll(response.items.iter);
+      _cachedItems.removeRange(0, response.items.size);
+      _nextPageToken = response.nextPageToken;
+      _error = null;
+    } catch (e) {
+      _error = e;
+    }
+
+    if (!canLoadMore) {
+      _cachedItems.clear();
+    }
+
+    // TODO: cache
+
+    _updatesController.add(PaginationUpdate(
+      items: KtList.from(_items),
+      cachedPreview: KtList.from(_cachedItems),
+      error: _error,
+    ));
+  }
+
+  Future<void> reload() async {
+    _cachedItems = _items + _cachedItems.sublist(_items.length);
+    _items.clear();
+    await loadMore();
+  }
+}
+
+@immutable
+class PaginationUpdate<Item> {
+  PaginationUpdate({
+    @required this.items,
+    @required this.cachedPreview,
+    @required this.error,
+  });
+
+  final KtList<Item> items;
+  final KtList<Item> cachedPreview;
+
+  final dynamic error;
+  bool get hasError => error != null;
 }

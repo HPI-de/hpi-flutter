@@ -24,20 +24,21 @@ class MyHpiBloc {
 
   final MyHpiServiceClient _client;
 
-  Stream<PaginationResponse<InfoBit>> getInfoBits({
+  Future<PaginationResponse<InfoBit>> getInfoBits({
     String parentId,
     int pageSize,
     String pageToken,
-  }) {
+  }) async {
     final request = ListInfoBitsRequest()
       ..parentId = parentId ?? ''
       ..pageSize = pageSize ?? 0
       ..pageToken = pageToken ?? '';
-    return Stream.fromFuture(_client.listInfoBits(request))
-        .map((r) => PaginationResponse(
-              KtList.from(r.infoBits).map((a) => InfoBit.fromProto(a)),
-              r.nextPageToken,
-            ));
+    final response = await _client.listInfoBits(request);
+
+    return PaginationResponse(
+      KtList.from(response.infoBits).map((a) => InfoBit.fromProto(a)),
+      response.nextPageToken,
+    );
   }
 
   Stream<InfoBit> getInfoBit(String id) {

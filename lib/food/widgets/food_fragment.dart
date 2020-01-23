@@ -28,8 +28,41 @@ class FoodFragment extends StatelessWidget {
     assert(context != null);
     assert(bloc != null);
 
+    return CachedRawBuilder<KtList<Restaurant>>(
+      controller: bloc.fetchRestaurants()..fetch(),
+      builder: (context, update) {
+        return DashboardFragment(
+          title: Text(HpiL11n.get(context, 'food')),
+          child: Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.all(16.0),
+            child: () {
+              if (update.hasError) {
+                return Text('An error occurred: ${update.error}');
+              }
+              if (!update.hasData) {
+                return Center(child: CircularProgressIndicator());
+              }
+              if (update.data.isEmpty()) {
+                return Text(HpiL11n.get(context, 'food/noMenu'));
+              }
+              return Column(
+                children: <Widget>[
+                  for (final restaurant in update.data.iter)
+                    _buildMenuItemsForRestaurant(context, bloc, restaurant),
+                ],
+              );
+            }(),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildMenuItemsForRestaurant(
+      BuildContext context, FoodBloc bloc, Restaurant restaurant) {
     return CachedRawBuilder<KtList<MenuItem>>(
-      controller: bloc.fetchMenuItems(),
+      controller: bloc.fetchMenuItemsOfRestaurant(restaurant.id)..fetch(),
       builder: (context, update) {
         if (update.hasError) {
           return Text('An error occurred: ${update.error}');
@@ -37,28 +70,15 @@ class FoodFragment extends StatelessWidget {
         if (!update.hasData) {
           return Center(child: CircularProgressIndicator());
         }
+
         final menuItems = update.data;
         if (menuItems.isEmpty()) {
-          return DashboardFragment(
-            title: Text(HpiL11n.get(context, 'food')),
-            child: Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.all(16.0),
-              child: Text(HpiL11n.get(context, 'food/noMenu')),
-            ),
-          );
+          return Text(HpiL11n.get(context, 'food/noMenu'));
         }
 
-        var restaurantId = menuItems[0].restaurantId;
-        return CachedRawBuilder<KtList<Restaurant>>(
-          controller: bloc.fetchRestaurants(),
-          builder: (context, update) {
-            var restaurant = update.data.single((r) => r.id == restaurantId);
-            return RestaurantMenu(
-              restaurant: restaurant,
-              menuItems: menuItems,
-            );
-          },
+        return RestaurantMenu(
+          restaurant: restaurant,
+          menuItems: menuItems,
         );
       },
     );
