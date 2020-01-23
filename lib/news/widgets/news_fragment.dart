@@ -22,7 +22,7 @@ class NewsFragment extends StatelessWidget {
         child: SizedBox(
           height: 150,
           child: Builder(
-            builder: (context) => PaginatedListView(
+            builder: (context) => PaginatedListView<Article>(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.all(8),
               pageSize: 5,

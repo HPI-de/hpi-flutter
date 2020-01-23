@@ -103,8 +103,8 @@ class _ElevatedExpansionTileState extends State<ElevatedExpansionTile>
     _headerColor = _controller.drive(_headerColorTween.chain(_easeInTween));
     _iconColor = _controller.drive(_iconColorTween.chain(_easeInTween));
 
-    _isExpanded =
-        PageStorage.of(context)?.readState(context) ?? widget.initiallyExpanded;
+    _isExpanded = (PageStorage.of(context)?.readState(context) as bool) ??
+        widget.initiallyExpanded;
     if (_isExpanded) _controller.value = 1.0;
   }
 

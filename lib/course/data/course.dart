@@ -539,7 +539,7 @@ class CourseDetail {
   CourseDetail copy({
     String courseId,
     String teletask,
-    Map programs,
+    Map<String, CourseDetailProgramList> programs,
     String description,
     String requirements,
     String learning,

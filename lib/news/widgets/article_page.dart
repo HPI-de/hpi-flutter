@@ -94,21 +94,21 @@ class ArticleView extends StatelessWidget {
                     article.tags.isNotEmpty())
                   SizedBox(height: 16),
                 if (article.authorIds.isNotEmpty())
-                  _buildChipSection(
+                  _buildChipSection<String>(
                     context,
                     HpiL11n.get(context, 'news/article.authors'),
                     article.authorIds,
                     (a) => Chip(label: Text(a)),
                   ),
                 if (article.categories.isNotEmpty())
-                  _buildChipSection(
+                  _buildChipSection<Category>(
                     context,
                     HpiL11n.get(context, 'news/article.categories'),
                     article.categories,
                     (c) => Chip(label: Text(c.name)),
                   ),
                 if (article.tags.isNotEmpty())
-                  _buildChipSection(
+                  _buildChipSection<Tag>(
                     context,
                     HpiL11n.get(context, 'news/article.tags'),
                     article.tags,

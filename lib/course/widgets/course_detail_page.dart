@@ -40,7 +40,8 @@ class CourseDetailPage extends StatelessWidget {
     assert(context != null);
 
     var bloc = Provider.of<CourseBloc>(context);
-    var stream = Observable.combineLatest2(
+    var stream = Observable.combineLatest2<KtPair<Course, CourseSeries>,
+        CourseDetail, KtTriple<Course, CourseSeries, CourseDetail>>(
       Observable(bloc.getCourse(courseId)).switchMap(
         (c) => bloc
             .getCourseSeries(c.courseSeriesId)
@@ -184,12 +185,14 @@ class CourseDetailPage extends StatelessWidget {
     ].where((w) => w != null).toList();
   }
 
-  Widget _buildElevatedTile(BuildContext context,
-      {IconData leading,
-      String title,
-      String subtitle,
-      IconData trailing,
-      Function onTap}) {
+  Widget _buildElevatedTile(
+    BuildContext context, {
+    IconData leading,
+    String title,
+    String subtitle,
+    IconData trailing,
+    VoidCallback onTap,
+  }) {
     assert(context != null);
 
     return Material(

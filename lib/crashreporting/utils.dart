@@ -32,7 +32,7 @@ Future<void> reportError(
     final packageInfo = await PackageInfo.fromPlatform();
     final crashReport = CrashReport(
       id: '',
-      appName: packageInfo.appName,
+      appName: packageInfo.packageName,
       appVersion: packageInfo.version,
       appVersionCode: int.tryParse(packageInfo.buildNumber),
       device: platformInfo.first,

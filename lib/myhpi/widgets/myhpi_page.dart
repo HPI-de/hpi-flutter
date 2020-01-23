@@ -4,6 +4,7 @@ import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/core/widgets/pagination.dart';
 import 'package:hpi_flutter/myhpi/data/bloc.dart';
+import 'package:hpi_flutter/myhpi/data/infobit.dart';
 import 'package:provider/provider.dart';
 
 import 'infobit_card.dart';
@@ -29,7 +30,7 @@ class MyHpiPage extends StatelessWidget {
 class InfoBitList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return PaginatedSliverList(
+    return PaginatedSliverList<InfoBit>(
       pageSize: 10,
       dataLoader: Provider.of<MyHpiBloc>(context).getInfoBits,
       itemBuilder: (_, infoBit, __) => InfoBitCard(infoBit),

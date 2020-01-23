@@ -167,7 +167,7 @@ class InfoBitCard extends StatelessWidget {
 
     return SizedBox(
       height: 150,
-      child: PaginatedListView(
+      child: PaginatedListView<InfoBit>(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.all(8),
         pageSize: 5,

@@ -33,7 +33,7 @@ class Feedback {
           screenshot: feedback.screenshot,
           log: feedback.log,
         );
-  static create(
+  static Future<Feedback> create(
       String message,
       Uri screenUri,
       bool includeContact,

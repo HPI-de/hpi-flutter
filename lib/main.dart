@@ -103,7 +103,7 @@ void main() async {
         ),
       ),
     );
-  }, onError: (error, stackTrace) async {
+  }, onError: (error, StackTrace stackTrace) async {
     await reportError(error, stackTrace, Uri.parse(serverUrl));
   });
 }

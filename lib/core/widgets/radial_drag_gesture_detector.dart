@@ -9,10 +9,9 @@ import 'package:flutter/material.dart';
 ///
 /// Use [onRadialDragStart], [onRadialDragUpdate], and [onRadialDragEnd] to
 /// react to the respective radial drag events.
-/// 
+///
 /// Source: https://github.com/tukaramc/fluttery/blob/master/lib/src/radial_drag_gesture_detector.dart
 class RadialDragGestureDetector extends StatefulWidget {
-
   final RadialDragStart onRadialDragStart;
   final RadialDragUpdate onRadialDragUpdate;
   final RadialDragEnd onRadialDragEnd;
@@ -26,11 +25,11 @@ class RadialDragGestureDetector extends StatefulWidget {
   });
 
   @override
-  _RadialDragGestureDetectorState createState() => _RadialDragGestureDetectorState();
+  _RadialDragGestureDetectorState createState() =>
+      _RadialDragGestureDetectorState();
 }
 
 class _RadialDragGestureDetectorState extends State<RadialDragGestureDetector> {
-
   _onPanStart(DragStartDetails details) {
     if (null != widget.onRadialDragStart) {
       final polarCoord = _polarCoordFromGlobalOffset(details.globalPosition);
@@ -51,11 +50,11 @@ class _RadialDragGestureDetectorState extends State<RadialDragGestureDetector> {
     }
   }
 
-  _polarCoordFromGlobalOffset(globalOffset) {
+  PolarCoord _polarCoordFromGlobalOffset(Offset globalOffset) {
     // Convert the user's global touch offset to an offset that is local to
     // this Widget.
-    final localTouchOffset = (context.findRenderObject() as RenderBox)
-        .globalToLocal(globalOffset);
+    final localTouchOffset =
+        (context.findRenderObject() as RenderBox).globalToLocal(globalOffset);
 
     // Convert the local offset to a Point so that we can do math with it.
     final localTouchPoint = Point(localTouchOffset.dx, localTouchOffset.dy);
@@ -85,7 +84,7 @@ class PolarCoord {
     // Subtract the origin from the point to get the vector from the origin
     // to the point.
     final vectorPoint = point - origin;
-    final vector = Offset(vectorPoint.x, vectorPoint.y);
+    final vector = Offset(vectorPoint.x.toDouble(), vectorPoint.y.toDouble());
 
     // The polar coordinate is the angle the vector forms with the x-axis, and
     // the distance of the vector.
@@ -99,8 +98,8 @@ class PolarCoord {
 
   @override
   toString() {
-    return 'Polar Coord: ${radius.toStringAsFixed(2)}'
-        + ' at ${(angle / (2 * pi) * 360).toStringAsFixed(2)}°';
+    return 'Polar Coord: ${radius.toStringAsFixed(2)}' +
+        ' at ${(angle / (2 * pi) * 360).toStringAsFixed(2)}°';
   }
 }
 

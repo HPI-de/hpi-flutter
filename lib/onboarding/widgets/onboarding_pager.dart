@@ -37,7 +37,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
   void initState() {
     super.initState();
 
-    _canContinue = widget.pages.map((p) => p.canContinue);
+    _canContinue = widget.pages.map((p) => p.canContinue).toMutableList();
     _pageLimit ??= widget.pages.size;
     _formKeys ??= widget.pages.map((_) => GlobalKey());
   }
@@ -72,7 +72,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
             ),
           ),
           Opacity(
-            opacity: _page.clamp(0.0, 1.0),
+            opacity: _page.clamp(0.0, 1.0).toDouble(),
             child: _buildNavigationButton(
               alignment: Alignment.bottomLeft,
               onPressed: () => controller.previousPage(
@@ -172,7 +172,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
   }
 
   Widget _buildPageIndicator() {
-    Widget indicatorBox([width = _indicatorSize]) => SizedBox(
+    Widget indicatorBox([double width = _indicatorSize]) => SizedBox(
           width: width,
           height: _indicatorSize,
         );
@@ -192,8 +192,9 @@ class _OnboardingPagerState extends State<OnboardingPager> {
               .asList(),
         ),
         Positioned(
-          left: (_pageFull + (_pagePart - 0.5).clamp(0.0, 1.0) * 2) *
-              (_indicatorSize + _indicatorSpacing),
+          left: ((_pageFull + (_pagePart - 0.5).clamp(0.0, 1.0) * 2) *
+                  (_indicatorSize + _indicatorSpacing))
+              .toDouble(),
           child: Material(
             color: Colors.white,
             shape: StadiumBorder(),

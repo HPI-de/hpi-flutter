@@ -4,6 +4,7 @@ import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/core/widgets/pagination.dart';
+import 'package:hpi_flutter/news/data/article.dart';
 import 'package:provider/provider.dart';
 
 import '../data/bloc.dart';
@@ -31,7 +32,7 @@ class NewsPage extends StatelessWidget {
   }
 
   Widget _buildArticleList(BuildContext context) {
-    return PaginatedSliverList(
+    return PaginatedSliverList<Article>(
       pageSize: 10,
       dataLoader: Provider.of<NewsBloc>(context).getArticles,
       itemBuilder: (_, article, __) => ArticlePreview(article),

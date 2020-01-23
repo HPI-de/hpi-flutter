@@ -316,7 +316,7 @@ class _HpiFlexibleSpaceBarState extends State<HpiFlexibleSpaceBar> {
   @override
   Widget build(BuildContext context) {
     final FlexibleSpaceBarSettings settings =
-        context.inheritFromWidgetOfExactType(FlexibleSpaceBarSettings);
+        context.dependOnInheritedWidgetOfExactType<FlexibleSpaceBarSettings>();
     assert(settings != null,
         'A HpiFlexibleSpaceBar must be wrapped in the widget returned by HpiFlexibleSpaceBar.createSettings().');
 
@@ -326,9 +326,10 @@ class _HpiFlexibleSpaceBarState extends State<HpiFlexibleSpaceBar> {
 
     // 0.0 -> Expanded
     // 1.0 -> Collapsed to toolbar
-    final double t =
+    final t =
         (1.0 - (settings.currentExtent - settings.minExtent) / deltaExtent)
-            .clamp(0.0, 1.0);
+            .clamp(0.0, 1.0)
+            .toDouble();
 
     // background image
     if (widget.background != null) {

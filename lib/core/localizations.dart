@@ -20,14 +20,15 @@ class HpiL11n {
     var lc = locale.languageCode ?? "en";
     final strings = await rootBundle
         .loadString('assets/localizations/strings_$lc.yaml')
-        .then((s) => KtMap<String, String>.from(Map.from(loadYaml(s))));
+        .then((s) =>
+            KtMap<String, String>.from(Map.from(loadYaml(s) as YamlMap)));
 
     // Load fallbacks
     KtMap<String, String> fallbacks;
     if (lc != "en") {
       fallbacks = await rootBundle
           .loadString('assets/localizations/strings_en.yaml')
-          .then((s) => KtMap.from(Map.from(loadYaml(s))));
+          .then((s) => KtMap.from(Map.from(loadYaml(s) as YamlMap)));
     }
 
     return HpiL11n._(locale, strings, fallbacks);
