@@ -128,7 +128,7 @@ class NavigationItem extends StatelessWidget {
         route == Provider.of<NavigationService>(context).lastKnownRoute;
     var color = isActive
         ? Theme.of(context).primaryColor
-        : Theme.of(context).colorScheme.onSurface.withOpacity(0.87);
+        : Theme.of(context).colorScheme.onSurface.withOpacity(0.6);
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
