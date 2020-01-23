@@ -165,6 +165,13 @@ class _AboutSection extends StatelessWidget {
     return SliverList(
       delegate: SliverChildListDelegate.fixed(
         <Widget>[
+          ListTile(
+            leading: Icon(OMIcons.repeat),
+            title: HpiL11n.text(context, 'settings/repeatOnboarding'),
+            onTap: () {
+              Navigator.pushNamed(context, Route.onboarding.name);
+            },
+          ),
           FutureBuilder<PackageInfo>(
             future: PackageInfo.fromPlatform(),
             builder: (context, snapshot) {
