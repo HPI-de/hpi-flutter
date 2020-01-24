@@ -47,10 +47,11 @@ class MainScaffold extends StatelessWidget {
             ...bottomActions.iter,
             PopupMenuButton(
               onSelected: (selected) {
-                if (selected == 'app.feedback')
+                if (selected == 'app.feedback') {
                   FeedbackDialog.show(context);
-                else
+                } else {
                   menuItemHandler(selected);
+                }
               },
               icon: Icon(Icons.more_vert),
               itemBuilder: (context) => [

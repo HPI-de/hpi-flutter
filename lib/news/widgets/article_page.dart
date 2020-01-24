@@ -48,7 +48,7 @@ class ArticlePage extends StatelessWidget {
                     child: HpiL11n.text(context, 'openInBrowser')),
               ]),
               menuItemHandler: (value) async {
-                switch (value) {
+                switch (value as String) {
                   case 'openInBrowser':
                     await tryLaunch(snapshot.data.link.toString());
                     break;

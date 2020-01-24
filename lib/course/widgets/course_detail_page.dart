@@ -77,7 +77,7 @@ class CourseDetailPage extends StatelessWidget {
             )
           ]),
           menuItemHandler: (value) async {
-            switch (value) {
+            switch (value as String) {
               case 'openInBrowser':
                 await tryLaunch(course.website);
                 break;
