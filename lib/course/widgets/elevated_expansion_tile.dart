@@ -74,8 +74,6 @@ class ElevatedExpansionTile extends StatefulWidget {
 
 class _ElevatedExpansionTileState extends State<ElevatedExpansionTile>
     with SingleTickerProviderStateMixin {
-  static final Animatable<double> _easeOutTween =
-      CurveTween(curve: Curves.easeOut);
   static final Animatable<double> _easeInTween =
       CurveTween(curve: Curves.easeIn);
   static final Animatable<double> _halfTween =
@@ -89,10 +87,8 @@ class _ElevatedExpansionTileState extends State<ElevatedExpansionTile>
   AnimationController _controller;
   Animation<double> _iconTurns;
   Animation<double> _heightFactor;
-  Animation<Color> _borderColor;
   Animation<Color> _headerColor;
   Animation<Color> _iconColor;
-  Animation<Color> _backgroundColor;
 
   bool _isExpanded = false;
 
@@ -102,14 +98,11 @@ class _ElevatedExpansionTileState extends State<ElevatedExpansionTile>
     _controller = AnimationController(duration: _kExpand, vsync: this);
     _heightFactor = _controller.drive(_easeInTween);
     _iconTurns = _controller.drive(_halfTween.chain(_easeInTween));
-    _borderColor = _controller.drive(_borderColorTween.chain(_easeOutTween));
     _headerColor = _controller.drive(_headerColorTween.chain(_easeInTween));
     _iconColor = _controller.drive(_iconColorTween.chain(_easeInTween));
-    _backgroundColor =
-        _controller.drive(_backgroundColorTween.chain(_easeOutTween));
 
-    _isExpanded =
-        PageStorage.of(context)?.readState(context) ?? widget.initiallyExpanded;
+    _isExpanded = (PageStorage.of(context)?.readState(context) as bool) ??
+        widget.initiallyExpanded;
     if (_isExpanded) _controller.value = 1.0;
   }
 
@@ -134,13 +127,12 @@ class _ElevatedExpansionTileState extends State<ElevatedExpansionTile>
       }
       PageStorage.of(context)?.writeState(context, _isExpanded);
     });
-    if (widget.onExpansionChanged != null)
+    if (widget.onExpansionChanged != null) {
       widget.onExpansionChanged(_isExpanded);
+    }
   }
 
   Widget _buildChildren(BuildContext context, Widget child) {
-    final Color borderSideColor = _borderColor.value ?? Colors.transparent;
-
     return Container(
       /*decoration: BoxDecoration(
         color: _backgroundColor.value ?? Colors.transparent,

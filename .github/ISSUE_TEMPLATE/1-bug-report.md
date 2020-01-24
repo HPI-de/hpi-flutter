@@ -7,9 +7,7 @@ assignees: ''
 
 ---
 
-<!--
-Thanks for taking the time to file an issue!
--->
+<!-- Thanks for taking the time to file an issue! -->
 
 **Describe the bug**
 <!-- A clear and concise description of what the bug is & how to reproduce it -->
@@ -27,5 +25,5 @@ Thanks for taking the time to file an issue!
 **Environment:**
 <!-- Please complete the following information -->
 - Device:  <!-- e.g. Samsung Galaxy S8+ -->
-- Device version:  <!-- e.g. Android 8.0.0 -->
+- OS version:  <!-- e.g. Android 8.0.0 -->
 - App version: <!-- e.g. 1.0.2 -->

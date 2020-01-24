@@ -26,6 +26,7 @@
 **/doc/api/
 .dart_tool/
 .flutter-plugins
+.flutter-plugins-dependencies
 .packages
 .pub-cache/
 .pub/
@@ -33,6 +34,8 @@
 *.g.dart
 
 # Android related
+.gradle
+local.properties
 **/android/**/gradle-wrapper.jar
 **/android/.gradle
 **/android/captures/
@@ -64,6 +67,7 @@
 **/ios/Flutter/app.flx
 **/ios/Flutter/app.zip
 **/ios/Flutter/flutter_assets/
+**/ios/Flutter/flutter_export_environment.sh
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
 

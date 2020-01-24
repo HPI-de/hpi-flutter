@@ -165,6 +165,13 @@ class _AboutSection extends StatelessWidget {
     return SliverList(
       delegate: SliverChildListDelegate.fixed(
         <Widget>[
+          ListTile(
+            leading: Icon(OMIcons.repeat),
+            title: HpiL11n.text(context, 'settings/repeatOnboarding'),
+            onTap: () {
+              Navigator.pushNamed(context, Route.onboarding.name);
+            },
+          ),
           FutureBuilder<PackageInfo>(
             future: PackageInfo.fromPlatform(),
             builder: (context, snapshot) {
@@ -181,7 +188,7 @@ class _AboutSection extends StatelessWidget {
           ListTile(
             leading: Icon(OMIcons.people),
             title: HpiL11n.text(context, 'settings/about.contributors'),
-            subtitle: HpiL11n.text(context, 'settings/about.contributors.desc'),
+            subtitle: Text('Felix Auringer, Marcel Garus, Kirill Postnov, Matti Schmidt, Maximilian Stiede, Clemens Tiedt, Ronja Wagner, Jonas Wanke'),
           ),
           ListTile(
             leading: Icon(OMIcons.code),

@@ -7,10 +7,7 @@ assignees: ''
 
 ---
 
-<!--
-Thanks for taking the time to file an issue!
--->
+<!-- Thanks for taking the time to file an issue! -->
 
 **Description**
 <!-- A clear and concise description of the problem or missing capability -->
-

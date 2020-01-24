@@ -80,7 +80,23 @@ class HpiAppBar extends StatelessWidget implements PreferredSizeWidget {
       titleSpacing: titleSpacing,
       toolbarOpacity: toolbarOpacity,
       bottomOpacity: bottomOpacity,
-    );
+    )..actions.add(PopupMenuButton(
+        onSelected: (selected) {
+          if (selected == 'app.feedback') {
+            FeedbackDialog.show(context);
+          } else {
+            menuItemHandler(selected);
+          }
+        },
+        icon: Icon(Icons.more_vert),
+        itemBuilder: (context) => [
+          if (menuItems != null) ...menuItems,
+          PopupMenuItem(
+            value: 'app.feedback',
+            child: Text(HpiL11n.get(context, 'feedback/action')),
+          )
+        ],
+      ));
   }
 }
 
@@ -168,7 +184,23 @@ class HpiSliverAppBar extends StatelessWidget {
       pinned: pinned,
       shape: shape,
       snap: snap,
-    );
+    )..actions.add(PopupMenuButton(
+        onSelected: (selected) {
+          if (selected == 'app.feedback') {
+            FeedbackDialog.show(context);
+          } else {
+            menuItemHandler(selected);
+          }
+        },
+        icon: Icon(Icons.more_vert),
+        itemBuilder: (context) => [
+          if (menuItems != null) ...menuItems,
+          PopupMenuItem(
+            value: 'app.feedback',
+            child: Text(HpiL11n.get(context, 'feedback/action')),
+          )
+        ],
+      ));
   }
 }
 
@@ -284,7 +316,7 @@ class _HpiFlexibleSpaceBarState extends State<HpiFlexibleSpaceBar> {
   @override
   Widget build(BuildContext context) {
     final FlexibleSpaceBarSettings settings =
-        context.inheritFromWidgetOfExactType(FlexibleSpaceBarSettings);
+        context.dependOnInheritedWidgetOfExactType<FlexibleSpaceBarSettings>();
     assert(settings != null,
         'A HpiFlexibleSpaceBar must be wrapped in the widget returned by HpiFlexibleSpaceBar.createSettings().');
 
@@ -294,9 +326,10 @@ class _HpiFlexibleSpaceBarState extends State<HpiFlexibleSpaceBar> {
 
     // 0.0 -> Expanded
     // 1.0 -> Collapsed to toolbar
-    final double t =
+    final t =
         (1.0 - (settings.currentExtent - settings.minExtent) / deltaExtent)
-            .clamp(0.0, 1.0);
+            .clamp(0.0, 1.0)
+            .toDouble();
 
     // background image
     if (widget.background != null) {

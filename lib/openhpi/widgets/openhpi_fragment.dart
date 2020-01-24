@@ -18,7 +18,7 @@ class OpenHpiFragment extends StatelessWidget {
     return DashboardFragment(
       title: Text(HpiL11n.get(context, 'openHpi/fragment.title')),
       child: Provider<OpenHpiBloc>(
-        builder: (_) => OpenHpiBloc(),
+        create: (_) => OpenHpiBloc(),
         child: SizedBox(
           height: 150,
           child: Builder(
@@ -33,8 +33,9 @@ class OpenHpiFragment extends StatelessWidget {
     return StreamBuilder<KtList<OpenHpiCourse>>(
       stream: Provider.of<OpenHpiBloc>(context).getAnnouncedCourses(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData)
+        if (!snapshot.hasData) {
           return buildLoadingError(snapshot);
+        }
 
         return ListView.separated(
           padding: EdgeInsets.all(8),

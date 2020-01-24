@@ -25,7 +25,7 @@ class InfoBitPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProxyProvider<Uri, MyHpiBloc>(
-      builder: (_, serverUrl, __) =>
+      update: (_, serverUrl, __) =>
           MyHpiBloc(serverUrl, Localizations.localeOf(context)),
       child: MainScaffold(
         body: Builder(
@@ -41,8 +41,9 @@ class InfoBitPage extends StatelessWidget {
     return StreamBuilder<InfoBit>(
       stream: Provider.of<MyHpiBloc>(context).getInfoBit(infoBitId),
       builder: (context, snapshot) {
-        if (!snapshot.hasData)
+        if (!snapshot.hasData) {
           return buildLoadingErrorScaffold(context, snapshot);
+        }
 
         final infoBit = snapshot.data;
         return CustomScrollView(
@@ -118,10 +119,11 @@ class InfoBitPage extends StatelessWidget {
       subtitle: infoBit.subtitle != null ? Text(infoBit.subtitle) : null,
     );
 
-    if (infoBit.cover == null)
+    if (infoBit.cover == null) {
       return HpiSliverAppBar(
         title: title,
       );
+    }
 
     return HpiSliverAppBar(
       expandedHeight: MediaQuery.of(context).size.width / 16 * 9,
@@ -176,7 +178,7 @@ class InfoBitPage extends StatelessWidget {
       default:
         assert(false,
             '_buildChildren must not be called for InfoBitChildDisplay.none');
-        break;
+        return Container();
     }
   }
 

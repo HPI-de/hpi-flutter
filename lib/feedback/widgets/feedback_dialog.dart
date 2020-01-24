@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart' hide Feedback;
 import 'package:hpi_flutter/app/services/navigation.dart';
 import 'package:hpi_flutter/core/localizations.dart';
@@ -9,36 +11,45 @@ import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
 
 class FeedbackDialog extends StatefulWidget {
-  static void show(BuildContext context,
-      {String title = 'Feedback', String feedbackType}) {
+  static void show(
+    BuildContext context, {
+    String title = 'Feedback',
+    String feedbackType,
+  }) async {
     assert(context != null);
 
-    showModalBottomSheet(
+    var currentScreenshot =
+        await (await Provider.of<ScreenshotController>(context).capture())
+            .readAsBytes();
+
+    await showModalBottomSheet(
       isScrollControlled: true,
       context: context,
       builder: (context) => ProxyProvider<Uri, FeedbackBloc>(
-        builder: (_, serverUrl, __) =>
+        update: (_, serverUrl, __) =>
             FeedbackBloc(serverUrl, Localizations.localeOf(context)),
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).viewInsets.bottom),
             child: FeedbackDialog._(
-              title: title,
-              feedbackType: feedbackType,
-            ),
+                title: title,
+                feedbackType: feedbackType,
+                screenshot: currentScreenshot),
           ),
         ),
       ),
     );
   }
 
-  const FeedbackDialog._({Key key, this.title = 'Feedback', this.feedbackType})
+  const FeedbackDialog._(
+      {Key key, this.title = 'Feedback', this.feedbackType, this.screenshot})
       : assert(title != null),
         super(key: key);
 
   final String title;
   final String feedbackType;
+  final Uint8List screenshot;
 
   @override
   _FeedbackDialogState createState() => _FeedbackDialogState();
@@ -85,8 +96,9 @@ class _FeedbackDialogState extends State<FeedbackDialog>
           message = m;
         },
         validator: (m) {
-          if (isNullOrBlank(m))
+          if (isNullOrBlank(m)) {
             return HpiL11n.get(context, 'feedback/message.missing');
+          }
           return null;
         },
       ),
@@ -136,7 +148,7 @@ class _FeedbackDialogState extends State<FeedbackDialog>
         screenUri,
         includeContact,
         includeScreenshotAndLogs,
-        Provider.of<ScreenshotController>(context),
+        widget.screenshot,
         includeScreenshotAndLogs,
       ).then((f) {
         Provider.of<FeedbackBloc>(context).sendFeedback(f);

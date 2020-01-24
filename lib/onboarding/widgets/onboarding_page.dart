@@ -4,6 +4,7 @@ import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/settings/widgets/settings_page.dart';
 import 'package:kt_dart/collection.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -47,7 +48,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
           await Provider.of<SharedPreferences>(context).setInt(
               OnboardingPage._keyCompleted,
               DateTime.now().millisecondsSinceEpoch);
-          Navigator.of(context).pushReplacementNamed(Route.dashboard.name);
+          unawaited(
+              Navigator.of(context).pushReplacementNamed(Route.dashboard.name));
         },
       ),
     );

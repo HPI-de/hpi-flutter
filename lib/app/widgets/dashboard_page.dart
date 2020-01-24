@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:align_positioned/align_positioned.dart';
 import 'package:flutter/material.dart';
 import 'package:hpi_flutter/core/localizations.dart';
@@ -26,9 +24,11 @@ class DashboardPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Align(
               alignment: Alignment.topRight,
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: 200, maxHeight: 100),
-                child: Image.asset('assets/logo/logo_text.png'),
+              child: Image.asset(
+                'assets/logo/logo_text.png',
+                width: 200,
+                height: 100,
+                fit: BoxFit.contain,
               ),
             ),
           ),

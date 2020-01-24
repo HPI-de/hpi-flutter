@@ -5,6 +5,7 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
+import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/core/widgets/radial_drag_gesture_detector.dart';
 import 'package:kt_dart/collection.dart';
@@ -21,8 +22,7 @@ class TimerPage extends StatelessWidget {
     return StreamBuilder(
       stream: _timer.stateStream,
       builder: (context, snapshot) {
-        if (!snapshot.hasData)
-          return Center(child: CircularProgressIndicator());
+        if (!snapshot.hasData) return buildLoadingError(snapshot);
 
         return MainScaffold(
           appBar: HpiAppBar(
@@ -108,10 +108,11 @@ class CountdownTimer {
   }
 
   void toggle() {
-    if (state == CountdownTimerState.running)
+    if (state == CountdownTimerState.running) {
       pause();
-    else
+    } else {
       resume();
+    }
   }
 
   void add(Duration additionalTime) {
@@ -170,16 +171,16 @@ class CountdownTimerWidget extends StatelessWidget {
         Duration additional = Duration(
           microseconds: (total.inMicroseconds * difference / (2 * pi)).round(),
         );
-        if (timer.remaining + additional > total)
+        if (timer.remaining + additional > total) {
           additional = total - timer.remaining;
+        }
         timer.add(additional);
         _lastCoords = coords;
       },
       child: StreamBuilder<Duration>(
         stream: timer.stream,
         builder: (context, snapshot) {
-          if (!snapshot.hasData)
-            return Center(child: CircularProgressIndicator());
+          if (!snapshot.hasData) return buildLoadingError(snapshot);
 
           return AspectRatio(
             aspectRatio: 1,
