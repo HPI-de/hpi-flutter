@@ -11,6 +11,7 @@ import 'package:hpi_flutter/news/data/article.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 
 import '../data/bloc.dart';
 import '../utils.dart';
@@ -41,6 +42,29 @@ class ArticlePage extends StatelessWidget {
 
             return MainScaffold(
               body: ArticleView(snapshot.data),
+              menuItems: KtList.from([
+                PopupMenuItem(
+                    value: 'openInBrowser',
+                    child: HpiL11n.text(context, 'openInBrowser')),
+              ]),
+              menuItemHandler: (value) async {
+                switch (value as String) {
+                  case 'openInBrowser':
+                    await tryLaunch(snapshot.data.link.toString());
+                    break;
+                  default:
+                    assert(false);
+                    break;
+                }
+              },
+              bottomActions: KtList.from([
+                IconButton(
+                  icon: Icon(OMIcons.share),
+                  onPressed: () {
+                    Share.share(snapshot.data.link.toString());
+                  },
+                )
+              ]),
             );
           },
         ),

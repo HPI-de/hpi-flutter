@@ -26,6 +26,7 @@ dependencies:
   shared_preferences: ^0.5.6
   package_info: ^0.4.0+6
   device_info: ^0.4.1+4
+  share: ^0.6.2+3
 
   # UI
   flutter_localizations:

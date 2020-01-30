@@ -13,6 +13,7 @@ import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:share/share.dart';
 
 import '../utils.dart';
 import 'elevated_expansion_tile.dart';
@@ -28,10 +29,8 @@ class CourseDetailPage extends StatelessWidget {
     return ProxyProvider<Uri, CourseBloc>(
       update: (_, serverUrl, __) =>
           CourseBloc(serverUrl, Localizations.localeOf(context)),
-      child: MainScaffold(
-        body: Builder(
-          builder: (context) => _buildScaffold(context),
-        ),
+      child: Builder(
+        builder: (context) => _buildScaffold(context),
       ),
     );
   }
@@ -68,35 +67,60 @@ class CourseDetailPage extends StatelessWidget {
         var courseSeries = snapshot.data.second;
         var courseDetail = snapshot.data.third;
 
-        return CustomScrollView(
-          slivers: <Widget>[
-            HpiSliverAppBar(
-              floating: true,
-              backgroundColor: Theme.of(context).cardColor,
-              title: buildAppBarTitle(
-                context: context,
-                title: Text(courseSeries.title),
-                subtitle: StreamBuilder<Semester>(
-                  stream: bloc.getSemester(course.semesterId),
-                  builder: (context, snapshot) => Text(
-                    snapshot.data != null
-                        ? semesterToString(context, snapshot.data)
-                        : course.semesterId,
+        return MainScaffold(
+          bottomActions: KtList.from([
+            IconButton(
+              icon: Icon(OMIcons.share),
+              onPressed: () {
+                Share.share(course.website);
+              },
+            )
+          ]),
+          menuItemHandler: (value) async {
+            switch (value as String) {
+              case 'openInBrowser':
+                await tryLaunch(course.website);
+                break;
+              default:
+                assert(false);
+                break;
+            }
+          },
+          menuItems: KtList.from([
+            PopupMenuItem(
+                value: 'openInBrowser',
+                child: HpiL11n.text(context, 'openInBrowser')),
+          ]),
+          body: CustomScrollView(
+            slivers: <Widget>[
+              HpiSliverAppBar(
+                floating: true,
+                backgroundColor: Theme.of(context).cardColor,
+                title: buildAppBarTitle(
+                  context: context,
+                  title: Text(courseSeries.title),
+                  subtitle: StreamBuilder<Semester>(
+                    stream: bloc.getSemester(course.semesterId),
+                    builder: (context, snapshot) => Text(
+                      snapshot.data != null
+                          ? semesterToString(context, snapshot.data)
+                          : course.semesterId,
+                    ),
                   ),
                 ),
               ),
-            ),
-            SliverList(
-              delegate: SliverChildListDelegate(
-                _buildCourseDetails(
-                  context,
-                  course: course,
-                  courseSeries: courseSeries,
-                  courseDetail: courseDetail,
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  _buildCourseDetails(
+                    context,
+                    course: course,
+                    courseSeries: courseSeries,
+                    courseDetail: courseDetail,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );

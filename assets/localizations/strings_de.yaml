@@ -7,6 +7,8 @@ currency.eur: "%.2f €"
 mode: Mehr…
 language.en: Englisch
 language.de: Deutsch
+share: Teilen
+openInBrowser: Im Browser öffnen
 
 # Dashboard
 dashboard: Übersicht
