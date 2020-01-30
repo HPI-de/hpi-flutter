@@ -11,6 +11,7 @@ dependencies:
     sdk: flutter
 
   # General
+  characters: ^0.5.0
   kt_dart: ^0.6.2
 
   # Data
