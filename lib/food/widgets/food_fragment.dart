@@ -14,7 +14,7 @@ class FoodFragment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProxyProvider2<StorageService, Uri, FoodBloc>(
-      builder: (_, storage, serverUrl, __) {
+      update: (_, storage, serverUrl, __) {
         print('Creating a food bloc.');
         return FoodBloc(storage, serverUrl, Localizations.localeOf(context));
       },

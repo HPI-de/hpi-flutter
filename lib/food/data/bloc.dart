@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_cached/flutter_cached.dart';
 import 'package:grpc/grpc.dart';
 import 'package:hpi_flutter/app/services/storage.dart';
+import 'package:hpi_flutter/core/data/cache.dart';
+import 'package:hpi_flutter/core/data/entity.dart';
 import 'package:hpi_flutter/core/data/utils.dart';
 import 'package:hpi_flutter/core/utils.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/food/v1test/food_service.pbgrpc.dart';
@@ -42,28 +44,30 @@ class FoodBloc {
   }
 
   CacheController<KtList<MenuItem>> fetchMenuItemsOfRestaurant(
-          String restaurantId) =>
-      fetchList(
-        storage: storage,
+          Id<Restaurant> restaurant) =>
+      storage.cache.fetchCachedList(
+        parent: restaurant,
+        role: 'menuItems',
         download: () async {
           final req = ListMenuItemsRequest()
-            ..restaurantId = restaurantId
+            ..restaurantId = restaurant.id
             ..date = dateTimeToDate(DateTime.now());
           return (await client.listMenuItems(req)).items;
         },
         parser: (data) => MenuItem.fromProto(data),
       );
 
-  CacheController<KtList<Restaurant>> fetchRestaurants() => fetchList(
-        storage: storage,
+  CacheController<KtList<Restaurant>> fetchRestaurants() =>
+      storage.cache.fetchCachedList(
+        role: 'restaurants',
         download: () async =>
             (await client.listRestaurants(ListRestaurantsRequest()))
                 .restaurants,
         parser: (data) => Restaurant.fromProto(data),
       );
 
-  CacheController<KtList<Label>> fetchLabels() => fetchList(
-        storage: storage,
+  CacheController<KtList<Label>> fetchLabels() => storage.cache.fetchCachedList(
+        role: 'labels',
         download: () async =>
             (await client.listLabels(ListLabelsRequest())).labels,
         parser: (data) => Label.fromProto(data),

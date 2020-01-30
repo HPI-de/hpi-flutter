@@ -36,17 +36,18 @@ Future<bool> tryLaunch(String urlString) async {
   return false;
 }
 
-CacheController<T> fetchSingle<T extends Entity, ProtoType>({
+/*CacheController<T> fetchSingle<T extends Entity, ProtoType>({
   @required StorageService storage,
-  String parent,
+  String parentId,
+  @required String name,
   @required Future<ProtoType> Function() download,
   @required T Function(ProtoType data) parser,
 }) {
   assert(storage != null);
   return CacheController<T>(
-    saveToCache: (item) => storage.cache.putChildrenOfType<T>(parent, [item]),
+    saveToCache: (item) => storage.cache.putReference(parentId: parentId, ),
     loadFromCache: () async {
-      return (await storage.cache.getChildrenOfType<T>(parent)).singleWhere(
+      return (await cache.box<T>(parent)).singleWhere(
         (_) => true,
         orElse: () => (throw NotInCacheException()),
       );
@@ -58,19 +59,20 @@ CacheController<T> fetchSingle<T extends Entity, ProtoType>({
 }
 
 CacheController<KtList<T>> fetchList<T extends Entity, ProtoType>({
-  @required StorageService storage,
+  @required HiveCache<T> cache,
   String parent,
   @required Future<List<ProtoType>> Function() download,
   @required T Function(ProtoType data) parser,
 }) {
-  assert(storage != null);
+  assert(cache != null);
   return CacheController<KtList<T>>(
-    saveToCache: (items) =>
-        storage.cache.putChildrenOfType<T>(parent, items.asList()),
+    saveToCache: (items) => cache.box.putAll({
+      for (final item in items.iter) item.id: item,
+    }),
     loadFromCache: () async =>
-        KtList.from(await storage.cache.getChildrenOfType<T>(parent)),
+        KtList.from(await cache.<T>(parent)),
     fetcher: () async {
       return KtList.from(await download()).map(parser);
     },
   );
-}
+}*/

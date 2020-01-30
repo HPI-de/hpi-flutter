@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:hpi_flutter/core/data/entity.dart';
+import 'package:hpi_flutter/core/data/hive.dart';
 import 'package:hpi_flutter/core/data/utils.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/food/v1test/food.pb.dart'
     as proto;
@@ -9,36 +10,33 @@ import 'package:meta/meta.dart';
 part 'restaurant.g.dart';
 
 @immutable
-@HiveType()
-class Restaurant implements Entity {
-  @HiveField(0)
-  final String id;
-
+@HiveType(typeId: TypeId.typeRestaurant)
+class Restaurant extends Entity<Restaurant> {
   @HiveField(1)
   final String title;
 
-  const Restaurant({@required this.id, @required this.title})
-      : assert(id != null),
-        assert(title != null);
+  const Restaurant({
+    @required Id<Restaurant> id,
+    @required this.title,
+  })  : assert(id != null),
+        assert(title != null),
+        super(id);
 
   Restaurant.fromProto(proto.Restaurant restaurant)
       : this(
-          id: restaurant.id,
+          id: Id<Restaurant>(restaurant.id),
           title: restaurant.title,
         );
   proto.Restaurant toProto() {
     return proto.Restaurant()
-      ..id = id
+      ..id = id.id
       ..title = title;
   }
 }
 
 @immutable
-@HiveType()
-class MenuItem implements Entity {
-  @HiveField(0)
-  final String id;
-
+@HiveType(typeId: TypeId.typeMenuItem)
+class MenuItem extends Entity<MenuItem> {
   @HiveField(1)
   final String restaurantId;
 
@@ -58,18 +56,18 @@ class MenuItem implements Entity {
   final KtSet<String> labelIds;
 
   const MenuItem({
-    @required this.id,
+    @required Id<MenuItem> id,
     @required this.restaurantId,
     @required this.date,
     @required this.title,
     @required this.prices,
     @required this.counter,
     @required this.labelIds,
-  });
+  }) : super(id);
 
   MenuItem.fromProto(proto.MenuItem item)
       : this(
-          id: item.id,
+          id: Id<MenuItem>(item.id),
           restaurantId: item.restaurantId,
           date: dateToDateTime(item.date),
           title: item.title,
@@ -82,7 +80,7 @@ class MenuItem implements Entity {
         );
   proto.MenuItem toProto() {
     return proto.MenuItem()
-      ..id = id
+      ..id = id.id
       ..restaurantId = restaurantId
       ..date = dateTimeToDate(date)
       ..title = title
@@ -94,31 +92,32 @@ class MenuItem implements Entity {
 }
 
 @immutable
-@HiveType()
-class Label implements Entity {
-  @HiveField(0)
-  final String id;
-
+@HiveType(typeId: TypeId.typeLabel)
+class Label extends Entity<Label> {
   @HiveField(1)
   final String title;
 
   @HiveField(2)
   final String icon;
 
-  const Label({@required this.id, @required this.title, @required this.icon})
-      : assert(id != null),
+  const Label({
+    @required Id<Label> id,
+    @required this.title,
+    @required this.icon,
+  })  : assert(id != null),
         assert(title != null),
-        assert(icon != null);
+        assert(icon != null),
+        super(id);
 
   Label.fromProto(proto.Label label)
       : this(
-          id: label.id,
+          id: Id<Label>(label.id),
           title: label.title,
           icon: label.icon,
         );
   proto.Label toProto() {
     return proto.Label()
-      ..id = id
+      ..id = id.id
       ..title = title
       ..icon = icon;
   }
