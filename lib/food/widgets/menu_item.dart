@@ -1,3 +1,4 @@
+import 'package:characters/characters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hpi_flutter/core/localizations.dart';
@@ -36,7 +37,7 @@ class MenuItemView extends StatelessWidget {
             SizedBox(
               width: 32,
               child: Text(
-                showCounter ? item.counter : ' ',
+                showCounter ? item.counter.characters.first : ' ',
                 style:
                     Theme.of(context).textTheme.caption.copyWith(fontSize: 20),
               ),
