@@ -45,7 +45,7 @@ void main() async {
   //Required for font caching
   WidgetsFlutterBinding.ensureInitialized();
   const fontBaseUrl = 'https://hpi.de/fileadmin/templates/fonts';
-  const serverUrl = "172.18.132.7";
+  const serverUrl = "172.20.20.6";
 
   // This captures errors reported by the Flutter framework.
   FlutterError.onError = (FlutterErrorDetails details) async {
