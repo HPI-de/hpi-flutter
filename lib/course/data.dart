@@ -26,7 +26,7 @@ class UInt32Value {
   }
 
   int get hashCode => hashList([
-        value,
+        value
       ]);
   UInt32Value copy({
     int value,

@@ -1,15 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart' hide Route;
 import 'package:hpi_flutter/app/app.dart';
-import 'package:hpi_flutter/app/widgets/dashboard_page.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/core/widgets/pagination.dart';
-import 'package:hpi_flutter/core/widgets/preview_box.dart';
-import 'package:hpi_flutter/news/data/article.dart';
-import 'package:hpi_flutter/news/data/bloc.dart';
-import 'package:hpi_flutter/news/utils.dart';
+import 'package:hpi_flutter/core/core.dart' hide Image;
 
 import '../../route.dart';
+import '../bloc.dart';
+import '../data.dart';
+import '../utils.dart';
 
 class NewsFragment extends StatelessWidget {
   @override

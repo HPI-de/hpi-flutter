@@ -1,10 +1,11 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
 import 'package:kt_dart/collection.dart';
 import 'package:meta/meta.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'dart:async';
 
-import 'course.dart';
+import 'data.dart';
 
 const String COURSE_URL = 'https://open.hpi.de/api/v2/courses';
 const String HEADER_ACCEPT = 'Accept';

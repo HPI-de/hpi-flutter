@@ -1,5 +1,4 @@
-import 'package:hpi_flutter/core/data/image.dart';
-import 'package:hpi_flutter/core/data/utils.dart';
+import 'package:hpi_flutter/core/core.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/google/protobuf/wrappers.pb.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/news/v1test/article.pb.dart'
     as proto;

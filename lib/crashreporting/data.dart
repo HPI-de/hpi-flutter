@@ -1,4 +1,4 @@
-import 'package:hpi_flutter/core/data/utils.dart';
+import 'package:hpi_flutter/core/core.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/crashreporting/v1test/crashreport.pb.dart'
     as proto;
 import 'package:meta/meta.dart';

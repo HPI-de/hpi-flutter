@@ -1,15 +1,15 @@
 import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
-import 'package:hpi_flutter/core/data/image.dart';
-import 'package:immutable_proto/immutable_proto.dart';
-import 'package:kt_dart/collection.dart';
+import 'package:hpi_flutter/core/core.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/common/v1test/image.pb.dart'
     as proto;
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/myhpi/v1test/info_bit.pb.dart'
     as proto;
+import 'package:immutable_proto/immutable_proto.dart';
+import 'package:kt_dart/collection.dart';
 
-part 'infobit.g.dart';
+part 'data.g.dart';
 
 @ImmutableProto(proto.InfoBit)
 class MutableInfoBit {

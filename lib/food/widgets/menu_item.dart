@@ -2,11 +2,11 @@ import 'package:characters/characters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hpi_flutter/app/app.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/food/data/bloc.dart';
+import 'package:hpi_flutter/core/core.dart';
 import 'package:kt_dart/collection.dart';
 
-import '../data/restaurant.dart';
+import '../bloc.dart';
+import '../data.dart';
 
 class MenuItemView extends StatelessWidget {
   final MenuItem item;

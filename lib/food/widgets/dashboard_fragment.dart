@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hpi_flutter/app/app.dart';
-import 'package:hpi_flutter/app/widgets/dashboard_page.dart';
-import 'package:hpi_flutter/app/widgets/utils.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/food/data/bloc.dart';
-import 'package:hpi_flutter/food/data/restaurant.dart';
-import 'package:hpi_flutter/food/widgets/restaurant_menu.dart';
+import 'package:hpi_flutter/core/core.dart';
 import 'package:kt_dart/kt.dart';
+
+import '../bloc.dart';
+import '../data.dart';
+import 'restaurant_menu.dart';
 
 @immutable
 class FoodFragment extends StatelessWidget {

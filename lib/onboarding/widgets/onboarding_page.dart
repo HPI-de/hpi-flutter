@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart' hide Route;
 import 'package:hpi_flutter/app/app.dart';
-import 'package:hpi_flutter/app/widgets/hpi_theme.dart';
-import 'package:hpi_flutter/app/widgets/utils.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/settings/widgets/settings_page.dart';
+import 'package:hpi_flutter/core/core.dart' hide Image;
+import 'package:hpi_flutter/settings/settings.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,7 +16,7 @@ class OnboardingPage extends StatefulWidget {
   static const _keyCrashReporting = 'onboarding.crashReporting';
   static final _privacyPolicyDate = DateTime.utc(2019, 10, 01);
 
-  static bool isOnboardingCompleted() =>
+  static bool get isOnboardingCompleted =>
       services.get<SharedPreferences>().getInt(_keyCompleted) != null;
 
   static Future<bool> clearOnboardingCompleted() =>

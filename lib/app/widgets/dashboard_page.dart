@@ -1,9 +1,8 @@
 import 'package:align_positioned/align_positioned.dart';
 import 'package:flutter/material.dart';
-import 'package:hpi_flutter/food/widgets/food_fragment.dart';
-import 'package:hpi_flutter/news/widgets/news_fragment.dart';
-
-import 'package:hpi_flutter/openhpi/widgets/openhpi_fragment.dart';
+import 'package:hpi_flutter/food/food.dart';
+import 'package:hpi_flutter/news/news.dart';
+import 'package:hpi_flutter/openhpi/openhpi.dart';
 
 import 'hpi_theme.dart';
 import 'main_scaffold.dart';

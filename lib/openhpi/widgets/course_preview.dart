@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hpi_flutter/core/utils.dart';
+import 'package:hpi_flutter/core/core.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 
-import '../data/course.dart';
+import '../data.dart';
 
 @immutable
 class OpenHpiCoursePreview extends StatelessWidget {

@@ -2,13 +2,11 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart' hide Feedback;
 import 'package:hpi_flutter/app/app.dart';
-import 'package:hpi_flutter/app/services/navigation.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/core/utils.dart';
-import 'package:hpi_flutter/core/widgets/loading_button.dart';
-import 'package:hpi_flutter/feedback/data/bloc.dart';
-import 'package:hpi_flutter/feedback/data/feedback.dart';
+import 'package:hpi_flutter/core/core.dart';
 import 'package:screenshot/screenshot.dart';
+
+import '../bloc.dart';
+import '../data.dart';
 
 class FeedbackDialog extends StatefulWidget {
   static void show(
@@ -39,9 +37,12 @@ class FeedbackDialog extends StatefulWidget {
     );
   }
 
-  const FeedbackDialog._(
-      {Key key, this.title = 'Feedback', this.feedbackType, this.screenshot})
-      : assert(title != null),
+  const FeedbackDialog._({
+    Key key,
+    this.title = 'Feedback',
+    this.feedbackType,
+    this.screenshot,
+  })  : assert(title != null),
         super(key: key);
 
   final String title;

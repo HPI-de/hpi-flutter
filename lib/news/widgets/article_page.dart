@@ -2,18 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:hpi_flutter/app/app.dart';
-import 'package:hpi_flutter/app/widgets/app_bar.dart';
-import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
-import 'package:hpi_flutter/app/widgets/utils.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/core/utils.dart';
-import 'package:hpi_flutter/core/widgets/chip_group.dart';
-import 'package:hpi_flutter/news/data/article.dart';
+import 'package:hpi_flutter/core/core.dart' hide Image;
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:share/share.dart';
 
-import '../data/bloc.dart';
+import '../bloc.dart';
+import '../data.dart';
 import '../utils.dart';
 
 @immutable

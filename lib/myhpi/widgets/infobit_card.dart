@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart' hide Action, Route;
 import 'package:flutter_html/flutter_html.dart';
 import 'package:hpi_flutter/app/app.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/core/utils.dart';
-import 'package:hpi_flutter/core/widgets/chip_group.dart';
-import 'package:hpi_flutter/core/widgets/image_widget.dart';
-import 'package:hpi_flutter/core/widgets/pagination.dart';
-import 'package:hpi_flutter/core/widgets/preview_box.dart';
-import 'package:hpi_flutter/core/widgets/scrim_around.dart';
-import 'package:hpi_flutter/core/widgets/stream_chip.dart';
-import 'package:hpi_flutter/myhpi/data/bloc.dart';
-import 'package:hpi_flutter/myhpi/data/infobit.dart';
+import 'package:hpi_flutter/core/core.dart';
 import 'package:hpi_flutter/route.dart';
 import 'package:pedantic/pedantic.dart';
+
+import '../bloc.dart';
+import '../data.dart';
 
 class InfoBitCard extends StatelessWidget {
   const InfoBitCard(this.infoBit, {Key key})
@@ -131,7 +125,8 @@ class InfoBitCard extends StatelessWidget {
     assert(context != null);
 
     return StreamBuilder<PaginationResponse<InfoBit>>(
-      stream: services.get<MyHpiBloc>()
+      stream: services
+          .get<MyHpiBloc>()
           .getInfoBits(parentId: infoBit.id, pageSize: 3),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();

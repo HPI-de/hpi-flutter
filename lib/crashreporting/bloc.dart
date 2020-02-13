@@ -1,7 +1,7 @@
-import 'package:hpi_flutter/app/app.dart';
-import 'package:meta/meta.dart';
 import 'package:grpc/grpc.dart';
+import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/crashreporting/v1test/service.pbgrpc.dart';
+import 'package:meta/meta.dart';
 
 import 'data.dart';
 

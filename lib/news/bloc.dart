@@ -1,12 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:grpc/grpc.dart';
 import 'package:hpi_flutter/app/app.dart';
-import 'package:hpi_flutter/core/data/utils.dart';
-import 'package:hpi_flutter/core/widgets/pagination.dart';
+import 'package:hpi_flutter/core/core.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/news/v1test/news_service.pbgrpc.dart';
 import 'package:kt_dart/collection.dart';
 
-import 'article.dart';
+import 'data.dart';
 
 @immutable
 class NewsBloc {

@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hpi_flutter/app/app.dart';
-import 'package:hpi_flutter/app/widgets/app_bar.dart';
-import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/core/widgets/pagination.dart';
-import 'package:hpi_flutter/news/data/article.dart';
+import 'package:hpi_flutter/core/core.dart';
 
-import '../data/bloc.dart';
+import '../bloc.dart';
+import '../data.dart';
 import 'article_preview.dart';
 
 @immutable

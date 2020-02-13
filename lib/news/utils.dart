@@ -1,6 +1,6 @@
 import 'package:timeago/timeago.dart' as timeago;
 
-import 'data/article.dart';
+import 'data.dart';
 
 String formatSourcePublishDate(Article article, Source source) {
   assert(article != null);

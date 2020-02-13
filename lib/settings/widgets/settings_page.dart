@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart' hide Route;
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:hpi_flutter/app/widgets/app_bar.dart';
-import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
-import 'package:hpi_flutter/app/widgets/utils.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/core/utils.dart';
-import 'package:hpi_flutter/feedback/widgets/feedback_dialog.dart';
-import 'package:hpi_flutter/onboarding/widgets/about_myself.dart';
+import 'package:hpi_flutter/app/app.dart';
+import 'package:hpi_flutter/core/core.dart' hide Image;
+import 'package:hpi_flutter/feedback/feedback.dart';
+import 'package:hpi_flutter/onboarding/onboarding.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:package_info/package_info.dart';
 

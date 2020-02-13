@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hpi_flutter/core/localizations.dart';
+import 'package:hpi_flutter/core/core.dart';
 
 Widget buildAppBarTitle({
   @required BuildContext context,

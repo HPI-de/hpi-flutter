@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
-import 'package:hpi_flutter/core/localizations.dart';
+import 'package:hpi_flutter/core/core.dart';
 
-import 'data/course.dart';
+import 'data.dart';
 
 String courseTypeToString(BuildContext context, CourseSeriesType type) {
   assert(context != null);

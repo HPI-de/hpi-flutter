@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart' hide Route;
 import 'package:flutter/widgets.dart' hide Route;
 import 'package:hpi_flutter/app/app.dart';
-import 'package:hpi_flutter/news/data/article.dart';
 import 'package:hpi_flutter/route.dart';
 
-import '../data/bloc.dart';
+import '../bloc.dart';
+import '../data.dart';
 import '../utils.dart';
 
 @immutable

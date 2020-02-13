@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/feedback/widgets/feedback_dialog.dart';
+import 'package:hpi_flutter/core/core.dart' hide Image;
+import 'package:hpi_flutter/feedback/feedback.dart';
 
 class HpiAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget leading;

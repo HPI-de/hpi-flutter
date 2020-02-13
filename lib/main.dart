@@ -5,13 +5,13 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:flutter/services.dart';
 import 'package:grpc/grpc.dart';
 import 'package:hpi_flutter/app/app.dart';
-import 'package:hpi_flutter/course/data/bloc.dart';
+import 'package:hpi_flutter/course/course.dart';
 import 'package:hpi_flutter/crashreporting/crashreporting.dart';
-import 'package:hpi_flutter/crashreporting/utils.dart';
-import 'package:hpi_flutter/feedback/data/bloc.dart';
-import 'package:hpi_flutter/food/data/bloc.dart';
-import 'package:hpi_flutter/myhpi/data/bloc.dart';
-import 'package:hpi_flutter/openhpi/data/bloc.dart';
+import 'package:hpi_flutter/feedback/feedback.dart';
+import 'package:hpi_flutter/food/food.dart';
+import 'package:hpi_flutter/myhpi/myhpi.dart';
+import 'package:hpi_flutter/news/news.dart';
+import 'package:hpi_flutter/openhpi/openhpi.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:pedantic/pedantic.dart';
@@ -19,7 +19,6 @@ import 'package:screenshot/screenshot.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/services/navigation.dart';
-import 'news/data/bloc.dart';
 
 Future<ByteData> _downloadFontToCache(String filename, String url) async {
   final file = File('${(await getTemporaryDirectory()).path}/$filename');

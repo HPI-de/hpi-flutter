@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hpi_flutter/app/app.dart';
-import 'package:hpi_flutter/app/widgets/app_bar.dart';
-import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/core/widgets/pagination.dart';
-import 'package:hpi_flutter/myhpi/data/bloc.dart';
-import 'package:hpi_flutter/myhpi/data/infobit.dart';
+import 'package:hpi_flutter/core/core.dart';
 
+import '../bloc.dart';
+import '../data.dart';
 import 'infobit_card.dart';
 
 class MyHpiPage extends StatelessWidget {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart' hide Route;
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:hpi_flutter/app/widgets/theme.dart';
+import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart';
-import 'package:hpi_flutter/onboarding/widgets/onboarding_page.dart';
+import 'package:hpi_flutter/onboarding/onboarding.dart';
 
 import '../../route.dart';
 import '../services/navigation.dart';
@@ -18,7 +18,7 @@ class HpiApp extends StatelessWidget {
       child: MaterialApp(
         title: 'HPI',
         theme: buildTheme(),
-        initialRoute: OnboardingPage.isOnboardingCompleted()
+        initialRoute: OnboardingPage.isOnboardingCompleted
             ? Route.dashboard.name
             : Route.onboarding.name,
         onGenerateRoute: Route.generateRoute,

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart' hide Route;
-import 'package:hpi_flutter/app/services/navigation.dart';
-import 'package:hpi_flutter/core/hpi_icons.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/feedback/widgets/feedback_dialog.dart';
+import 'package:hpi_flutter/app/app.dart';
+import 'package:hpi_flutter/core/core.dart' hide Image;
+import 'package:hpi_flutter/feedback/feedback.dart';
 import 'package:hpi_flutter/route.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';

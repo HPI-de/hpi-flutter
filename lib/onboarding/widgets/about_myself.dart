@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hpi_flutter/app/app.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/core/utils.dart';
+import 'package:hpi_flutter/core/core.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 

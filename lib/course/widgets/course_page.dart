@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart' hide Route;
 import 'package:hpi_flutter/app/app.dart';
-import 'package:hpi_flutter/app/widgets/app_bar.dart';
-import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/core/widgets/pagination.dart';
-import 'package:hpi_flutter/core/widgets/utils.dart';
-import 'package:hpi_flutter/course/data/bloc.dart';
+import 'package:hpi_flutter/core/core.dart';
 import 'package:hpi_flutter/route.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
-import '../data/course.dart';
+import '../bloc.dart';
+import '../data.dart';
 import '../utils.dart';
 
 @immutable

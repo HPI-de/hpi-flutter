@@ -1,18 +1,10 @@
 import 'package:flutter/material.dart' hide Route;
 import 'package:flutter_html/flutter_html.dart';
 import 'package:hpi_flutter/app/app.dart';
-import 'package:hpi_flutter/app/widgets/app_bar.dart';
-import 'package:hpi_flutter/app/widgets/utils.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/core/utils.dart';
-import 'package:hpi_flutter/core/widgets/chip_group.dart';
-import 'package:hpi_flutter/core/widgets/image_widget.dart';
-import 'package:hpi_flutter/core/widgets/pagination.dart';
-import 'package:hpi_flutter/core/widgets/scrim_around.dart';
-import 'package:hpi_flutter/core/widgets/stream_chip.dart';
-import 'package:hpi_flutter/myhpi/data/bloc.dart';
-import 'package:hpi_flutter/myhpi/data/infobit.dart';
+import 'package:hpi_flutter/core/core.dart';
 
+import '../bloc.dart';
+import '../data.dart';
 import 'infobit_card.dart';
 
 @immutable

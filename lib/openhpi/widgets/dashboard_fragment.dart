@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:hpi_flutter/app/app.dart';
-import 'package:hpi_flutter/app/widgets/dashboard_page.dart';
-import 'package:hpi_flutter/app/widgets/utils.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:meta/meta.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hpi_flutter/app/app.dart';
+import 'package:hpi_flutter/core/core.dart';
 import 'package:kt_dart/collection.dart';
+import 'package:meta/meta.dart';
 
-import '../data/bloc.dart';
-import '../data/course.dart';
+import '../bloc.dart';
+import '../data.dart';
 import 'course_preview.dart';
 
 @immutable
