@@ -99,7 +99,7 @@ class _MobileDevAd extends StatelessWidget {
               ),
               SizedBox(width: 8),
               Image.asset(
-                'assets/logo/mobileDev sheep.png',
+                'assets/logo/mobileDev_sheep.png',
                 height: 192,
               ),
             ],

@@ -56,7 +56,7 @@ flutter:
     - assets/logo/logo.png # colored logo
     - assets/logo/logo_text.png # colored logo with gray text
     - assets/logo/logo_captionWhite.png # colored logo with white text and caption
-    - assets/logo/mobileDev sheep.png
+    - assets/logo/mobileDev_sheep.png
     - assets/images/onboarding/mrNet.png
     - assets/localizations/strings_de.yaml
     - assets/localizations/strings_en.yaml
