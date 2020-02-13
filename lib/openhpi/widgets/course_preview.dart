@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:hpi_flutter/core/core.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
+import 'package:time_machine/time_machine_text_patterns.dart';
 
 import '../data.dart';
 
@@ -35,7 +36,8 @@ class OpenHpiCoursePreview extends StatelessWidget {
                     maxLines: 3,
                   ),
                   Text(
-                    DateFormat.yMMMd().format(course.startAt),
+                    LocalDatePattern.createWithCurrentCulture('d')
+                        .format(course.startAt.inLocalZone().calendarDate),
                     style: Theme.of(context)
                         .textTheme
                         .caption

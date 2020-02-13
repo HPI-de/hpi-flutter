@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:hpi_flutter/app/app.dart';
 import 'package:kt_dart/kt.dart';
 import 'package:package_info/package_info.dart';
+import 'package:time_machine/time_machine.dart';
 
 import 'bloc.dart';
 import 'data.dart';
@@ -60,7 +61,7 @@ Future<void> reportError(dynamic error, StackTrace stackTrace) async {
       appVersionCode: int.tryParse(packageInfo.buildNumber),
       device: platformInfo.first,
       operatingSystem: platformInfo.second,
-      timestamp: DateTime.now(),
+      timestamp: Instant.now(),
       exception: error.toString(),
       stackTrace: stackTrace.toString(),
       log: log,

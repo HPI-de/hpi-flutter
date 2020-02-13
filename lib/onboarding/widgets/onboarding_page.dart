@@ -5,6 +5,7 @@ import 'package:hpi_flutter/settings/settings.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:time_machine/time_machine.dart';
 
 import '../../route.dart';
 import 'about_myself.dart';
@@ -14,7 +15,8 @@ class OnboardingPage extends StatefulWidget {
   static const _keyCompleted = 'onboarding.completed';
   static const _keyPrivacyPolicy = 'onboarding.privacyPolicy';
   static const _keyCrashReporting = 'onboarding.crashReporting';
-  static final _privacyPolicyDate = DateTime.utc(2019, 10, 01);
+  static final _privacyPolicyDate =
+      LocalDate(2019, 10, 01).atMidnight().inUtc().toInstant();
 
   static bool get isOnboardingCompleted =>
       services.get<SharedPreferences>().getInt(_keyCompleted) != null;
@@ -38,8 +40,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
         ]),
         onFinish: () async {
           await services.get<SharedPreferences>().setInt(
-              OnboardingPage._keyCompleted,
-              DateTime.now().millisecondsSinceEpoch);
+              OnboardingPage._keyCompleted, Instant.now().epochMilliseconds);
           unawaited(
               Navigator.of(context).pushReplacementNamed(Route.dashboard.name));
         },
@@ -117,8 +118,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
         .get<SharedPreferences>()
         .getInt(OnboardingPage._keyPrivacyPolicy);
     final privacyPolicyAccepted = privacyPolicyVersion != null &&
-        !DateTime.fromMillisecondsSinceEpoch(privacyPolicyVersion, isUtc: true)
-            .isBefore(OnboardingPage._privacyPolicyDate);
+        Instant.fromEpochMilliseconds(privacyPolicyVersion) >=
+            OnboardingPage._privacyPolicyDate;
     final crashReportingAccepted = services
             .get<SharedPreferences>()
             .getBool(OnboardingPage._keyCrashReporting) ??
@@ -132,7 +133,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
         services.get<SharedPreferences>().setInt(
             OnboardingPage._keyPrivacyPolicy,
             newValue
-                ? OnboardingPage._privacyPolicyDate.millisecondsSinceEpoch
+                ? OnboardingPage._privacyPolicyDate.epochMilliseconds
                 : null);
       });
     };

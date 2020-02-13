@@ -3,6 +3,7 @@ import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/food/v1test/food.pb.dart'
     as proto;
 import 'package:kt_dart/collection.dart';
 import 'package:meta/meta.dart';
+import 'package:time_machine/time_machine.dart';
 
 @immutable
 class Restaurant {
@@ -29,7 +30,7 @@ class Restaurant {
 class MenuItem {
   final String id;
   final String restaurantId;
-  final DateTime date;
+  final LocalDate date;
   final String title;
   final Map<String, double> prices;
   final String counter;
@@ -49,7 +50,7 @@ class MenuItem {
       : this(
           id: item.id,
           restaurantId: item.restaurantId,
-          date: dateToDateTime(item.date),
+          date: item.date.toLocalDate(),
           title: item.title,
           prices: {
             for (var type in item.prices.keys)
@@ -62,7 +63,7 @@ class MenuItem {
     return proto.MenuItem()
       ..id = id
       ..restaurantId = restaurantId
-      ..date = dateTimeToDate(date)
+      ..date = date.toDate()
       ..title = title
       ..prices.addAll(
           {for (var type in prices.keys) type: doubleToMoney(prices[type])})

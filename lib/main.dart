@@ -41,7 +41,7 @@ Future<ByteData> _downloadFontToCache(String filename, String url) async {
 
 void main() async {
   await runWithCrashReporting(() async {
-    //Required for font caching
+    // Required for font caching
     WidgetsFlutterBinding.ensureInitialized();
     const fontBaseUrl = 'https://hpi.de/fileadmin/templates/fonts';
     const serverUrl = '172.20.20.6';

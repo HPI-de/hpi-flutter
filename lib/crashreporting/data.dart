@@ -2,6 +2,7 @@ import 'package:hpi_flutter/core/core.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/crashreporting/v1test/crashreport.pb.dart'
     as proto;
 import 'package:meta/meta.dart';
+import 'package:time_machine/time_machine.dart';
 
 @immutable
 class CrashReport {
@@ -11,7 +12,7 @@ class CrashReport {
   final int appVersionCode;
   final Device device;
   final OperatingSystem operatingSystem;
-  final DateTime timestamp;
+  final Instant timestamp;
   final String exception;
   final String stackTrace;
   final String log;
@@ -44,7 +45,7 @@ class CrashReport {
           device: Device.fromProto(crashReport.device),
           operatingSystem:
               OperatingSystem.fromProto(crashReport.operatingSystem),
-          timestamp: timestampToDateTime(crashReport.timestamp),
+          timestamp: crashReport.timestamp.toInstant(),
           exception: crashReport.exception,
           stackTrace: crashReport.stackTrace,
           log: crashReport.log,
@@ -58,7 +59,7 @@ class CrashReport {
       ..appVersionCode = appVersionCode
       ..device = device.toProto()
       ..operatingSystem = operatingSystem.toProto()
-      ..timestamp = dateTimeToTimestamp(timestamp)
+      ..timestamp = timestamp.toTimestamp()
       ..exception = exception
       ..stackTrace = stackTrace
       ..log = log;

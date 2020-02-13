@@ -1,4 +1,6 @@
 import 'package:meta/meta.dart';
+import 'package:time_machine/time_machine.dart';
+import 'package:time_machine/time_machine_text_patterns.dart';
 
 const String BASE_URL = 'https://open.hpi.de/courses/';
 
@@ -6,7 +8,7 @@ const String BASE_URL = 'https://open.hpi.de/courses/';
 class OpenHpiCourse {
   final String title;
   final Uri link;
-  final DateTime startAt;
+  final Instant startAt;
   final Uri imageUrl;
   final String language;
   final String status;
@@ -29,7 +31,10 @@ class OpenHpiCourse {
     return OpenHpiCourse(
       title: parsedJson['title'] as String,
       link: Uri.parse(BASE_URL + (parsedJson['slug'] as String)),
-      startAt: DateTime.parse(parsedJson['start_at'] as String),
+      startAt: OffsetDateTimePattern.extendedIso
+          .parse(parsedJson['start_at'] as String)
+          .value
+          .toInstant(),
       imageUrl: Uri.parse(parsedJson['image_url'] as String),
       language: parsedJson['language'] as String,
       status: parsedJson['status'] as String,

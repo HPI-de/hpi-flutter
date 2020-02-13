@@ -4,6 +4,7 @@ import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/news/v1test/article.pb.dart
     as proto;
 import 'package:kt_dart/collection.dart';
 import 'package:meta/meta.dart';
+import 'package:time_machine/time_machine.dart';
 
 @immutable
 class Article {
@@ -11,7 +12,7 @@ class Article {
   final String sourceId;
   final Uri link;
   final String title;
-  final DateTime publishDate;
+  final Instant publishDate;
   final KtSet<String> authorIds;
   final Image cover;
   final String teaser;
@@ -50,7 +51,7 @@ class Article {
           sourceId: article.sourceId,
           link: Uri.parse(article.link),
           title: article.title,
-          publishDate: timestampToDateTime(article.publishDate),
+          publishDate: article.publishDate.toInstant(),
           authorIds: KtSet.from(article.authorIds),
           cover: article.hasCover() ? Image.fromProto(article.cover) : null,
           teaser: article.teaser,
@@ -67,7 +68,7 @@ class Article {
     a.sourceId = sourceId;
     a.link = link.toString();
     a.title = title;
-    a.publishDate = dateTimeToTimestamp(publishDate);
+    a.publishDate = publishDate.toTimestamp();
     a.authorIds.addAll(authorIds.iter);
     if (cover != null) a.cover = cover.toProto();
     a.teaser = teaser;

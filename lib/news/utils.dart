@@ -7,5 +7,5 @@ String formatSourcePublishDate(Article article, Source source) {
 
   String sourceName = source?.name ?? article.sourceId;
   return (sourceName.isNotEmpty ? "$sourceName · " : "") +
-      timeago.format(article.publishDate);
+      timeago.format(article.publishDate.toDateTimeLocal());
 }

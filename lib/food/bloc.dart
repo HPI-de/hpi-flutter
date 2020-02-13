@@ -4,6 +4,7 @@ import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/food/v1test/food_service.pbgrpc.dart';
 import 'package:kt_dart/collection.dart';
+import 'package:time_machine/time_machine.dart';
 
 import 'data.dart';
 
@@ -24,7 +25,7 @@ class FoodBloc {
         );
 
   Stream<KtList<MenuItem>> getMenuItems({String restaurantId}) {
-    final req = ListMenuItemsRequest()..date = dateTimeToDate(DateTime.now());
+    final req = ListMenuItemsRequest()..date = LocalDate.today().toDate();
     if (restaurantId != null) req.restaurantId = restaurantId;
 
     return Stream.fromFuture(_client.listMenuItems(req))
