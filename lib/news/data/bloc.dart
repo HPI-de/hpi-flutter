@@ -17,7 +17,7 @@ class NewsBloc {
         _client = NewsServiceClient(
           ClientChannel(
             serverUrl.toString(),
-            port: 50061,
+            port: 443,
             options: ChannelOptions(
               credentials: ChannelCredentials.insecure(),
             ),
