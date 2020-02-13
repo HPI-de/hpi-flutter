@@ -1,7 +1,6 @@
-import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
 import 'package:grpc/grpc.dart';
+import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/data/utils.dart';
 import 'package:hpi_flutter/core/widgets/pagination.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/course/v1test/course_service.pbgrpc.dart';
@@ -11,18 +10,16 @@ import 'course.dart';
 
 @immutable
 class CourseBloc {
-  CourseBloc(Uri serverUrl, Locale locale)
-      : assert(serverUrl != null),
-        assert(locale != null),
-        _client = CourseServiceClient(
+  CourseBloc()
+      : _client = CourseServiceClient(
           ClientChannel(
-            serverUrl.toString(),
+            services.get<Uri>().toString(),
             port: 50062,
             options: ChannelOptions(
               credentials: ChannelCredentials.insecure(),
             ),
           ),
-          options: createCallOptions(locale),
+          options: createCallOptions(),
         );
 
   final CourseServiceClient _client;

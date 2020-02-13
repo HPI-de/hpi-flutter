@@ -1,10 +1,10 @@
 import 'package:characters/characters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/food/data/bloc.dart';
 import 'package:kt_dart/collection.dart';
-import 'package:provider/provider.dart';
 
 import '../data/restaurant.dart';
 
@@ -19,10 +19,9 @@ class MenuItemView extends StatelessWidget {
         assert(showCounter != null);
 
   void _showDetails(BuildContext context) {
-    final _foodBloc = Provider.of<FoodBloc>(context);
     showModalBottomSheet(
       context: context,
-      builder: (context) => MenuItemDetails(item, _foodBloc),
+      builder: (context) => MenuItemDetails(item),
     );
   }
 
@@ -84,7 +83,7 @@ class LabelView extends StatelessWidget {
       color: Color.lerp(Colors.white, Colors.black, 0.05),
       elevation: 1,
       child: StreamBuilder<Label>(
-        stream: Provider.of<FoodBloc>(context).getLabel(labelId),
+        stream: services.get<FoodBloc>().getLabel(labelId),
         builder: (_, snapshot) {
           if (!snapshot.hasData) return Container();
 
@@ -101,12 +100,9 @@ class LabelView extends StatelessWidget {
 }
 
 class MenuItemDetails extends StatelessWidget {
-  final MenuItem item;
-  final FoodBloc foodBloc;
+  MenuItemDetails(this.item) : assert(item != null);
 
-  MenuItemDetails(this.item, this.foodBloc)
-      : assert(item != null),
-        assert(foodBloc != null);
+  final MenuItem item;
 
   @override
   Widget build(BuildContext context) {
@@ -149,12 +145,15 @@ class MenuItemDetails extends StatelessWidget {
     assert(id != null);
 
     return StreamBuilder<Label>(
-        stream: foodBloc.getLabel(id),
-        builder: (_, snapshot) {
-          if (!snapshot.hasData) return Chip(label: Text(id));
+      stream: services.get<FoodBloc>().getLabel(id),
+      builder: (_, snapshot) {
+        if (!snapshot.hasData) return Chip(label: Text(id));
 
-          final label = snapshot.data;
-          return Chip(label: Text(label.title));
-        });
+        final label = snapshot.data;
+        return Chip(
+          label: Text(label.title),
+        );
+      },
+    );
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart' hide Route;
 import 'package:flutter/widgets.dart' hide Route;
+import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/news/data/article.dart';
 import 'package:hpi_flutter/route.dart';
-import 'package:provider/provider.dart';
 
 import '../data/bloc.dart';
 import '../utils.dart';
@@ -40,8 +40,8 @@ class ArticlePreview extends StatelessWidget {
                   ),
                   SizedBox(height: 4),
                   StreamBuilder<Source>(
-                    stream: Provider.of<NewsBloc>(context)
-                        .getSource(article.sourceId),
+                    stream:
+                        services.get<NewsBloc>().getSource(article.sourceId),
                     builder: (context, snapshot) {
                       if (snapshot.hasError) print(snapshot.error);
 

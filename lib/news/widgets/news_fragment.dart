@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart' hide Route;
+import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/app/widgets/dashboard_page.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/core/widgets/pagination.dart';
@@ -7,7 +8,6 @@ import 'package:hpi_flutter/core/widgets/preview_box.dart';
 import 'package:hpi_flutter/news/data/article.dart';
 import 'package:hpi_flutter/news/data/bloc.dart';
 import 'package:hpi_flutter/news/utils.dart';
-import 'package:provider/provider.dart';
 
 import '../../route.dart';
 
@@ -16,21 +16,17 @@ class NewsFragment extends StatelessWidget {
   Widget build(BuildContext context) {
     return DashboardFragment(
       title: Text(HpiL11n.get(context, 'news')),
-      child: ProxyProvider<Uri, NewsBloc>(
-        update: (_, serverUrl, __) =>
-            NewsBloc(serverUrl, Localizations.localeOf(context)),
-        child: SizedBox(
-          height: 150,
-          child: Builder(
-            builder: (context) => PaginatedListView<Article>(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.all(8),
-              pageSize: 5,
-              dataLoader: Provider.of<NewsBloc>(context).getArticles,
-              itemBuilder: (_, article, __) => Padding(
-                padding: const EdgeInsets.only(right: 8),
-                child: ArticlePreviewBox(article),
-              ),
+      child: SizedBox(
+        height: 150,
+        child: Builder(
+          builder: (context) => PaginatedListView<Article>(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.all(8),
+            pageSize: 5,
+            dataLoader: services.get<NewsBloc>().getArticles,
+            itemBuilder: (_, article, __) => Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: ArticlePreviewBox(article),
             ),
           ),
         ),
@@ -59,7 +55,7 @@ class ArticlePreviewBox extends StatelessWidget {
             ),
       title: Text(article.title),
       caption: StreamBuilder<Source>(
-        stream: Provider.of<NewsBloc>(context).getSource(article.sourceId),
+        stream: services.get<NewsBloc>().getSource(article.sourceId),
         builder: (context, snapshot) {
           return Text(
             formatSourcePublishDate(article, snapshot.data),

@@ -1,12 +1,36 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:device_info/device_info.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:hpi_flutter/crashreporting/data/crashreporting.dart';
+import 'package:hpi_flutter/app/app.dart';
 import 'package:kt_dart/kt.dart';
 import 'package:package_info/package_info.dart';
 
-import 'data/bloc.dart';
+import 'bloc.dart';
+import 'data.dart';
+
+Future<void> runWithCrashReporting(Future<void> Function() body) async {
+  // This captures errors reported by the Flutter framework.
+  FlutterError.onError = (FlutterErrorDetails details) async {
+    if (isInDebugMode) {
+      // In development mode simply print to console.
+      FlutterError.dumpErrorToConsole(details);
+    } else {
+      // In production mode report to the application zone.
+      Zone.current.handleUncaughtError(details.exception, details.stack);
+    }
+  };
+
+  // run in custom zone for catching errors
+  await runZoned<Future<void>>(
+    body,
+    onError: (error, StackTrace stackTrace) async {
+      await reportError(error, stackTrace);
+    },
+  );
+}
 
 bool get isInDebugMode {
   // Assume you're in production mode.
@@ -16,8 +40,7 @@ bool get isInDebugMode {
   return inDebugMode;
 }
 
-Future<void> reportError(
-    dynamic error, StackTrace stackTrace, Uri serverUrl) async {
+Future<void> reportError(dynamic error, StackTrace stackTrace) async {
   print('Caught error: $error');
   if (isInDebugMode) {
     print(stackTrace);
@@ -42,7 +65,7 @@ Future<void> reportError(
       stackTrace: stackTrace.toString(),
       log: log,
     );
-    CrashReportingBloc(serverUrl).createCrashReport(crashReport);
+    services.get<CrashReportingBloc>().createCrashReport(crashReport);
   }
 }
 

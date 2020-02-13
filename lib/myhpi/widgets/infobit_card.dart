@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart' hide Action, Route;
 import 'package:flutter_html/flutter_html.dart';
+import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/core/utils.dart';
 import 'package:hpi_flutter/core/widgets/chip_group.dart';
@@ -12,7 +13,6 @@ import 'package:hpi_flutter/myhpi/data/bloc.dart';
 import 'package:hpi_flutter/myhpi/data/infobit.dart';
 import 'package:hpi_flutter/route.dart';
 import 'package:pedantic/pedantic.dart';
-import 'package:provider/provider.dart';
 
 class InfoBitCard extends StatelessWidget {
   const InfoBitCard(this.infoBit, {Key key})
@@ -131,7 +131,7 @@ class InfoBitCard extends StatelessWidget {
     assert(context != null);
 
     return StreamBuilder<PaginationResponse<InfoBit>>(
-      stream: Provider.of<MyHpiBloc>(context)
+      stream: services.get<MyHpiBloc>()
           .getInfoBits(parentId: infoBit.id, pageSize: 3),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();
@@ -172,7 +172,7 @@ class InfoBitCard extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         pageSize: 5,
         dataLoader: ({pageSize, pageToken}) {
-          return Provider.of<MyHpiBloc>(context).getInfoBits(
+          return services.get<MyHpiBloc>().getInfoBits(
               parentId: infoBit.id, pageSize: pageSize, pageToken: pageToken);
         },
         itemBuilder: (_, i, __) => Padding(
@@ -201,7 +201,7 @@ class InfoBitCard extends StatelessWidget {
             leading: Text(HpiL11n.get(context, 'myhpi/infoBit.tags.leading')),
             children: infoBit.tagIds
                 .map((t) => StreamChip<InfoBitTag>(
-                      stream: Provider.of<MyHpiBloc>(context).getTag(t),
+                      stream: services.get<MyHpiBloc>().getTag(t),
                       labelBuilder: (t) => Text(t.title),
                     ))
                 .asList(),
@@ -222,7 +222,7 @@ class InfoBitActionChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamActionChip<Action>(
-      stream: Provider.of<MyHpiBloc>(context).getAction(actionId),
+      stream: services.get<MyHpiBloc>().getAction(actionId),
       avatarBuilder: (a) => IconWidget(a.icon),
       labelBuilder: (a) => Text(a.title),
       onPressed: (action) async {

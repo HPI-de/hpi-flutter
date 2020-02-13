@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart' hide Route;
+import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/app/widgets/hpi_theme.dart';
 import 'package:hpi_flutter/app/widgets/utils.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/settings/widgets/settings_page.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:pedantic/pedantic.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../route.dart';
@@ -18,17 +18,11 @@ class OnboardingPage extends StatefulWidget {
   static const _keyCrashReporting = 'onboarding.crashReporting';
   static final _privacyPolicyDate = DateTime.utc(2019, 10, 01);
 
-  static bool isOnboardingCompleted(SharedPreferences sharedPreferences) {
-    assert(sharedPreferences != null);
-    return sharedPreferences.getInt(_keyCompleted) != null;
-  }
+  static bool isOnboardingCompleted() =>
+      services.get<SharedPreferences>().getInt(_keyCompleted) != null;
 
-  static Future<bool> clearOnboardingCompleted(
-    SharedPreferences sharedPreferences,
-  ) async {
-    assert(sharedPreferences != null);
-    return sharedPreferences.remove(_keyCompleted);
-  }
+  static Future<bool> clearOnboardingCompleted() =>
+      services.get<SharedPreferences>().remove(_keyCompleted);
 
   @override
   _OnboardingPageState createState() => _OnboardingPageState();
@@ -45,7 +39,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           _buildAboutMyselfPage(),
         ]),
         onFinish: () async {
-          await Provider.of<SharedPreferences>(context).setInt(
+          await services.get<SharedPreferences>().setInt(
               OnboardingPage._keyCompleted,
               DateTime.now().millisecondsSinceEpoch);
           unawaited(
@@ -121,12 +115,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
       textAlign: TextAlign.left,
     );
 
-    final privacyPolicyVersion = Provider.of<SharedPreferences>(context)
+    final privacyPolicyVersion = services
+        .get<SharedPreferences>()
         .getInt(OnboardingPage._keyPrivacyPolicy);
     final privacyPolicyAccepted = privacyPolicyVersion != null &&
         !DateTime.fromMillisecondsSinceEpoch(privacyPolicyVersion, isUtc: true)
             .isBefore(OnboardingPage._privacyPolicyDate);
-    final crashReportingAccepted = Provider.of<SharedPreferences>(context)
+    final crashReportingAccepted = services
+            .get<SharedPreferences>()
             .getBool(OnboardingPage._keyCrashReporting) ??
         false;
 
@@ -135,7 +131,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
       PageNotification(newValue && crashReportingAccepted).dispatch(context);
       setState(() {
-        Provider.of<SharedPreferences>(context).setInt(
+        services.get<SharedPreferences>().setInt(
             OnboardingPage._keyPrivacyPolicy,
             newValue
                 ? OnboardingPage._privacyPolicyDate.millisecondsSinceEpoch
@@ -148,7 +144,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
       PageNotification(privacyPolicyAccepted && newValue).dispatch(context);
       setState(() {
-        Provider.of<SharedPreferences>(context)
+        services
+            .get<SharedPreferences>()
             .setBool(OnboardingPage._keyCrashReporting, newValue);
       });
     };

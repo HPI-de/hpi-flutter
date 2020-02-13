@@ -6,7 +6,8 @@ import 'package:hpi_flutter/feedback/widgets/feedback_dialog.dart';
 import 'package:hpi_flutter/route.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
-import 'package:provider/provider.dart';
+
+import '../utils.dart';
 
 @immutable
 class MainScaffold extends StatelessWidget {
@@ -146,8 +147,7 @@ class NavigationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var isActive =
-        route == Provider.of<NavigationService>(context).lastKnownRoute;
+    var isActive = route == services.get<NavigationService>().lastKnownRoute;
     var color = isActive
         ? Theme.of(context).primaryColor
         : Theme.of(context).colorScheme.onSurface.withOpacity(0.6);
@@ -162,7 +162,7 @@ class NavigationItem extends StatelessWidget {
           onTap: () {
             var navigator = Navigator.of(context);
             var lastKnownRoute =
-                Provider.of<NavigationService>(context).lastKnownRoute;
+                services.get<NavigationService>().lastKnownRoute;
             if (lastKnownRoute.name != route.name) {
               navigator
                 ..popUntil((_) => !navigator.canPop())

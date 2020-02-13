@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/core/utils.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 @immutable
 class AboutMyself extends StatefulWidget {
@@ -12,43 +11,24 @@ class AboutMyself extends StatefulWidget {
   static const _keyCourseOfStudies = 'onboarding.courseOfStudies';
   static const _keySemester = 'onboarding.semester';
 
-  static Role getRole(SharedPreferences sharedPreferences) {
-    assert(sharedPreferences != null);
-    return stringToEnum(sharedPreferences.getString(_keyRole), Role.values);
-  }
+  static Role get role =>
+      stringToEnum(sharedPreferences.getString(_keyRole), Role.values);
 
-  static Future<bool> _setRole(
-      SharedPreferences sharedPreferences, Role value) {
-    assert(sharedPreferences != null);
+  static Future<bool> _setRole(Role value) {
     return sharedPreferences.setString(_keyRole, enumToString(value));
   }
 
-  static CourseOfStudies getCourseOfStudies(
-      SharedPreferences sharedPreferences) {
-    assert(sharedPreferences != null);
-    return stringToEnum(sharedPreferences.getString(_keyCourseOfStudies),
-        CourseOfStudies.values);
-  }
+  static CourseOfStudies get courseOfStudies => stringToEnum(
+      sharedPreferences.getString(_keyCourseOfStudies), CourseOfStudies.values);
 
-  static Future<bool> _setCourseOfStudies(
-    SharedPreferences sharedPreferences,
-    CourseOfStudies value,
-  ) {
-    assert(sharedPreferences != null);
+  static Future<bool> _setCourseOfStudies(CourseOfStudies value) {
     return sharedPreferences.setString(
         _keyCourseOfStudies, enumToString(value));
   }
 
-  static int getSemester(SharedPreferences sharedPreferences) {
-    assert(sharedPreferences != null);
-    return sharedPreferences.getInt(_keySemester);
-  }
+  static int get semester => sharedPreferences.getInt(_keySemester);
 
-  static Future<bool> _setSemester(
-    SharedPreferences sharedPreferences,
-    int value,
-  ) {
-    assert(sharedPreferences != null);
+  static Future<bool> _setSemester(int value) {
     return sharedPreferences.setInt(_keySemester, value);
   }
 
@@ -83,21 +63,20 @@ class _AboutMyselfState extends State<AboutMyself> {
 
   @override
   Widget build(BuildContext context) {
-    final sharedPreferences = Provider.of<SharedPreferences>(context);
-    var role = AboutMyself.getRole(sharedPreferences);
+    var role = AboutMyself.role;
     if (role == null) {
       role = Role.student;
-      AboutMyself._setRole(sharedPreferences, role);
+      AboutMyself._setRole(role);
     }
-    var courseOfStudies = AboutMyself.getCourseOfStudies(sharedPreferences);
+    var courseOfStudies = AboutMyself.courseOfStudies;
     if (courseOfStudies == null) {
       courseOfStudies = CourseOfStudies.baItse;
-      AboutMyself._setCourseOfStudies(sharedPreferences, courseOfStudies);
+      AboutMyself._setCourseOfStudies(courseOfStudies);
     }
-    var semester = AboutMyself.getSemester(sharedPreferences);
+    var semester = AboutMyself.semester;
     if (semester == null) {
       semester = 1;
-      AboutMyself._setSemester(sharedPreferences, semester);
+      AboutMyself._setSemester(semester);
     }
 
     return DefaultTextStyle(
@@ -113,7 +92,7 @@ class _AboutMyselfState extends State<AboutMyself> {
             _buildDropdown<Role>(
               items: _roleValues,
               value: role,
-              onChanged: (r) => AboutMyself._setRole(sharedPreferences, r),
+              onChanged: (r) => AboutMyself._setRole(r),
             ),
             if (role == Role.student) ...[
               TextSpan(text: _l11n('onboarding/aboutMyself.text.2')),
@@ -121,8 +100,8 @@ class _AboutMyselfState extends State<AboutMyself> {
                 items: _courseOfStudiesValues,
                 value: courseOfStudies,
                 onChanged: (c) {
-                  AboutMyself._setCourseOfStudies(sharedPreferences, c);
-                  AboutMyself._setSemester(sharedPreferences,
+                  AboutMyself._setCourseOfStudies(c);
+                  AboutMyself._setSemester(
                       semester.clamp(1, _maxSemesterCount(c)).toInt());
                 },
               ),
@@ -140,8 +119,7 @@ class _AboutMyselfState extends State<AboutMyself> {
                     ),
                   ),
                   value: semester,
-                  onChanged: (s) =>
-                      AboutMyself._setSemester(sharedPreferences, s)),
+                  onChanged: (s) => AboutMyself._setSemester(s)),
               TextSpan(text: _l11n('onboarding/aboutMyself.text.5')),
             ],
             TextSpan(text: _l11n('onboarding/aboutMyself.text.6')),

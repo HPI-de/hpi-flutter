@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/app/widgets/utils.dart';
@@ -11,7 +12,6 @@ import 'package:hpi_flutter/course/data/course.dart';
 import 'package:hpi_flutter/feedback/widgets/feedback_dialog.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
-import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:share/share.dart';
 
@@ -26,19 +26,7 @@ class CourseDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<Uri, CourseBloc>(
-      update: (_, serverUrl, __) =>
-          CourseBloc(serverUrl, Localizations.localeOf(context)),
-      child: Builder(
-        builder: (context) => _buildScaffold(context),
-      ),
-    );
-  }
-
-  Widget _buildScaffold(BuildContext context) {
-    assert(context != null);
-
-    var bloc = Provider.of<CourseBloc>(context);
+    var bloc = services.get<CourseBloc>();
     var stream = Observable.combineLatest2<KtPair<Course, CourseSeries>,
         CourseDetail, KtTriple<Course, CourseSeries, CourseDetail>>(
       Observable(bloc.getCourse(courseId)).switchMap(

@@ -7,6 +7,7 @@ import 'app/widgets/main_scaffold.dart';
 import 'course/widgets/course_detail_page.dart';
 import 'course/widgets/course_page.dart';
 import 'food/widgets/food_page.dart';
+import 'main.dart';
 import 'myhpi/widgets/infobit_page.dart';
 import 'myhpi/widgets/myhpi_page.dart';
 import 'news/widgets/article_page.dart';
@@ -26,6 +27,8 @@ class Route {
   static MaterialPageRoute generateRoute(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (context) {
+        onLocaleChanged(Localizations.localeOf(context));
+
         var route = Route.fromString(settings.name);
         assert(route != null,
             "Did you forget to add route ${settings.name} to Route.values?");

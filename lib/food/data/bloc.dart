@@ -1,7 +1,6 @@
-import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
 import 'package:grpc/grpc.dart';
+import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/data/utils.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/food/v1test/food_service.pbgrpc.dart';
 import 'package:kt_dart/collection.dart';
@@ -12,18 +11,16 @@ import 'restaurant.dart';
 class FoodBloc {
   final FoodServiceClient _client;
 
-  FoodBloc(Uri serverUrl, Locale locale)
-      : assert(serverUrl != null),
-        assert(locale != null),
-        _client = FoodServiceClient(
+  FoodBloc()
+      : _client = FoodServiceClient(
           ClientChannel(
-            serverUrl.toString(),
+            services.get<Uri>().toString(),
             port: 50065,
             options: ChannelOptions(
               credentials: ChannelCredentials.insecure(),
             ),
           ),
-          options: createCallOptions(locale),
+          options: createCallOptions(),
         );
 
   Stream<KtList<MenuItem>> getMenuItems({String restaurantId}) {

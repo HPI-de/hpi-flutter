@@ -10,8 +10,6 @@ import 'package:hpi_flutter/feedback/widgets/feedback_dialog.dart';
 import 'package:hpi_flutter/onboarding/widgets/about_myself.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:package_info/package_info.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../route.dart';
 import 'scrollable_markdown.dart';
@@ -38,12 +36,11 @@ class SettingsPage extends StatelessWidget {
 class _MobileDevAd extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final role = AboutMyself.getRole(Provider.of<SharedPreferences>(context));
     final theme = Theme.of(context);
     final onPrimary = theme.colorScheme.onPrimary;
     final l11n = HpiL11n.of(context);
 
-    final content = role == Role.student
+    final content = AboutMyself.role == Role.student
         ? _buildStudent(context, theme, onPrimary, l11n)
         : _buildNonStudent(context, theme, onPrimary, l11n);
 
@@ -188,7 +185,8 @@ class _AboutSection extends StatelessWidget {
           ListTile(
             leading: Icon(OMIcons.people),
             title: HpiL11n.text(context, 'settings/about.contributors'),
-            subtitle: Text('Felix Auringer, Marcel Garus, Kirill Postnov, Matti Schmidt, Maximilian Stiede, Clemens Tiedt, Ronja Wagner, Jonas Wanke'),
+            subtitle: Text(
+                'Felix Auringer, Marcel Garus, Kirill Postnov, Matti Schmidt, Maximilian Stiede, Clemens Tiedt, Ronja Wagner, Jonas Wanke'),
           ),
           ListTile(
             leading: Icon(OMIcons.code),

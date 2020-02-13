@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/app/widgets/app_bar.dart';
 import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
 import 'package:hpi_flutter/app/widgets/utils.dart';
@@ -10,7 +11,6 @@ import 'package:hpi_flutter/core/widgets/chip_group.dart';
 import 'package:hpi_flutter/news/data/article.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
-import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
 import '../data/bloc.dart';
@@ -24,51 +24,45 @@ class ArticlePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<Uri, NewsBloc>(
-      update: (_, serverUrl, __) =>
-          NewsBloc(serverUrl, Localizations.localeOf(context)),
-      child: Builder(
-        builder: (context) => StreamBuilder<Article>(
-          stream: Provider.of<NewsBloc>(context).getArticle(articleId),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return buildLoadingErrorScaffold(
-                context,
-                snapshot,
-                appBarElevated: true,
-                loadingTitle: HpiL11n.get(context, 'news/article.loading'),
-              );
-            }
+    return StreamBuilder<Article>(
+      stream: services.get<NewsBloc>().getArticle(articleId),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return buildLoadingErrorScaffold(
+            context,
+            snapshot,
+            appBarElevated: true,
+            loadingTitle: HpiL11n.get(context, 'news/article.loading'),
+          );
+        }
 
-            return MainScaffold(
-              body: ArticleView(snapshot.data),
-              menuItems: KtList.from([
-                PopupMenuItem(
-                    value: 'openInBrowser',
-                    child: HpiL11n.text(context, 'openInBrowser')),
-              ]),
-              menuItemHandler: (value) async {
-                switch (value as String) {
-                  case 'openInBrowser':
-                    await tryLaunch(snapshot.data.link.toString());
-                    break;
-                  default:
-                    assert(false);
-                    break;
-                }
-              },
-              bottomActions: KtList.from([
-                IconButton(
-                  icon: Icon(OMIcons.share),
-                  onPressed: () {
-                    Share.share(snapshot.data.link.toString());
-                  },
-                )
-              ]),
-            );
+        return MainScaffold(
+          body: ArticleView(snapshot.data),
+          menuItems: KtList.from([
+            PopupMenuItem(
+                value: 'openInBrowser',
+                child: HpiL11n.text(context, 'openInBrowser')),
+          ]),
+          menuItemHandler: (value) async {
+            switch (value as String) {
+              case 'openInBrowser':
+                await tryLaunch(snapshot.data.link.toString());
+                break;
+              default:
+                assert(false);
+                break;
+            }
           },
-        ),
-      ),
+          bottomActions: KtList.from([
+            IconButton(
+              icon: Icon(OMIcons.share),
+              onPressed: () {
+                Share.share(snapshot.data.link.toString());
+              },
+            )
+          ]),
+        );
+      },
     );
   }
 }
@@ -152,7 +146,7 @@ class ArticleView extends StatelessWidget {
     // hence the Stream.
     return Builder(
       builder: (_) => StreamBuilder<Source>(
-        stream: Provider.of<NewsBloc>(context).getSource(article.sourceId),
+        stream: services.get<NewsBloc>().getSource(article.sourceId),
         builder: (context, snapshot) {
           if (snapshot.hasError) print(snapshot.error);
 

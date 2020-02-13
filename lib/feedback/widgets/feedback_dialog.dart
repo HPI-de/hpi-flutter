@@ -1,13 +1,13 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart' hide Feedback;
+import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/app/services/navigation.dart';
 import 'package:hpi_flutter/core/localizations.dart';
 import 'package:hpi_flutter/core/utils.dart';
 import 'package:hpi_flutter/core/widgets/loading_button.dart';
 import 'package:hpi_flutter/feedback/data/bloc.dart';
 import 'package:hpi_flutter/feedback/data/feedback.dart';
-import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
 
 class FeedbackDialog extends StatefulWidget {
@@ -18,25 +18,22 @@ class FeedbackDialog extends StatefulWidget {
   }) async {
     assert(context != null);
 
-    var currentScreenshot =
-        await (await Provider.of<ScreenshotController>(context).capture())
-            .readAsBytes();
+    var currentScreenshot = await services
+        .get<ScreenshotController>()
+        .capture()
+        .then((screenshot) => screenshot.readAsBytes());
 
     await showModalBottomSheet(
       isScrollControlled: true,
       context: context,
-      builder: (context) => ProxyProvider<Uri, FeedbackBloc>(
-        update: (_, serverUrl, __) =>
-            FeedbackBloc(serverUrl, Localizations.localeOf(context)),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: FeedbackDialog._(
-                title: title,
-                feedbackType: feedbackType,
-                screenshot: currentScreenshot),
-          ),
+      builder: (context) => SingleChildScrollView(
+        child: Padding(
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: FeedbackDialog._(
+              title: title,
+              feedbackType: feedbackType,
+              screenshot: currentScreenshot),
         ),
       ),
     );
@@ -142,7 +139,7 @@ class _FeedbackDialogState extends State<FeedbackDialog>
     setState(() {
       isSending = true;
       Uri screenUri = Uri.https('mobiledev.hpi.de',
-          Provider.of<NavigationService>(context).lastKnownRoute.name);
+          services.get<NavigationService>().lastKnownRoute.name);
       Feedback.create(
         message.trim(),
         screenUri,
@@ -151,7 +148,7 @@ class _FeedbackDialogState extends State<FeedbackDialog>
         widget.screenshot,
         includeScreenshotAndLogs,
       ).then((f) {
-        Provider.of<FeedbackBloc>(context).sendFeedback(f);
+        services.get<FeedbackBloc>().sendFeedback(f);
       }).then((f) {
         _onSent(true);
       }).catchError((e) {

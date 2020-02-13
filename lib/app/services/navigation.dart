@@ -1,18 +1,20 @@
 import 'package:flutter/widgets.dart' as flutter;
 import 'package:hpi_flutter/route.dart';
 
+import '../utils.dart';
+
 class NavigationService {
   Route lastKnownRoute;
 }
 
 class NavigationObserver extends flutter.RouteObserver {
-  NavigationObserver(this.service) : assert(service != null);
-
-  final NavigationService service;
+  final NavigationService service = services.get<NavigationService>();
 
   @override
   void didPush(
-      flutter.Route<dynamic> route, flutter.Route<dynamic> previousRoute) {
+    flutter.Route<dynamic> route,
+    flutter.Route<dynamic> previousRoute,
+  ) {
     _onUpdate(route, previousRoute);
   }
 
@@ -27,13 +29,17 @@ class NavigationObserver extends flutter.RouteObserver {
   }
 
   @override
-  void didReplace(
-      {flutter.Route<dynamic> newRoute, flutter.Route<dynamic> oldRoute}) {
+  void didReplace({
+    flutter.Route<dynamic> newRoute,
+    flutter.Route<dynamic> oldRoute,
+  }) {
     _onUpdate(newRoute, oldRoute);
   }
 
   void _onUpdate(
-      flutter.Route<dynamic> newRoute, flutter.Route<dynamic> oldRoute) {
+    flutter.Route<dynamic> newRoute,
+    flutter.Route<dynamic> oldRoute,
+  ) {
     print(
         "Navigating from ${oldRoute?.settings?.name} to ${newRoute?.settings?.name}");
     var knownRoute = Route.fromString(newRoute?.settings?.name);
