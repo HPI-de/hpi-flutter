@@ -1,5 +1,7 @@
 "T: build":
   title: "^build"
+"T: change":
+  title: "^change"
 "T: chore":
   title: "^chore"
 "T: ci":
