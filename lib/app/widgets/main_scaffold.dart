@@ -148,8 +148,8 @@ class NavigationItem extends StatelessWidget {
   Widget build(BuildContext context) {
     var isActive = route == services.get<NavigationService>().lastKnownRoute;
     var color = isActive
-        ? Theme.of(context).primaryColor
-        : Theme.of(context).colorScheme.onSurface.withOpacity(0.6);
+        ? context.theme.primaryColor
+        : context.theme.colorScheme.onSurface.withOpacity(0.6);
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -159,8 +159,8 @@ class NavigationItem extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(4),
           onTap: () {
-            var navigator = Navigator.of(context);
-            var lastKnownRoute =
+            final navigator = context.navigator;
+            final lastKnownRoute =
                 services.get<NavigationService>().lastKnownRoute;
             if (lastKnownRoute.name != route.name) {
               navigator
@@ -182,10 +182,7 @@ class NavigationItem extends StatelessWidget {
                 Expanded(
                   child: Text(
                     text,
-                    style: Theme.of(context)
-                        .textTheme
-                        .body2
-                        .copyWith(color: color),
+                    style: context.theme.textTheme.body2.copyWith(color: color),
                   ),
                 ),
               ],

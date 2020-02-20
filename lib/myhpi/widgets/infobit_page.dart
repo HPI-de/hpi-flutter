@@ -102,7 +102,7 @@ class InfoBitPage extends StatelessWidget {
     }
 
     return HpiSliverAppBar(
-      expandedHeight: MediaQuery.of(context).size.width / 16 * 9,
+      expandedHeight: context.mediaQuery.size.width / 16 * 9,
       pinned: true,
       flexibleSpace: HpiFlexibleSpaceBar(
         title: title,
@@ -170,7 +170,7 @@ class InfoBitPage extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               HpiL11n.get(context, 'myhpi/infoBit.parent'),
-              style: Theme.of(context).textTheme.overline,
+              style: context.theme.textTheme.overline,
             ),
           ),
           StreamBuilder<InfoBit>(

@@ -37,12 +37,11 @@ class MenuItemView extends StatelessWidget {
               width: 32,
               child: Text(
                 showCounter ? item.counter.characters.first : ' ',
-                style:
-                    Theme.of(context).textTheme.caption.copyWith(fontSize: 20),
+                style: context.theme.textTheme.caption.copyWith(fontSize: 20),
               ),
             ),
             Expanded(
-              child: Text(item.title, style: Theme.of(context).textTheme.body1),
+              child: Text(item.title, style: context.theme.textTheme.body1),
             ),
             SizedBox(width: 8),
             // Currently, label icons aren't sent by the server.
@@ -111,7 +110,7 @@ class MenuItemDetails extends StatelessWidget {
       textBaseline: TextBaseline.alphabetic,
       children: <Widget>[
         Container(
-          width: MediaQuery.of(context).size.width * 0.8,
+          width: context.mediaQuery.size.width * 0.8,
           padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -119,11 +118,11 @@ class MenuItemDetails extends StatelessWidget {
             children: <Widget>[
               Text(
                 HpiL11n.get(context, "food/offer", args: [item.counter]),
-                style: Theme.of(context).textTheme.headline,
+                style: context.theme.textTheme.headline,
               ),
               Text(
                 item.title,
-                style: Theme.of(context).textTheme.subhead,
+                style: context.theme.textTheme.subhead,
               ),
               Wrap(
                 spacing: 8,

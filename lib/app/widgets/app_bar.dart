@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:hpi_flutter/core/core.dart' hide Image;
 import 'package:hpi_flutter/feedback/feedback.dart';
 
+import '../utils.dart';
+
 class HpiAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget leading;
   final bool automaticallyImplyLeading;
@@ -289,7 +291,7 @@ class _HpiFlexibleSpaceBarState extends State<HpiFlexibleSpaceBar> {
 
   Alignment _getTitleAlignment(double t, bool effectiveCenterTitle) {
     if (effectiveCenterTitle) return Alignment.bottomCenter;
-    final TextDirection textDirection = Directionality.of(context);
+    final TextDirection textDirection = context.directionality;
     assert(textDirection != null);
     switch (textDirection) {
       case TextDirection.rtl:
@@ -353,7 +355,7 @@ class _HpiFlexibleSpaceBarState extends State<HpiFlexibleSpaceBar> {
     }
 
     if (widget.title != null) {
-      final ThemeData theme = Theme.of(context);
+      final ThemeData theme = context.theme;
 
       Widget title;
       switch (theme.platform) {

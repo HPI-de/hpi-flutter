@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hpi_flutter/app/app.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:meta/meta.dart';
 
-import 'app/widgets/dashboard_page.dart';
-import 'app/widgets/main_scaffold.dart';
 import 'course/widgets/course_detail_page.dart';
 import 'course/widgets/course_page.dart';
 import 'food/widgets/food_page.dart';
@@ -58,10 +57,8 @@ class Route {
           body: Center(
             child: Text(
               "Page ${route?.name} is not yet implemented",
-              style: Theme.of(context)
-                  .textTheme
-                  .headline
-                  .copyWith(color: Theme.of(context).errorColor),
+              style: context.theme.textTheme.headline
+                  .copyWith(color: context.theme.errorColor),
             ),
           ),
         );

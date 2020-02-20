@@ -21,7 +21,7 @@ class InfoBitCard extends StatelessWidget {
       margin: EdgeInsets.all(8),
       child: InkWell(
         onTap: () {
-          Navigator.of(context).pushNamed(
+          context.navigator.pushNamed(
             Route.myhpiInfoBit.name,
             arguments: infoBit.id,
           );
@@ -45,12 +45,12 @@ class InfoBitCard extends StatelessWidget {
     final title = [
       Text(
         infoBit.title,
-        style: Theme.of(context).textTheme.headline,
+        style: context.theme.textTheme.headline,
       ),
       if (infoBit.subtitle != null)
         Text(
           infoBit.subtitle,
-          style: Theme.of(context).textTheme.subhead,
+          style: context.theme.textTheme.subhead,
         ),
     ];
 
@@ -89,9 +89,7 @@ class InfoBitCard extends StatelessWidget {
               if (infoBit.description != null)
                 Text(
                   infoBit.description,
-                  style: Theme.of(context)
-                      .textTheme
-                      .body1
+                  style: context.theme.textTheme.body1
                       .copyWith(color: Colors.black.withOpacity(0.6)),
                 ),
             ],
@@ -142,7 +140,7 @@ class InfoBitCard extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: OutlineButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed(
+                      context.navigator.pushNamed(
                         Route.myhpiInfoBit.name,
                         arguments: infoBit.id,
                       );
@@ -274,7 +272,7 @@ class InfoBitListTile extends StatelessWidget {
             )
           : null,
       onTap: () {
-        Navigator.of(context).pushNamed(
+        context.navigator.pushNamed(
           Route.myhpiInfoBit.name,
           arguments: infoBit.id,
         );
@@ -297,7 +295,7 @@ class InfoBitPreviewBox extends StatelessWidget {
       title: Text(infoBit.title),
       caption: Text(infoBit.subtitle),
       onTap: () {
-        Navigator.of(context).pushNamed(
+        context.navigator.pushNamed(
           Route.myhpiInfoBit.name,
           arguments: infoBit.id,
         );

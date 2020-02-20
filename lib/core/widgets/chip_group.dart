@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hpi_flutter/app/app.dart';
 
 @immutable
 class ChipGroup extends StatelessWidget {
@@ -29,7 +30,7 @@ class ChipGroup extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           DefaultTextStyle(
-            style: Theme.of(context).textTheme.overline,
+            style: context.theme.textTheme.overline,
             child: title,
           ),
           child,

@@ -79,11 +79,11 @@ class _AboutMyselfState extends State<AboutMyself> {
     }
 
     return DefaultTextStyle(
-      style: Theme.of(context).textTheme.headline.copyWith(
-            fontSize: 30,
-            height: 1.4,
-            color: Colors.white,
-          ),
+      style: context.theme.textTheme.headline.copyWith(
+        fontSize: 30,
+        height: 1.4,
+        color: Colors.white,
+      ),
       child: Text.rich(
         TextSpan(
           children: [
@@ -192,7 +192,7 @@ class _InlineDropdownButton<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = DefaultTextStyle.of(context).style;
+    final style = context.defaultTextStyle.style;
 
     return DropdownButton(
       items: items
@@ -200,7 +200,7 @@ class _InlineDropdownButton<T> extends StatelessWidget {
                 key: i.key,
                 value: i.value,
                 child: DefaultTextStyle(
-                  style: Theme.of(context).textTheme.body1,
+                  style: context.theme.textTheme.body1,
                   child: i.child,
                 ),
               ))

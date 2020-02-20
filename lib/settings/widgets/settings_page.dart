@@ -33,7 +33,7 @@ class SettingsPage extends StatelessWidget {
 class _MobileDevAd extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = context.theme;
     final onPrimary = theme.colorScheme.onPrimary;
     final l11n = HpiL11n.of(context);
 
@@ -133,7 +133,7 @@ class _MobileDevAd extends StatelessWidget {
 
 class _AboutSection extends StatelessWidget {
   void _showImprint(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final textTheme = context.theme.textTheme;
 
     showModalBottomSheet(
       isScrollControlled: true,
@@ -218,7 +218,7 @@ class _AboutSection extends StatelessWidget {
         },
         child: HpiL11n.text(context, 'settings/about.privacyPolicy'),
       ),
-      Text('⋅', style: Theme.of(context).textTheme.headline),
+      Text('⋅', style: context.theme.textTheme.headline),
       FlatButton(
         onPressed: () {
           PackageInfo.fromPlatform()
@@ -243,7 +243,7 @@ class _AboutSection extends StatelessWidget {
         },
         child: HpiL11n.text(context, 'settings/about.licenses'),
       ),
-      Text('⋅', style: Theme.of(context).textTheme.headline),
+      Text('⋅', style: context.theme.textTheme.headline),
       FlatButton(
         onPressed: () {
           FeedbackDialog.show(context);

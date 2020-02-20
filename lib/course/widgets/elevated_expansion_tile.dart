@@ -1,5 +1,6 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:hpi_flutter/app/app.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 const Duration _kExpand = Duration(milliseconds: 200);
@@ -101,7 +102,7 @@ class _ElevatedExpansionTileState extends State<ElevatedExpansionTile>
     _headerColor = _controller.drive(_headerColorTween.chain(_easeInTween));
     _iconColor = _controller.drive(_iconColorTween.chain(_easeInTween));
 
-    _isExpanded = (PageStorage.of(context)?.readState(context) as bool) ??
+    _isExpanded = (context.pageStorage?.readState(context) as bool) ??
         widget.initiallyExpanded;
     if (_isExpanded) _controller.value = 1.0;
   }
@@ -125,7 +126,7 @@ class _ElevatedExpansionTileState extends State<ElevatedExpansionTile>
           });
         });
       }
-      PageStorage.of(context)?.writeState(context, _isExpanded);
+      context.pageStorage?.writeState(context, _isExpanded);
     });
     if (widget.onExpansionChanged != null) {
       widget.onExpansionChanged(_isExpanded);
@@ -175,7 +176,7 @@ class _ElevatedExpansionTileState extends State<ElevatedExpansionTile>
 
   @override
   void didChangeDependencies() {
-    final ThemeData theme = Theme.of(context);
+    final ThemeData theme = context.theme;
     _borderColorTween..end = theme.dividerColor;
     _headerColorTween
       ..begin = theme.textTheme.subhead.color

@@ -210,7 +210,7 @@ class CountdownTimerPainter extends CustomPainter {
       : assert(context != null),
         assert(timer != null),
         assert(total != null),
-        _areaPaint = Paint()..color = Theme.of(context).primaryColor,
+        _areaPaint = Paint()..color = context.theme.primaryColor,
         _tickSmallPaint = Paint()
           ..color = Colors.black
           ..strokeWidth = 1.5,
@@ -224,7 +224,7 @@ class CountdownTimerPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    var theme = Theme.of(context);
+    var theme = context.theme;
     var total = this.total.inMicroseconds;
     var remaining = timer.remaining.inMicroseconds;
 

@@ -42,7 +42,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           await services.get<SharedPreferences>().setInt(
               OnboardingPage._keyCompleted, Instant.now().epochMilliseconds);
           unawaited(
-              Navigator.of(context).pushReplacementNamed(Route.dashboard.name));
+              context.navigator.pushReplacementNamed(Route.dashboard.name));
         },
       ),
     );
@@ -50,7 +50,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   Page _buildStartPage() {
     return Page(
-      color: Theme.of(context).accentColor,
+      color: context.theme.accentColor,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -64,18 +64,16 @@ class _OnboardingPageState extends State<OnboardingPage> {
           SizedBox(height: 96),
           Text(
             HpiL11n.get(context, 'onboarding/start.title'),
-            style: Theme.of(context).textTheme.display1.copyWith(
-                  fontSize: 30,
-                  color: Colors.white,
-                ),
+            style: context.theme.textTheme.display1.copyWith(
+              fontSize: 30,
+              color: Colors.white,
+            ),
           ),
           SizedBox(height: 32),
           Text(
             HpiL11n.get(context, 'onboarding/start.subtitle'),
-            style: Theme.of(context)
-                .textTheme
-                .subtitle
-                .copyWith(color: Colors.white),
+            style:
+                context.theme.textTheme.subtitle.copyWith(color: Colors.white),
           ),
         ],
       ),
@@ -95,10 +93,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
               padding: EdgeInsets.symmetric(horizontal: 8),
               child: Text(
                 HpiL11n.get(context, 'settings/about.privacyPolicy'),
-                style: Theme.of(context)
-                    .textTheme
-                    .subhead
-                    .copyWith(color: HpiTheme.of(context).tertiary),
+                style: context.theme.textTheme.subhead
+                    .copyWith(color: context.hpiTheme.tertiary),
               ),
               onPressed: () {
                 PrivacyPolicyPage.showBottomSheet(context);
@@ -110,7 +106,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           ),
         ],
       ),
-      style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
+      style: context.theme.textTheme.subhead.copyWith(color: Colors.white),
       textAlign: TextAlign.left,
     );
 
@@ -150,7 +146,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
     };
 
     return Page(
-      color: Theme.of(context).primaryColor,
+      color: context.theme.primaryColor,
       canContinue: privacyPolicyAccepted && crashReportingAccepted,
       child: Builder(
         builder: (context) => Column(
@@ -171,7 +167,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   Checkbox(
                     value: privacyPolicyAccepted,
                     onChanged: (v) => onPrivacyPolicyChanged(context, v),
-                    activeColor: HpiTheme.of(context).tertiary,
+                    activeColor: context.hpiTheme.tertiary,
                   ),
                   Flexible(
                     child: Column(
@@ -192,7 +188,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   Checkbox(
                     value: crashReportingAccepted,
                     onChanged: (v) => onCrashReportingChanged(context, v),
-                    activeColor: HpiTheme.of(context).tertiary,
+                    activeColor: context.hpiTheme.tertiary,
                   ),
                   HpiL11n.text(context, 'onboarding/crashReporting'),
                 ],
@@ -206,18 +202,17 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   Page _buildAboutMyselfPage() {
     return Page(
-      color: HpiTheme.of(context).tertiary,
-      child: DefaultTextStyle(
-        style: DefaultTextStyle.of(context).style,
+      color: context.hpiTheme.tertiary,
+      child: DefaultTextStyle.merge(
         textAlign: TextAlign.center,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
               HpiL11n.get(context, 'onboarding/aboutMyself.title'),
-              style: Theme.of(context).textTheme.title.copyWith(
-                    color: Colors.white,
-                  ),
+              style: context.theme.textTheme.title.copyWith(
+                color: Colors.white,
+              ),
             ),
             SizedBox(height: 32),
             FutureBuilder<SharedPreferences>(

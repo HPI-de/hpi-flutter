@@ -27,7 +27,7 @@ class FeedbackDialog extends StatefulWidget {
       builder: (context) => SingleChildScrollView(
         child: Padding(
           padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+              EdgeInsets.only(bottom: context.mediaQuery.viewInsets.bottom),
           child: FeedbackDialog._(
               title: title,
               feedbackType: feedbackType,
@@ -80,7 +80,7 @@ class _FeedbackDialogState extends State<FeedbackDialog>
     return [
       Text(
         widget.title,
-        style: Theme.of(context).textTheme.display1,
+        style: context.theme.textTheme.display1,
       ),
       SizedBox(height: 16),
       TextFormField(
@@ -128,7 +128,7 @@ class _FeedbackDialogState extends State<FeedbackDialog>
           loadingText: HpiL11n.get(context, 'sending'),
           isLoading: isSending,
           onPressed: _send,
-          color: Theme.of(context).primaryColor,
+          color: context.theme.primaryColor,
         ),
       ),
     ];
@@ -165,7 +165,7 @@ class _FeedbackDialogState extends State<FeedbackDialog>
 
     setState(() {
       isSending = false;
-      Scaffold.of(context).showSnackBar(SnackBar(
+      context.scaffold.showSnackBar(SnackBar(
         content: Text(
           HpiL11n.get(context, successful ? 'feedback/sent' : 'error'),
         ),

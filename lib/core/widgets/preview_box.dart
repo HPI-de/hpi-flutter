@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hpi_flutter/app/app.dart';
 
 import 'scrim_around.dart';
 
@@ -53,17 +54,14 @@ class PreviewBox extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           DefaultTextStyle(
-            style:
-                Theme.of(context).textTheme.body1.copyWith(color: Colors.white),
+            style: context.theme.textTheme.body1.copyWith(color: Colors.white),
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
             child: title,
           ),
           DefaultTextStyle(
-            style: Theme.of(context)
-                .textTheme
-                .caption
-                .copyWith(color: Colors.white),
+            style:
+                context.theme.textTheme.caption.copyWith(color: Colors.white),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             child: caption,

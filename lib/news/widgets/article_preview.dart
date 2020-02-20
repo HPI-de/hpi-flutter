@@ -31,12 +31,12 @@ class ArticlePreview extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     article.title,
-                    style: Theme.of(context).textTheme.subhead,
+                    style: context.theme.textTheme.subhead,
                   ),
                   SizedBox(height: 8),
                   Text(
                     article.teaser,
-                    style: Theme.of(context).textTheme.body1,
+                    style: context.theme.textTheme.body1,
                   ),
                   SizedBox(height: 4),
                   StreamBuilder<Source>(
@@ -47,7 +47,7 @@ class ArticlePreview extends StatelessWidget {
 
                       return Text(
                         formatSourcePublishDate(article, snapshot.data),
-                        style: Theme.of(context).textTheme.caption,
+                        style: context.theme.textTheme.caption,
                       );
                     },
                   ),

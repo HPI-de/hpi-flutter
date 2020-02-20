@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hpi_flutter/core/core.dart';
 
+import '../utils.dart';
+
 Widget buildAppBarTitle({
   @required BuildContext context,
   @required Widget title,
@@ -17,15 +19,15 @@ Widget buildAppBarTitle({
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       DefaultTextStyle(
-        style: Theme.of(context).textTheme.title.copyWith(
-              color: Colors.black87,
-            ),
+        style: context.theme.textTheme.title.copyWith(
+          color: Colors.black87,
+        ),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         child: title,
       ),
       DefaultTextStyle(
-        style: Theme.of(context).textTheme.subhead,
+        style: context.theme.textTheme.subhead,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         child: subtitle,
@@ -57,7 +59,7 @@ Widget buildLoadingErrorScaffold(
   return Scaffold(
     appBar: AppBar(
       elevation: appBarElevated ? null : 0,
-      backgroundColor: appBarElevated ? Theme.of(context).cardColor : null,
+      backgroundColor: appBarElevated ? context.theme.cardColor : null,
       title: Text(snapshot.hasError
           ? HpiL11n.get(context, 'error')
           : (loadingTitle ?? HpiL11n.get(context, 'loading'))),

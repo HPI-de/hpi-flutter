@@ -26,10 +26,10 @@ class CoursePage extends StatelessWidget {
                 forceElevated: innerBoxIsScrolled,
                 title: Text(HpiL11n.get(context, 'course')),
                 bottom: TabBar(
-                  indicatorColor: Theme.of(context).primaryColor,
-                  labelColor: Theme.of(context).primaryColor,
+                  indicatorColor: context.theme.primaryColor,
+                  labelColor: context.theme.primaryColor,
                   unselectedLabelColor:
-                      Theme.of(context).textTheme.body2.color.withOpacity(0.7),
+                      context.theme.textTheme.body2.color.withOpacity(0.7),
                   tabs: [
                     Tab(text: HpiL11n.get(context, 'course/tab.current')),
                     Tab(text: HpiL11n.get(context, 'course/tab.all')),
@@ -91,7 +91,7 @@ class CourseList extends StatelessWidget {
                 maxLines: 1,
               ),
               onTap: () {
-                Navigator.of(context)
+                context.navigator
                     .pushNamed(Route.coursesDetail.name, arguments: course.id);
               },
             );

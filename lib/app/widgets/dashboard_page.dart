@@ -4,7 +4,7 @@ import 'package:hpi_flutter/food/food.dart';
 import 'package:hpi_flutter/news/news.dart';
 import 'package:hpi_flutter/openhpi/openhpi.dart';
 
-import 'hpi_theme.dart';
+import '../utils.dart';
 import 'main_scaffold.dart';
 
 @immutable
@@ -14,7 +14,7 @@ class DashboardPage extends StatelessWidget {
     return MainScaffold(
       body: ListView(
         padding:
-            EdgeInsets.fromLTRB(16, MediaQuery.of(context).padding.top, 16, 32),
+            EdgeInsets.fromLTRB(16, context.mediaQuery.padding.top, 16, 32),
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -69,12 +69,12 @@ class DashboardFragment extends StatelessWidget {
               moveByChildHeight: -0.5,
               child: DecoratedBox(
                 decoration: BoxDecoration(
-                  color: HpiTheme.of(context).tertiary,
+                  color: context.hpiTheme.tertiary,
                 ),
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   child: DefaultTextStyle(
-                    style: Theme.of(context).textTheme.title,
+                    style: context.theme.textTheme.title,
                     child: title,
                   ),
                 ),

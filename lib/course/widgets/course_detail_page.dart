@@ -78,7 +78,7 @@ class CourseDetailPage extends StatelessWidget {
             slivers: <Widget>[
               HpiSliverAppBar(
                 floating: true,
-                backgroundColor: Theme.of(context).cardColor,
+                backgroundColor: context.theme.cardColor,
                 title: buildAppBarTitle(
                   context: context,
                   title: Text(courseSeries.title),
@@ -172,9 +172,7 @@ class CourseDetailPage extends StatelessWidget {
       SizedBox(height: 16),
       Text(
         HpiL11n.get(context, 'course/course.noGuarantee'),
-        style: Theme.of(context)
-            .textTheme
-            .body1
+        style: context.theme.textTheme.body1
             .copyWith(color: Colors.black.withOpacity(0.6)),
         textAlign: TextAlign.center,
       ),
@@ -203,7 +201,7 @@ class CourseDetailPage extends StatelessWidget {
     assert(context != null);
 
     return Material(
-      color: Theme.of(context).cardColor,
+      color: context.theme.cardColor,
       child: ListTile(
         leading: leading != null ? Icon(leading) : null,
         title: title != null ? Text(title) : null,
@@ -229,7 +227,7 @@ class CourseDetailPage extends StatelessWidget {
       leading: Icon(icon),
       title: Text(
         HpiL11n.get(context, 'course/course.$titleKey'),
-        style: Theme.of(context).textTheme.subhead,
+        style: context.theme.textTheme.subhead,
       ),
       children: [
         Html(
