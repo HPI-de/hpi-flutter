@@ -91,14 +91,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
             alignment: PlaceholderAlignment.middle,
             child: FlatButton(
               padding: EdgeInsets.symmetric(horizontal: 8),
+              onPressed: () => PrivacyPolicyPage.showBottomSheet(context),
               child: Text(
                 HpiL11n.get(context, 'settings/about.privacyPolicy'),
                 style: context.theme.textTheme.subhead
                     .copyWith(color: context.hpiTheme.tertiary),
               ),
-              onPressed: () {
-                PrivacyPolicyPage.showBottomSheet(context);
-              },
             ),
           ),
           TextSpan(
@@ -121,10 +119,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
             .getBool(OnboardingPage._keyCrashReporting) ??
         false;
 
-    final onPrivacyPolicyChanged = (BuildContext context, [bool newValue]) {
+    void onPrivacyPolicyChanged(BuildContext context, {bool newValue}) {
       newValue ??= !privacyPolicyAccepted;
 
-      PageNotification(newValue && crashReportingAccepted).dispatch(context);
+      PageNotification(canContinue: newValue && crashReportingAccepted)
+          .dispatch(context);
       setState(() {
         services.get<SharedPreferences>().setInt(
             OnboardingPage._keyPrivacyPolicy,
@@ -132,18 +131,19 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 ? OnboardingPage._privacyPolicyDate.epochMilliseconds
                 : null);
       });
-    };
+    }
 
-    final onCrashReportingChanged = (BuildContext context, [bool newValue]) {
+    void onCrashReportingChanged(BuildContext context, {bool newValue}) {
       newValue ??= !crashReportingAccepted;
 
-      PageNotification(privacyPolicyAccepted && newValue).dispatch(context);
+      PageNotification(canContinue: privacyPolicyAccepted && newValue)
+          .dispatch(context);
       setState(() {
         services
             .get<SharedPreferences>()
             .setBool(OnboardingPage._keyCrashReporting, newValue);
       });
-    };
+    }
 
     return Page(
       color: context.theme.primaryColor,
@@ -166,7 +166,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 children: <Widget>[
                   Checkbox(
                     value: privacyPolicyAccepted,
-                    onChanged: (v) => onPrivacyPolicyChanged(context, v),
+                    onChanged: (v) =>
+                        onPrivacyPolicyChanged(context, newValue: v),
                     activeColor: context.hpiTheme.tertiary,
                   ),
                   Flexible(
@@ -187,7 +188,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 children: <Widget>[
                   Checkbox(
                     value: crashReportingAccepted,
-                    onChanged: (v) => onCrashReportingChanged(context, v),
+                    onChanged: (v) =>
+                        onCrashReportingChanged(context, newValue: v),
                     activeColor: context.hpiTheme.tertiary,
                   ),
                   HpiL11n.text(context, 'onboarding/crashReporting'),
@@ -218,7 +220,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
             FutureBuilder<SharedPreferences>(
               future: SharedPreferences.getInstance(),
               builder: (context, snapshot) {
-                if (!snapshot.hasData) return buildLoadingError(snapshot);
+                if (!snapshot.hasData) {
+                  return buildLoadingError(snapshot);
+                }
 
                 return AboutMyself();
               },

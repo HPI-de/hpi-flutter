@@ -4,8 +4,11 @@ import 'package:hpi_flutter/core/core.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
-@immutable
 class AboutMyself extends StatefulWidget {
+  const AboutMyself({
+    Key key,
+  }) : super(key: key);
+
   static const _keyRole = 'onboarding.role';
   static const _keyCourseOfStudies = 'onboarding.courseOfStudies';
   static const _keySemester = 'onboarding.semester';
@@ -31,10 +34,6 @@ class AboutMyself extends StatefulWidget {
     return sharedPreferences.setInt(_keySemester, value);
   }
 
-  const AboutMyself({
-    Key key,
-  }) : super(key: key);
-
   @override
   _AboutMyselfState createState() => _AboutMyselfState();
 }
@@ -45,6 +44,7 @@ class _AboutMyselfState extends State<AboutMyself> {
   KtList<DropdownMenuItem<Role>> _roleValues;
   KtList<DropdownMenuItem<CourseOfStudies>> _courseOfStudiesValues;
 
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
@@ -91,7 +91,7 @@ class _AboutMyselfState extends State<AboutMyself> {
             _buildDropdown<Role>(
               items: _roleValues,
               value: role,
-              onChanged: (r) => AboutMyself._setRole(r),
+              onChanged: AboutMyself._setRole,
             ),
             if (role == Role.student) ...[
               TextSpan(text: _l11n('onboarding/aboutMyself.text.2')),
@@ -118,7 +118,7 @@ class _AboutMyselfState extends State<AboutMyself> {
                     ),
                   ),
                   value: semester,
-                  onChanged: (s) => AboutMyself._setSemester(s)),
+                  onChanged: AboutMyself._setSemester),
               TextSpan(text: _l11n('onboarding/aboutMyself.text.5')),
             ],
             TextSpan(text: _l11n('onboarding/aboutMyself.text.6')),

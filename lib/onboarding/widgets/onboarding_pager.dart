@@ -4,7 +4,7 @@ import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 class OnboardingPager extends StatefulWidget {
-  OnboardingPager({
+  const OnboardingPager({
     Key key,
     @required this.pages,
     @required this.onFinish,
@@ -58,7 +58,9 @@ class _OnboardingPagerState extends State<OnboardingPager> {
           NotificationListener<ScrollUpdateNotification>(
             onNotification: (n) {
               setState(() {
-                if (n.metrics is! PageMetrics) return;
+                if (n.metrics is! PageMetrics) {
+                  return;
+                }
                 _page = (n.metrics as PageMetrics).page;
               });
               return false;
@@ -67,7 +69,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
               controller: controller,
               children: widget.pages
                   .take(_canContinue.takeWhile((c) => c).size + 1)
-                  .mapIndexed((i, p) => _buildPage(i, p))
+                  .mapIndexed(_buildPage)
                   .asList(),
             ),
           ),
@@ -91,29 +93,30 @@ class _OnboardingPagerState extends State<OnboardingPager> {
               ),
             ),
           ),
-          _isLastPage
-              ? Align(
-                  alignment: Alignment.bottomRight,
-                  child: SizedBox(
-                    height: _bottomBarHeight,
-                    child: FlatButton(
-                      onPressed:
-                          _canContinue[_page.round()] ? widget.onFinish : null,
-                      child: Text(HpiL11n.get(context, 'onboarding/done')),
-                      textColor: Colors.white,
-                    ),
-                  ),
-                )
-              : _buildNavigationButton(
-                  alignment: Alignment.bottomRight,
-                  onPressed: _canContinue[_page.round()]
-                      ? () => controller.nextPage(
-                            duration: Duration(milliseconds: 400),
-                            curve: Curves.ease,
-                          )
-                      : null,
-                  icon: OMIcons.chevronRight,
+          if (_isLastPage)
+            Align(
+              alignment: Alignment.bottomRight,
+              child: SizedBox(
+                height: _bottomBarHeight,
+                child: FlatButton(
+                  onPressed:
+                      _canContinue[_page.round()] ? widget.onFinish : null,
+                  textColor: Colors.white,
+                  child: Text(HpiL11n.get(context, 'onboarding/done')),
                 ),
+              ),
+            )
+          else
+            _buildNavigationButton(
+              alignment: Alignment.bottomRight,
+              onPressed: _canContinue[_page.round()]
+                  ? () => controller.nextPage(
+                        duration: Duration(milliseconds: 400),
+                        curve: Curves.ease,
+                      )
+                  : null,
+              icon: OMIcons.chevronRight,
+            ),
         ],
       ),
     );
@@ -213,14 +216,15 @@ class _OnboardingPagerState extends State<OnboardingPager> {
 
 @immutable
 class PageNotification extends Notification {
-  PageNotification(this.canContinue) : assert(canContinue != null);
+  const PageNotification({@required this.canContinue})
+      : assert(canContinue != null);
 
   final bool canContinue;
 }
 
 @immutable
 class Page {
-  Page({
+  const Page({
     @required this.color,
     @required this.child,
     this.padding = const EdgeInsets.all(32),
