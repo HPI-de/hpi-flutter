@@ -9,6 +9,14 @@ import '../bloc.dart';
 import '../data.dart';
 
 class FeedbackDialog extends StatefulWidget {
+  const FeedbackDialog._({
+    Key key,
+    this.title = 'Feedback',
+    this.feedbackType,
+    this.screenshot,
+  })  : assert(title != null),
+        super(key: key);
+
   static void show(
     BuildContext context, {
     String title = 'Feedback',
@@ -37,14 +45,6 @@ class FeedbackDialog extends StatefulWidget {
     );
   }
 
-  const FeedbackDialog._({
-    Key key,
-    this.title = 'Feedback',
-    this.feedbackType,
-    this.screenshot,
-  })  : assert(title != null),
-        super(key: key);
-
   final String title;
   final String feedbackType;
   final Uint8List screenshot;
@@ -55,7 +55,7 @@ class FeedbackDialog extends StatefulWidget {
 
 class _FeedbackDialogState extends State<FeedbackDialog>
     with TickerProviderStateMixin {
-  String message = "";
+  String message = '';
   bool includeContact = true;
   bool includeScreenshotAndLogs = true;
   bool isSending = false;
@@ -101,7 +101,7 @@ class _FeedbackDialogState extends State<FeedbackDialog>
         },
       ),
       SizedBox(height: 16),
-      // TODO: enable when login is implemented
+      // TODO(ctiedt): enable when login is implemented, https://github.com/HPI-de/hpi_flutter/issues/114
       /* CheckboxListTile(
         controlAffinity: ListTileControlAffinity.leading,
         title: Text('Include your contact details'),
@@ -135,7 +135,9 @@ class _FeedbackDialogState extends State<FeedbackDialog>
   }
 
   void _send() {
-    if (!_formKey.currentState.validate()) return;
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
 
     setState(() {
       isSending = true;
@@ -143,11 +145,11 @@ class _FeedbackDialogState extends State<FeedbackDialog>
           services.get<NavigationService>().lastKnownRoute.name);
       Feedback.create(
         message.trim(),
-        screenUri,
-        includeContact,
-        includeScreenshotAndLogs,
-        widget.screenshot,
-        includeScreenshotAndLogs,
+        screenUri: screenUri,
+        includeContact: includeContact,
+        includeScreenshot: includeScreenshotAndLogs,
+        screenshot: widget.screenshot,
+        includeLogs: includeScreenshotAndLogs,
       ).then((f) {
         services.get<FeedbackBloc>().sendFeedback(f);
       }).then((f) {

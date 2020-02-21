@@ -8,14 +8,7 @@ import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/feedback/v1test/feedback.pb
 
 @immutable
 class Feedback {
-  final String id;
-  final String message;
-  final Uri screenUri;
-  final String user;
-  final Uint8List screenshot;
-  final String log;
-
-  Feedback({
+  const Feedback({
     @required this.id,
     @required this.message,
     this.screenUri,
@@ -34,29 +27,37 @@ class Feedback {
           screenshot: Uint8List.fromList(feedback.screenshot),
           log: feedback.log,
         );
+
+  final String id;
+  final String message;
+  final Uri screenUri;
+  final String user;
+  final Uint8List screenshot;
+  final String log;
+
   static Future<Feedback> create(
-    String message,
+    String message, {
     Uri screenUri,
     bool includeContact,
     bool includeScreenshot,
     Uint8List screenshot,
     bool includeLogs,
-  ) async {
+  }) async {
     assert(message != null);
 
-// TODO: implement when login is available
+    // TODO(ctiedt): implement when login is available, https://github.com/HPI-de/hpi_flutter/issues/114
     String user;
     String log;
     if (includeLogs) {
       try {
-        log = await MethodChannel("feedback").invokeMethod("getLog");
+        log = await MethodChannel('feedback').invokeMethod('getLog');
       } on PlatformException catch (e) {
-        log = "ERROR: PlatformException while reading log:\n$e";
+        log = 'ERROR: PlatformException while reading log:\n$e';
       }
     }
 
     Feedback f = Feedback(
-      id: "",
+      id: '',
       message: message,
       screenUri: screenUri,
       user: user,
@@ -71,10 +72,18 @@ class Feedback {
     final f = proto.Feedback()
       ..id = id
       ..message = message;
-    if (screenUri != null) f.screenUri = screenUri.toString();
-    if (user != null) f.user = user;
-    if (screenshot != null) f.screenshot = screenshot;
-    if (log != null) f.log = log;
+    if (screenUri != null) {
+      f.screenUri = screenUri.toString();
+    }
+    if (user != null) {
+      f.user = user;
+    }
+    if (screenshot != null) {
+      f.screenshot = screenshot;
+    }
+    if (log != null) {
+      f.log = log;
+    }
     return f;
   }
 }
