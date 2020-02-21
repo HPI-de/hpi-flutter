@@ -8,9 +8,8 @@ import 'package:time_machine/time_machine_text_patterns.dart';
 
 import '../data.dart';
 
-@immutable
 class OpenHpiCoursePreview extends StatelessWidget {
-  OpenHpiCoursePreview(this.course) : assert(course != null);
+  const OpenHpiCoursePreview(this.course) : assert(course != null);
 
   final OpenHpiCourse course;
 
@@ -49,7 +48,7 @@ class OpenHpiCoursePreview extends StatelessWidget {
     ]);
   }
 
-  Widget _buildScrim({Widget child}) {
+  Widget _buildScrim({@required Widget child}) {
     assert(child != null);
 
     return DecoratedBox(
@@ -64,7 +63,7 @@ class OpenHpiCoursePreview extends StatelessWidget {
     );
   }
 
-  Widget _buildLaunchable({Widget child}) {
+  Widget _buildLaunchable({@required Widget child}) {
     assert(child != null);
 
     return Material(

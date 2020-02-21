@@ -7,9 +7,9 @@ import 'package:meta/meta.dart';
 
 import 'data.dart';
 
-const String COURSE_URL = 'https://open.hpi.de/api/v2/courses';
-const String HEADER_ACCEPT = 'Accept';
-const String OPEN_HPI_ACCEPT = 'application/vnd.api+json; xikolo-version=3.7';
+const String courseUrl = 'https://open.hpi.de/api/v2/courses';
+const String headerAccept = 'Accept';
+const String headerAcceptValue = 'application/vnd.api+json; xikolo-version=3.7';
 
 @immutable
 class OpenHpiBloc {
@@ -28,8 +28,8 @@ class OpenHpiBloc {
   Stream<KtList<OpenHpiCourse>> getCourses() {
     return Stream.fromFuture(
       fetchData(
-        COURSE_URL,
-        headers: {HEADER_ACCEPT: OPEN_HPI_ACCEPT},
+        courseUrl,
+        headers: {headerAccept: headerAcceptValue},
       ).then((jsonString) =>
           KtList.from(jsonDecode(jsonString)['data'] as Iterable).map(
             (course) => OpenHpiCourse.fromJson(

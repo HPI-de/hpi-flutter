@@ -3,13 +3,11 @@ import 'package:flutter/widgets.dart';
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart';
 import 'package:kt_dart/collection.dart';
-import 'package:meta/meta.dart';
 
 import '../bloc.dart';
 import '../data.dart';
 import 'course_preview.dart';
 
-@immutable
 class OpenHpiFragment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
