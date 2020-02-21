@@ -39,23 +39,12 @@ class MutableInfoBitTag {
 
 @immutable
 abstract class Action {
-  final String id;
-  final String title;
-  final Uint8List icon;
-
-  Action({
+  const Action({
     @required this.id,
     @required this.title,
     this.icon,
   })  : assert(id != null),
         assert(title != null);
-
-  Action._fromProto(proto.Action action)
-      : this(
-          id: action.id,
-          title: action.title,
-          icon: Uint8List.fromList(action.icon),
-        );
 
   factory Action.fromProto(proto.Action action) {
     switch (action.whichType()) {
@@ -67,12 +56,24 @@ abstract class Action {
         return null;
     }
   }
+  Action._fromProto(proto.Action action)
+      : this(
+          id: action.id,
+          title: action.title,
+          icon: Uint8List.fromList(action.icon),
+        );
+
+  final String id;
+  final String title;
+  final Uint8List icon;
 
   proto.Action toProto() {
     final action = proto.Action()
       ..id = id
       ..title = title;
-    if (icon != null) action.icon = icon.toList();
+    if (icon != null) {
+      action.icon = icon.toList();
+    }
     _writeToProto(action);
     return action;
   }
@@ -82,9 +83,7 @@ abstract class Action {
 
 @immutable
 class TextAction extends Action {
-  final String content;
-
-  TextAction({
+  const TextAction({
     @required String id,
     @required String title,
     Uint8List icon,
@@ -97,6 +96,8 @@ class TextAction extends Action {
         content = action.text.content,
         super._fromProto(action);
 
+  final String content;
+
   @override
   void _writeToProto(proto.Action action) {
     action.text.content = content;
@@ -105,9 +106,7 @@ class TextAction extends Action {
 
 @immutable
 class LinkAction extends Action {
-  final String url;
-
-  LinkAction({
+  const LinkAction({
     @required String id,
     @required String title,
     Uint8List icon,
@@ -119,6 +118,8 @@ class LinkAction extends Action {
       : assert(action.link != null),
         url = action.link.url,
         super._fromProto(action);
+
+  final String url;
 
   @override
   void _writeToProto(proto.Action action) {

@@ -7,7 +7,6 @@ import '../bloc.dart';
 import '../data.dart';
 import 'infobit_card.dart';
 
-@immutable
 class InfoBitPage extends StatelessWidget {
   const InfoBitPage({Key key, this.infoBitId}) : super(key: key);
 
@@ -176,7 +175,9 @@ class InfoBitPage extends StatelessWidget {
           StreamBuilder<InfoBit>(
             stream: services.get<MyHpiBloc>().getInfoBit(infoBit.parentId),
             builder: (_, snapshot) {
-              if (!snapshot.hasData) return buildLoadingError(snapshot);
+              if (!snapshot.hasData) {
+                return buildLoadingError(snapshot);
+              }
 
               return InfoBitListTile(snapshot.data);
             },

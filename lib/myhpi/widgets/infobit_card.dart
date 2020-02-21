@@ -127,8 +127,9 @@ class InfoBitCard extends StatelessWidget {
           .get<MyHpiBloc>()
           .getInfoBits(parentId: infoBit.id, pageSize: 3),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return Container();
-        if (snapshot.data.items.isEmpty()) return Container();
+        if (!snapshot.hasData || snapshot.data.items.isEmpty()) {
+          return Container();
+        }
 
         return Column(
           children: <Widget>[
@@ -179,7 +180,9 @@ class InfoBitCard extends StatelessWidget {
   Widget _buildFoot(BuildContext context) {
     assert(context != null);
 
-    if (infoBit.actionIds.isEmpty() && infoBit.tagIds.isEmpty()) return null;
+    if (infoBit.actionIds.isEmpty() && infoBit.tagIds.isEmpty()) {
+      return null;
+    }
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16),
@@ -219,7 +222,9 @@ class InfoBitActionChip extends StatelessWidget {
       avatarBuilder: (a) => IconWidget(a.icon),
       labelBuilder: (a) => Text(a.title),
       onPressed: (action) async {
-        if (action == null) return;
+        if (action == null) {
+          return;
+        }
 
         if (action is TextAction) {
           unawaited(Navigator.push(
@@ -233,8 +238,8 @@ class InfoBitActionChip extends StatelessWidget {
               ),
             ),
           ));
-        } else {
-          if (action is LinkAction) await tryLaunch(action.url);
+        } else if (action is LinkAction) {
+          await tryLaunch(action.url);
         }
       },
     );
