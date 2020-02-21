@@ -14,7 +14,7 @@ import 'data.dart';
 
 Future<void> runWithCrashReporting(Future<void> Function() body) async {
   // This captures errors reported by the Flutter framework.
-  FlutterError.onError = (FlutterErrorDetails details) async {
+  FlutterError.onError = (details) async {
     if (isInDebugMode) {
       // In development mode simply print to console.
       FlutterError.dumpErrorToConsole(details);
@@ -27,6 +27,7 @@ Future<void> runWithCrashReporting(Future<void> Function() body) async {
   // run in custom zone for catching errors
   await runZoned<Future<void>>(
     body,
+    // ignore: avoid_types_on_closure_parameters
     onError: (error, StackTrace stackTrace) async {
       await reportError(error, stackTrace);
     },

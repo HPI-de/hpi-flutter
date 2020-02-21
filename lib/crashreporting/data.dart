@@ -6,18 +6,7 @@ import 'package:time_machine/time_machine.dart';
 
 @immutable
 class CrashReport {
-  final String id;
-  final String appName;
-  final String appVersion;
-  final int appVersionCode;
-  final Device device;
-  final OperatingSystem operatingSystem;
-  final Instant timestamp;
-  final String exception;
-  final String stackTrace;
-  final String log;
-
-  CrashReport({
+  const CrashReport({
     this.id,
     @required this.appName,
     @required this.appVersion,
@@ -51,6 +40,17 @@ class CrashReport {
           log: crashReport.log,
         );
 
+  final String id;
+  final String appName;
+  final String appVersion;
+  final int appVersionCode;
+  final Device device;
+  final OperatingSystem operatingSystem;
+  final Instant timestamp;
+  final String exception;
+  final String stackTrace;
+  final String log;
+
   proto.CrashReport toProto() {
     return proto.CrashReport()
       ..id = id
@@ -68,10 +68,7 @@ class CrashReport {
 
 @immutable
 class Device {
-  final String brand;
-  final String model;
-
-  Device({
+  const Device({
     @required this.brand,
     @required this.model,
   })  : assert(brand != null),
@@ -79,6 +76,9 @@ class Device {
 
   Device.fromProto(proto.CrashReport_Device device)
       : this(brand: device.brand, model: device.model);
+
+  final String brand;
+  final String model;
 
   proto.CrashReport_Device toProto() {
     return proto.CrashReport_Device()
@@ -89,10 +89,7 @@ class Device {
 
 @immutable
 class OperatingSystem {
-  final String os;
-  final String version;
-
-  OperatingSystem({
+  const OperatingSystem({
     @required this.os,
     @required this.version,
   })  : assert(os != null),
@@ -100,6 +97,9 @@ class OperatingSystem {
 
   OperatingSystem.fromProto(proto.CrashReport_OperatingSystem operatingSystem)
       : this(os: operatingSystem.os, version: operatingSystem.version);
+
+  final String os;
+  final String version;
 
   proto.CrashReport_OperatingSystem toProto() {
     return proto.CrashReport_OperatingSystem()
