@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../localizations.dart';
 
-@immutable
 class StreamChip<T> extends StatelessWidget {
   const StreamChip({
     Key key,
@@ -24,7 +23,9 @@ class StreamChip<T> extends StatelessWidget {
     return StreamBuilder<T>(
       stream: stream,
       builder: (context, snapshot) {
-        if (snapshot.hasError) return Container();
+        if (snapshot.hasError) {
+          return Container();
+        }
 
         return Chip(
           avatar: snapshot.hasData && avatarBuilder != null
@@ -39,7 +40,6 @@ class StreamChip<T> extends StatelessWidget {
   }
 }
 
-@immutable
 class StreamActionChip<T> extends StatelessWidget {
   const StreamActionChip({
     Key key,
@@ -64,7 +64,9 @@ class StreamActionChip<T> extends StatelessWidget {
     return StreamBuilder<T>(
       stream: stream,
       builder: (context, snapshot) {
-        if (snapshot.hasError) return Container();
+        if (snapshot.hasError) {
+          return Container();
+        }
 
         return ActionChip(
           avatar: snapshot.hasData && avatarBuilder != null

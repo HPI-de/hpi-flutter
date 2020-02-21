@@ -17,7 +17,7 @@ class HpiL11n {
 
   static Future<HpiL11n> load(Locale locale) async {
     // Load translations
-    var lc = locale.languageCode ?? "en";
+    var lc = locale.languageCode ?? 'en';
     final strings = await rootBundle
         .loadString('assets/localizations/strings_$lc.yaml')
         .then((s) =>
@@ -25,7 +25,7 @@ class HpiL11n {
 
     // Load fallbacks
     KtMap<String, String> fallbacks;
-    if (lc != "en") {
+    if (lc != 'en') {
       fallbacks = await rootBundle
           .loadString('assets/localizations/strings_en.yaml')
           .then((s) => KtMap.from(Map.from(loadYaml(s) as YamlMap)));
@@ -60,13 +60,19 @@ class HpiL11n {
 
     // Load
     var value = values[key];
-    if (value == null) print('String "$key" was not found in locale $locale');
+    if (value == null) {
+      print('String "$key" was not found in locale $locale');
+    }
 
     // Try fallback
-    if (value == null && fallback != null) value = fallback;
+    if (value == null && fallback != null) {
+      value = fallback;
+    }
 
     // Try fallback resources
-    if (value == null && fallbacks != null) value = fallbacks[key];
+    if (value == null && fallbacks != null) {
+      value = fallbacks[key];
+    }
 
     // Still not found
     if (value == null) {
@@ -75,7 +81,9 @@ class HpiL11n {
     }
 
     // Apply formatting
-    if (args != null) value = sprintf(value, args);
+    if (args != null) {
+      value = sprintf(value, args);
+    }
 
     return value;
   }

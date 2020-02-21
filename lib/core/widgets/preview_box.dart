@@ -3,7 +3,6 @@ import 'package:hpi_flutter/app/app.dart';
 
 import 'scrim_around.dart';
 
-@immutable
 class PreviewBox extends StatelessWidget {
   const PreviewBox({
     @required this.background,

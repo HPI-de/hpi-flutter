@@ -12,17 +12,17 @@ import 'package:flutter/material.dart';
 ///
 /// Source: https://github.com/tukaramc/fluttery/blob/master/lib/src/radial_drag_gesture_detector.dart
 class RadialDragGestureDetector extends StatefulWidget {
-  final RadialDragStart onRadialDragStart;
-  final RadialDragUpdate onRadialDragUpdate;
-  final RadialDragEnd onRadialDragEnd;
-  final Widget child;
-
-  RadialDragGestureDetector({
+  const RadialDragGestureDetector({
     this.onRadialDragStart,
     this.onRadialDragUpdate,
     this.onRadialDragEnd,
     this.child,
   });
+
+  final RadialDragStart onRadialDragStart;
+  final RadialDragUpdate onRadialDragUpdate;
+  final RadialDragEnd onRadialDragEnd;
+  final Widget child;
 
   @override
   _RadialDragGestureDetectorState createState() =>
@@ -30,21 +30,21 @@ class RadialDragGestureDetector extends StatefulWidget {
 }
 
 class _RadialDragGestureDetectorState extends State<RadialDragGestureDetector> {
-  _onPanStart(DragStartDetails details) {
+  void _onPanStart(DragStartDetails details) {
     if (null != widget.onRadialDragStart) {
       final polarCoord = _polarCoordFromGlobalOffset(details.globalPosition);
       widget.onRadialDragStart(polarCoord);
     }
   }
 
-  _onPanUpdate(DragUpdateDetails details) {
+  void _onPanUpdate(DragUpdateDetails details) {
     if (null != widget.onRadialDragUpdate) {
       final polarCoord = _polarCoordFromGlobalOffset(details.globalPosition);
       widget.onRadialDragUpdate(polarCoord);
     }
   }
 
-  _onPanEnd(DragEndDetails details) {
+  void _onPanEnd(DragEndDetails details) {
     if (null != widget.onRadialDragEnd) {
       widget.onRadialDragEnd();
     }
@@ -77,9 +77,7 @@ class _RadialDragGestureDetectorState extends State<RadialDragGestureDetector> {
 }
 
 class PolarCoord {
-  final double angle;
-  final double radius;
-
+  PolarCoord(this.angle, this.radius);
   factory PolarCoord.fromPoints(Point origin, Point point) {
     // Subtract the origin from the point to get the vector from the origin
     // to the point.
@@ -94,11 +92,12 @@ class PolarCoord {
     );
   }
 
-  PolarCoord(this.angle, this.radius);
+  final double angle;
+  final double radius;
 
   @override
-  toString() {
-    return 'Polar Coord: ${radius.toStringAsFixed(2)}' +
+  String toString() {
+    return 'Polar Coord: ${radius.toStringAsFixed(2)}'
         ' at ${(angle / (2 * pi) * 360).toStringAsFixed(2)}°';
   }
 }

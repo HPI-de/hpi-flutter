@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:hpi_flutter/core/core.dart' as hpi;
 
 class ImageWidget extends StatelessWidget {
-  ImageWidget(
+  const ImageWidget(
     this.image, {
     this.width,
     this.height,
@@ -48,7 +48,7 @@ class ImageWidget extends StatelessWidget {
 }
 
 class IconWidget extends StatelessWidget {
-  IconWidget(
+  const IconWidget(
     this.icon, {
     this.color,
     this.size,

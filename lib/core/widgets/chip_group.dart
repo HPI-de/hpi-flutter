@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hpi_flutter/app/app.dart';
 
-@immutable
 class ChipGroup extends StatelessWidget {
   const ChipGroup({
     this.title,
