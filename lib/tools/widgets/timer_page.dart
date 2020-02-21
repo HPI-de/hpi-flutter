@@ -9,7 +9,6 @@ import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:rxdart/rxdart.dart';
 
-@immutable
 class TimerPage extends StatelessWidget {
   final CountdownTimer _timer =
       CountdownTimer(Duration(minutes: 5), Duration(milliseconds: 200));
@@ -19,7 +18,9 @@ class TimerPage extends StatelessWidget {
     return StreamBuilder(
       stream: _timer.stateStream,
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return buildLoadingError(snapshot);
+        if (!snapshot.hasData) {
+          return buildLoadingError(snapshot);
+        }
 
         return MainScaffold(
           appBar: HpiAppBar(
@@ -32,17 +33,17 @@ class TimerPage extends StatelessWidget {
             ),
           ),
           floatingActionButton: FloatingActionButton(
+            onPressed: _timer.toggle,
             child: Icon(
               _timer.state == CountdownTimerState.running
                   ? OMIcons.pause
                   : OMIcons.playArrow,
             ),
-            onPressed: () => _timer.toggle(),
           ),
           bottomActions: KtList.of(
             IconButton(
+              onPressed: _timer.reset,
               icon: Icon(OMIcons.replay),
-              onPressed: () => _timer.reset(),
             ),
           ),
         );
@@ -52,32 +53,34 @@ class TimerPage extends StatelessWidget {
 }
 
 class CountdownTimer {
+  CountdownTimer(this._total, this.updateFrequency)
+      : assert(_total != null),
+        assert(updateFrequency != null),
+        _updates = BehaviorSubject.seeded(_total);
+
   Duration _total;
   final Duration updateFrequency;
-  Stopwatch _stopwatch = Stopwatch();
+  final Stopwatch _stopwatch = Stopwatch();
   Timer _timer;
   Duration _additionalTime = Duration.zero;
   final Duration _zeroDelta = Duration(milliseconds: 50);
 
-  BehaviorSubject<CountdownTimerState> _state =
+  final BehaviorSubject<CountdownTimerState> _state =
       BehaviorSubject.seeded(CountdownTimerState.ready);
   CountdownTimerState get state => _state.value;
   Stream<CountdownTimerState> get stateStream => _state.stream.distinct();
 
-  BehaviorSubject<Duration> _updates;
+  final BehaviorSubject<Duration> _updates;
   Stream<Duration> get stream => _updates.stream;
 
   Duration get remaining =>
       isDone ? Duration.zero : _total + _additionalTime - _stopwatch.elapsed;
   bool get isDone => _total + _additionalTime - _stopwatch.elapsed < _zeroDelta;
 
-  CountdownTimer(this._total, this.updateFrequency)
-      : assert(_total != null),
-        assert(updateFrequency != null),
-        _updates = BehaviorSubject.seeded(_total);
-
   void resume() {
-    if (state == CountdownTimerState.running) return;
+    if (state == CountdownTimerState.running) {
+      return;
+    }
 
     if (state == CountdownTimerState.ready) {
       _stopwatch.reset();
@@ -97,7 +100,9 @@ class CountdownTimer {
 
   void pause() {
     if (state == CountdownTimerState.ready ||
-        state == CountdownTimerState.paused) return;
+        state == CountdownTimerState.paused) {
+      return;
+    }
 
     _state.value = CountdownTimerState.paused;
     _stopwatch.stop();
@@ -125,7 +130,9 @@ class CountdownTimer {
   }
 
   void reset() {
-    if (state == CountdownTimerState.running) pause();
+    if (state == CountdownTimerState.running) {
+      pause();
+    }
 
     _state.value = CountdownTimerState.ready;
     _stopwatch.reset();
@@ -163,7 +170,9 @@ class CountdownTimerWidget extends StatelessWidget {
         // normalize in case we change from -pi to pi
         double difference =
             (coords.angle - _lastCoords.angle + pi) % (2 * pi) - pi;
-        if (difference < -pi) difference += 2 * pi;
+        if (difference < -pi) {
+          difference += 2 * pi;
+        }
 
         Duration additional = Duration(
           microseconds: (total.inMicroseconds * difference / (2 * pi)).round(),
@@ -177,7 +186,9 @@ class CountdownTimerWidget extends StatelessWidget {
       child: StreamBuilder<Duration>(
         stream: timer.stream,
         builder: (context, snapshot) {
-          if (!snapshot.hasData) return buildLoadingError(snapshot);
+          if (!snapshot.hasData) {
+            return buildLoadingError(snapshot);
+          }
 
           return AspectRatio(
             aspectRatio: 1,
@@ -194,18 +205,6 @@ class CountdownTimerWidget extends StatelessWidget {
 }
 
 class CountdownTimerPainter extends CustomPainter {
-  final BuildContext context;
-  final CountdownTimer timer;
-  final Duration total;
-  final Paint _areaPaint;
-  final Paint _tickSmallPaint;
-  final Duration _tickSmallDistance = Duration(minutes: 1);
-  final double _tickSmallLength = 10;
-  final Paint _tickLargePaint;
-  final int _tickLargeDistance = 5;
-  final double _tickLargeLength = 20;
-  final TextPainter _labelPainter;
-
   CountdownTimerPainter(this.context, this.timer, this.total)
       : assert(context != null),
         assert(timer != null),
@@ -222,6 +221,18 @@ class CountdownTimerPainter extends CustomPainter {
           textDirection: TextDirection.ltr,
         );
 
+  final BuildContext context;
+  final CountdownTimer timer;
+  final Duration total;
+  final Paint _areaPaint;
+  final Paint _tickSmallPaint;
+  final Duration _tickSmallDistance = Duration(minutes: 1);
+  final double _tickSmallLength = 10;
+  final Paint _tickLargePaint;
+  final int _tickLargeDistance = 5;
+  final double _tickLargeLength = 20;
+  final TextPainter _labelPainter;
+
   @override
   void paint(Canvas canvas, Size size) {
     var theme = context.theme;
@@ -232,16 +243,16 @@ class CountdownTimerPainter extends CustomPainter {
     var labelPos = halfSize - 20;
     var tickEnd = labelPos - 5;
 
-    canvas.drawArc(
-      Rect.fromCircle(center: size.center(Offset.zero), radius: tickEnd),
-      -pi / 2,
-      2 * pi * remaining / total,
-      true,
-      _areaPaint,
-    );
-
-    canvas.save();
-    canvas.translate(size.width / 2, size.height / 2);
+    canvas
+      ..drawArc(
+        Rect.fromCircle(center: size.center(Offset.zero), radius: tickEnd),
+        -pi / 2,
+        2 * pi * remaining / total,
+        true,
+        _areaPaint,
+      )
+      ..save()
+      ..translate(size.width / 2, size.height / 2);
 
     var count = total / _tickSmallDistance.inMicroseconds;
     for (var i = 0; i < count; i++) {
@@ -258,19 +269,20 @@ class CountdownTimerPainter extends CustomPainter {
       );
 
       if (isLarge) {
-        _labelPainter.text = TextSpan(
-          text: (i * _tickSmallDistance.inMinutes).toString(),
-          style: theme.textTheme.display1,
-        );
-        _labelPainter.layout();
-        _labelPainter.paint(
-          canvas,
-          Offset.fromDirection(direction, labelPos) +
-              Offset(
-                _labelPainter.size.width / 2 * (cos(direction) - 1),
-                _labelPainter.size.height / 2 * (sin(direction) - 1),
-              ),
-        );
+        _labelPainter
+          ..text = TextSpan(
+            text: (i * _tickSmallDistance.inMinutes).toString(),
+            style: theme.textTheme.display1,
+          )
+          ..layout()
+          ..paint(
+            canvas,
+            Offset.fromDirection(direction, labelPos) +
+                Offset(
+                  _labelPainter.size.width / 2 * (cos(direction) - 1),
+                  _labelPainter.size.height / 2 * (sin(direction) - 1),
+                ),
+          );
       }
     }
 
