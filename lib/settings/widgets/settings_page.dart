@@ -266,7 +266,9 @@ class PrivacyPolicyPage extends StatelessWidget {
         builder: (context, scrollController) => FutureBuilder<String>(
           future: rootBundle.loadString('assets/privacyPolicy.md'),
           builder: (context, snapshot) {
-            if (!snapshot.hasData) return buildLoadingError(snapshot);
+            if (!snapshot.hasData) {
+              return buildLoadingError(snapshot);
+            }
 
             return ScrollableMarkdown(
               scrollController: scrollController,
@@ -288,7 +290,9 @@ class PrivacyPolicyPage extends StatelessWidget {
       body: FutureBuilder<String>(
         future: rootBundle.loadString('assets/privacyPolicy.md'),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) return buildLoadingError(snapshot);
+          if (!snapshot.hasData) {
+            return buildLoadingError(snapshot);
+          }
 
           return Markdown(
             data: snapshot.data,

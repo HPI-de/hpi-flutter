@@ -32,8 +32,8 @@ class ScrollableMarkdown extends MarkdownWidget {
   Widget build(BuildContext context, List<Widget> children) {
     return ListView(
       padding: padding,
-      children: children,
       controller: scrollController,
+      children: children,
     );
   }
 }
