@@ -7,11 +7,10 @@ import '../bloc.dart';
 import '../data.dart';
 import '../utils.dart';
 
-@immutable
 class ArticlePreview extends StatelessWidget {
-  final Article article;
+  const ArticlePreview(this.article) : assert(article != null);
 
-  ArticlePreview(this.article) : assert(article != null);
+  final Article article;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +42,9 @@ class ArticlePreview extends StatelessWidget {
                     stream:
                         services.get<NewsBloc>().getSource(article.sourceId),
                     builder: (context, snapshot) {
-                      if (snapshot.hasError) print(snapshot.error);
+                      if (snapshot.hasError) {
+                        print(snapshot.error);
+                      }
 
                       return Text(
                         formatSourcePublishDate(article, snapshot.data),

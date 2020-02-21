@@ -32,9 +32,8 @@ class NewsFragment extends StatelessWidget {
   }
 }
 
-@immutable
 class ArticlePreviewBox extends StatelessWidget {
-  ArticlePreviewBox(this.article) : assert(article != null);
+  const ArticlePreviewBox(this.article) : assert(article != null);
 
   final Article article;
 

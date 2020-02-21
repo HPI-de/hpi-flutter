@@ -6,6 +6,6 @@ String formatSourcePublishDate(Article article, Source source) {
   assert(article != null);
 
   String sourceName = source?.name ?? article.sourceId;
-  return (sourceName.isNotEmpty ? "$sourceName · " : "") +
+  return (sourceName.isNotEmpty ? '$sourceName · ' : '') +
       timeago.format(article.publishDate.toDateTimeLocal());
 }

@@ -11,11 +11,10 @@ import '../bloc.dart';
 import '../data.dart';
 import '../utils.dart';
 
-@immutable
 class ArticlePage extends StatelessWidget {
-  final String articleId;
-
   const ArticlePage(this.articleId) : assert(articleId != null);
+
+  final String articleId;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +61,6 @@ class ArticlePage extends StatelessWidget {
   }
 }
 
-@immutable
 class ArticleView extends StatelessWidget {
   const ArticleView(this.article) : assert(article != null);
 
@@ -143,14 +141,16 @@ class ArticleView extends StatelessWidget {
       builder: (_) => StreamBuilder<Source>(
         stream: services.get<NewsBloc>().getSource(article.sourceId),
         builder: (context, snapshot) {
-          if (snapshot.hasError) print(snapshot.error);
+          if (snapshot.hasError) {
+            print(snapshot.error);
+          }
 
           var theme = context.theme.textTheme.caption;
           return Text.rich(
             TextSpan(children: <InlineSpan>[
               TextSpan(text: formatSourcePublishDate(article, snapshot.data)),
               if (article.viewCount != null) ...[
-                TextSpan(text: " · "),
+                TextSpan(text: ' · '),
                 WidgetSpan(
                   child: Icon(
                     OMIcons.removeRedEye,
@@ -158,7 +158,7 @@ class ArticleView extends StatelessWidget {
                     size: theme.fontSize * 1.3,
                   ),
                 ),
-                TextSpan(text: " " + article.viewCount.toString()),
+                TextSpan(text: article.viewCount.toString()),
               ],
             ]),
             style: theme,
