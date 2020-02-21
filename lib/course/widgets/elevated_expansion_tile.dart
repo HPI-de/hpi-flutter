@@ -78,7 +78,7 @@ class _ElevatedExpansionTileState extends State<ElevatedExpansionTile>
   static final Animatable<double> _easeInTween =
       CurveTween(curve: Curves.easeIn);
   static final Animatable<double> _halfTween =
-      Tween<double>(begin: 0.0, end: 0.5);
+      Tween<double>(begin: 0, end: 0.5);
 
   final ColorTween _borderColorTween = ColorTween();
   final ColorTween _headerColorTween = ColorTween();
@@ -104,7 +104,9 @@ class _ElevatedExpansionTileState extends State<ElevatedExpansionTile>
 
     _isExpanded = (context.pageStorage?.readState(context) as bool) ??
         widget.initiallyExpanded;
-    if (_isExpanded) _controller.value = 1.0;
+    if (_isExpanded) {
+      _controller.value = 1;
+    }
   }
 
   @override
@@ -119,8 +121,10 @@ class _ElevatedExpansionTileState extends State<ElevatedExpansionTile>
       if (_isExpanded) {
         _controller.forward();
       } else {
-        _controller.reverse().then<void>((void value) {
-          if (!mounted) return;
+        _controller.reverse().then<void>((_) {
+          if (!mounted) {
+            return;
+          }
           setState(() {
             // Rebuild without widget.children.
           });
@@ -149,7 +153,7 @@ class _ElevatedExpansionTileState extends State<ElevatedExpansionTile>
             iconColor: _iconColor.value,
             textColor: _headerColor.value,
             child: Material(
-              elevation: 1.0,
+              elevation: 1,
               color: Colors.white,
               child: ListTile(
                 onTap: _handleTap,
@@ -177,14 +181,14 @@ class _ElevatedExpansionTileState extends State<ElevatedExpansionTile>
   @override
   void didChangeDependencies() {
     final ThemeData theme = context.theme;
-    _borderColorTween..end = theme.dividerColor;
+    _borderColorTween.end = theme.dividerColor;
     _headerColorTween
       ..begin = theme.textTheme.subhead.color
       ..end = theme.accentColor;
     _iconColorTween
       ..begin = theme.unselectedWidgetColor
       ..end = theme.accentColor;
-    _backgroundColorTween..end = widget.backgroundColor;
+    _backgroundColorTween.end = widget.backgroundColor;
     super.didChangeDependencies();
   }
 

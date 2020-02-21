@@ -13,9 +13,8 @@ import '../data.dart';
 import '../utils.dart';
 import 'elevated_expansion_tile.dart';
 
-@immutable
 class CourseDetailPage extends StatelessWidget {
-  CourseDetailPage(this.courseId) : assert(courseId != null);
+  const CourseDetailPage(this.courseId) : assert(courseId != null);
 
   final String courseId;
 
@@ -178,12 +177,12 @@ class CourseDetailPage extends StatelessWidget {
       ),
       Center(
         child: FlatButton(
-          child: Text(HpiL11n.get(context, 'course/course.reportError')),
           onPressed: () => FeedbackDialog.show(
             context,
             title: HpiL11n.get(context, 'course/course.reportError'),
             feedbackType: 'course.data.error',
           ),
+          child: Text(HpiL11n.get(context, 'course/course.reportError')),
         ),
       ),
       SizedBox(height: 16)
@@ -222,7 +221,9 @@ class CourseDetailPage extends StatelessWidget {
     assert(IconData != null);
     assert(titleKey != null);
 
-    if (isNullOrBlank(content)) return null;
+    if (isNullOrBlank(content)) {
+      return null;
+    }
     return ElevatedExpansionTile(
       leading: Icon(icon),
       title: Text(
@@ -231,7 +232,7 @@ class CourseDetailPage extends StatelessWidget {
       ),
       children: [
         Html(
-          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           data: content,
           onLinkTap: tryLaunch,
         )

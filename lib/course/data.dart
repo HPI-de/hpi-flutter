@@ -9,25 +9,29 @@ import 'package:immutable_proto/immutable_proto.dart';
 
 @immutable
 class UInt32Value {
-  final int value;
-
-  UInt32Value({this.value});
+  const UInt32Value({this.value});
 
   UInt32Value.fromProto(proto.UInt32Value uInt32Value)
       : this(value: uInt32Value.hasValue() ? uInt32Value.value : null);
+
+  final int value;
+
   proto.UInt32Value toProto() {
     final uInt32Value = proto.UInt32Value();
-    if (value != null) uInt32Value.value = value;
+    if (value != null) {
+      uInt32Value.value = value;
+    }
     return uInt32Value;
   }
 
+  @override
   bool operator ==(Object other) {
     return other is UInt32Value && value == other.value;
   }
 
-  int get hashCode => hashList([
-        value
-      ]);
+  @override
+  int get hashCode => hashList([value]);
+
   UInt32Value copy({
     int value,
   }) =>
@@ -35,6 +39,7 @@ class UInt32Value {
         value: value ?? this.value,
       );
 
+  @override
   String toString() {
     return 'UInt32Value(value: $value)';
   }
@@ -42,11 +47,7 @@ class UInt32Value {
 
 @immutable
 class Date {
-  final int year;
-  final int month;
-  final int day;
-
-  Date({
+  const Date({
     @required this.year,
     @required this.month,
     @required this.day,
@@ -58,14 +59,26 @@ class Date {
           month: date.hasMonth() ? date.month : null,
           day: date.hasDay() ? date.day : null,
         );
+
+  final int year;
+  final int month;
+  final int day;
+
   proto.Date toProto() {
     final date = proto.Date();
-    if (year != null) date.year = year;
-    if (month != null) date.month = month;
-    if (day != null) date.day = day;
+    if (year != null) {
+      date.year = year;
+    }
+    if (month != null) {
+      date.month = month;
+    }
+    if (day != null) {
+      date.day = day;
+    }
     return date;
   }
 
+  @override
   bool operator ==(Object other) {
     return other is Date &&
         year == other.year &&
@@ -73,6 +86,7 @@ class Date {
         day == other.day;
   }
 
+  @override
   int get hashCode => hashList([
         year,
         month,
@@ -89,6 +103,7 @@ class Date {
         day: day ?? this.day,
       );
 
+  @override
   String toString() {
     return 'Date(year: $year, month: $month, day: $day)';
   }
@@ -100,19 +115,7 @@ enum CourseSeriesType { seminar, blockSeminar, exercise, project, lecture }
 
 @immutable
 class CourseSeries {
-  final String id;
-  final String title;
-  final String shortTitle;
-  final String abbreviation;
-  final int ects;
-  final int hoursPerWeek;
-  @required
-  final CourseSeriesCompulsory compulsory;
-  final String language;
-  @required
-  final KtList<CourseSeriesType> types;
-
-  CourseSeries({
+  const CourseSeries({
     this.id,
     this.title,
     this.shortTitle,
@@ -138,24 +141,50 @@ class CourseSeries {
               courseSeries.hasHoursPerWeek() ? courseSeries.hoursPerWeek : null,
           compulsory: courseSeriesCompulsoryFromProto(courseSeries.compulsory),
           language: courseSeries.hasLanguage() ? courseSeries.language : null,
-          types: KtList.from(courseSeries.types)
-              .map((t) => courseSeriesTypeFromProto(t)),
+          types: KtList.from(courseSeries.types).map(courseSeriesTypeFromProto),
         );
+
+  final String id;
+  final String title;
+  final String shortTitle;
+  final String abbreviation;
+  final int ects;
+  final int hoursPerWeek;
+  @required
+  final CourseSeriesCompulsory compulsory;
+  final String language;
+  @required
+  final KtList<CourseSeriesType> types;
+
   proto.CourseSeries toProto() {
     final courseSeries = proto.CourseSeries();
-    if (id != null) courseSeries.id = id;
-    if (title != null) courseSeries.title = title;
-    if (shortTitle != null) courseSeries.shortTitle = shortTitle;
-    if (abbreviation != null) courseSeries.abbreviation = abbreviation;
-    if (ects != null) courseSeries.ects = ects;
-    if (hoursPerWeek != null) courseSeries.hoursPerWeek = hoursPerWeek;
+    if (id != null) {
+      courseSeries.id = id;
+    }
+    if (title != null) {
+      courseSeries.title = title;
+    }
+    if (shortTitle != null) {
+      courseSeries.shortTitle = shortTitle;
+    }
+    if (abbreviation != null) {
+      courseSeries.abbreviation = abbreviation;
+    }
+    if (ects != null) {
+      courseSeries.ects = ects;
+    }
+    if (hoursPerWeek != null) {
+      courseSeries.hoursPerWeek = hoursPerWeek;
+    }
     courseSeries.compulsory = courseSeriesCompulsoryToProto(compulsory);
-    if (language != null) courseSeries.language = language;
-    courseSeries.types
-        .addAll(types.map((t) => courseSeriesTypeToProto(t)).iter);
+    if (language != null) {
+      courseSeries.language = language;
+    }
+    courseSeries.types.addAll(types.map(courseSeriesTypeToProto).iter);
     return courseSeries;
   }
 
+  @override
   bool operator ==(Object other) {
     return other is CourseSeries &&
         id == other.id &&
@@ -169,6 +198,7 @@ class CourseSeries {
         types == other.types;
   }
 
+  @override
   int get hashCode => hashList([
         id,
         title,
@@ -203,6 +233,7 @@ class CourseSeries {
         types: types ?? this.types,
       );
 
+  @override
   String toString() {
     return 'CourseSeries(id: $id, title: $title, shortTitle: $shortTitle, abbreviation: $abbreviation, ects: $ects, hoursPerWeek: $hoursPerWeek, compulsory: $compulsory, language: $language, types: $types)';
   }
@@ -270,12 +301,7 @@ class CourseSeries {
 
 @immutable
 class Semester {
-  final String id;
-  @required
-  final SemesterTerm term;
-  final int year;
-
-  Semester({
+  const Semester({
     this.id,
     @required this.term,
     this.year,
@@ -287,14 +313,25 @@ class Semester {
           term: semesterTermFromProto(semester.term),
           year: semester.hasYear() ? semester.year : null,
         );
+
+  final String id;
+  @required
+  final SemesterTerm term;
+  final int year;
+
   proto.Semester toProto() {
     final semester = proto.Semester();
-    if (id != null) semester.id = id;
+    if (id != null) {
+      semester.id = id;
+    }
     semester.term = semesterTermToProto(term);
-    if (year != null) semester.year = year;
+    if (year != null) {
+      semester.year = year;
+    }
     return semester;
   }
 
+  @override
   bool operator ==(Object other) {
     return other is Semester &&
         id == other.id &&
@@ -302,6 +339,7 @@ class Semester {
         year == other.year;
   }
 
+  @override
   int get hashCode => hashList([
         id,
         term,
@@ -318,9 +356,8 @@ class Semester {
         year: year ?? this.year,
       );
 
-  String toString() {
-    return 'Semester(id: $id, term: $term, year: $year)';
-  }
+  @override
+  String toString() => 'Semester(id: $id, term: $term, year: $year)';
 
   static SemesterTerm semesterTermFromProto(proto.Semester_Term semesterTerm) {
     switch (semesterTerm) {
@@ -347,18 +384,7 @@ enum SemesterTerm { winter, summer }
 
 @immutable
 class Course {
-  final String id;
-  final String courseSeriesId;
-  final String semesterId;
-  @required
-  final KtList<String> lecturers;
-  @required
-  final KtList<String> assistants;
-  final String website;
-  final UInt32Value attendance;
-  final Date enrollmentDeadline;
-
-  Course({
+  const Course({
     this.id,
     this.courseSeriesId,
     this.semesterId,
@@ -386,21 +412,44 @@ class Course {
               ? Date.fromProto(course.enrollmentDeadline)
               : null,
         );
+
+  final String id;
+  final String courseSeriesId;
+  final String semesterId;
+  @required
+  final KtList<String> lecturers;
+  @required
+  final KtList<String> assistants;
+  final String website;
+  final UInt32Value attendance;
+  final Date enrollmentDeadline;
+
   proto.Course toProto() {
     final course = proto.Course();
-    if (id != null) course.id = id;
-    if (courseSeriesId != null) course.courseSeriesId = courseSeriesId;
-    if (semesterId != null) course.semesterId = semesterId;
+    if (id != null) {
+      course.id = id;
+    }
+    if (courseSeriesId != null) {
+      course.courseSeriesId = courseSeriesId;
+    }
+    if (semesterId != null) {
+      course.semesterId = semesterId;
+    }
     course.lecturers.addAll(lecturers.iter);
     course.assistants.addAll(assistants.iter);
-    if (website != null) course.website = website;
-    if (attendance != null) course.attendance = attendance.toProto();
+    if (website != null) {
+      course.website = website;
+    }
+    if (attendance != null) {
+      course.attendance = attendance.toProto();
+    }
     if (enrollmentDeadline != null) {
       course.enrollmentDeadline = enrollmentDeadline.toProto();
     }
     return course;
   }
 
+  @override
   bool operator ==(Object other) {
     return other is Course &&
         id == other.id &&
@@ -413,6 +462,7 @@ class Course {
         enrollmentDeadline == other.enrollmentDeadline;
   }
 
+  @override
   int get hashCode => hashList([
         id,
         courseSeriesId,
@@ -444,6 +494,7 @@ class Course {
         enrollmentDeadline: enrollmentDeadline ?? this.enrollmentDeadline,
       );
 
+  @override
   String toString() {
     return 'Course(id: $id, courseSeriesId: $courseSeriesId, semesterId: $semesterId, lecturers: $lecturers, assistants: $assistants, website: $website, attendance: $attendance, enrollmentDeadline: $enrollmentDeadline)';
   }
@@ -451,17 +502,7 @@ class Course {
 
 @immutable
 class CourseDetail {
-  final String courseId;
-  final String teletask;
-  final Map<String, CourseDetailProgramList> programs;
-  final String description;
-  final String requirements;
-  final String learning;
-  final String examination;
-  final String dates;
-  final String literature;
-
-  CourseDetail({
+  const CourseDetail({
     this.courseId,
     this.teletask,
     this.programs,
@@ -492,10 +533,25 @@ class CourseDetail {
           literature:
               courseDetail.hasLiterature() ? courseDetail.literature : null,
         );
+
+  final String courseId;
+  final String teletask;
+  final Map<String, CourseDetailProgramList> programs;
+  final String description;
+  final String requirements;
+  final String learning;
+  final String examination;
+  final String dates;
+  final String literature;
+
   proto.CourseDetail toProto() {
     final courseDetail = proto.CourseDetail();
-    if (courseId != null) courseDetail.courseId = courseId;
-    if (teletask != null) courseDetail.teletask = teletask;
+    if (courseId != null) {
+      courseDetail.courseId = courseId;
+    }
+    if (teletask != null) {
+      courseDetail.teletask = teletask;
+    }
     if (programs != null) {
       courseDetail.programs
         ..clear()
@@ -503,15 +559,28 @@ class CourseDetail {
           for (var entry in programs.entries) entry.key: entry.value.toProto()
         });
     }
-    if (description != null) courseDetail.description = description;
-    if (requirements != null) courseDetail.requirements = requirements;
-    if (learning != null) courseDetail.learning = learning;
-    if (examination != null) courseDetail.examination = examination;
-    if (dates != null) courseDetail.dates = dates;
-    if (literature != null) courseDetail.literature = literature;
+    if (description != null) {
+      courseDetail.description = description;
+    }
+    if (requirements != null) {
+      courseDetail.requirements = requirements;
+    }
+    if (learning != null) {
+      courseDetail.learning = learning;
+    }
+    if (examination != null) {
+      courseDetail.examination = examination;
+    }
+    if (dates != null) {
+      courseDetail.dates = dates;
+    }
+    if (literature != null) {
+      courseDetail.literature = literature;
+    }
     return courseDetail;
   }
 
+  @override
   bool operator ==(Object other) {
     return other is CourseDetail &&
         courseId == other.courseId &&
@@ -525,6 +594,7 @@ class CourseDetail {
         literature == other.literature;
   }
 
+  @override
   int get hashCode => hashList([
         courseId,
         teletask,
@@ -559,6 +629,7 @@ class CourseDetail {
         literature: literature ?? this.literature,
       );
 
+  @override
   String toString() {
     return 'CourseDetail(courseId: $courseId, teletask: $teletask, programs: $programs, description: $description, requirements: $requirements, learning: $learning, examination: $examination, dates: $dates, literature: $literature)';
   }
@@ -566,10 +637,7 @@ class CourseDetail {
 
 @immutable
 class CourseDetailProgramList {
-  @required
-  final KtList<String> programs;
-
-  CourseDetailProgramList({
+  const CourseDetailProgramList({
     @required this.programs,
   }) : assert(programs != null);
 
@@ -584,10 +652,15 @@ class CourseDetailProgramList {
     return courseDetailProgramList;
   }
 
+  @required
+  final KtList<String> programs;
+
+  @override
   bool operator ==(Object other) {
     return other is CourseDetailProgramList && programs == other.programs;
   }
 
+  @override
   int get hashCode => hashList([
         programs,
       ]);
@@ -598,7 +671,6 @@ class CourseDetailProgramList {
         programs: programs ?? this.programs,
       );
 
-  String toString() {
-    return 'CourseDetailProgramList(programs: $programs)';
-  }
+  @override
+  String toString() => 'CourseDetailProgramList(programs: $programs)';
 }

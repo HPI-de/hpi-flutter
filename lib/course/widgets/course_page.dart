@@ -9,7 +9,6 @@ import '../bloc.dart';
 import '../data.dart';
 import '../utils.dart';
 
-@immutable
 class CoursePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
