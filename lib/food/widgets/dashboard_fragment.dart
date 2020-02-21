@@ -7,7 +7,6 @@ import '../bloc.dart';
 import '../data.dart';
 import 'restaurant_menu.dart';
 
-@immutable
 class FoodFragment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -16,14 +15,16 @@ class FoodFragment extends StatelessWidget {
           .get<FoodBloc>()
           .getMenuItems(restaurantId: 'mensaGriebnitzsee'),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return buildLoadingError(snapshot);
+        if (!snapshot.hasData) {
+          return buildLoadingError(snapshot);
+        }
 
         if (snapshot.data.isEmpty()) {
           return DashboardFragment(
             title: Text(HpiL11n.get(context, 'food')),
             child: Container(
               alignment: Alignment.center,
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16),
               child: Text(HpiL11n.get(context, 'food/noMenu')),
             ),
           );

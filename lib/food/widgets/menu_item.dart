@@ -9,14 +9,14 @@ import '../bloc.dart';
 import '../data.dart';
 
 class MenuItemView extends StatelessWidget {
-  final MenuItem item;
-  final bool showCounter;
-
-  MenuItemView(
+  const MenuItemView(
     this.item, {
     this.showCounter = true,
   })  : assert(item != null),
         assert(showCounter != null);
+
+  final MenuItem item;
+  final bool showCounter;
 
   void _showDetails(BuildContext context) {
     showModalBottomSheet(
@@ -56,7 +56,9 @@ class MenuItemView extends StatelessWidget {
   // ignore: unused_element
   Widget _buildLabels(KtSet<String> labelIds) {
     final ids = labelIds.toList();
-    if (ids.isEmpty()) return Container();
+    if (ids.isEmpty()) {
+      return Container();
+    }
 
     return Stack(
       children: [
@@ -71,9 +73,9 @@ class MenuItemView extends StatelessWidget {
 }
 
 class LabelView extends StatelessWidget {
-  final String labelId;
+  const LabelView(this.labelId) : assert(labelId != null);
 
-  LabelView(this.labelId) : assert(labelId != null);
+  final String labelId;
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +86,9 @@ class LabelView extends StatelessWidget {
       child: StreamBuilder<Label>(
         stream: services.get<FoodBloc>().getLabel(labelId),
         builder: (_, snapshot) {
-          if (!snapshot.hasData) return Container();
+          if (!snapshot.hasData) {
+            return Container();
+          }
 
           return Padding(
             padding: const EdgeInsets.all(4),
@@ -99,7 +103,7 @@ class LabelView extends StatelessWidget {
 }
 
 class MenuItemDetails extends StatelessWidget {
-  MenuItemDetails(this.item) : assert(item != null);
+  const MenuItemDetails(this.item) : assert(item != null);
 
   final MenuItem item;
 
@@ -117,7 +121,7 @@ class MenuItemDetails extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                HpiL11n.get(context, "food/offer", args: [item.counter]),
+                HpiL11n.get(context, 'food/offer', args: [item.counter]),
                 style: context.theme.textTheme.headline,
               ),
               Text(
@@ -133,7 +137,7 @@ class MenuItemDetails extends StatelessWidget {
           ),
         ),
         Text(
-          HpiL11n.get(context, 'currency.eur', args: [item.prices["students"]]),
+          HpiL11n.get(context, 'currency.eur', args: [item.prices['students']]),
         ),
       ],
     );
@@ -146,7 +150,9 @@ class MenuItemDetails extends StatelessWidget {
     return StreamBuilder<Label>(
       stream: services.get<FoodBloc>().getLabel(id),
       builder: (_, snapshot) {
-        if (!snapshot.hasData) return Chip(label: Text(id));
+        if (!snapshot.hasData) {
+          return Chip(label: Text(id));
+        }
 
         final label = snapshot.data;
         return Chip(

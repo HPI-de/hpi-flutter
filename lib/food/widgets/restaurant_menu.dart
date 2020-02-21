@@ -8,14 +8,13 @@ import '../bloc.dart';
 import '../data.dart';
 import 'menu_item.dart';
 
-@immutable
 class RestaurantMenu extends StatelessWidget {
-  final String restaurantId;
-  final KtList<MenuItem> menuItems;
-
-  RestaurantMenu({@required this.restaurantId, @required this.menuItems})
+  const RestaurantMenu({@required this.restaurantId, @required this.menuItems})
       : assert(restaurantId != null),
         assert(menuItems != null);
+
+  final String restaurantId;
+  final KtList<MenuItem> menuItems;
 
   @override
   Widget build(BuildContext context) {

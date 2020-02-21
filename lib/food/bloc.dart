@@ -10,8 +10,6 @@ import 'data.dart';
 
 @immutable
 class FoodBloc {
-  final FoodServiceClient _client;
-
   FoodBloc()
       : _client = FoodServiceClient(
           ClientChannel(
@@ -24,9 +22,13 @@ class FoodBloc {
           options: createCallOptions(),
         );
 
+  final FoodServiceClient _client;
+
   Stream<KtList<MenuItem>> getMenuItems({String restaurantId}) {
     final req = ListMenuItemsRequest()..date = LocalDate.today().toDate();
-    if (restaurantId != null) req.restaurantId = restaurantId;
+    if (restaurantId != null) {
+      req.restaurantId = restaurantId;
+    }
 
     return Stream.fromFuture(_client.listMenuItems(req))
         .map((r) => KtList.from(r.items).map((i) => MenuItem.fromProto(i)));

@@ -7,9 +7,6 @@ import 'package:time_machine/time_machine.dart';
 
 @immutable
 class Restaurant {
-  final String id;
-  final String title;
-
   const Restaurant({@required this.id, @required this.title})
       : assert(id != null),
         assert(title != null);
@@ -19,6 +16,10 @@ class Restaurant {
           id: restaurant.id,
           title: restaurant.title,
         );
+
+  final String id;
+  final String title;
+
   proto.Restaurant toProto() {
     return proto.Restaurant()
       ..id = id
@@ -28,14 +29,6 @@ class Restaurant {
 
 @immutable
 class MenuItem {
-  final String id;
-  final String restaurantId;
-  final LocalDate date;
-  final String title;
-  final Map<String, double> prices;
-  final String counter;
-  final KtSet<String> labelIds;
-
   const MenuItem({
     @required this.id,
     @required this.restaurantId,
@@ -59,6 +52,15 @@ class MenuItem {
           counter: item.counter,
           labelIds: KtSet.from(item.labelIds),
         );
+
+  final String id;
+  final String restaurantId;
+  final LocalDate date;
+  final String title;
+  final Map<String, double> prices;
+  final String counter;
+  final KtSet<String> labelIds;
+
   proto.MenuItem toProto() {
     return proto.MenuItem()
       ..id = id
@@ -74,10 +76,6 @@ class MenuItem {
 
 @immutable
 class Label {
-  final String id;
-  final String title;
-  final String icon;
-
   const Label({@required this.id, @required this.title, @required this.icon})
       : assert(id != null),
         assert(title != null),
@@ -89,6 +87,11 @@ class Label {
           title: label.title,
           icon: label.icon,
         );
+
+  final String id;
+  final String title;
+  final String icon;
+
   proto.Label toProto() {
     return proto.Label()
       ..id = id

@@ -8,7 +8,6 @@ import '../bloc.dart';
 import '../data.dart';
 import 'restaurant_menu.dart';
 
-@immutable
 class FoodPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,7 @@ class FoodPage extends StatelessWidget {
             title: Text(HpiL11n.get(context, 'food')),
           ),
           Builder(
-            builder: (context) => _buildRestaurantList(context),
+            builder: _buildRestaurantList,
           ),
         ],
       ),
@@ -32,7 +31,9 @@ Widget _buildRestaurantList(BuildContext context) {
   return StreamBuilder<KtList<MenuItem>>(
     stream: services.get<FoodBloc>().getMenuItems(),
     builder: (context, snapshot) {
-      if (!snapshot.hasData) return buildLoadingErrorSliver(snapshot);
+      if (!snapshot.hasData) {
+        return buildLoadingErrorSliver(snapshot);
+      }
 
       if (snapshot.data.isEmpty()) {
         return SliverFillRemaining(
