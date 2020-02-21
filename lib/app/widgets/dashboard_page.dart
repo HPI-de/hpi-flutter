@@ -7,7 +7,6 @@ import 'package:hpi_flutter/openhpi/openhpi.dart';
 import '../utils.dart';
 import 'main_scaffold.dart';
 
-@immutable
 class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -17,7 +16,7 @@ class DashboardPage extends StatelessWidget {
             EdgeInsets.fromLTRB(16, context.mediaQuery.padding.top, 16, 32),
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            padding: EdgeInsets.symmetric(vertical: 8),
             child: Align(
               alignment: Alignment.topRight,
               child: Image.asset(
@@ -32,7 +31,7 @@ class DashboardPage extends StatelessWidget {
           NewsFragment(),
           FoodFragment(),
         ].expand((child) sync* {
-          yield const SizedBox(height: 16);
+          yield SizedBox(height: 16);
           yield child;
         }).toList(),
       ),
@@ -40,9 +39,8 @@ class DashboardPage extends StatelessWidget {
   }
 }
 
-@immutable
 class DashboardFragment extends StatelessWidget {
-  DashboardFragment({@required this.title, @required this.child})
+  const DashboardFragment({@required this.title, @required this.child})
       : assert(title != null),
         assert(child != null);
 

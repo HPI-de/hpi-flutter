@@ -41,8 +41,10 @@ class NavigationObserver extends flutter.RouteObserver {
     flutter.Route<dynamic> oldRoute,
   ) {
     print(
-        "Navigating from ${oldRoute?.settings?.name} to ${newRoute?.settings?.name}");
+        'Navigating from ${oldRoute?.settings?.name} to ${newRoute?.settings?.name}');
     var knownRoute = Route.fromString(newRoute?.settings?.name);
-    if (knownRoute != null) service.lastKnownRoute = knownRoute;
+    if (knownRoute != null) {
+      service.lastKnownRoute = knownRoute;
+    }
   }
 }

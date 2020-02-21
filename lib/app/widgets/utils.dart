@@ -11,7 +11,9 @@ Widget buildAppBarTitle({
   assert(context != null);
   assert(title != null);
 
-  if (subtitle == null) return title;
+  if (subtitle == null) {
+    return title;
+  }
 
   return Column(
     mainAxisSize: MainAxisSize.min,

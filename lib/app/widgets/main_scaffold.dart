@@ -8,15 +8,7 @@ import 'package:outline_material_icons/outline_material_icons.dart';
 
 import '../utils.dart';
 
-@immutable
 class MainScaffold extends StatelessWidget {
-  final PreferredSizeWidget appBar;
-  final Widget body;
-  final Widget floatingActionButton;
-  final KtList<Widget> bottomActions;
-  final KtList<PopupMenuItem> menuItems;
-  final Function(dynamic) menuItemHandler;
-
   MainScaffold({
     this.appBar,
     @required this.body,
@@ -25,7 +17,14 @@ class MainScaffold extends StatelessWidget {
     this.menuItems,
     this.menuItemHandler,
   })  : assert(body != null),
-        this.bottomActions = bottomActions ?? KtList.empty();
+        bottomActions = bottomActions ?? KtList.empty();
+
+  final PreferredSizeWidget appBar;
+  final Widget body;
+  final Widget floatingActionButton;
+  final KtList<Widget> bottomActions;
+  final KtList<PopupMenuItem> menuItems;
+  final Function(dynamic) menuItemHandler;
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +129,6 @@ class MainScaffold extends StatelessWidget {
   }
 }
 
-@immutable
 class NavigationItem extends StatelessWidget {
   const NavigationItem({
     @required this.icon,
