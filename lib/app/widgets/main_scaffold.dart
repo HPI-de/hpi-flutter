@@ -1,22 +1,14 @@
 import 'package:flutter/material.dart' hide Route;
-import 'package:hpi_flutter/app/services/navigation.dart';
-import 'package:hpi_flutter/core/hpi_icons.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/feedback/widgets/feedback_dialog.dart';
+import 'package:hpi_flutter/app/app.dart';
+import 'package:hpi_flutter/core/core.dart' hide Image;
+import 'package:hpi_flutter/feedback/feedback.dart';
 import 'package:hpi_flutter/route.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
-import 'package:provider/provider.dart';
 
-@immutable
+import '../utils.dart';
+
 class MainScaffold extends StatelessWidget {
-  final PreferredSizeWidget appBar;
-  final Widget body;
-  final Widget floatingActionButton;
-  final KtList<Widget> bottomActions;
-  final KtList<PopupMenuItem> menuItems;
-  final Function(dynamic) menuItemHandler;
-
   MainScaffold({
     this.appBar,
     @required this.body,
@@ -25,7 +17,14 @@ class MainScaffold extends StatelessWidget {
     this.menuItems,
     this.menuItemHandler,
   })  : assert(body != null),
-        this.bottomActions = bottomActions ?? KtList.empty();
+        bottomActions = bottomActions ?? KtList.empty();
+
+  final PreferredSizeWidget appBar;
+  final Widget body;
+  final Widget floatingActionButton;
+  final KtList<Widget> bottomActions;
+  final KtList<PopupMenuItem> menuItems;
+  final Function(dynamic) menuItemHandler;
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +129,6 @@ class MainScaffold extends StatelessWidget {
   }
 }
 
-@immutable
 class NavigationItem extends StatelessWidget {
   const NavigationItem({
     @required this.icon,
@@ -146,11 +144,10 @@ class NavigationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var isActive =
-        route == Provider.of<NavigationService>(context).lastKnownRoute;
+    var isActive = route == services.get<NavigationService>().lastKnownRoute;
     var color = isActive
-        ? Theme.of(context).primaryColor
-        : Theme.of(context).colorScheme.onSurface.withOpacity(0.6);
+        ? context.theme.primaryColor
+        : context.theme.colorScheme.onSurface.withOpacity(0.6);
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -160,9 +157,9 @@ class NavigationItem extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(4),
           onTap: () {
-            var navigator = Navigator.of(context);
-            var lastKnownRoute =
-                Provider.of<NavigationService>(context).lastKnownRoute;
+            final navigator = context.navigator;
+            final lastKnownRoute =
+                services.get<NavigationService>().lastKnownRoute;
             if (lastKnownRoute.name != route.name) {
               navigator
                 ..popUntil((_) => !navigator.canPop())
@@ -183,10 +180,7 @@ class NavigationItem extends StatelessWidget {
                 Expanded(
                   child: Text(
                     text,
-                    style: Theme.of(context)
-                        .textTheme
-                        .body2
-                        .copyWith(color: color),
+                    style: context.theme.textTheme.body2.copyWith(color: color),
                   ),
                 ),
               ],

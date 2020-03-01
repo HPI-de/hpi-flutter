@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart' hide Action, Route;
 import 'package:flutter_html/flutter_html.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/core/utils.dart';
-import 'package:hpi_flutter/core/widgets/chip_group.dart';
-import 'package:hpi_flutter/core/widgets/image_widget.dart';
-import 'package:hpi_flutter/core/widgets/pagination.dart';
-import 'package:hpi_flutter/core/widgets/preview_box.dart';
-import 'package:hpi_flutter/core/widgets/scrim_around.dart';
-import 'package:hpi_flutter/core/widgets/stream_chip.dart';
-import 'package:hpi_flutter/myhpi/data/bloc.dart';
-import 'package:hpi_flutter/myhpi/data/infobit.dart';
+import 'package:hpi_flutter/app/app.dart';
+import 'package:hpi_flutter/core/core.dart';
 import 'package:hpi_flutter/route.dart';
 import 'package:pedantic/pedantic.dart';
-import 'package:provider/provider.dart';
+
+import '../bloc.dart';
+import '../data.dart';
 
 class InfoBitCard extends StatelessWidget {
   const InfoBitCard(this.infoBit, {Key key})
@@ -27,7 +21,7 @@ class InfoBitCard extends StatelessWidget {
       margin: EdgeInsets.all(8),
       child: InkWell(
         onTap: () {
-          Navigator.of(context).pushNamed(
+          context.navigator.pushNamed(
             Route.myhpiInfoBit.name,
             arguments: infoBit.id,
           );
@@ -51,12 +45,12 @@ class InfoBitCard extends StatelessWidget {
     final title = [
       Text(
         infoBit.title,
-        style: Theme.of(context).textTheme.headline,
+        style: context.theme.textTheme.headline,
       ),
       if (infoBit.subtitle != null)
         Text(
           infoBit.subtitle,
-          style: Theme.of(context).textTheme.subhead,
+          style: context.theme.textTheme.subhead,
         ),
     ];
 
@@ -95,9 +89,7 @@ class InfoBitCard extends StatelessWidget {
               if (infoBit.description != null)
                 Text(
                   infoBit.description,
-                  style: Theme.of(context)
-                      .textTheme
-                      .body1
+                  style: context.theme.textTheme.body1
                       .copyWith(color: Colors.black.withOpacity(0.6)),
                 ),
             ],
@@ -131,11 +123,13 @@ class InfoBitCard extends StatelessWidget {
     assert(context != null);
 
     return StreamBuilder<PaginationResponse<InfoBit>>(
-      stream: Provider.of<MyHpiBloc>(context)
+      stream: services
+          .get<MyHpiBloc>()
           .getInfoBits(parentId: infoBit.id, pageSize: 3),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return Container();
-        if (snapshot.data.items.isEmpty()) return Container();
+        if (!snapshot.hasData || snapshot.data.items.isEmpty()) {
+          return Container();
+        }
 
         return Column(
           children: <Widget>[
@@ -147,7 +141,7 @@ class InfoBitCard extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: OutlineButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed(
+                      context.navigator.pushNamed(
                         Route.myhpiInfoBit.name,
                         arguments: infoBit.id,
                       );
@@ -172,7 +166,7 @@ class InfoBitCard extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         pageSize: 5,
         dataLoader: ({pageSize, pageToken}) {
-          return Provider.of<MyHpiBloc>(context).getInfoBits(
+          return services.get<MyHpiBloc>().getInfoBits(
               parentId: infoBit.id, pageSize: pageSize, pageToken: pageToken);
         },
         itemBuilder: (_, i, __) => Padding(
@@ -186,7 +180,9 @@ class InfoBitCard extends StatelessWidget {
   Widget _buildFoot(BuildContext context) {
     assert(context != null);
 
-    if (infoBit.actionIds.isEmpty() && infoBit.tagIds.isEmpty()) return null;
+    if (infoBit.actionIds.isEmpty() && infoBit.tagIds.isEmpty()) {
+      return null;
+    }
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16),
@@ -201,7 +197,7 @@ class InfoBitCard extends StatelessWidget {
             leading: Text(HpiL11n.get(context, 'myhpi/infoBit.tags.leading')),
             children: infoBit.tagIds
                 .map((t) => StreamChip<InfoBitTag>(
-                      stream: Provider.of<MyHpiBloc>(context).getTag(t),
+                      stream: services.get<MyHpiBloc>().getTag(t),
                       labelBuilder: (t) => Text(t.title),
                     ))
                 .asList(),
@@ -222,11 +218,13 @@ class InfoBitActionChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamActionChip<Action>(
-      stream: Provider.of<MyHpiBloc>(context).getAction(actionId),
+      stream: services.get<MyHpiBloc>().getAction(actionId),
       avatarBuilder: (a) => IconWidget(a.icon),
       labelBuilder: (a) => Text(a.title),
       onPressed: (action) async {
-        if (action == null) return;
+        if (action == null) {
+          return;
+        }
 
         if (action is TextAction) {
           unawaited(Navigator.push(
@@ -240,8 +238,8 @@ class InfoBitActionChip extends StatelessWidget {
               ),
             ),
           ));
-        } else {
-          if (action is LinkAction) await tryLaunch(action.url);
+        } else if (action is LinkAction) {
+          await tryLaunch(action.url);
         }
       },
     );
@@ -279,7 +277,7 @@ class InfoBitListTile extends StatelessWidget {
             )
           : null,
       onTap: () {
-        Navigator.of(context).pushNamed(
+        context.navigator.pushNamed(
           Route.myhpiInfoBit.name,
           arguments: infoBit.id,
         );
@@ -302,7 +300,7 @@ class InfoBitPreviewBox extends StatelessWidget {
       title: Text(infoBit.title),
       caption: Text(infoBit.subtitle),
       onTap: () {
-        Navigator.of(context).pushNamed(
+        context.navigator.pushNamed(
           Route.myhpiInfoBit.name,
           arguments: infoBit.id,
         );

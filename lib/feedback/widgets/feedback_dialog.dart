@@ -1,16 +1,22 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart' hide Feedback;
-import 'package:hpi_flutter/app/services/navigation.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/core/utils.dart';
-import 'package:hpi_flutter/core/widgets/loading_button.dart';
-import 'package:hpi_flutter/feedback/data/bloc.dart';
-import 'package:hpi_flutter/feedback/data/feedback.dart';
-import 'package:provider/provider.dart';
+import 'package:hpi_flutter/app/app.dart';
+import 'package:hpi_flutter/core/core.dart';
 import 'package:screenshot/screenshot.dart';
 
+import '../bloc.dart';
+import '../data.dart';
+
 class FeedbackDialog extends StatefulWidget {
+  const FeedbackDialog._({
+    Key key,
+    this.title = 'Feedback',
+    this.feedbackType,
+    this.screenshot,
+  })  : assert(title != null),
+        super(key: key);
+
   static void show(
     BuildContext context, {
     String title = 'Feedback',
@@ -18,34 +24,26 @@ class FeedbackDialog extends StatefulWidget {
   }) async {
     assert(context != null);
 
-    var currentScreenshot =
-        await (await Provider.of<ScreenshotController>(context).capture())
-            .readAsBytes();
+    var currentScreenshot = await services
+        .get<ScreenshotController>()
+        .capture()
+        .then((screenshot) => screenshot.readAsBytes());
 
     await showModalBottomSheet(
       isScrollControlled: true,
       context: context,
-      builder: (context) => ProxyProvider<Uri, FeedbackBloc>(
-        update: (_, serverUrl, __) =>
-            FeedbackBloc(serverUrl, Localizations.localeOf(context)),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: FeedbackDialog._(
-                title: title,
-                feedbackType: feedbackType,
-                screenshot: currentScreenshot),
-          ),
+      builder: (context) => SingleChildScrollView(
+        child: Padding(
+          padding:
+              EdgeInsets.only(bottom: context.mediaQuery.viewInsets.bottom),
+          child: FeedbackDialog._(
+              title: title,
+              feedbackType: feedbackType,
+              screenshot: currentScreenshot),
         ),
       ),
     );
   }
-
-  const FeedbackDialog._(
-      {Key key, this.title = 'Feedback', this.feedbackType, this.screenshot})
-      : assert(title != null),
-        super(key: key);
 
   final String title;
   final String feedbackType;
@@ -57,7 +55,7 @@ class FeedbackDialog extends StatefulWidget {
 
 class _FeedbackDialogState extends State<FeedbackDialog>
     with TickerProviderStateMixin {
-  String message = "";
+  String message = '';
   bool includeContact = true;
   bool includeScreenshotAndLogs = true;
   bool isSending = false;
@@ -82,7 +80,7 @@ class _FeedbackDialogState extends State<FeedbackDialog>
     return [
       Text(
         widget.title,
-        style: Theme.of(context).textTheme.display1,
+        style: context.theme.textTheme.display1,
       ),
       SizedBox(height: 16),
       TextFormField(
@@ -103,7 +101,7 @@ class _FeedbackDialogState extends State<FeedbackDialog>
         },
       ),
       SizedBox(height: 16),
-      // TODO: enable when login is implemented
+      // TODO(ctiedt): enable when login is implemented, https://github.com/HPI-de/hpi_flutter/issues/114
       /* CheckboxListTile(
         controlAffinity: ListTileControlAffinity.leading,
         title: Text('Include your contact details'),
@@ -130,28 +128,30 @@ class _FeedbackDialogState extends State<FeedbackDialog>
           loadingText: HpiL11n.get(context, 'sending'),
           isLoading: isSending,
           onPressed: _send,
-          color: Theme.of(context).primaryColor,
+          color: context.theme.primaryColor,
         ),
       ),
     ];
   }
 
   void _send() {
-    if (!_formKey.currentState.validate()) return;
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
 
     setState(() {
       isSending = true;
       Uri screenUri = Uri.https('mobiledev.hpi.de',
-          Provider.of<NavigationService>(context).lastKnownRoute.name);
+          services.get<NavigationService>().lastKnownRoute.name);
       Feedback.create(
         message.trim(),
-        screenUri,
-        includeContact,
-        includeScreenshotAndLogs,
-        widget.screenshot,
-        includeScreenshotAndLogs,
+        screenUri: screenUri,
+        includeContact: includeContact,
+        includeScreenshot: includeScreenshotAndLogs,
+        screenshot: widget.screenshot,
+        includeLogs: includeScreenshotAndLogs,
       ).then((f) {
-        Provider.of<FeedbackBloc>(context).sendFeedback(f);
+        services.get<FeedbackBloc>().sendFeedback(f);
       }).then((f) {
         _onSent(true);
       }).catchError((e) {
@@ -167,7 +167,7 @@ class _FeedbackDialogState extends State<FeedbackDialog>
 
     setState(() {
       isSending = false;
-      Scaffold.of(context).showSnackBar(SnackBar(
+      context.scaffold.showSnackBar(SnackBar(
         content: Text(
           HpiL11n.get(context, successful ? 'feedback/sent' : 'error'),
         ),

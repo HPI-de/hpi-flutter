@@ -1,22 +1,12 @@
 import 'package:flutter/material.dart' hide Route;
 import 'package:flutter_html/flutter_html.dart';
-import 'package:hpi_flutter/app/widgets/app_bar.dart';
-import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
-import 'package:hpi_flutter/app/widgets/utils.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/core/utils.dart';
-import 'package:hpi_flutter/core/widgets/chip_group.dart';
-import 'package:hpi_flutter/core/widgets/image_widget.dart';
-import 'package:hpi_flutter/core/widgets/pagination.dart';
-import 'package:hpi_flutter/core/widgets/scrim_around.dart';
-import 'package:hpi_flutter/core/widgets/stream_chip.dart';
-import 'package:hpi_flutter/myhpi/data/bloc.dart';
-import 'package:hpi_flutter/myhpi/data/infobit.dart';
-import 'package:provider/provider.dart';
+import 'package:hpi_flutter/app/app.dart';
+import 'package:hpi_flutter/core/core.dart';
 
+import '../bloc.dart';
+import '../data.dart';
 import 'infobit_card.dart';
 
-@immutable
 class InfoBitPage extends StatelessWidget {
   const InfoBitPage({Key key, this.infoBitId}) : super(key: key);
 
@@ -24,22 +14,8 @@ class InfoBitPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<Uri, MyHpiBloc>(
-      update: (_, serverUrl, __) =>
-          MyHpiBloc(serverUrl, Localizations.localeOf(context)),
-      child: MainScaffold(
-        body: Builder(
-          builder: (context) => _buildContent(context),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildContent(BuildContext context) {
-    assert(context != null);
-
     return StreamBuilder<InfoBit>(
-      stream: Provider.of<MyHpiBloc>(context).getInfoBit(infoBitId),
+      stream: services.get<MyHpiBloc>().getInfoBit(infoBitId),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return buildLoadingErrorScaffold(context, snapshot);
@@ -92,8 +68,7 @@ class InfoBitPage extends StatelessWidget {
                         ),
                         children: infoBit.tagIds
                             .map((t) => StreamChip<InfoBitTag>(
-                                  stream:
-                                      Provider.of<MyHpiBloc>(context).getTag(t),
+                                  stream: services.get<MyHpiBloc>().getTag(t),
                                   labelBuilder: (i) => Text(i.title),
                                 ))
                             .asList(),
@@ -126,7 +101,7 @@ class InfoBitPage extends StatelessWidget {
     }
 
     return HpiSliverAppBar(
-      expandedHeight: MediaQuery.of(context).size.width / 16 * 9,
+      expandedHeight: context.mediaQuery.size.width / 16 * 9,
       pinned: true,
       flexibleSpace: HpiFlexibleSpaceBar(
         title: title,
@@ -150,7 +125,7 @@ class InfoBitPage extends StatelessWidget {
           sliver: PaginatedSliverList<InfoBit>(
             pageSize: 15,
             dataLoader: ({pageSize, pageToken}) {
-              return Provider.of<MyHpiBloc>(context).getInfoBits(
+              return services.get<MyHpiBloc>().getInfoBits(
                   parentId: infoBit.id,
                   pageSize: pageSize,
                   pageToken: pageToken);
@@ -167,7 +142,7 @@ class InfoBitPage extends StatelessWidget {
             spacing: 8,
             pageSize: 5,
             dataLoader: ({pageSize, pageToken}) {
-              return Provider.of<MyHpiBloc>(context).getInfoBits(
+              return services.get<MyHpiBloc>().getInfoBits(
                   parentId: infoBit.id,
                   pageSize: pageSize,
                   pageToken: pageToken);
@@ -194,14 +169,15 @@ class InfoBitPage extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               HpiL11n.get(context, 'myhpi/infoBit.parent'),
-              style: Theme.of(context).textTheme.overline,
+              style: context.theme.textTheme.overline,
             ),
           ),
           StreamBuilder<InfoBit>(
-            stream:
-                Provider.of<MyHpiBloc>(context).getInfoBit(infoBit.parentId),
+            stream: services.get<MyHpiBloc>().getInfoBit(infoBit.parentId),
             builder: (_, snapshot) {
-              if (!snapshot.hasData) return buildLoadingError(snapshot);
+              if (!snapshot.hasData) {
+                return buildLoadingError(snapshot);
+              }
 
               return InfoBitListTile(snapshot.data);
             },

@@ -1,77 +1,64 @@
 import 'package:flutter/material.dart' hide Route;
-import 'package:hpi_flutter/app/widgets/app_bar.dart';
-import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/core/widgets/pagination.dart';
-import 'package:hpi_flutter/core/widgets/utils.dart';
-import 'package:hpi_flutter/course/data/bloc.dart';
+import 'package:hpi_flutter/app/app.dart';
+import 'package:hpi_flutter/core/core.dart';
 import 'package:hpi_flutter/route.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
-import 'package:provider/provider.dart';
 
-import '../data/course.dart';
+import '../bloc.dart';
+import '../data.dart';
 import '../utils.dart';
 
-@immutable
 class CoursePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<Uri, CourseBloc>(
-      update: (_, serverUrl, __) =>
-          CourseBloc(serverUrl, Localizations.localeOf(context)),
-      child: MainScaffold(
-        body: DefaultTabController(
-          length: 2,
-          child: NestedScrollView(
-            headerSliverBuilder: (context, innerBoxIsScrolled) => [
-              SliverOverlapAbsorber(
-                handle:
-                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                child: HpiSliverAppBar(
-                  floating: true,
-                  pinned: true,
-                  forceElevated: innerBoxIsScrolled,
-                  title: Text(HpiL11n.get(context, 'course')),
-                  bottom: TabBar(
-                    indicatorColor: Theme.of(context).primaryColor,
-                    labelColor: Theme.of(context).primaryColor,
-                    unselectedLabelColor: Theme.of(context)
-                        .textTheme
-                        .body2
-                        .color
-                        .withOpacity(0.7),
-                    tabs: [
-                      Tab(text: HpiL11n.get(context, 'course/tab.current')),
-                      Tab(text: HpiL11n.get(context, 'course/tab.all')),
-                    ],
-                  ),
+    return MainScaffold(
+      body: DefaultTabController(
+        length: 2,
+        child: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            SliverOverlapAbsorber(
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+              child: HpiSliverAppBar(
+                floating: true,
+                pinned: true,
+                forceElevated: innerBoxIsScrolled,
+                title: Text(HpiL11n.get(context, 'course')),
+                bottom: TabBar(
+                  indicatorColor: context.theme.primaryColor,
+                  labelColor: context.theme.primaryColor,
+                  unselectedLabelColor:
+                      context.theme.textTheme.body2.color.withOpacity(0.7),
+                  tabs: [
+                    Tab(text: HpiL11n.get(context, 'course/tab.current')),
+                    Tab(text: HpiL11n.get(context, 'course/tab.all')),
+                  ],
                 ),
-              )
-            ],
-            body: TabBarView(
-              children: KtList.from([
-                KtPair('tab:course', CourseList()),
-                KtPair('tab:courseSeries', CourseSeriesList()),
-              ])
-                  .mapIndexed((index, tab) => SafeArea(
-                        top: false,
-                        bottom: false,
-                        child: Builder(
-                          builder: (context) => CustomScrollView(
-                            key: PageStorageKey(tab.first),
-                            slivers: <Widget>[
-                              SliverOverlapInjector(
-                                handle: NestedScrollView
-                                    .sliverOverlapAbsorberHandleFor(context),
-                              ),
-                              tab.second,
-                            ],
-                          ),
+              ),
+            )
+          ],
+          body: TabBarView(
+            children: KtList.from([
+              KtPair('tab:course', CourseList()),
+              KtPair('tab:courseSeries', CourseSeriesList()),
+            ])
+                .mapIndexed((index, tab) => SafeArea(
+                      top: false,
+                      bottom: false,
+                      child: Builder(
+                        builder: (context) => CustomScrollView(
+                          key: PageStorageKey(tab.first),
+                          slivers: <Widget>[
+                            SliverOverlapInjector(
+                              handle: NestedScrollView
+                                  .sliverOverlapAbsorberHandleFor(context),
+                            ),
+                            tab.second,
+                          ],
                         ),
-                      ))
-                  .asList(),
-            ),
+                      ),
+                    ))
+                .asList(),
           ),
         ),
       ),
@@ -83,11 +70,11 @@ class CourseList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PaginatedSliverList<Course>(
-      dataLoader: Provider.of<CourseBloc>(context).getCourses,
+      dataLoader: services.get<CourseBloc>().getCourses,
       itemBuilder: (context, course, __) => Builder(
         builder: (context) => StreamBuilder<CourseSeries>(
-          stream: Provider.of<CourseBloc>(context)
-              .getCourseSeries(course.courseSeriesId),
+          stream:
+              services.get<CourseBloc>().getCourseSeries(course.courseSeriesId),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return ListTile(
@@ -103,7 +90,7 @@ class CourseList extends StatelessWidget {
                 maxLines: 1,
               ),
               onTap: () {
-                Navigator.of(context)
+                context.navigator
                     .pushNamed(Route.coursesDetail.name, arguments: course.id);
               },
             );
@@ -118,7 +105,7 @@ class CourseSeriesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PaginatedSliverList<CourseSeries>(
-      dataLoader: Provider.of<CourseBloc>(context).getAllCourseSeries,
+      dataLoader: services.get<CourseBloc>().getAllCourseSeries,
       itemBuilder: (context, courseSeries, __) => ExpansionTile(
         key: PageStorageKey(courseSeries.id),
         title: Text(courseSeries.title),

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart' hide Route;
-import 'package:hpi_flutter/app/widgets/hpi_theme.dart';
-import 'package:hpi_flutter/app/widgets/utils.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/settings/widgets/settings_page.dart';
+import 'package:hpi_flutter/app/app.dart';
+import 'package:hpi_flutter/core/core.dart' hide Image;
+import 'package:hpi_flutter/settings/settings.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:pedantic/pedantic.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:time_machine/time_machine.dart';
 
 import '../../route.dart';
 import 'about_myself.dart';
@@ -16,19 +15,14 @@ class OnboardingPage extends StatefulWidget {
   static const _keyCompleted = 'onboarding.completed';
   static const _keyPrivacyPolicy = 'onboarding.privacyPolicy';
   static const _keyCrashReporting = 'onboarding.crashReporting';
-  static final _privacyPolicyDate = DateTime.utc(2019, 10, 01);
+  static final _privacyPolicyDate =
+      LocalDate(2019, 10, 01).atMidnight().inUtc().toInstant();
 
-  static bool isOnboardingCompleted(SharedPreferences sharedPreferences) {
-    assert(sharedPreferences != null);
-    return sharedPreferences.getInt(_keyCompleted) != null;
-  }
+  static bool get isOnboardingCompleted =>
+      services.get<SharedPreferences>().getInt(_keyCompleted) != null;
 
-  static Future<bool> clearOnboardingCompleted(
-    SharedPreferences sharedPreferences,
-  ) async {
-    assert(sharedPreferences != null);
-    return sharedPreferences.remove(_keyCompleted);
-  }
+  static Future<bool> clearOnboardingCompleted() =>
+      services.get<SharedPreferences>().remove(_keyCompleted);
 
   @override
   _OnboardingPageState createState() => _OnboardingPageState();
@@ -45,11 +39,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
           _buildAboutMyselfPage(),
         ]),
         onFinish: () async {
-          await Provider.of<SharedPreferences>(context).setInt(
-              OnboardingPage._keyCompleted,
-              DateTime.now().millisecondsSinceEpoch);
+          await services.get<SharedPreferences>().setInt(
+              OnboardingPage._keyCompleted, Instant.now().epochMilliseconds);
           unawaited(
-              Navigator.of(context).pushReplacementNamed(Route.dashboard.name));
+              context.navigator.pushReplacementNamed(Route.dashboard.name));
         },
       ),
     );
@@ -57,7 +50,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   Page _buildStartPage() {
     return Page(
-      color: Theme.of(context).accentColor,
+      color: context.theme.accentColor,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -71,18 +64,16 @@ class _OnboardingPageState extends State<OnboardingPage> {
           SizedBox(height: 96),
           Text(
             HpiL11n.get(context, 'onboarding/start.title'),
-            style: Theme.of(context).textTheme.display1.copyWith(
-                  fontSize: 30,
-                  color: Colors.white,
-                ),
+            style: context.theme.textTheme.display1.copyWith(
+              fontSize: 30,
+              color: Colors.white,
+            ),
           ),
           SizedBox(height: 32),
           Text(
             HpiL11n.get(context, 'onboarding/start.subtitle'),
-            style: Theme.of(context)
-                .textTheme
-                .subtitle
-                .copyWith(color: Colors.white),
+            style:
+                context.theme.textTheme.subtitle.copyWith(color: Colors.white),
           ),
         ],
       ),
@@ -100,16 +91,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
             alignment: PlaceholderAlignment.middle,
             child: FlatButton(
               padding: EdgeInsets.symmetric(horizontal: 8),
+              onPressed: () => PrivacyPolicyPage.showBottomSheet(context),
               child: Text(
                 HpiL11n.get(context, 'settings/about.privacyPolicy'),
-                style: Theme.of(context)
-                    .textTheme
-                    .subhead
-                    .copyWith(color: HpiTheme.of(context).tertiary),
+                style: context.theme.textTheme.subhead
+                    .copyWith(color: context.hpiTheme.tertiary),
               ),
-              onPressed: () {
-                PrivacyPolicyPage.showBottomSheet(context);
-              },
             ),
           ),
           TextSpan(
@@ -117,44 +104,49 @@ class _OnboardingPageState extends State<OnboardingPage> {
           ),
         ],
       ),
-      style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
+      style: context.theme.textTheme.subhead.copyWith(color: Colors.white),
       textAlign: TextAlign.left,
     );
 
-    final privacyPolicyVersion = Provider.of<SharedPreferences>(context)
+    final privacyPolicyVersion = services
+        .get<SharedPreferences>()
         .getInt(OnboardingPage._keyPrivacyPolicy);
     final privacyPolicyAccepted = privacyPolicyVersion != null &&
-        !DateTime.fromMillisecondsSinceEpoch(privacyPolicyVersion, isUtc: true)
-            .isBefore(OnboardingPage._privacyPolicyDate);
-    final crashReportingAccepted = Provider.of<SharedPreferences>(context)
+        Instant.fromEpochMilliseconds(privacyPolicyVersion) >=
+            OnboardingPage._privacyPolicyDate;
+    final crashReportingAccepted = services
+            .get<SharedPreferences>()
             .getBool(OnboardingPage._keyCrashReporting) ??
         false;
 
-    final onPrivacyPolicyChanged = (BuildContext context, [bool newValue]) {
+    void onPrivacyPolicyChanged(BuildContext context, {bool newValue}) {
       newValue ??= !privacyPolicyAccepted;
 
-      PageNotification(newValue && crashReportingAccepted).dispatch(context);
+      PageNotification(canContinue: newValue && crashReportingAccepted)
+          .dispatch(context);
       setState(() {
-        Provider.of<SharedPreferences>(context).setInt(
+        services.get<SharedPreferences>().setInt(
             OnboardingPage._keyPrivacyPolicy,
             newValue
-                ? OnboardingPage._privacyPolicyDate.millisecondsSinceEpoch
+                ? OnboardingPage._privacyPolicyDate.epochMilliseconds
                 : null);
       });
-    };
+    }
 
-    final onCrashReportingChanged = (BuildContext context, [bool newValue]) {
+    void onCrashReportingChanged(BuildContext context, {bool newValue}) {
       newValue ??= !crashReportingAccepted;
 
-      PageNotification(privacyPolicyAccepted && newValue).dispatch(context);
+      PageNotification(canContinue: privacyPolicyAccepted && newValue)
+          .dispatch(context);
       setState(() {
-        Provider.of<SharedPreferences>(context)
+        services
+            .get<SharedPreferences>()
             .setBool(OnboardingPage._keyCrashReporting, newValue);
       });
-    };
+    }
 
     return Page(
-      color: Theme.of(context).primaryColor,
+      color: context.theme.primaryColor,
       canContinue: privacyPolicyAccepted && crashReportingAccepted,
       child: Builder(
         builder: (context) => Column(
@@ -174,8 +166,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 children: <Widget>[
                   Checkbox(
                     value: privacyPolicyAccepted,
-                    onChanged: (v) => onPrivacyPolicyChanged(context, v),
-                    activeColor: HpiTheme.of(context).tertiary,
+                    onChanged: (v) =>
+                        onPrivacyPolicyChanged(context, newValue: v),
+                    activeColor: context.hpiTheme.tertiary,
                   ),
                   Flexible(
                     child: Column(
@@ -195,8 +188,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 children: <Widget>[
                   Checkbox(
                     value: crashReportingAccepted,
-                    onChanged: (v) => onCrashReportingChanged(context, v),
-                    activeColor: HpiTheme.of(context).tertiary,
+                    onChanged: (v) =>
+                        onCrashReportingChanged(context, newValue: v),
+                    activeColor: context.hpiTheme.tertiary,
                   ),
                   HpiL11n.text(context, 'onboarding/crashReporting'),
                 ],
@@ -210,24 +204,25 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   Page _buildAboutMyselfPage() {
     return Page(
-      color: HpiTheme.of(context).tertiary,
-      child: DefaultTextStyle(
-        style: DefaultTextStyle.of(context).style,
+      color: context.hpiTheme.tertiary,
+      child: DefaultTextStyle.merge(
         textAlign: TextAlign.center,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
               HpiL11n.get(context, 'onboarding/aboutMyself.title'),
-              style: Theme.of(context).textTheme.title.copyWith(
-                    color: Colors.white,
-                  ),
+              style: context.theme.textTheme.title.copyWith(
+                color: Colors.white,
+              ),
             ),
             SizedBox(height: 32),
             FutureBuilder<SharedPreferences>(
               future: SharedPreferences.getInstance(),
               builder: (context, snapshot) {
-                if (!snapshot.hasData) return buildLoadingError(snapshot);
+                if (!snapshot.hasData) {
+                  return buildLoadingError(snapshot);
+                }
 
                 return AboutMyself();
               },

@@ -1,15 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hpi_flutter/core/utils.dart';
-import 'package:intl/intl.dart';
+import 'package:hpi_flutter/app/app.dart';
+import 'package:hpi_flutter/core/core.dart';
 import 'package:meta/meta.dart';
+import 'package:time_machine/time_machine_text_patterns.dart';
 
-import '../data/course.dart';
+import '../data.dart';
 
-@immutable
 class OpenHpiCoursePreview extends StatelessWidget {
-  OpenHpiCoursePreview(this.course) : assert(course != null);
+  const OpenHpiCoursePreview(this.course) : assert(course != null);
 
   final OpenHpiCourse course;
 
@@ -28,17 +28,14 @@ class OpenHpiCoursePreview extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     course.title,
-                    style: Theme.of(context)
-                        .textTheme
-                        .body1
+                    style: context.theme.textTheme.body1
                         .copyWith(color: Colors.white),
                     maxLines: 3,
                   ),
                   Text(
-                    DateFormat.yMMMd().format(course.startAt),
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption
+                    LocalDatePattern.createWithCurrentCulture('d')
+                        .format(course.startAt.inLocalZone().calendarDate),
+                    style: context.theme.textTheme.caption
                         .copyWith(color: Colors.white),
                     maxLines: 1,
                   ),
@@ -51,7 +48,7 @@ class OpenHpiCoursePreview extends StatelessWidget {
     ]);
   }
 
-  Widget _buildScrim({Widget child}) {
+  Widget _buildScrim({@required Widget child}) {
     assert(child != null);
 
     return DecoratedBox(
@@ -66,7 +63,7 @@ class OpenHpiCoursePreview extends StatelessWidget {
     );
   }
 
-  Widget _buildLaunchable({Widget child}) {
+  Widget _buildLaunchable({@required Widget child}) {
     assert(child != null);
 
     return Material(

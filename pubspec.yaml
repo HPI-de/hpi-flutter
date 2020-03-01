@@ -4,59 +4,50 @@ description: The official HPI app, written in Flutter.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.2.2 <3.0.0"
+  sdk: ">=2.6.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  # General
-  characters: ^0.5.0
-  kt_dart: ^0.6.2
-
-  # Data
-  path_provider: ^1.3.0
-  protobuf: ^1.0.0
-  immutable_proto: ^0.0.4
-  grpc: ^2.1.2
-  rxdart: ^0.22.1+1
-  provider: ^3.0.0+1
-  http: ^0.12.0+2
-  yaml: ^2.1.16
-  shared_preferences: ^0.5.6
-  package_info: ^0.4.0+6
-  device_info: ^0.4.1+4
-  share: ^0.6.2+3
-
-  # UI
-  flutter_localizations:
-    sdk: flutter
-  intl: ">=0.15.8 <0.17.0"
-  sprintf: ^4.0.2
-  flutter_html: ^0.10.4
-  timeago: ^2.0.18
-  outline_material_icons: ^0.1.0
-  url_launcher: ^5.1.2
   align_positioned: ^1.0.8
   cached_network_image: ^2.0.0
-  screenshot: ^0.1.1
-  flutter_ringtone_player: ^1.0.3
-  flutter_pagewise: ^1.2.3
+  characters: ^0.5.0
+  device_info: ^0.4.1+4
+  flutter_html: ^0.10.4
+  flutter_localizations:
+    sdk: flutter
   flutter_markdown: ^0.2.0
-
-  # Linter
+  flutter_pagewise: ^1.2.3
+  flutter_ringtone_player: ^1.0.3
+  get_it: ^4.0.0-beta.3
+  grpc: ^2.1.2
+  http: ^0.12.0+2
+  immutable_proto: ^0.0.4
+  intl: ">=0.15.8 <0.17.0"
+  kt_dart: ^0.6.2
+  outline_material_icons: ^0.1.0
+  package_info: ^0.4.0+6
+  path_provider: ^1.3.0
   pedantic: ^1.8.0+1
+  protobuf: ^1.0.0
+  rxdart: ^0.22.1+1
+  screenshot: ^0.1.1
+  share: ^0.6.2+3
+  shared_preferences: ^0.5.6
+  sprintf: ^4.0.2
+  time_machine: ^0.9.12
+  timeago: ^2.0.18
+  url_launcher: ^5.1.2
+  yaml: ^2.1.16
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  # Data
   build_runner: ^1.0.0
-  immutable_proto_generator: ^0.0.4
-
-  # UI
   flutter_launcher_icons: ^0.7.2+1
+  immutable_proto_generator: ^0.0.4
 
 flutter:
   uses-material-design: true
@@ -65,7 +56,7 @@ flutter:
     - assets/logo/logo.png # colored logo
     - assets/logo/logo_text.png # colored logo with gray text
     - assets/logo/logo_captionWhite.png # colored logo with white text and caption
-    - assets/logo/mobileDev sheep.png
+    - assets/logo/mobileDev_sheep.png
     - assets/images/onboarding/mrNet.png
     - assets/localizations/strings_de.yaml
     - assets/localizations/strings_en.yaml

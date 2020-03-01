@@ -1,60 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/core/utils.dart';
+import 'package:hpi_flutter/app/app.dart';
+import 'package:hpi_flutter/core/core.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-@immutable
 class AboutMyself extends StatefulWidget {
+  const AboutMyself({
+    Key key,
+  }) : super(key: key);
+
   static const _keyRole = 'onboarding.role';
   static const _keyCourseOfStudies = 'onboarding.courseOfStudies';
   static const _keySemester = 'onboarding.semester';
 
-  static Role getRole(SharedPreferences sharedPreferences) {
-    assert(sharedPreferences != null);
-    return stringToEnum(sharedPreferences.getString(_keyRole), Role.values);
-  }
+  static Role get role =>
+      stringToEnum(sharedPreferences.getString(_keyRole), Role.values);
 
-  static Future<bool> _setRole(
-      SharedPreferences sharedPreferences, Role value) {
-    assert(sharedPreferences != null);
+  static Future<bool> _setRole(Role value) {
     return sharedPreferences.setString(_keyRole, enumToString(value));
   }
 
-  static CourseOfStudies getCourseOfStudies(
-      SharedPreferences sharedPreferences) {
-    assert(sharedPreferences != null);
-    return stringToEnum(sharedPreferences.getString(_keyCourseOfStudies),
-        CourseOfStudies.values);
-  }
+  static CourseOfStudies get courseOfStudies => stringToEnum(
+      sharedPreferences.getString(_keyCourseOfStudies), CourseOfStudies.values);
 
-  static Future<bool> _setCourseOfStudies(
-    SharedPreferences sharedPreferences,
-    CourseOfStudies value,
-  ) {
-    assert(sharedPreferences != null);
+  static Future<bool> _setCourseOfStudies(CourseOfStudies value) {
     return sharedPreferences.setString(
         _keyCourseOfStudies, enumToString(value));
   }
 
-  static int getSemester(SharedPreferences sharedPreferences) {
-    assert(sharedPreferences != null);
-    return sharedPreferences.getInt(_keySemester);
-  }
+  static int get semester => sharedPreferences.getInt(_keySemester);
 
-  static Future<bool> _setSemester(
-    SharedPreferences sharedPreferences,
-    int value,
-  ) {
-    assert(sharedPreferences != null);
+  static Future<bool> _setSemester(int value) {
     return sharedPreferences.setInt(_keySemester, value);
   }
-
-  const AboutMyself({
-    Key key,
-  }) : super(key: key);
 
   @override
   _AboutMyselfState createState() => _AboutMyselfState();
@@ -66,6 +44,7 @@ class _AboutMyselfState extends State<AboutMyself> {
   KtList<DropdownMenuItem<Role>> _roleValues;
   KtList<DropdownMenuItem<CourseOfStudies>> _courseOfStudiesValues;
 
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
@@ -83,29 +62,28 @@ class _AboutMyselfState extends State<AboutMyself> {
 
   @override
   Widget build(BuildContext context) {
-    final sharedPreferences = Provider.of<SharedPreferences>(context);
-    var role = AboutMyself.getRole(sharedPreferences);
+    var role = AboutMyself.role;
     if (role == null) {
       role = Role.student;
-      AboutMyself._setRole(sharedPreferences, role);
+      AboutMyself._setRole(role);
     }
-    var courseOfStudies = AboutMyself.getCourseOfStudies(sharedPreferences);
+    var courseOfStudies = AboutMyself.courseOfStudies;
     if (courseOfStudies == null) {
       courseOfStudies = CourseOfStudies.baItse;
-      AboutMyself._setCourseOfStudies(sharedPreferences, courseOfStudies);
+      AboutMyself._setCourseOfStudies(courseOfStudies);
     }
-    var semester = AboutMyself.getSemester(sharedPreferences);
+    var semester = AboutMyself.semester;
     if (semester == null) {
       semester = 1;
-      AboutMyself._setSemester(sharedPreferences, semester);
+      AboutMyself._setSemester(semester);
     }
 
     return DefaultTextStyle(
-      style: Theme.of(context).textTheme.headline.copyWith(
-            fontSize: 30,
-            height: 1.4,
-            color: Colors.white,
-          ),
+      style: context.theme.textTheme.headline.copyWith(
+        fontSize: 30,
+        height: 1.4,
+        color: Colors.white,
+      ),
       child: Text.rich(
         TextSpan(
           children: [
@@ -113,7 +91,7 @@ class _AboutMyselfState extends State<AboutMyself> {
             _buildDropdown<Role>(
               items: _roleValues,
               value: role,
-              onChanged: (r) => AboutMyself._setRole(sharedPreferences, r),
+              onChanged: AboutMyself._setRole,
             ),
             if (role == Role.student) ...[
               TextSpan(text: _l11n('onboarding/aboutMyself.text.2')),
@@ -121,8 +99,8 @@ class _AboutMyselfState extends State<AboutMyself> {
                 items: _courseOfStudiesValues,
                 value: courseOfStudies,
                 onChanged: (c) {
-                  AboutMyself._setCourseOfStudies(sharedPreferences, c);
-                  AboutMyself._setSemester(sharedPreferences,
+                  AboutMyself._setCourseOfStudies(c);
+                  AboutMyself._setSemester(
                       semester.clamp(1, _maxSemesterCount(c)).toInt());
                 },
               ),
@@ -140,8 +118,7 @@ class _AboutMyselfState extends State<AboutMyself> {
                     ),
                   ),
                   value: semester,
-                  onChanged: (s) =>
-                      AboutMyself._setSemester(sharedPreferences, s)),
+                  onChanged: AboutMyself._setSemester),
               TextSpan(text: _l11n('onboarding/aboutMyself.text.5')),
             ],
             TextSpan(text: _l11n('onboarding/aboutMyself.text.6')),
@@ -215,7 +192,7 @@ class _InlineDropdownButton<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = DefaultTextStyle.of(context).style;
+    final style = context.defaultTextStyle.style;
 
     return DropdownButton(
       items: items
@@ -223,7 +200,7 @@ class _InlineDropdownButton<T> extends StatelessWidget {
                 key: i.key,
                 value: i.value,
                 child: DefaultTextStyle(
-                  style: Theme.of(context).textTheme.body1,
+                  style: context.theme.textTheme.body1,
                   child: i.child,
                 ),
               ))

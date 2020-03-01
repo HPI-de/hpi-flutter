@@ -2,39 +2,41 @@ import 'dart:ui';
 
 import 'package:fixnum/fixnum.dart';
 import 'package:grpc/grpc.dart';
+import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/google/protobuf/timestamp.pb.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/google/type/date.pb.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/google/type/money.pb.dart';
+import 'package:time_machine/time_machine.dart';
 
 const int secondToMillis = 1000;
 const int secondToMicros = secondToMillis * milliToMicros;
 const int milliToMicros = 1000;
 const int microToNanos = 1000;
 
-DateTime timestampToDateTime(Timestamp timestamp) {
-  return DateTime.fromMicrosecondsSinceEpoch(
-    timestamp.seconds.toInt() * secondToMicros +
-        timestamp.nanos ~/ microToNanos,
-    isUtc: true,
-  );
+extension InstantToProtobuf on Instant {
+  Timestamp toTimestamp() {
+    return Timestamp()
+      ..seconds = Int64(epochSeconds)
+      ..nanos = timeSinceEpoch.millisecondOfSecond;
+  }
 }
 
-Timestamp dateTimeToTimestamp(DateTime dateTime) {
-  DateTime utc = dateTime.toUtc();
-  return Timestamp()
-    ..seconds = Int64(utc.millisecondsSinceEpoch ~/ secondToMillis)
-    ..nanos = utc.microsecondsSinceEpoch % secondToMicros;
+extension TimestampToTimeMachine on Timestamp {
+  Instant toInstant() =>
+      Instant.epochTime(Time(seconds: seconds.toInt(), nanoseconds: nanos));
 }
 
-DateTime dateToDateTime(Date date) {
-  return DateTime(date.year, date.month, date.day);
+extension LocalDateToProtobuf on LocalDate {
+  Date toDate() {
+    return Date()
+      ..year = year
+      ..month = monthOfYear
+      ..day = dayOfMonth;
+  }
 }
 
-Date dateTimeToDate(DateTime dateTime) {
-  return Date()
-    ..year = dateTime.year
-    ..month = dateTime.month
-    ..day = dateTime.day;
+extension DateToTimeMachine on Date {
+  LocalDate toLocalDate() => LocalDate(year, month, day);
 }
 
 double moneyToDouble(Money money) {
@@ -47,10 +49,8 @@ Money doubleToMoney(double doubleValue) {
     ..nanos = (doubleValue * 1000000000).round();
 }
 
-CallOptions createCallOptions(Locale locale) {
-  assert(locale != null);
-
+CallOptions createCallOptions() {
   return CallOptions(
-    metadata: {'Accept-Language': locale.toLanguageTag()},
+    metadata: {'Accept-Language': services.get<Locale>().toLanguageTag()},
   );
 }

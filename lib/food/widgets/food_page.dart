@@ -1,35 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hpi_flutter/app/widgets/app_bar.dart';
-import 'package:hpi_flutter/app/widgets/utils.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/food/data/bloc.dart';
+import 'package:hpi_flutter/app/app.dart';
+import 'package:hpi_flutter/core/core.dart';
 import 'package:kt_dart/collection.dart';
-import 'package:provider/provider.dart';
 
-import '../../app/widgets/main_scaffold.dart';
-import '../data/restaurant.dart';
+import '../bloc.dart';
+import '../data.dart';
 import 'restaurant_menu.dart';
 
-@immutable
 class FoodPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<Uri, FoodBloc>(
-      update: (_, serverUrl, __) =>
-          FoodBloc(serverUrl, Localizations.localeOf(context)),
-      child: MainScaffold(
-        body: CustomScrollView(
-          slivers: <Widget>[
-            HpiSliverAppBar(
-              floating: true,
-              title: Text(HpiL11n.get(context, 'food')),
-            ),
-            Builder(
-              builder: (context) => _buildRestaurantList(context),
-            ),
-          ],
-        ),
+    return MainScaffold(
+      body: CustomScrollView(
+        slivers: <Widget>[
+          HpiSliverAppBar(
+            floating: true,
+            title: Text(HpiL11n.get(context, 'food')),
+          ),
+          Builder(
+            builder: _buildRestaurantList,
+          ),
+        ],
       ),
     );
   }
@@ -37,9 +29,11 @@ class FoodPage extends StatelessWidget {
 
 Widget _buildRestaurantList(BuildContext context) {
   return StreamBuilder<KtList<MenuItem>>(
-    stream: Provider.of<FoodBloc>(context).getMenuItems(),
+    stream: services.get<FoodBloc>().getMenuItems(),
     builder: (context, snapshot) {
-      if (!snapshot.hasData) return buildLoadingErrorSliver(snapshot);
+      if (!snapshot.hasData) {
+        return buildLoadingErrorSliver(snapshot);
+      }
 
       if (snapshot.data.isEmpty()) {
         return SliverFillRemaining(

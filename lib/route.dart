@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hpi_flutter/app/app.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:meta/meta.dart';
 
-import 'app/widgets/dashboard_page.dart';
-import 'app/widgets/main_scaffold.dart';
 import 'course/widgets/course_detail_page.dart';
 import 'course/widgets/course_page.dart';
 import 'food/widgets/food_page.dart';
+import 'main.dart';
 import 'myhpi/widgets/infobit_page.dart';
 import 'myhpi/widgets/myhpi_page.dart';
 import 'news/widgets/article_page.dart';
@@ -17,48 +17,68 @@ import 'tools/widgets/timer_page.dart';
 
 @immutable
 class Route {
-  final String name;
-
   const Route._internal(this.name);
   factory Route.fromString(String name) =>
       values.firstOrNull((route) => route.name == name);
 
+  final String name;
+
   static MaterialPageRoute generateRoute(RouteSettings settings) {
     return MaterialPageRoute(
       builder: (context) {
+        onLocaleChanged(Localizations.localeOf(context));
+
         var route = Route.fromString(settings.name);
         assert(route != null,
-            "Did you forget to add route ${settings.name} to Route.values?");
+            'Did you forget to add route ${settings.name} to Route.values?');
 
-        if (route == dashboard) return DashboardPage();
-        if (route == courses) return CoursePage();
+        if (route == dashboard) {
+          return DashboardPage();
+        }
+        if (route == courses) {
+          return CoursePage();
+        }
         if (route == coursesDetail) {
           return CourseDetailPage(settings.arguments as String);
         }
-        if (route == food) return FoodPage();
-        if (route == myhpi) return MyHpiPage();
+        if (route == food) {
+          return FoodPage();
+        }
+        if (route == myhpi) {
+          return MyHpiPage();
+        }
         if (route == myhpiInfoBit) {
           return InfoBitPage(infoBitId: settings.arguments as String);
         }
-        if (route == news) return NewsPage();
+        if (route == news) {
+          return NewsPage();
+        }
         if (route == newsArticle) {
           return ArticlePage(settings.arguments as String);
         }
-        if (route == onboarding) return OnboardingPage();
-        if (route == tools) return TimerPage();
-        if (route == toolsTimer) return TimerPage();
+        if (route == onboarding) {
+          return OnboardingPage();
+        }
+        if (route == tools) {
+          return TimerPage();
+        }
+        if (route == toolsTimer) {
+          return TimerPage();
+        }
 
-        if (route == Route.settings) return SettingsPage();
-        if (route == settingsPrivacyPolicy) return PrivacyPolicyPage();
+        if (route == Route.settings) {
+          return SettingsPage();
+        }
+        if (route == settingsPrivacyPolicy) {
+          return PrivacyPolicyPage();
+        }
 
         return MainScaffold(
           body: Center(
             child: Text(
-              "Page ${route?.name} is not yet implemented",
-              style: Theme.of(context)
-                  .textTheme
-                  .headline
-                  .copyWith(color: Theme.of(context).errorColor),
+              'Page ${route?.name} is not yet implemented',
+              style: context.theme.textTheme.headline
+                  .copyWith(color: context.theme.errorColor),
             ),
           ),
         );
@@ -67,7 +87,8 @@ class Route {
     );
   }
 
-  toString() => 'Routes.$name';
+  @override
+  String toString() => 'Routes.$name';
 
   static const dashboard = Route._internal('/');
   static const courses = Route._internal('/courses');

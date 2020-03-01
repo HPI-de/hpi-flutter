@@ -1,44 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:hpi_flutter/app/widgets/app_bar.dart';
-import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
-import 'package:hpi_flutter/app/widgets/utils.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/core/utils.dart';
-import 'package:hpi_flutter/core/widgets/utils.dart';
-import 'package:hpi_flutter/course/data/bloc.dart';
-import 'package:hpi_flutter/course/data/course.dart';
-import 'package:hpi_flutter/feedback/widgets/feedback_dialog.dart';
+import 'package:hpi_flutter/app/app.dart';
+import 'package:hpi_flutter/core/core.dart';
+import 'package:hpi_flutter/feedback/feedback.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
-import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:share/share.dart';
 
+import '../bloc.dart';
+import '../data.dart';
 import '../utils.dart';
 import 'elevated_expansion_tile.dart';
 
-@immutable
 class CourseDetailPage extends StatelessWidget {
-  CourseDetailPage(this.courseId) : assert(courseId != null);
+  const CourseDetailPage(this.courseId) : assert(courseId != null);
 
   final String courseId;
 
   @override
   Widget build(BuildContext context) {
-    return ProxyProvider<Uri, CourseBloc>(
-      update: (_, serverUrl, __) =>
-          CourseBloc(serverUrl, Localizations.localeOf(context)),
-      child: Builder(
-        builder: (context) => _buildScaffold(context),
-      ),
-    );
-  }
-
-  Widget _buildScaffold(BuildContext context) {
-    assert(context != null);
-
-    var bloc = Provider.of<CourseBloc>(context);
+    var bloc = services.get<CourseBloc>();
     var stream = Observable.combineLatest2<KtPair<Course, CourseSeries>,
         CourseDetail, KtTriple<Course, CourseSeries, CourseDetail>>(
       Observable(bloc.getCourse(courseId)).switchMap(
@@ -95,7 +77,7 @@ class CourseDetailPage extends StatelessWidget {
             slivers: <Widget>[
               HpiSliverAppBar(
                 floating: true,
-                backgroundColor: Theme.of(context).cardColor,
+                backgroundColor: context.theme.cardColor,
                 title: buildAppBarTitle(
                   context: context,
                   title: Text(courseSeries.title),
@@ -189,20 +171,18 @@ class CourseDetailPage extends StatelessWidget {
       SizedBox(height: 16),
       Text(
         HpiL11n.get(context, 'course/course.noGuarantee'),
-        style: Theme.of(context)
-            .textTheme
-            .body1
+        style: context.theme.textTheme.body1
             .copyWith(color: Colors.black.withOpacity(0.6)),
         textAlign: TextAlign.center,
       ),
       Center(
         child: FlatButton(
-          child: Text(HpiL11n.get(context, 'course/course.reportError')),
           onPressed: () => FeedbackDialog.show(
             context,
             title: HpiL11n.get(context, 'course/course.reportError'),
             feedbackType: 'course.data.error',
           ),
+          child: Text(HpiL11n.get(context, 'course/course.reportError')),
         ),
       ),
       SizedBox(height: 16)
@@ -220,7 +200,7 @@ class CourseDetailPage extends StatelessWidget {
     assert(context != null);
 
     return Material(
-      color: Theme.of(context).cardColor,
+      color: context.theme.cardColor,
       child: ListTile(
         leading: leading != null ? Icon(leading) : null,
         title: title != null ? Text(title) : null,
@@ -241,16 +221,18 @@ class CourseDetailPage extends StatelessWidget {
     assert(IconData != null);
     assert(titleKey != null);
 
-    if (isNullOrBlank(content)) return null;
+    if (isNullOrBlank(content)) {
+      return null;
+    }
     return ElevatedExpansionTile(
       leading: Icon(icon),
       title: Text(
         HpiL11n.get(context, 'course/course.$titleKey'),
-        style: Theme.of(context).textTheme.subhead,
+        style: context.theme.textTheme.subhead,
       ),
       children: [
         Html(
-          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           data: content,
           onLinkTap: tryLaunch,
         )

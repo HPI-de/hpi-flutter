@@ -2,7 +2,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:kt_dart/collection.dart';
 
-@immutable
 class Paginated<T> extends StatelessWidget {
   Paginated({
     this.pageSize = 20,
@@ -25,7 +24,9 @@ class Paginated<T> extends StatelessWidget {
       pageSize: pageSize,
       pageFuture: (page) async {
         assert(_tokens.containsKey(page));
-        if (page > 0 && _tokens[page] == null) return [];
+        if (page > 0 && _tokens[page] == null) {
+          return [];
+        }
 
         final res = await dataLoader(
           pageSize: pageSize,
@@ -38,7 +39,6 @@ class Paginated<T> extends StatelessWidget {
   }
 }
 
-@immutable
 class PaginatedListView<T> extends Paginated<T> {
   PaginatedListView({
     Axis scrollDirection = Axis.vertical,
@@ -59,7 +59,6 @@ class PaginatedListView<T> extends Paginated<T> {
         );
 }
 
-@immutable
 class PaginatedSliverList<T> extends Paginated<T> {
   PaginatedSliverList({
     int pageSize = 20,
@@ -76,7 +75,6 @@ class PaginatedSliverList<T> extends Paginated<T> {
         );
 }
 
-@immutable
 class PaginatedSliverGrid<T> extends Paginated<T> {
   PaginatedSliverGrid.count({
     @required int crossAxisCount,

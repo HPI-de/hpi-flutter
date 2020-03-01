@@ -1,24 +1,22 @@
 import 'package:align_positioned/align_positioned.dart';
 import 'package:flutter/material.dart';
-import 'package:hpi_flutter/food/widgets/food_fragment.dart';
-import 'package:hpi_flutter/news/widgets/news_fragment.dart';
+import 'package:hpi_flutter/food/food.dart';
+import 'package:hpi_flutter/news/news.dart';
+import 'package:hpi_flutter/openhpi/openhpi.dart';
 
-import 'package:hpi_flutter/openhpi/widgets/openhpi_fragment.dart';
-
-import 'hpi_theme.dart';
+import '../utils.dart';
 import 'main_scaffold.dart';
 
-@immutable
 class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MainScaffold(
       body: ListView(
         padding:
-            EdgeInsets.fromLTRB(16, MediaQuery.of(context).padding.top, 16, 32),
+            EdgeInsets.fromLTRB(16, context.mediaQuery.padding.top, 16, 32),
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            padding: EdgeInsets.symmetric(vertical: 8),
             child: Align(
               alignment: Alignment.topRight,
               child: Image.asset(
@@ -33,7 +31,7 @@ class DashboardPage extends StatelessWidget {
           NewsFragment(),
           FoodFragment(),
         ].expand((child) sync* {
-          yield const SizedBox(height: 16);
+          yield SizedBox(height: 16);
           yield child;
         }).toList(),
       ),
@@ -41,9 +39,8 @@ class DashboardPage extends StatelessWidget {
   }
 }
 
-@immutable
 class DashboardFragment extends StatelessWidget {
-  DashboardFragment({@required this.title, @required this.child})
+  const DashboardFragment({@required this.title, @required this.child})
       : assert(title != null),
         assert(child != null);
 
@@ -70,12 +67,12 @@ class DashboardFragment extends StatelessWidget {
               moveByChildHeight: -0.5,
               child: DecoratedBox(
                 decoration: BoxDecoration(
-                  color: HpiTheme.of(context).tertiary,
+                  color: context.hpiTheme.tertiary,
                 ),
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   child: DefaultTextStyle(
-                    style: Theme.of(context).textTheme.title,
+                    style: context.theme.textTheme.title,
                     child: title,
                   ),
                 ),

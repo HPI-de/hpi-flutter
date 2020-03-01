@@ -1,15 +1,14 @@
 import 'package:flutter/widgets.dart';
 
-@immutable
 class HpiTheme extends InheritedWidget {
-  HpiTheme({@required this.tertiary, Widget child})
+  const HpiTheme({@required this.tertiary, Widget child})
       : assert(tertiary != null),
         super(child: child);
 
-  final Color tertiary;
-
   factory HpiTheme.of(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<HpiTheme>();
+
+  final Color tertiary;
 
   @override
   bool updateShouldNotify(HpiTheme oldWidget) {

@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart' hide Route;
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:hpi_flutter/app/widgets/app_bar.dart';
-import 'package:hpi_flutter/app/widgets/main_scaffold.dart';
-import 'package:hpi_flutter/app/widgets/utils.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/core/utils.dart';
-import 'package:hpi_flutter/feedback/widgets/feedback_dialog.dart';
-import 'package:hpi_flutter/onboarding/widgets/about_myself.dart';
+import 'package:hpi_flutter/app/app.dart';
+import 'package:hpi_flutter/core/core.dart' hide Image;
+import 'package:hpi_flutter/feedback/feedback.dart';
+import 'package:hpi_flutter/onboarding/onboarding.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:package_info/package_info.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../route.dart';
 import 'scrollable_markdown.dart';
@@ -38,12 +33,11 @@ class SettingsPage extends StatelessWidget {
 class _MobileDevAd extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final role = AboutMyself.getRole(Provider.of<SharedPreferences>(context));
-    final theme = Theme.of(context);
+    final theme = context.theme;
     final onPrimary = theme.colorScheme.onPrimary;
     final l11n = HpiL11n.of(context);
 
-    final content = role == Role.student
+    final content = AboutMyself.role == Role.student
         ? _buildStudent(context, theme, onPrimary, l11n)
         : _buildNonStudent(context, theme, onPrimary, l11n);
 
@@ -105,7 +99,7 @@ class _MobileDevAd extends StatelessWidget {
               ),
               SizedBox(width: 8),
               Image.asset(
-                'assets/logo/mobileDev sheep.png',
+                'assets/logo/mobileDev_sheep.png',
                 height: 192,
               ),
             ],
@@ -139,7 +133,7 @@ class _MobileDevAd extends StatelessWidget {
 
 class _AboutSection extends StatelessWidget {
   void _showImprint(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final textTheme = context.theme.textTheme;
 
     showModalBottomSheet(
       isScrollControlled: true,
@@ -188,7 +182,8 @@ class _AboutSection extends StatelessWidget {
           ListTile(
             leading: Icon(OMIcons.people),
             title: HpiL11n.text(context, 'settings/about.contributors'),
-            subtitle: Text('Felix Auringer, Marcel Garus, Kirill Postnov, Matti Schmidt, Maximilian Stiede, Clemens Tiedt, Ronja Wagner, Jonas Wanke'),
+            subtitle: Text(
+                'Felix Auringer, Marcel Garus, Kirill Postnov, Matti Schmidt, Maximilian Stiede, Clemens Tiedt, Ronja Wagner, Jonas Wanke'),
           ),
           ListTile(
             leading: Icon(OMIcons.code),
@@ -223,7 +218,7 @@ class _AboutSection extends StatelessWidget {
         },
         child: HpiL11n.text(context, 'settings/about.privacyPolicy'),
       ),
-      Text('⋅', style: Theme.of(context).textTheme.headline),
+      Text('⋅', style: context.theme.textTheme.headline),
       FlatButton(
         onPressed: () {
           PackageInfo.fromPlatform()
@@ -248,7 +243,7 @@ class _AboutSection extends StatelessWidget {
         },
         child: HpiL11n.text(context, 'settings/about.licenses'),
       ),
-      Text('⋅', style: Theme.of(context).textTheme.headline),
+      Text('⋅', style: context.theme.textTheme.headline),
       FlatButton(
         onPressed: () {
           FeedbackDialog.show(context);
@@ -271,7 +266,9 @@ class PrivacyPolicyPage extends StatelessWidget {
         builder: (context, scrollController) => FutureBuilder<String>(
           future: rootBundle.loadString('assets/privacyPolicy.md'),
           builder: (context, snapshot) {
-            if (!snapshot.hasData) return buildLoadingError(snapshot);
+            if (!snapshot.hasData) {
+              return buildLoadingError(snapshot);
+            }
 
             return ScrollableMarkdown(
               scrollController: scrollController,
@@ -293,7 +290,9 @@ class PrivacyPolicyPage extends StatelessWidget {
       body: FutureBuilder<String>(
         future: rootBundle.loadString('assets/privacyPolicy.md'),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) return buildLoadingError(snapshot);
+          if (!snapshot.hasData) {
+            return buildLoadingError(snapshot);
+          }
 
           return Markdown(
             data: snapshot.data,

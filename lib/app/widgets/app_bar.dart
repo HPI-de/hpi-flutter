@@ -1,34 +1,12 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/feedback/widgets/feedback_dialog.dart';
+import 'package:hpi_flutter/core/core.dart' hide Image;
+import 'package:hpi_flutter/feedback/feedback.dart';
+
+import '../utils.dart';
 
 class HpiAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final Widget leading;
-  final bool automaticallyImplyLeading;
-  final Widget title;
-  final List<Widget> actions;
-  final List<PopupMenuEntry> menuItems;
-  final Function(dynamic) menuItemHandler;
-  final Widget flexibleSpace;
-  final PreferredSizeWidget bottom;
-  final double elevation;
-  final ShapeBorder shape;
-  final Color backgroundColor;
-  final Brightness brightness;
-  final IconThemeData iconTheme;
-  final IconThemeData actionsIconTheme;
-  final TextTheme textTheme;
-  final bool primary;
-  final bool centerTitle;
-  final double titleSpacing;
-  final double toolbarOpacity;
-  final double bottomOpacity;
-  @override
-  Size get preferredSize =>
-      Size.fromHeight(kToolbarHeight + (bottom?.preferredSize?.height ?? 0.0));
-
   const HpiAppBar({
     Key key,
     this.leading,
@@ -58,6 +36,31 @@ class HpiAppBar extends StatelessWidget implements PreferredSizeWidget {
         assert(toolbarOpacity != null),
         assert(bottomOpacity != null),
         super(key: key);
+
+  final Widget leading;
+  final bool automaticallyImplyLeading;
+  final Widget title;
+  final List<Widget> actions;
+  final List<PopupMenuEntry> menuItems;
+  final Function(dynamic) menuItemHandler;
+  final Widget flexibleSpace;
+  final PreferredSizeWidget bottom;
+  final double elevation;
+  final ShapeBorder shape;
+  final Color backgroundColor;
+  final Brightness brightness;
+  final IconThemeData iconTheme;
+  final IconThemeData actionsIconTheme;
+  final TextTheme textTheme;
+  final bool primary;
+  final bool centerTitle;
+  final double titleSpacing;
+  final double toolbarOpacity;
+  final double bottomOpacity;
+
+  @override
+  Size get preferredSize =>
+      Size.fromHeight(kToolbarHeight + (bottom?.preferredSize?.height ?? 0.0));
 
   @override
   Widget build(BuildContext context) {
@@ -101,30 +104,6 @@ class HpiAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class HpiSliverAppBar extends StatelessWidget {
-  final Widget leading;
-  final bool automaticallyImplyLeading;
-  final Widget title;
-  final List<Widget> actions;
-  final List<PopupMenuEntry> menuItems;
-  final Function(dynamic) menuItemHandler;
-  final Widget flexibleSpace;
-  final PreferredSizeWidget bottom;
-  final double elevation;
-  final bool forceElevated;
-  final Color backgroundColor;
-  final Brightness brightness;
-  final IconThemeData iconTheme;
-  final IconThemeData actionsIconTheme;
-  final TextTheme textTheme;
-  final bool primary;
-  final bool centerTitle;
-  final double titleSpacing;
-  final double expandedHeight;
-  final bool floating;
-  final bool pinned;
-  final ShapeBorder shape;
-  final bool snap;
-
   const HpiSliverAppBar({
     Key key,
     this.leading,
@@ -160,6 +139,31 @@ class HpiSliverAppBar extends StatelessWidget {
         assert(floating || !snap,
             'The "snap" argument only makes sense for floating app bars.'),
         super(key: key);
+
+  final Widget leading;
+  final bool automaticallyImplyLeading;
+  final Widget title;
+  final List<Widget> actions;
+  final List<PopupMenuEntry> menuItems;
+  final Function(dynamic) menuItemHandler;
+  final Widget flexibleSpace;
+  final PreferredSizeWidget bottom;
+  final double elevation;
+  final bool forceElevated;
+  final Color backgroundColor;
+  final Brightness brightness;
+  final IconThemeData iconTheme;
+  final IconThemeData actionsIconTheme;
+  final TextTheme textTheme;
+  final bool primary;
+  final bool centerTitle;
+  final double titleSpacing;
+  final double expandedHeight;
+  final bool floating;
+  final bool pinned;
+  final ShapeBorder shape;
+  final bool snap;
+
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
@@ -275,7 +279,9 @@ class HpiFlexibleSpaceBar extends StatefulWidget {
 
 class _HpiFlexibleSpaceBarState extends State<HpiFlexibleSpaceBar> {
   bool _getEffectiveCenterTitle(ThemeData theme) {
-    if (widget.centerTitle != null) return widget.centerTitle;
+    if (widget.centerTitle != null) {
+      return widget.centerTitle;
+    }
     assert(theme.platform != null);
     switch (theme.platform) {
       case TargetPlatform.android:
@@ -284,12 +290,15 @@ class _HpiFlexibleSpaceBarState extends State<HpiFlexibleSpaceBar> {
       case TargetPlatform.iOS:
         return true;
     }
+    // ignore: avoid_returning_null
     return null;
   }
 
   Alignment _getTitleAlignment(double t, bool effectiveCenterTitle) {
-    if (effectiveCenterTitle) return Alignment.bottomCenter;
-    final TextDirection textDirection = Directionality.of(context);
+    if (effectiveCenterTitle) {
+      return Alignment.bottomCenter;
+    }
+    final TextDirection textDirection = context.directionality;
     assert(textDirection != null);
     switch (textDirection) {
       case TextDirection.rtl:
@@ -305,11 +314,12 @@ class _HpiFlexibleSpaceBarState extends State<HpiFlexibleSpaceBar> {
       case CollapseMode.pin:
         return -(settings.maxExtent - settings.currentExtent);
       case CollapseMode.none:
-        return 0.0;
+        return 0;
       case CollapseMode.parallax:
         final double deltaExtent = settings.maxExtent - settings.minExtent;
-        return -Tween<double>(begin: 0.0, end: deltaExtent / 4.0).transform(t);
+        return -Tween<double>(begin: 0, end: deltaExtent / 4.0).transform(t);
     }
+    // ignore: avoid_returning_null
     return null;
   }
 
@@ -333,16 +343,15 @@ class _HpiFlexibleSpaceBarState extends State<HpiFlexibleSpaceBar> {
 
     // background image
     if (widget.background != null) {
-      final double fadeStart =
-          math.max(0.0, 1.0 - kToolbarHeight / deltaExtent);
-      const double fadeEnd = 1.0;
+      final double fadeStart = math.max(0, 1.0 - kToolbarHeight / deltaExtent);
+      const double fadeEnd = 1;
       assert(fadeStart <= fadeEnd);
       final double opacity = 1.0 - Interval(fadeStart, fadeEnd).transform(t);
       if (opacity > 0.0) {
         children.add(Positioned(
           top: _getCollapsePadding(t, settings),
-          left: 0.0,
-          right: 0.0,
+          left: 0,
+          right: 0,
           height: settings.maxExtent,
           child: Opacity(
             opacity: opacity,
@@ -353,7 +362,7 @@ class _HpiFlexibleSpaceBarState extends State<HpiFlexibleSpaceBar> {
     }
 
     if (widget.title != null) {
-      final ThemeData theme = Theme.of(context);
+      final ThemeData theme = context.theme;
 
       Widget title;
       switch (theme.platform) {
@@ -383,9 +392,9 @@ class _HpiFlexibleSpaceBarState extends State<HpiFlexibleSpaceBar> {
               bottom: Tween<double>(begin: 16, end: 0).transform(t),
             );
         final double scaleValue =
-            Tween<double>(begin: 1.5, end: 1.0).transform(t);
+            Tween<double>(begin: 1.5, end: 1).transform(t);
         final Matrix4 scaleTransform = Matrix4.identity()
-          ..scale(scaleValue, scaleValue, 1.0);
+          ..scale(scaleValue, scaleValue, 1);
         final Alignment titleAlignment =
             _getTitleAlignment(t, effectiveCenterTitle);
         children.add(

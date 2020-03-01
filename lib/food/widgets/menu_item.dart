@@ -1,28 +1,27 @@
 import 'package:characters/characters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hpi_flutter/core/localizations.dart';
-import 'package:hpi_flutter/food/data/bloc.dart';
+import 'package:hpi_flutter/app/app.dart';
+import 'package:hpi_flutter/core/core.dart';
 import 'package:kt_dart/collection.dart';
-import 'package:provider/provider.dart';
 
-import '../data/restaurant.dart';
+import '../bloc.dart';
+import '../data.dart';
 
 class MenuItemView extends StatelessWidget {
-  final MenuItem item;
-  final bool showCounter;
-
-  MenuItemView(
+  const MenuItemView(
     this.item, {
     this.showCounter = true,
   })  : assert(item != null),
         assert(showCounter != null);
 
+  final MenuItem item;
+  final bool showCounter;
+
   void _showDetails(BuildContext context) {
-    final _foodBloc = Provider.of<FoodBloc>(context);
     showModalBottomSheet(
       context: context,
-      builder: (context) => MenuItemDetails(item, _foodBloc),
+      builder: (context) => MenuItemDetails(item),
     );
   }
 
@@ -38,12 +37,11 @@ class MenuItemView extends StatelessWidget {
               width: 32,
               child: Text(
                 showCounter ? item.counter.characters.first : ' ',
-                style:
-                    Theme.of(context).textTheme.caption.copyWith(fontSize: 20),
+                style: context.theme.textTheme.caption.copyWith(fontSize: 20),
               ),
             ),
             Expanded(
-              child: Text(item.title, style: Theme.of(context).textTheme.body1),
+              child: Text(item.title, style: context.theme.textTheme.body1),
             ),
             SizedBox(width: 8),
             // Currently, label icons aren't sent by the server.
@@ -58,7 +56,9 @@ class MenuItemView extends StatelessWidget {
   // ignore: unused_element
   Widget _buildLabels(KtSet<String> labelIds) {
     final ids = labelIds.toList();
-    if (ids.isEmpty()) return Container();
+    if (ids.isEmpty()) {
+      return Container();
+    }
 
     return Stack(
       children: [
@@ -73,9 +73,9 @@ class MenuItemView extends StatelessWidget {
 }
 
 class LabelView extends StatelessWidget {
-  final String labelId;
+  const LabelView(this.labelId) : assert(labelId != null);
 
-  LabelView(this.labelId) : assert(labelId != null);
+  final String labelId;
 
   @override
   Widget build(BuildContext context) {
@@ -84,9 +84,11 @@ class LabelView extends StatelessWidget {
       color: Color.lerp(Colors.white, Colors.black, 0.05),
       elevation: 1,
       child: StreamBuilder<Label>(
-        stream: Provider.of<FoodBloc>(context).getLabel(labelId),
+        stream: services.get<FoodBloc>().getLabel(labelId),
         builder: (_, snapshot) {
-          if (!snapshot.hasData) return Container();
+          if (!snapshot.hasData) {
+            return Container();
+          }
 
           return Padding(
             padding: const EdgeInsets.all(4),
@@ -101,12 +103,9 @@ class LabelView extends StatelessWidget {
 }
 
 class MenuItemDetails extends StatelessWidget {
-  final MenuItem item;
-  final FoodBloc foodBloc;
+  const MenuItemDetails(this.item) : assert(item != null);
 
-  MenuItemDetails(this.item, this.foodBloc)
-      : assert(item != null),
-        assert(foodBloc != null);
+  final MenuItem item;
 
   @override
   Widget build(BuildContext context) {
@@ -115,19 +114,19 @@ class MenuItemDetails extends StatelessWidget {
       textBaseline: TextBaseline.alphabetic,
       children: <Widget>[
         Container(
-          width: MediaQuery.of(context).size.width * 0.8,
+          width: context.mediaQuery.size.width * 0.8,
           padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                HpiL11n.get(context, "food/offer", args: [item.counter]),
-                style: Theme.of(context).textTheme.headline,
+                HpiL11n.get(context, 'food/offer', args: [item.counter]),
+                style: context.theme.textTheme.headline,
               ),
               Text(
                 item.title,
-                style: Theme.of(context).textTheme.subhead,
+                style: context.theme.textTheme.subhead,
               ),
               Wrap(
                 spacing: 8,
@@ -138,7 +137,7 @@ class MenuItemDetails extends StatelessWidget {
           ),
         ),
         Text(
-          HpiL11n.get(context, 'currency.eur', args: [item.prices["students"]]),
+          HpiL11n.get(context, 'currency.eur', args: [item.prices['students']]),
         ),
       ],
     );
@@ -149,12 +148,17 @@ class MenuItemDetails extends StatelessWidget {
     assert(id != null);
 
     return StreamBuilder<Label>(
-        stream: foodBloc.getLabel(id),
-        builder: (_, snapshot) {
-          if (!snapshot.hasData) return Chip(label: Text(id));
+      stream: services.get<FoodBloc>().getLabel(id),
+      builder: (_, snapshot) {
+        if (!snapshot.hasData) {
+          return Chip(label: Text(id));
+        }
 
-          final label = snapshot.data;
-          return Chip(label: Text(label.title));
-        });
+        final label = snapshot.data;
+        return Chip(
+          label: Text(label.title),
+        );
+      },
+    );
   }
 }

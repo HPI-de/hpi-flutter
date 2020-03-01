@@ -2,10 +2,10 @@ import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hpi_flutter/core/data/image.dart' as hpi;
+import 'package:hpi_flutter/core/core.dart' as hpi;
 
 class ImageWidget extends StatelessWidget {
-  ImageWidget(
+  const ImageWidget(
     this.image, {
     this.width,
     this.height,
@@ -48,12 +48,12 @@ class ImageWidget extends StatelessWidget {
 }
 
 class IconWidget extends StatelessWidget {
-  IconWidget(
+  const IconWidget(
     this.icon, {
     this.color,
     this.size,
     this.fit = BoxFit.contain,
-  })  : assert(icon != null);
+  }) : assert(icon != null);
 
   final Uint8List icon;
   final Color color;

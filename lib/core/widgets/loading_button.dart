@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-@immutable
 class LoadingButton extends StatelessWidget {
-  LoadingButton({
+  const LoadingButton({
     @required this.text,
     @required this.loadingText,
     @required this.isLoading,
@@ -12,7 +11,7 @@ class LoadingButton extends StatelessWidget {
         assert(loadingText != null),
         assert(isLoading != null),
         assert(onPressed != null);
-  LoadingButton.submit({
+  const LoadingButton.submit({
     @required bool isSending,
     @required VoidCallback onPressed,
     Color color,
@@ -35,8 +34,8 @@ class LoadingButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return RaisedButton(
       color: color,
-      child: isLoading ? _buildLoadingContent() : _buildNotLoadingContent(),
       onPressed: isLoading ? null : onPressed,
+      child: isLoading ? _buildLoadingContent() : _buildNotLoadingContent(),
     );
   }
 

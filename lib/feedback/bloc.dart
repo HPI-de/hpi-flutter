@@ -1,26 +1,23 @@
-import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
 import 'package:grpc/grpc.dart';
-import 'package:hpi_flutter/core/data/utils.dart';
+import 'package:hpi_flutter/app/app.dart';
+import 'package:hpi_flutter/core/core.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/feedback/v1test/feedback_service.pbgrpc.dart';
 
-import 'feedback.dart';
+import 'data.dart';
 
 @immutable
 class FeedbackBloc {
-  FeedbackBloc(Uri serverUrl, Locale locale)
-      : assert(serverUrl != null),
-        assert(locale != null),
-        _client = FeedbackServiceClient(
+  FeedbackBloc()
+      : _client = FeedbackServiceClient(
           ClientChannel(
-            serverUrl.toString(),
+            services.get<Uri>().toString(),
             port: 50064,
             options: ChannelOptions(
               credentials: ChannelCredentials.insecure(),
             ),
           ),
-          options: createCallOptions(locale),
+          options: createCallOptions(),
         );
 
   final FeedbackServiceClient _client;

@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart' hide Route;
 import 'package:flutter/widgets.dart' hide Route;
-import 'package:hpi_flutter/news/data/article.dart';
+import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/route.dart';
-import 'package:provider/provider.dart';
 
-import '../data/bloc.dart';
+import '../bloc.dart';
+import '../data.dart';
 import '../utils.dart';
 
-@immutable
 class ArticlePreview extends StatelessWidget {
-  final Article article;
+  const ArticlePreview(this.article) : assert(article != null);
 
-  ArticlePreview(this.article) : assert(article != null);
+  final Article article;
 
   @override
   Widget build(BuildContext context) {
@@ -31,23 +30,25 @@ class ArticlePreview extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     article.title,
-                    style: Theme.of(context).textTheme.subhead,
+                    style: context.theme.textTheme.subhead,
                   ),
                   SizedBox(height: 8),
                   Text(
                     article.teaser,
-                    style: Theme.of(context).textTheme.body1,
+                    style: context.theme.textTheme.body1,
                   ),
                   SizedBox(height: 4),
                   StreamBuilder<Source>(
-                    stream: Provider.of<NewsBloc>(context)
-                        .getSource(article.sourceId),
+                    stream:
+                        services.get<NewsBloc>().getSource(article.sourceId),
                     builder: (context, snapshot) {
-                      if (snapshot.hasError) print(snapshot.error);
+                      if (snapshot.hasError) {
+                        print(snapshot.error);
+                      }
 
                       return Text(
                         formatSourcePublishDate(article, snapshot.data),
-                        style: Theme.of(context).textTheme.caption,
+                        style: context.theme.textTheme.caption,
                       );
                     },
                   ),
