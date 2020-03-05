@@ -36,16 +36,25 @@ const _brandColorOrangeSwatch = MaterialColor(
 // ignore: unused_element
 const _brandColorYellow = 0xFFF6A804;
 
-ThemeData buildTheme() {
+ThemeData buildTheme(Brightness brightness) {
+  final isDark = brightness == Brightness.dark;
+
   ThemeData theme = ThemeData(
+    brightness: brightness,
     primarySwatch: _brandColorRedSwatch,
+    // By default, the [primaryColor] is set to a dark grey in dark mode
+    primaryColor: _brandColorRedSwatch,
+    primaryColorLight:
+        isDark ? _brandColorRedSwatch[500] : _brandColorRedSwatch[300],
+    primaryColorDark:
+        isDark ? _brandColorRedSwatch[800] : _brandColorRedSwatch[700],
     accentColor: Color(_brandColorOrange),
     fontFamily: 'Neo Sans',
   );
   theme = theme.copyWith(
     textTheme: theme.textTheme.copyWith(
         overline: theme.textTheme.overline.copyWith(
-          color: Colors.black.withOpacity(0.6),
+          color: isDark ? Colors.white60 : Colors.black.withOpacity(0.6),
           fontWeight: FontWeight.w500,
           fontSize: 10,
           letterSpacing: 1.5,
@@ -69,8 +78,8 @@ ThemeData buildTheme() {
     ),
     appBarTheme: theme.appBarTheme.copyWith(
       actionsIconTheme: theme.iconTheme,
-      brightness: Brightness.light,
-      color: Colors.grey.shade50,
+      brightness: brightness,
+      color: isDark ? Colors.grey.shade900 : Colors.grey.shade50,
       iconTheme: theme.iconTheme,
       textTheme: localizedTheme.textTheme,
     ),

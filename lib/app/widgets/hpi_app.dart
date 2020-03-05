@@ -17,7 +17,8 @@ class HpiApp extends StatelessWidget {
       tertiary: Color(0xFFF6A804),
       child: MaterialApp(
         title: 'HPI',
-        theme: buildTheme(),
+        theme: buildTheme(Brightness.light),
+        darkTheme: buildTheme(Brightness.dark),
         initialRoute: OnboardingPage.isOnboardingCompleted
             ? Route.dashboard.name
             : Route.onboarding.name,
