@@ -45,7 +45,7 @@ class InfoBitPage extends StatelessWidget {
             SliverPadding(
               padding: EdgeInsets.fromLTRB(
                 16,
-                infoBit.actionIds.isNotEmpty() || infoBit.tagIds.isNotEmpty()
+                infoBit.actionIds.isNotEmpty || infoBit.tagIds.isNotEmpty
                     ? 16
                     : 0,
                 16,

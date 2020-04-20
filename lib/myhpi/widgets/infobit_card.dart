@@ -171,7 +171,7 @@ class InfoBitCard extends StatelessWidget {
   Widget _buildFoot(BuildContext context) {
     assert(context != null);
 
-    if (infoBit.actionIds.isEmpty() && infoBit.tagIds.isEmpty()) {
+    if (infoBit.actionIds.isEmpty && infoBit.tagIds.isEmpty) {
       return null;
     }
 

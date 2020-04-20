@@ -7,7 +7,7 @@ packages:
       name: _fe_analyzer_shared
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.3"
+    version: "1.0.1"
   align_positioned:
     dependency: "direct main"
     description:
@@ -21,7 +21,7 @@ packages:
       name: analyzer
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.39.4"
+    version: "0.39.2+1"
   archive:
     dependency: transitive
     description:
@@ -349,14 +349,14 @@ packages:
       name: immutable_proto
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.5+1"
+    version: "0.1.0"
   immutable_proto_generator:
     dependency: "direct dev"
     description:
       name: immutable_proto_generator
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.5+1"
+    version: "0.1.0"
   intl:
     dependency: "direct main"
     description:
@@ -400,12 +400,12 @@ packages:
     source: hosted
     version: "3.0.1"
   kt_dart:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: kt_dart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.2"
+    version: "0.7.0+1"
   logging:
     dependency: transitive
     description:
