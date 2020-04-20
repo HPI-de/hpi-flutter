@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:kt_dart/collection.dart';
 
 class Paginated<T> extends StatelessWidget {
   Paginated({
@@ -12,7 +11,7 @@ class Paginated<T> extends StatelessWidget {
         assert(builder != null),
         assert(itemBuilder != null);
 
-  final KtMutableMap<int, String> _tokens = KtMutableMap.from({0: ''});
+  final Map<int, String> _tokens = {0: ''};
   final int pageSize;
   final PaginationDataLoader<T> dataLoader;
   final Widget Function(PagewiseLoadController<T> controller) builder;
@@ -33,7 +32,7 @@ class Paginated<T> extends StatelessWidget {
           pageToken: _tokens[page],
         ).first;
         _tokens[page + 1] = res.nextPageToken;
-        return res.items.asList();
+        return res.items;
       },
     ));
   }
@@ -126,6 +125,6 @@ class PaginationResponse<T> {
       : assert(items != null),
         assert(nextPageToken != null);
 
-  final KtList<T> items;
+  final List<T> items;
   final String nextPageToken;
 }

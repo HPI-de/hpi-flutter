@@ -122,13 +122,13 @@ class InfoBitCard extends StatelessWidget {
           .get<MyHpiBloc>()
           .getInfoBits(parentId: infoBit.id, pageSize: 3),
       builder: (context, snapshot) {
-        if (!snapshot.hasData || snapshot.data.items.isEmpty()) {
+        if (!snapshot.hasData || snapshot.data.items.isEmpty) {
           return Container();
         }
 
         return Column(
           children: <Widget>[
-            ...snapshot.data.items.map((i) => InfoBitListTile(i)).asList(),
+            ...snapshot.data.items.map((i) => InfoBitListTile(i)),
             if (!isNullOrBlank(snapshot.data.nextPageToken))
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),

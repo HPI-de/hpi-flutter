@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart';
-import 'package:kt_dart/collection.dart';
 
 import '../bloc.dart';
 import '../data.dart';
@@ -54,17 +53,17 @@ class MenuItemView extends StatelessWidget {
   }
 
   // ignore: unused_element
-  Widget _buildLabels(KtSet<String> labelIds) {
+  Widget _buildLabels(Set<String> labelIds) {
     final ids = labelIds.toList();
-    if (ids.isEmpty()) {
+    if (ids.isEmpty) {
       return Container();
     }
 
     return Stack(
       children: [
-        for (int i = 0; i < ids.size; i++)
+        for (int i = 0; i < ids.length; i++)
           Padding(
-            padding: EdgeInsets.only(left: (ids.size - i) * 16.0),
+            padding: EdgeInsets.only(left: (ids.length - i) * 16.0),
             child: LabelView(ids[i]),
           ),
       ],
@@ -130,10 +129,11 @@ class MenuItemDetails extends StatelessWidget {
                 item.title,
                 style: context.theme.textTheme.subhead,
               ),
-              Wrap(
-                spacing: 8,
-                children:
-                    item.labelIds.map((id) => _buildChip(context, id)).asList(),
+              ChipGroup(
+                children: [
+                  for (final labelId in item.labelIds)
+                    _buildChip(context, labelId),
+                ],
               ),
             ],
           ),

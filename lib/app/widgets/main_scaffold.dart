@@ -2,27 +2,26 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart' hide Image;
 import 'package:hpi_flutter/feedback/feedback.dart';
-import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 import '../utils.dart';
 
 class MainScaffold extends StatelessWidget {
-  MainScaffold({
+  const MainScaffold({
     this.appBar,
     @required this.body,
     this.floatingActionButton,
-    KtList<Widget> bottomActions,
+    this.bottomActions = const [],
     this.menuItems,
     this.menuItemHandler,
   })  : assert(body != null),
-        bottomActions = bottomActions ?? KtList.empty();
+        assert(bottomActions != null);
 
   final PreferredSizeWidget appBar;
   final Widget body;
   final Widget floatingActionButton;
-  final KtList<Widget> bottomActions;
-  final KtList<PopupMenuItem> menuItems;
+  final List<Widget> bottomActions;
+  final List<PopupMenuItem> menuItems;
   final Function(dynamic) menuItemHandler;
 
   @override
@@ -42,7 +41,7 @@ class MainScaffold extends StatelessWidget {
               },
             ),
             Spacer(),
-            ...bottomActions.iter,
+            ...bottomActions,
             PopupMenuButton(
               onSelected: (selected) {
                 if (selected == 'app.feedback') {
@@ -53,7 +52,7 @@ class MainScaffold extends StatelessWidget {
               },
               icon: Icon(Icons.more_vert),
               itemBuilder: (context) => [
-                if (menuItems != null) ...menuItems.iter,
+                if (menuItems != null) ...menuItems,
                 PopupMenuItem(
                   value: 'app.feedback',
                   child: Text(context.s.feedback_action),

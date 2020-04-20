@@ -7,7 +7,6 @@ import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/common/v1test/image.pb.dart
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/myhpi/v1test/info_bit.pb.dart'
     as proto;
 import 'package:immutable_proto/immutable_proto.dart';
-import 'package:kt_dart/collection.dart';
 
 part 'data.g.dart';
 
@@ -25,8 +24,8 @@ class MutableInfoBit {
   String content;
   @required
   proto.InfoBit_ChildDisplay childDisplay;
-  KtList<String> actionIds;
-  KtList<String> tagIds;
+  List<String> actionIds;
+  List<String> tagIds;
 }
 
 @ImmutableProto(proto.InfoBitTag)

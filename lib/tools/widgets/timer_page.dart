@@ -5,7 +5,7 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart';
-import 'package:kt_dart/collection.dart';
+
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -40,12 +40,12 @@ class TimerPage extends StatelessWidget {
                   : OMIcons.playArrow,
             ),
           ),
-          bottomActions: KtList.of(
+          bottomActions: [
             IconButton(
               onPressed: _timer.reset,
               icon: Icon(OMIcons.replay),
             ),
-          ),
+          ],
         );
       },
     );

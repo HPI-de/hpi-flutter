@@ -1,7 +1,7 @@
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart' hide Route;
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart';
-import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 import '../bloc.dart';
@@ -38,27 +38,28 @@ class CoursePage extends StatelessWidget {
             )
           ],
           body: TabBarView(
-            children: KtList.from([
-              KtPair('tab:course', CourseList()),
-              KtPair('tab:courseSeries', CourseSeriesList()),
-            ])
+            children: {
+              'tab:course': CourseList(),
+              'tab:courseSeries': CourseSeriesList(),
+            }
+                .entries
                 .mapIndexed((index, tab) => SafeArea(
                       top: false,
                       bottom: false,
                       child: Builder(
                         builder: (context) => CustomScrollView(
-                          key: PageStorageKey(tab.first),
+                          key: PageStorageKey(tab.key),
                           slivers: <Widget>[
                             SliverOverlapInjector(
                               handle: NestedScrollView
                                   .sliverOverlapAbsorberHandleFor(context),
                             ),
-                            tab.second,
+                            tab.value,
                           ],
                         ),
                       ),
                     ))
-                .asList(),
+                .toList(),
           ),
         ),
       ),

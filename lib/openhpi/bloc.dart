@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:dartx/dartx.dart';
 import 'package:http/http.dart' as http;
-import 'package:kt_dart/collection.dart';
 import 'package:meta/meta.dart';
 
 import 'data.dart';
@@ -25,24 +25,23 @@ class OpenHpiBloc {
     }
   }
 
-  Stream<KtList<OpenHpiCourse>> getCourses() {
-    return Stream.fromFuture(
-      fetchData(
-        courseUrl,
-        headers: {headerAccept: headerAcceptValue},
-      ).then((jsonString) =>
-          KtList.from(jsonDecode(jsonString)['data'] as Iterable).map(
-            (course) => OpenHpiCourse.fromJson(
-              course['attributes'] as Map<String, dynamic>,
-            ),
-          )),
+  Stream<List<OpenHpiCourse>> getCourses() async* {
+    final jsonString = await fetchData(
+      courseUrl,
+      headers: {headerAccept: headerAcceptValue},
     );
+
+    yield (jsonDecode(jsonString)['data'] as Iterable<dynamic>)
+        .map((course) => OpenHpiCourse.fromJson(
+              course['attributes'] as Map<String, dynamic>,
+            ))
+        .toList();
   }
 
-  Stream<KtList<OpenHpiCourse>> getAnnouncedCourses() {
+  Stream<List<OpenHpiCourse>> getAnnouncedCourses() {
     return getCourses().map(
       (list) => list
-          .filter((course) => course.status == 'announced')
+          .where((course) => course.status == 'announced')
           .sortedBy((c) => c.startAt),
     );
   }

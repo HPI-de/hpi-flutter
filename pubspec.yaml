@@ -27,7 +27,6 @@ dependencies:
   http: ^0.12.0+2
   immutable_proto: ^0.0.4
   intl: ">=0.15.8 <0.17.0"
-  kt_dart: ^0.6.2
   outline_material_icons: ^0.1.0
   package_info: ^0.4.0+6
   path_provider: ^1.3.0

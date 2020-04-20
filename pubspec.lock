@@ -400,7 +400,7 @@ packages:
     source: hosted
     version: "3.0.1"
   kt_dart:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: kt_dart
       url: "https://pub.dartlang.org"

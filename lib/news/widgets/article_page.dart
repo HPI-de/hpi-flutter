@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart' hide Image;
-import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:share/share.dart';
 
@@ -34,12 +33,12 @@ class ArticlePage extends StatelessWidget {
 
         return MainScaffold(
           body: ArticleView(snapshot.data),
-          menuItems: KtList.from([
+          menuItems: [
             PopupMenuItem(
               value: 'openInBrowser',
               child: Text(s.general_openInBrowser),
             ),
-          ]),
+          ],
           menuItemHandler: (value) async {
             switch (value as String) {
               case 'openInBrowser':
@@ -50,14 +49,14 @@ class ArticlePage extends StatelessWidget {
                 break;
             }
           },
-          bottomActions: KtList.from([
+          bottomActions: [
             IconButton(
               icon: Icon(OMIcons.share),
               onPressed: () {
                 Share.share(snapshot.data.link.toString());
               },
             )
-          ]),
+          ],
         );
       },
     );
@@ -105,25 +104,25 @@ class ArticleView extends StatelessWidget {
                     await tryLaunch(url);
                   },
                 ),
-                if (article.authorIds.isNotEmpty() ||
-                    article.categories.isNotEmpty() ||
-                    article.tags.isNotEmpty())
+                if (article.authorIds.isNotEmpty ||
+                    article.categories.isNotEmpty ||
+                    article.tags.isNotEmpty)
                   SizedBox(height: 16),
-                if (article.authorIds.isNotEmpty())
+                if (article.authorIds.isNotEmpty)
                   _buildChipSection<String>(
                     context,
                     s.news_article_authors,
                     article.authorIds,
                     (a) => Chip(label: Text(a)),
                   ),
-                if (article.categories.isNotEmpty())
+                if (article.categories.isNotEmpty)
                   _buildChipSection<Category>(
                     context,
                     s.news_article_categories,
                     article.categories,
                     (c) => Chip(label: Text(c.name)),
                   ),
-                if (article.tags.isNotEmpty())
+                if (article.tags.isNotEmpty)
                   _buildChipSection<Tag>(
                     context,
                     s.news_article_tags,
@@ -176,7 +175,7 @@ class ArticleView extends StatelessWidget {
   Widget _buildChipSection<T>(
     BuildContext context,
     String title,
-    KtCollection<T> items,
+    Iterable<T> items,
     Widget Function(T) chipBuilder,
   ) {
     assert(context != null);
@@ -188,7 +187,9 @@ class ArticleView extends StatelessWidget {
       padding: const EdgeInsets.only(top: 4),
       child: ChipGroup(
         title: Text(title),
-        children: items.map((i) => chipBuilder(i)).asList(),
+        children: [
+          for (final item in items) chipBuilder(item),
+        ],
       ),
     );
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart';
-import 'package:kt_dart/collection.dart';
+
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 class AboutMyself extends StatefulWidget {
@@ -39,23 +39,26 @@ class AboutMyself extends StatefulWidget {
 }
 
 class _AboutMyselfState extends State<AboutMyself> {
-  KtList<DropdownMenuItem<Role>> _roleValues;
-  KtList<DropdownMenuItem<CourseOfStudies>> _courseOfStudiesValues;
+  List<DropdownMenuItem<Role>> _roleValues;
+  List<DropdownMenuItem<CourseOfStudies>> _courseOfStudiesValues;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
     final s = context.s;
-    _roleValues = KtList.from(Role.values).map((r) => DropdownMenuItem(
-          value: r,
-          child: Text(s.onboarding_role(r)),
-        ));
-    _courseOfStudiesValues =
-        KtList.from(CourseOfStudies.values).map((c) => DropdownMenuItem(
+    _roleValues = Role.values
+        .map((r) => DropdownMenuItem(
+              value: r,
+              child: Text(s.onboarding_role(r)),
+            ))
+        .toList();
+    _courseOfStudiesValues = CourseOfStudies.values
+        .map((c) => DropdownMenuItem(
               value: c,
               child: Text(s.onboarding_courseOfStudies(c)),
-            ));
+            ))
+        .toList();
   }
 
   @override
@@ -106,14 +109,12 @@ class _AboutMyselfState extends State<AboutMyself> {
               ),
               TextSpan(text: s.onboarding_aboutMyself_text_3),
               _buildDropdown<int>(
-                  items: KtList.from(
-                    List.generate(
-                      _maxSemesterCount(courseOfStudies),
-                      (semester) => DropdownMenuItem(
-                        value: semester + 1,
-                        child: Text(
-                          s.onboarding_aboutMyself_text_4(semester + 1),
-                        ),
+                  items: List.generate(
+                    _maxSemesterCount(courseOfStudies),
+                    (semester) => DropdownMenuItem(
+                      value: semester + 1,
+                      child: Text(
+                        s.onboarding_aboutMyself_text_4(semester + 1),
                       ),
                     ),
                   ),
@@ -135,7 +136,7 @@ class _AboutMyselfState extends State<AboutMyself> {
   }
 
   InlineSpan _buildDropdown<T>({
-    @required KtList<DropdownMenuItem<T>> items,
+    @required List<DropdownMenuItem<T>> items,
     @required T value,
     @required void Function(T) onChanged,
   }) {
@@ -186,7 +187,7 @@ class _InlineDropdownButton<T> extends StatelessWidget {
         assert(onChanged != null),
         super(key: key);
 
-  final KtList<DropdownMenuItem<T>> items;
+  final List<DropdownMenuItem<T>> items;
   final T value;
   final void Function(T) onChanged;
 
@@ -195,16 +196,17 @@ class _InlineDropdownButton<T> extends StatelessWidget {
     final style = context.defaultTextStyle.style;
 
     return DropdownButton(
-      items: items
-          .map((i) => DropdownMenuItem(
-                key: i.key,
-                value: i.value,
-                child: DefaultTextStyle(
-                  style: context.theme.textTheme.body1,
-                  child: i.child,
-                ),
-              ))
-          .asList(),
+      items: [
+        for (final item in items)
+          DropdownMenuItem(
+            key: item.key,
+            value: item.value,
+            child: DefaultTextStyle(
+              style: context.theme.textTheme.body1,
+              child: item.child,
+            ),
+          ),
+      ],
       value: value,
       onChanged: onChanged,
       style: style,

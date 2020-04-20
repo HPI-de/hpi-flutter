@@ -3,9 +3,8 @@ import 'package:hpi_flutter/hpi_cloud_apis/google/protobuf/wrappers.pb.dart'
 import 'package:hpi_flutter/hpi_cloud_apis/google/type/date.pb.dart' as proto;
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/course/v1test/course.pb.dart'
     as proto;
-import 'package:kt_dart/collection.dart';
-import 'package:meta/meta.dart';
 import 'package:immutable_proto/immutable_proto.dart';
+import 'package:meta/meta.dart';
 
 @immutable
 class UInt32Value {
@@ -141,7 +140,7 @@ class CourseSeries {
               courseSeries.hasHoursPerWeek() ? courseSeries.hoursPerWeek : null,
           compulsory: courseSeriesCompulsoryFromProto(courseSeries.compulsory),
           language: courseSeries.hasLanguage() ? courseSeries.language : null,
-          types: KtList.from(courseSeries.types).map(courseSeriesTypeFromProto),
+          types: courseSeries.types.map(courseSeriesTypeFromProto).toList(),
         );
 
   final String id;
@@ -154,7 +153,7 @@ class CourseSeries {
   final CourseSeriesCompulsory compulsory;
   final String language;
   @required
-  final KtList<CourseSeriesType> types;
+  final List<CourseSeriesType> types;
 
   proto.CourseSeries toProto() {
     final courseSeries = proto.CourseSeries();
@@ -180,7 +179,7 @@ class CourseSeries {
     if (language != null) {
       courseSeries.language = language;
     }
-    courseSeries.types.addAll(types.map(courseSeriesTypeToProto).iter);
+    courseSeries.types.addAll(types.map(courseSeriesTypeToProto));
     return courseSeries;
   }
 
@@ -219,7 +218,7 @@ class CourseSeries {
     int hoursPerWeek,
     CourseSeriesCompulsory compulsory,
     String language,
-    KtList<CourseSeriesType> types,
+    List<CourseSeriesType> types,
   }) =>
       CourseSeries(
         id: id ?? this.id,
@@ -402,8 +401,8 @@ class Course {
           courseSeriesId:
               course.hasCourseSeriesId() ? course.courseSeriesId : null,
           semesterId: course.hasSemesterId() ? course.semesterId : null,
-          lecturers: KtList.from(course.lecturers),
-          assistants: KtList.from(course.assistants),
+          lecturers: course.lecturers,
+          assistants: course.assistants,
           website: course.hasWebsite() ? course.website : null,
           attendance: course.hasAttendance()
               ? UInt32Value.fromProto(course.attendance)
@@ -417,9 +416,9 @@ class Course {
   final String courseSeriesId;
   final String semesterId;
   @required
-  final KtList<String> lecturers;
+  final List<String> lecturers;
   @required
-  final KtList<String> assistants;
+  final List<String> assistants;
   final String website;
   final UInt32Value attendance;
   final Date enrollmentDeadline;
@@ -435,8 +434,8 @@ class Course {
     if (semesterId != null) {
       course.semesterId = semesterId;
     }
-    course.lecturers.addAll(lecturers.iter);
-    course.assistants.addAll(assistants.iter);
+    course.lecturers.addAll(lecturers);
+    course.assistants.addAll(assistants);
     if (website != null) {
       course.website = website;
     }
@@ -477,8 +476,8 @@ class Course {
     String id,
     String courseSeriesId,
     String semesterId,
-    KtList<String> lecturers,
-    KtList<String> assistants,
+    List<String> lecturers,
+    List<String> assistants,
     String website,
     UInt32Value attendance,
     Date enrollmentDeadline,
@@ -644,16 +643,16 @@ class CourseDetailProgramList {
   CourseDetailProgramList.fromProto(
       proto.CourseDetail_ProgramList courseDetailProgramList)
       : this(
-          programs: KtList.from(courseDetailProgramList.programs),
+          programs: List.from(courseDetailProgramList.programs),
         );
   proto.CourseDetail_ProgramList toProto() {
     final courseDetailProgramList = proto.CourseDetail_ProgramList();
-    courseDetailProgramList.programs.addAll(programs.iter);
+    courseDetailProgramList.programs.addAll(programs);
     return courseDetailProgramList;
   }
 
   @required
-  final KtList<String> programs;
+  final List<String> programs;
 
   @override
   bool operator ==(Object other) {
@@ -665,7 +664,7 @@ class CourseDetailProgramList {
         programs,
       ]);
   CourseDetailProgramList copy({
-    KtList<String> programs,
+    List<String> programs,
   }) =>
       CourseDetailProgramList(
         programs: programs ?? this.programs,

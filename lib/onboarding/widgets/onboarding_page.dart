@@ -2,7 +2,6 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart' hide Image;
 import 'package:hpi_flutter/settings/settings.dart';
-import 'package:kt_dart/collection.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:time_machine/time_machine.dart';
@@ -32,11 +31,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: OnboardingPager(
-        pages: KtList.from([
+        pages: [
           _buildStartPage(),
           _buildPrivacyPolicyPage(),
           _buildAboutMyselfPage(),
-        ]),
+        ],
         onFinish: () async {
           await services.get<SharedPreferences>().setInt(
               OnboardingPage._keyCompleted, Instant.now().epochMilliseconds);

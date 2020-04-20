@@ -1,6 +1,6 @@
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:hpi_flutter/core/core.dart';
-import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 class OnboardingPager extends StatefulWidget {
@@ -12,7 +12,7 @@ class OnboardingPager extends StatefulWidget {
         assert(onFinish != null),
         super(key: key);
 
-  final KtList<Page> pages;
+  final List<Page> pages;
   final VoidCallback onFinish;
 
   @override
@@ -27,18 +27,18 @@ class _OnboardingPagerState extends State<OnboardingPager> {
   double _page = 0;
   int get _pageFull => _page.floor();
   double get _pagePart => _page - _pageFull;
-  bool get _isLastPage => _page.round() == widget.pages.size - 1;
+  bool get _isLastPage => _page.round() == widget.pages.length - 1;
 
-  KtMutableList<bool> _canContinue;
+  List<bool> _canContinue;
   int _pageLimit;
-  KtList<GlobalKey<FormState>> _formKeys;
+  List<GlobalKey<FormState>> _formKeys;
 
   @override
   void initState() {
     super.initState();
 
-    _canContinue = widget.pages.map((p) => p.canContinue).toMutableList();
-    _pageLimit ??= widget.pages.size;
+    _canContinue = widget.pages.map((p) => p.canContinue).toList();
+    _pageLimit ??= widget.pages.length;
     _formKeys ??= widget.pages.map((_) => GlobalKey());
   }
 
@@ -68,9 +68,9 @@ class _OnboardingPagerState extends State<OnboardingPager> {
             child: PageView(
               controller: controller,
               children: widget.pages
-                  .take(_canContinue.takeWhile((c) => c).size + 1)
+                  .take(_canContinue.takeWhile((c) => c).length + 1)
                   .mapIndexed(_buildPage)
-                  .asList(),
+                  .toList(),
             ),
           ),
           Opacity(
@@ -190,9 +190,9 @@ class _OnboardingPagerState extends State<OnboardingPager> {
                     color: Colors.white.withOpacity(0.4),
                     child: indicatorBox(),
                   ))
-              .flatMap((i) => KtList.of(i, SizedBox(width: _indicatorSpacing)))
-              .dropLast(1)
-              .asList(),
+              .flatMap((i) => [i, SizedBox(width: _indicatorSpacing)])
+              .toList()
+              .dropLast(1),
         ),
         Positioned(
           left: ((_pageFull + (_pagePart - 0.5).clamp(0.0, 1.0) * 2) *
