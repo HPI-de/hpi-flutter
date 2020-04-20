@@ -126,9 +126,10 @@ class InfoBitCard extends StatelessWidget {
           return Container();
         }
 
+        final infoBits = snapshot.data.items;
         return Column(
           children: <Widget>[
-            ...snapshot.data.items.map((i) => InfoBitListTile(i)),
+            for (final infoBit in infoBits) InfoBitListTile(infoBit),
             if (!isNullOrBlank(snapshot.data.nextPageToken))
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
@@ -181,17 +182,20 @@ class InfoBitCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           ChipGroup(
-            children:
-                infoBit.actionIds.map((a) => InfoBitActionChip(a)).asList(),
+            children: [
+              for (final actionId in infoBit.actionIds)
+                InfoBitActionChip(actionId),
+            ],
           ),
           ChipGroup(
             leading: Text(context.s.myhpi_infoBit_tags_leading),
-            children: infoBit.tagIds
-                .map((t) => StreamChip<InfoBitTag>(
-                      stream: services.get<MyHpiBloc>().getTag(t),
-                      labelBuilder: (t) => Text(t.title),
-                    ))
-                .asList(),
+            children: [
+              for (final tagId in infoBit.tagIds)
+                StreamChip<InfoBitTag>(
+                  stream: services.get<MyHpiBloc>().getTag(tagId),
+                  labelBuilder: (t) => Text(t.title),
+                ),
+            ],
           )
         ],
       ),

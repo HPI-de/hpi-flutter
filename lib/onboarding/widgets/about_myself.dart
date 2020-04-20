@@ -47,18 +47,20 @@ class _AboutMyselfState extends State<AboutMyself> {
     super.didChangeDependencies();
 
     final s = context.s;
-    _roleValues = Role.values
-        .map((r) => DropdownMenuItem(
-              value: r,
-              child: Text(s.onboarding_role(r)),
-            ))
-        .toList();
-    _courseOfStudiesValues = CourseOfStudies.values
-        .map((c) => DropdownMenuItem(
-              value: c,
-              child: Text(s.onboarding_courseOfStudies(c)),
-            ))
-        .toList();
+    _roleValues = [
+      for (final role in Role.values)
+        DropdownMenuItem(
+          value: role,
+          child: Text(s.onboarding_role(role)),
+        ),
+    ];
+    _courseOfStudiesValues = [
+      for (final courseOfStudies in CourseOfStudies.values)
+        DropdownMenuItem(
+          value: courseOfStudies,
+          child: Text(s.onboarding_courseOfStudies(courseOfStudies)),
+        ),
+    ];
   }
 
   @override

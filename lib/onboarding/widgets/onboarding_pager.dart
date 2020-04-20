@@ -39,7 +39,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
 
     _canContinue = widget.pages.map((p) => p.canContinue).toList();
     _pageLimit ??= widget.pages.length;
-    _formKeys ??= widget.pages.map((_) => GlobalKey());
+    _formKeys ??= List.generate(widget.pages.length, (_) => GlobalKey());
   }
 
   @override
