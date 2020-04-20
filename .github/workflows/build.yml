@@ -11,46 +11,48 @@ jobs:
     name: Install Flutter and dependencies
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v1
+      - name: Checkout repository
+        uses: actions/checkout@v1
 
-    - name: Install Java
-      uses: actions/setup-java@v1
-      with:
-        java-version: '12.x'
-    - name: Install Flutter (beta)
-      uses: subosito/flutter-action@v1
-      with:
-        channel: "stable" # or: 'dev' or 'beta'
+      - name: Install Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: "12.x"
+      - name: Install Flutter (beta)
+        uses: subosito/flutter-action@v1
+        with:
+          channel: "stable" # or: 'dev' or 'beta'
 
-    - name: Install dependencies
-      run: flutter pub get
+      - name: Install dependencies
+        run: flutter pub get
 
-    - name: Create temp dir
-      run: mkdir ./temp
-    - name: Download HPI Cloud APIs
-      uses: Legion2/download-release-action@v2.1.0
-      with:
-        repository: HPI-de/hpi-cloud-apis
-        tag: '0.0.11'
-        path: ./temp
-        file: generated-dart.zip
-    - name: Unzip HPI Cloud APIs
-      run: unzip ./temp/generated-dart.zip -d ./lib
-    - name: Delete temp dir
-      run: rm -r ./temp
+      - name: Create temp dir
+        run: mkdir ./temp
+      - name: Download HPI Cloud APIs
+        uses: Legion2/download-release-action@v2.1.0
+        with:
+          repository: HPI-de/hpi-cloud-apis
+          tag: "0.0.11"
+          path: ./temp
+          file: generated-dart.zip
+      - name: Unzip HPI Cloud APIs
+        run: unzip ./temp/generated-dart.zip -d ./lib
+      - name: Delete temp dir
+        run: rm -r ./temp
 
-    - name: Run code generator(s)
-      run: flutter pub run build_runner build
-      
-    - name: Remove obsolete files
-      run: |
-        rm -rf ./.dart_tool/pub/bin/build_runner
-    - name: Persist current state
-      uses: actions/upload-artifact@v1
-      with:
-        name: source
-        path: .
+      - name: Run code generators
+        run: |
+          flutter pub run intl_utils:generate
+          flutter pub run build_runner build
+
+      - name: Remove obsolete files
+        run: |
+          rm -rf ./.dart_tool/pub/bin/build_runner
+      - name: Persist current state
+        uses: actions/upload-artifact@v1
+        with:
+          name: source
+          path: .
 
   lint:
     name: Lint
