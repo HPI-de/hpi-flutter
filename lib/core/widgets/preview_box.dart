@@ -1,5 +1,5 @@
+import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:hpi_flutter/app/app.dart';
 
 import 'scrim_around.dart';
 
@@ -53,14 +53,13 @@ class PreviewBox extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           DefaultTextStyle(
-            style: context.theme.textTheme.body1.copyWith(color: Colors.white),
+            style: context.textTheme.body1.copyWith(color: Colors.white),
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
             child: title,
           ),
           DefaultTextStyle(
-            style:
-                context.theme.textTheme.caption.copyWith(color: Colors.white),
+            style: context.textTheme.caption.copyWith(color: Colors.white),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             child: caption,

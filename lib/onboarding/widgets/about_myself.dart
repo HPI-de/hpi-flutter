@@ -84,7 +84,7 @@ class _AboutMyselfState extends State<AboutMyself> {
     }
 
     return DefaultTextStyle(
-      style: context.theme.textTheme.headline.copyWith(
+      style: context.textTheme.headline.copyWith(
         fontSize: 30,
         height: 1.4,
         color: Colors.white,
@@ -204,7 +204,7 @@ class _InlineDropdownButton<T> extends StatelessWidget {
             key: item.key,
             value: item.value,
             child: DefaultTextStyle(
-              style: context.theme.textTheme.body1,
+              style: context.textTheme.body1,
               child: item.child,
             ),
           ),

@@ -171,7 +171,7 @@ class InfoBitPage extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               context.s.myhpi_infoBit_parent,
-              style: context.theme.textTheme.overline,
+              style: context.textTheme.overline,
             ),
           ),
           StreamBuilder<InfoBit>(

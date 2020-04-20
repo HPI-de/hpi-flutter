@@ -54,8 +54,7 @@ class ArticlePreviewBox extends StatelessWidget {
         builder: (context, snapshot) {
           return Text(
             formatSourcePublishDate(article, snapshot.data),
-            style:
-                context.theme.textTheme.caption.copyWith(color: Colors.white),
+            style: context.textTheme.caption.copyWith(color: Colors.white),
           );
         },
       ),

@@ -39,12 +39,12 @@ class InfoBitCard extends StatelessWidget {
     final title = [
       Text(
         infoBit.title,
-        style: context.theme.textTheme.headline,
+        style: context.textTheme.headline,
       ),
       if (infoBit.subtitle != null)
         Text(
           infoBit.subtitle,
-          style: context.theme.textTheme.subhead,
+          style: context.textTheme.subhead,
         ),
     ];
 
@@ -83,7 +83,7 @@ class InfoBitCard extends StatelessWidget {
               if (infoBit.description != null)
                 Text(
                   infoBit.description,
-                  style: context.theme.textTheme.body1
+                  style: context.textTheme.body1
                       .copyWith(color: Colors.black.withOpacity(0.6)),
                 ),
             ],
@@ -188,8 +188,9 @@ class InfoBitCard extends StatelessWidget {
             ],
           ),
           ChipGroup(
-            leading: Text(context.s.myhpi_infoBit_tags_leading),
             children: [
+              if (infoBit.tagIds.isNotEmpty)
+                Text(context.s.myhpi_infoBit_tags_leading),
               for (final tagId in infoBit.tagIds)
                 StreamChip<InfoBitTag>(
                   stream: services.get<MyHpiBloc>().getTag(tagId),

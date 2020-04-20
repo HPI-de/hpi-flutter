@@ -63,7 +63,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           SizedBox(height: 96),
           Text(
             s.onboarding_start_title,
-            style: context.theme.textTheme.display1.copyWith(
+            style: context.textTheme.display1.copyWith(
               fontSize: 30,
               color: Colors.white,
             ),
@@ -71,8 +71,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           SizedBox(height: 32),
           Text(
             s.onboarding_start_subtitle,
-            style:
-                context.theme.textTheme.subtitle.copyWith(color: Colors.white),
+            style: context.textTheme.subtitle.copyWith(color: Colors.white),
           ),
         ],
       ),
@@ -93,7 +92,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               onPressed: () => PrivacyPolicyPage.showBottomSheet(context),
               child: Text(
                 s.settings_about_privacyPolicy,
-                style: context.theme.textTheme.subhead
+                style: context.textTheme.subhead
                     .copyWith(color: context.hpiTheme.tertiary),
               ),
             ),
@@ -101,7 +100,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           TextSpan(text: s.onboarding_privacyPolicy_suffix),
         ],
       ),
-      style: context.theme.textTheme.subhead.copyWith(color: Colors.white),
+      style: context.textTheme.subhead.copyWith(color: Colors.white),
       textAlign: TextAlign.left,
     );
 
@@ -209,8 +208,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           children: <Widget>[
             Text(
               context.s.onboarding_aboutMyself_title,
-              style:
-                  context.theme.textTheme.title.copyWith(color: Colors.white),
+              style: context.textTheme.title.copyWith(color: Colors.white),
             ),
             SizedBox(height: 32),
             FutureBuilder<SharedPreferences>(

@@ -179,7 +179,7 @@ class CourseDetailPage extends StatelessWidget {
       SizedBox(height: 16),
       Text(
         s.course_course_noGuarantee,
-        style: context.theme.textTheme.body1
+        style: context.textTheme.body1
             .copyWith(color: Colors.black.withOpacity(0.6)),
         textAlign: TextAlign.center,
       ),
@@ -234,7 +234,7 @@ class CourseDetailPage extends StatelessWidget {
     }
     return ElevatedExpansionTile(
       leading: Icon(icon),
-      title: Text(title, style: context.theme.textTheme.subhead),
+      title: Text(title, style: context.textTheme.subhead),
       children: [
         Html(
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),

@@ -11,6 +11,7 @@ dependencies:
     sdk: flutter
 
   align_positioned: ^1.0.8
+  black_hole_flutter: ^0.2.8
   cached_network_image: ^2.0.0
   characters: ^0.3.0
   dartx: ^0.2.0

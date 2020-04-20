@@ -124,7 +124,7 @@ class _MobileDevAd extends StatelessWidget {
 
 class _AboutSection extends StatelessWidget {
   void _showImprint(BuildContext context) {
-    final textTheme = context.theme.textTheme;
+    final textTheme = context.textTheme;
 
     showModalBottomSheet(
       isScrollControlled: true,
@@ -206,7 +206,7 @@ class _AboutSection extends StatelessWidget {
         onPressed: () => context.navigator.pushNamed('/settings/privacyPolicy'),
         child: Text(s.settings_about_privacyPolicy),
       ),
-      Text('⋅', style: context.theme.textTheme.headline),
+      Text('⋅', style: context.textTheme.headline),
       FlatButton(
         onPressed: () {
           PackageInfo.fromPlatform()
@@ -228,7 +228,7 @@ class _AboutSection extends StatelessWidget {
         },
         child: Text(s.settings_about_licenses),
       ),
-      Text('⋅', style: context.theme.textTheme.headline),
+      Text('⋅', style: context.textTheme.headline),
       FlatButton(
         onPressed: () {
           FeedbackDialog.show(context);

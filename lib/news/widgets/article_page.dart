@@ -93,7 +93,7 @@ class ArticleView extends StatelessWidget {
               <Widget>[
                 Text(
                   article.title,
-                  style: context.theme.textTheme.headline,
+                  style: context.textTheme.headline,
                 ),
                 SizedBox(height: 8),
                 _buildCaption(context),
@@ -149,7 +149,7 @@ class ArticleView extends StatelessWidget {
             print(snapshot.error);
           }
 
-          var theme = context.theme.textTheme.caption;
+          var theme = context.textTheme.caption;
           return Text.rich(
             TextSpan(children: <InlineSpan>[
               TextSpan(text: formatSourcePublishDate(article, snapshot.data)),

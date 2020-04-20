@@ -169,7 +169,7 @@ class NavigationItem extends StatelessWidget {
                 Expanded(
                   child: Text(
                     text,
-                    style: context.theme.textTheme.body2.copyWith(color: color),
+                    style: context.textTheme.body2.copyWith(color: color),
                   ),
                 ),
               ],

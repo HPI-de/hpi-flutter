@@ -28,15 +28,15 @@ class OpenHpiCoursePreview extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     course.title,
-                    style: context.theme.textTheme.body1
-                        .copyWith(color: Colors.white),
+                    style:
+                        context.textTheme.body1.copyWith(color: Colors.white),
                     maxLines: 3,
                   ),
                   Text(
                     LocalDatePattern.createWithCurrentCulture('d')
                         .format(course.startAt.inLocalZone().calendarDate),
-                    style: context.theme.textTheme.caption
-                        .copyWith(color: Colors.white),
+                    style:
+                        context.textTheme.caption.copyWith(color: Colors.white),
                     maxLines: 1,
                   ),
                 ],

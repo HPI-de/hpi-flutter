@@ -28,7 +28,7 @@ class CoursePage extends StatelessWidget {
                   indicatorColor: context.theme.primaryColor,
                   labelColor: context.theme.primaryColor,
                   unselectedLabelColor:
-                      context.theme.textTheme.body2.color.withOpacity(0.7),
+                      context.textTheme.body2.color.withOpacity(0.7),
                   tabs: [
                     Tab(text: s.course_tab_current),
                     Tab(text: s.course_tab_all),
