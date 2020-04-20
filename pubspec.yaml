@@ -74,3 +74,6 @@ flutter_icons:
   image_path_ios: "assets/logo/icon-ios.png"
   adaptive_icon_background: "#ffffff"
   adaptive_icon_foreground: "assets/logo/foreground.png"
+
+flutter_intl:
+  enabled: true

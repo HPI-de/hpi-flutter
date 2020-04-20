@@ -96,7 +96,7 @@ class HpiAppBar extends StatelessWidget implements PreferredSizeWidget {
           if (menuItems != null) ...menuItems,
           PopupMenuItem(
             value: 'app.feedback',
-            child: Text(HpiL11n.get(context, 'feedback/action')),
+            child: Text(context.s.feedback_action),
           )
         ],
       ));
@@ -201,7 +201,7 @@ class HpiSliverAppBar extends StatelessWidget {
           if (menuItems != null) ...menuItems,
           PopupMenuItem(
             value: 'app.feedback',
-            child: Text(HpiL11n.get(context, 'feedback/action')),
+            child: Text(context.s.feedback_action),
           )
         ],
       ));

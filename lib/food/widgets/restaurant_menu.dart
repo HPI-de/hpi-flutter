@@ -18,13 +18,13 @@ class RestaurantMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = context.s;
+
     return DashboardFragment(
       title: StreamBuilder<Restaurant>(
         stream: services.get<FoodBloc>().getRestaurant(restaurantId),
         builder: (context, snapshot) => Text(
-          snapshot.hasData
-              ? snapshot.data.title
-              : HpiL11n.get(context, 'loading'),
+          snapshot.hasData ? snapshot.data.title : s.general_loading,
         ),
       ),
       child: Column(

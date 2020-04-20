@@ -7,11 +7,12 @@ import 'package:outline_material_icons/outline_material_icons.dart';
 
 import '../bloc.dart';
 import '../data.dart';
-import '../utils.dart';
 
 class CoursePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final s = context.s;
+
     return MainScaffold(
       body: DefaultTabController(
         length: 2,
@@ -23,15 +24,15 @@ class CoursePage extends StatelessWidget {
                 floating: true,
                 pinned: true,
                 forceElevated: innerBoxIsScrolled,
-                title: Text(HpiL11n.get(context, 'course')),
+                title: Text(s.course),
                 bottom: TabBar(
                   indicatorColor: context.theme.primaryColor,
                   labelColor: context.theme.primaryColor,
                   unselectedLabelColor:
                       context.theme.textTheme.body2.color.withOpacity(0.7),
                   tabs: [
-                    Tab(text: HpiL11n.get(context, 'course/tab.current')),
-                    Tab(text: HpiL11n.get(context, 'course/tab.all')),
+                    Tab(text: s.course_tab_current),
+                    Tab(text: s.course_tab_all),
                   ],
                 ),
               ),
@@ -78,8 +79,8 @@ class CourseList extends StatelessWidget {
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return ListTile(
-                title: Text(snapshot.error?.toString() ??
-                    HpiL11n.get(context, 'loading')),
+                title: Text(
+                    snapshot.error?.toString() ?? context.s.general_loading),
               );
             }
 
@@ -104,6 +105,8 @@ class CourseList extends StatelessWidget {
 class CourseSeriesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final s = context.s;
+
     return PaginatedSliverList<CourseSeries>(
       dataLoader: services.get<CourseBloc>().getAllCourseSeries,
       itemBuilder: (context, courseSeries, __) => ExpansionTile(
@@ -113,19 +116,19 @@ class CourseSeriesList extends StatelessWidget {
           ListTile(
             leading: Icon(OMIcons.info),
             title: Text(
-              HpiL11n.get(
-                context,
-                'course/course.details',
-                args: [courseSeries.ects ?? 0, courseSeries.hoursPerWeek],
+              s.course_course_details(
+                  courseSeries.ects, courseSeries.hoursPerWeek),
+            ),
+            subtitle: Text(
+              courseSeries.types.joinToString(
+                separator: ' · ',
+                transform: s.course_course_type,
               ),
             ),
-            subtitle: Text(courseSeries.types
-                .map((t) => courseTypeToString(context, t))
-                .joinToString(separator: ' · ')),
           ),
           ListTile(
             leading: Icon(OMIcons.language),
-            title: Text(getLanguage(context, courseSeries.language)),
+            title: Text(context.s.general_language(courseSeries.language)),
           ),
         ],
       ),

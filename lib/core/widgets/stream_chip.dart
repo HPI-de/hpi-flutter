@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../localizations.dart';
+import 'package:hpi_flutter/core/core.dart';
 
 class StreamChip<T> extends StatelessWidget {
   const StreamChip({
@@ -33,7 +33,7 @@ class StreamChip<T> extends StatelessWidget {
               : null,
           label: snapshot.hasData
               ? labelBuilder(snapshot.data)
-              : (loadingLabel ?? Text(HpiL11n.get(context, 'loading'))),
+              : loadingLabel ?? Text(context.s.general_loading),
         );
       },
     );
@@ -74,7 +74,7 @@ class StreamActionChip<T> extends StatelessWidget {
               : null,
           label: snapshot.hasData
               ? labelBuilder(snapshot.data)
-              : (loadingLabel ?? Text(HpiL11n.get(context, 'loading'))),
+              : loadingLabel ?? Text(context.s.general_loading),
           onPressed: () => onPressed(snapshot.data),
         );
       },

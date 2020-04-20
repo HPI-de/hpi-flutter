@@ -16,7 +16,7 @@ class FoodPage extends StatelessWidget {
         slivers: <Widget>[
           HpiSliverAppBar(
             floating: true,
-            title: Text(HpiL11n.get(context, 'food')),
+            title: Text(context.s.food),
           ),
           Builder(
             builder: _buildRestaurantList,
@@ -28,6 +28,8 @@ class FoodPage extends StatelessWidget {
 }
 
 Widget _buildRestaurantList(BuildContext context) {
+  final s = context.s;
+
   return StreamBuilder<KtList<MenuItem>>(
     stream: services.get<FoodBloc>().getMenuItems(),
     builder: (context, snapshot) {
@@ -37,9 +39,7 @@ Widget _buildRestaurantList(BuildContext context) {
 
       if (snapshot.data.isEmpty()) {
         return SliverFillRemaining(
-          child: Center(
-            child: Text(HpiL11n.get(context, 'food/noMenu')),
-          ),
+          child: Center(child: Text(s.food_noMenu)),
         );
       }
 

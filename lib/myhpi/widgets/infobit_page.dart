@@ -14,6 +14,8 @@ class InfoBitPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = context.s;
+
     return StreamBuilder<InfoBit>(
       stream: services.get<MyHpiBloc>().getInfoBit(infoBitId),
       builder: (context, snapshot) {
@@ -63,9 +65,7 @@ class InfoBitPage extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: Builder(
                       builder: (context) => ChipGroup(
-                        title: Text(
-                          HpiL11n.get(context, 'myhpi/infoBit.tags.title'),
-                        ),
+                        title: Text(s.myhpi_infoBit_tags_title),
                         children: infoBit.tagIds
                             .map((t) => StreamChip<InfoBitTag>(
                                   stream: services.get<MyHpiBloc>().getTag(t),
@@ -168,7 +168,7 @@ class InfoBitPage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Text(
-              HpiL11n.get(context, 'myhpi/infoBit.parent'),
+              context.s.myhpi_infoBit_parent,
               style: context.theme.textTheme.overline,
             ),
           ),

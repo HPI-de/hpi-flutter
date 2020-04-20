@@ -121,6 +121,7 @@ class InfoBitCard extends StatelessWidget {
 
   Widget _buildChildrenList(BuildContext context) {
     assert(context != null);
+    final s = context.s;
 
     return StreamBuilder<PaginationResponse<InfoBit>>(
       stream: services
@@ -146,7 +147,7 @@ class InfoBitCard extends StatelessWidget {
                         arguments: infoBit.id,
                       );
                     },
-                    child: Text(HpiL11n.get(context, 'more')),
+                    child: Text(s.general_more),
                   ),
                 ),
               ),
@@ -194,7 +195,7 @@ class InfoBitCard extends StatelessWidget {
                 infoBit.actionIds.map((a) => InfoBitActionChip(a)).asList(),
           ),
           ChipGroup(
-            leading: Text(HpiL11n.get(context, 'myhpi/infoBit.tags.leading')),
+            leading: Text(context.s.myhpi_infoBit_tags_leading),
             children: infoBit.tagIds
                 .map((t) => StreamChip<InfoBitTag>(
                       stream: services.get<MyHpiBloc>().getTag(t),

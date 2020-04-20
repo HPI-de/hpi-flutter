@@ -20,8 +20,9 @@ class CourseDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var bloc = services.get<CourseBloc>();
-    var stream = Observable.combineLatest2<KtPair<Course, CourseSeries>,
+    final s = context.s;
+    final bloc = services.get<CourseBloc>();
+    final stream = Observable.combineLatest2<KtPair<Course, CourseSeries>,
         CourseDetail, KtTriple<Course, CourseSeries, CourseDetail>>(
       Observable(bloc.getCourse(courseId)).switchMap(
         (c) => bloc
@@ -41,13 +42,13 @@ class CourseDetailPage extends StatelessWidget {
             context,
             snapshot,
             appBarElevated: true,
-            loadingTitle: HpiL11n.get(context, 'course/course.loading'),
+            loadingTitle: s.course_course_loading,
           );
         }
 
-        var course = snapshot.data.first;
-        var courseSeries = snapshot.data.second;
-        var courseDetail = snapshot.data.third;
+        final course = snapshot.data.first;
+        final courseSeries = snapshot.data.second;
+        final courseDetail = snapshot.data.third;
 
         return MainScaffold(
           bottomActions: KtList.from([
@@ -70,8 +71,9 @@ class CourseDetailPage extends StatelessWidget {
           },
           menuItems: KtList.from([
             PopupMenuItem(
-                value: 'openInBrowser',
-                child: HpiL11n.text(context, 'openInBrowser')),
+              value: 'openInBrowser',
+              child: Text(s.general_openInBrowser),
+            ),
           ]),
           body: CustomScrollView(
             slivers: <Widget>[
@@ -83,11 +85,15 @@ class CourseDetailPage extends StatelessWidget {
                   title: Text(courseSeries.title),
                   subtitle: StreamBuilder<Semester>(
                     stream: bloc.getSemester(course.semesterId),
-                    builder: (context, snapshot) => Text(
-                      snapshot.data != null
-                          ? semesterToString(context, snapshot.data)
-                          : course.semesterId,
-                    ),
+                    builder: (context, snapshot) {
+                      final semester = snapshot.data;
+
+                      return Text(
+                        semester != null
+                            ? s.course_semester(semester.term, semester.year)
+                            : course.semesterId,
+                      );
+                    },
                   ),
                 ),
               ),
@@ -108,32 +114,34 @@ class CourseDetailPage extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildCourseDetails(BuildContext context,
-      {Course course, CourseSeries courseSeries, CourseDetail courseDetail}) {
+  List<Widget> _buildCourseDetails(
+    BuildContext context, {
+    @required Course course,
+    @required CourseSeries courseSeries,
+    @required CourseDetail courseDetail,
+  }) {
     assert(context != null);
+    assert(course != null);
+    assert(courseSeries != null);
+    assert(courseDetail != null);
 
+    final s = context.s;
     return [
       _buildElevatedTile(
         context,
         leading: OMIcons.info,
-        title: HpiL11n.get(
-          context,
-          'course/course.details',
-          args: [courseSeries.ects, courseSeries.hoursPerWeek],
-        ),
+        title: s.course_course_details(
+            courseSeries.ects, courseSeries.hoursPerWeek),
         subtitle: courseSeries.types
             .toList()
             .sortedBy<num>((t) => t.index)
-            .joinToString(
-              separator: ' · ',
-              transform: (t) => courseTypeToString(context, t),
-            ),
+            .joinToString(separator: ' · ', transform: s.course_course_type),
       ),
       if (courseDetail.teletask != null)
         _buildElevatedTile(
           context,
           leading: OMIcons.videocam,
-          title: HpiL11n.of(context)('course/course.teleTask'),
+          title: s.course_course_teleTask,
           trailing: OMIcons.openInNew,
           onTap: () async {
             await tryLaunch(courseDetail.teletask);
@@ -148,29 +156,29 @@ class CourseDetailPage extends StatelessWidget {
       _buildElevatedTile(
         context,
         leading: OMIcons.language,
-        title: getLanguage(context, courseSeries.language),
+        title: context.s.general_language(courseSeries.language),
       ),
       _buildElevatedTile(
         context,
         leading: OMIcons.viewModule,
-        title: HpiL11n.get(context, 'course/course.programsModules'),
+        title: s.course_course_programsModules,
         subtitle: buildProgramInfo(courseDetail),
       ),
-      _buildCourseInfoTile(
-          context, OMIcons.subject, 'description', courseDetail.description),
-      _buildCourseInfoTile(
-          context, OMIcons.check, 'requirements', courseDetail.requirements),
-      _buildCourseInfoTile(
-          context, OMIcons.school, 'learning', courseDetail.learning),
-      _buildCourseInfoTile(context, OMIcons.formatListNumbered, 'examination',
-          courseDetail.examination),
-      _buildCourseInfoTile(
-          context, OMIcons.calendarToday, 'dates', courseDetail.dates),
-      _buildCourseInfoTile(
-          context, OMIcons.book, 'literature', courseDetail.literature),
+      _buildCourseInfoTile(context, OMIcons.subject,
+          context.s.course_course_description, courseDetail.description),
+      _buildCourseInfoTile(context, OMIcons.check,
+          context.s.course_course_requirements, courseDetail.requirements),
+      _buildCourseInfoTile(context, OMIcons.school,
+          context.s.course_course_learning, courseDetail.learning),
+      _buildCourseInfoTile(context, OMIcons.formatListNumbered,
+          context.s.course_course_examination, courseDetail.examination),
+      _buildCourseInfoTile(context, OMIcons.calendarToday,
+          context.s.course_course_dates, courseDetail.dates),
+      _buildCourseInfoTile(context, OMIcons.book,
+          context.s.course_course_literature, courseDetail.literature),
       SizedBox(height: 16),
       Text(
-        HpiL11n.get(context, 'course/course.noGuarantee'),
+        s.course_course_noGuarantee,
         style: context.theme.textTheme.body1
             .copyWith(color: Colors.black.withOpacity(0.6)),
         textAlign: TextAlign.center,
@@ -179,10 +187,10 @@ class CourseDetailPage extends StatelessWidget {
         child: FlatButton(
           onPressed: () => FeedbackDialog.show(
             context,
-            title: HpiL11n.get(context, 'course/course.reportError'),
+            title: s.course_course_reportError,
             feedbackType: 'course.data.error',
           ),
-          child: Text(HpiL11n.get(context, 'course/course.reportError')),
+          child: Text(s.course_course_reportError),
         ),
       ),
       SizedBox(height: 16)
@@ -214,22 +222,19 @@ class CourseDetailPage extends StatelessWidget {
   Widget _buildCourseInfoTile(
     BuildContext context,
     IconData icon,
-    String titleKey,
+    String title,
     String content,
   ) {
     assert(context != null);
     assert(IconData != null);
-    assert(titleKey != null);
+    assert(title != null);
 
     if (isNullOrBlank(content)) {
       return null;
     }
     return ElevatedExpansionTile(
       leading: Icon(icon),
-      title: Text(
-        HpiL11n.get(context, 'course/course.$titleKey'),
-        style: context.theme.textTheme.subhead,
-      ),
+      title: Text(title, style: context.theme.textTheme.subhead),
       children: [
         Html(
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),

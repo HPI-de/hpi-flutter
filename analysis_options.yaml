@@ -2,12 +2,12 @@ include: package:pedantic/analysis_options.yaml
 
 analyzer:
   exclude:
-    - lib/core/hpi_icons.dart
-    - lib/hpi_cloud_apis/**
-    - lib/**/*.g.dart
+    - build/**
     - lib/**/*.pb.dart
-  strong-mode:
-    implicit-casts: false
+    - lib/**/*.g.dart
+    - lib/core/hpi_icons.dart
+    - lib/generated/**
+    - lib/hpi_cloud_apis/**
 
 # These are _a lot_ of strict linter rules. If you think that a rule should be
 # turned off, please open an issue at

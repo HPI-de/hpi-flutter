@@ -18,6 +18,8 @@ class ArticlePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = context.s;
+
     return StreamBuilder<Article>(
       stream: services.get<NewsBloc>().getArticle(articleId),
       builder: (context, snapshot) {
@@ -26,7 +28,7 @@ class ArticlePage extends StatelessWidget {
             context,
             snapshot,
             appBarElevated: true,
-            loadingTitle: HpiL11n.get(context, 'news/article.loading'),
+            loadingTitle: s.news_article_loading,
           );
         }
 
@@ -34,8 +36,9 @@ class ArticlePage extends StatelessWidget {
           body: ArticleView(snapshot.data),
           menuItems: KtList.from([
             PopupMenuItem(
-                value: 'openInBrowser',
-                child: HpiL11n.text(context, 'openInBrowser')),
+              value: 'openInBrowser',
+              child: Text(s.general_openInBrowser),
+            ),
           ]),
           menuItemHandler: (value) async {
             switch (value as String) {
@@ -68,6 +71,8 @@ class ArticleView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = context.s;
+
     return CustomScrollView(
       slivers: <Widget>[
         HpiSliverAppBar(
@@ -107,21 +112,21 @@ class ArticleView extends StatelessWidget {
                 if (article.authorIds.isNotEmpty())
                   _buildChipSection<String>(
                     context,
-                    HpiL11n.get(context, 'news/article.authors'),
+                    s.news_article_authors,
                     article.authorIds,
                     (a) => Chip(label: Text(a)),
                   ),
                 if (article.categories.isNotEmpty())
                   _buildChipSection<Category>(
                     context,
-                    HpiL11n.get(context, 'news/article.categories'),
+                    s.news_article_categories,
                     article.categories,
                     (c) => Chip(label: Text(c.name)),
                   ),
                 if (article.tags.isNotEmpty())
                   _buildChipSection<Tag>(
                     context,
-                    HpiL11n.get(context, 'news/article.tags'),
+                    s.news_article_tags,
                     article.tags,
                     (t) => Chip(label: Text(t.name)),
                   ),

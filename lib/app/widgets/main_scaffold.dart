@@ -57,7 +57,7 @@ class MainScaffold extends StatelessWidget {
                 if (menuItems != null) ...menuItems.iter,
                 PopupMenuItem(
                   value: 'app.feedback',
-                  child: Text(HpiL11n.get(context, 'feedback/action')),
+                  child: Text(context.s.feedback_action),
                 )
               ],
             )
@@ -68,6 +68,8 @@ class MainScaffold extends StatelessWidget {
   }
 
   void _openNavDrawer(BuildContext context) {
+    final s = context.s;
+
     showModalBottomSheet(
       context: context,
       builder: (context) => ListView(
@@ -94,32 +96,32 @@ class MainScaffold extends StatelessWidget {
           Divider(indent: 8, endIndent: 8),
           NavigationItem(
             icon: OMIcons.home,
-            text: HpiL11n.get(context, 'dashboard'),
+            text: s.dashboard,
             route: Route.dashboard,
           ),
           NavigationItem(
             icon: OMIcons.school,
-            text: HpiL11n.get(context, 'course'),
+            text: s.course,
             route: Route.courses,
           ),
           NavigationItem(
             icon: OMIcons.restaurantMenu,
-            text: HpiL11n.get(context, 'food'),
+            text: s.food,
             route: Route.food,
           ),
           NavigationItem(
             icon: HpiIcons.myhpi,
-            text: HpiL11n.get(context, 'myhpi'),
+            text: s.myhpi,
             route: Route.myhpi,
           ),
           NavigationItem(
             icon: HpiIcons.newspaper,
-            text: HpiL11n.get(context, 'news'),
+            text: s.news,
             route: Route.news,
           ),
           NavigationItem(
             icon: HpiIcons.tools,
-            text: HpiL11n.get(context, 'tools'),
+            text: s.tools,
             route: Route.tools,
           ),
           SizedBox(height: 12),

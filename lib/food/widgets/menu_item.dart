@@ -109,6 +109,8 @@ class MenuItemDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = context.s;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.baseline,
       textBaseline: TextBaseline.alphabetic,
@@ -121,7 +123,7 @@ class MenuItemDetails extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                HpiL11n.get(context, 'food/offer', args: [item.counter]),
+                s.food_offer(item.counter),
                 style: context.theme.textTheme.headline,
               ),
               Text(
@@ -136,9 +138,10 @@ class MenuItemDetails extends StatelessWidget {
             ],
           ),
         ),
-        Text(
-          HpiL11n.get(context, 'currency.eur', args: [item.prices['students']]),
-        ),
+        Text(s.general_currency(
+          'eur',
+          item.prices['students'].toStringAsFixed(2),
+        )),
       ],
     );
   }

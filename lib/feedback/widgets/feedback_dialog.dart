@@ -77,6 +77,8 @@ class _FeedbackDialogState extends State<FeedbackDialog>
   }
 
   List<Widget> _buildFormContent() {
+    final s = context.s;
+
     return [
       Text(
         widget.title,
@@ -88,14 +90,14 @@ class _FeedbackDialogState extends State<FeedbackDialog>
         maxLines: 8,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
-          labelText: HpiL11n.get(context, 'feedback/message'),
+          labelText: s.feedback_message,
         ),
         onChanged: (m) {
           message = m;
         },
         validator: (m) {
           if (isNullOrBlank(m)) {
-            return HpiL11n.get(context, 'feedback/message.missing');
+            return s.feedback_message_missing;
           }
           return null;
         },
@@ -114,8 +116,8 @@ class _FeedbackDialogState extends State<FeedbackDialog>
       ), */
       CheckboxListTile(
         controlAffinity: ListTileControlAffinity.leading,
-        title: Text(HpiL11n.get(context, 'feedback/includeLogs')),
-        subtitle: Text(HpiL11n.get(context, 'feedback/includeLogs.desc')),
+        title: Text(s.feedback_includeLogs),
+        subtitle: Text(s.feedback_includeLogs_desc),
         value: includeScreenshotAndLogs,
         onChanged: (checked) => setState(() {
           includeScreenshotAndLogs = checked;
@@ -124,8 +126,8 @@ class _FeedbackDialogState extends State<FeedbackDialog>
       Align(
         alignment: Alignment.centerRight,
         child: LoadingButton(
-          text: HpiL11n.get(context, 'submit'),
-          loadingText: HpiL11n.get(context, 'sending'),
+          text: s.general_submit,
+          loadingText: s.general_sending,
           isLoading: isSending,
           onPressed: _send,
           color: context.theme.primaryColor,
@@ -164,13 +166,12 @@ class _FeedbackDialogState extends State<FeedbackDialog>
 
   void _onSent(bool successful) {
     assert(successful != null);
+    final s = context.s;
 
     setState(() {
       isSending = false;
       context.scaffold.showSnackBar(SnackBar(
-        content: Text(
-          HpiL11n.get(context, successful ? 'feedback/sent' : 'error'),
-        ),
+        content: Text(successful ? s.feedback_sent : s.general_error),
       ));
     });
   }

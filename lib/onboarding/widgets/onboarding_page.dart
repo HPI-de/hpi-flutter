@@ -49,6 +49,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
   }
 
   Page _buildStartPage() {
+    final s = context.s;
+
     return Page(
       color: context.theme.accentColor,
       child: Column(
@@ -63,7 +65,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           ),
           SizedBox(height: 96),
           Text(
-            HpiL11n.get(context, 'onboarding/start.title'),
+            s.onboarding_start_title,
             style: context.theme.textTheme.display1.copyWith(
               fontSize: 30,
               color: Colors.white,
@@ -71,7 +73,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           ),
           SizedBox(height: 32),
           Text(
-            HpiL11n.get(context, 'onboarding/start.subtitle'),
+            s.onboarding_start_subtitle,
             style:
                 context.theme.textTheme.subtitle.copyWith(color: Colors.white),
           ),
@@ -81,27 +83,25 @@ class _OnboardingPageState extends State<OnboardingPage> {
   }
 
   Page _buildPrivacyPolicyPage() {
+    final s = context.s;
+
     final privacyPolicyText = Text.rich(
       TextSpan(
         children: [
-          TextSpan(
-            text: HpiL11n.get(context, 'onboarding/privacyPolicy.prefix'),
-          ),
+          TextSpan(text: s.onboarding_privacyPolicy_prefix),
           WidgetSpan(
             alignment: PlaceholderAlignment.middle,
             child: FlatButton(
               padding: EdgeInsets.symmetric(horizontal: 8),
               onPressed: () => PrivacyPolicyPage.showBottomSheet(context),
               child: Text(
-                HpiL11n.get(context, 'settings/about.privacyPolicy'),
+                s.settings_about_privacyPolicy,
                 style: context.theme.textTheme.subhead
                     .copyWith(color: context.hpiTheme.tertiary),
               ),
             ),
           ),
-          TextSpan(
-            text: HpiL11n.get(context, 'onboarding/privacyPolicy.suffix'),
-          ),
+          TextSpan(text: s.onboarding_privacyPolicy_suffix),
         ],
       ),
       style: context.theme.textTheme.subhead.copyWith(color: Colors.white),
@@ -192,7 +192,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         onCrashReportingChanged(context, newValue: v),
                     activeColor: context.hpiTheme.tertiary,
                   ),
-                  HpiL11n.text(context, 'onboarding/crashReporting'),
+                  Text(context.s.onboarding_crashReporting),
                 ],
               ),
             ),
@@ -211,10 +211,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
-              HpiL11n.get(context, 'onboarding/aboutMyself.title'),
-              style: context.theme.textTheme.title.copyWith(
-                color: Colors.white,
-              ),
+              context.s.onboarding_aboutMyself_title,
+              style:
+                  context.theme.textTheme.title.copyWith(color: Colors.white),
             ),
             SizedBox(height: 32),
             FutureBuilder<SharedPreferences>(

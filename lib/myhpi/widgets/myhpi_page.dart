@@ -12,9 +12,7 @@ class MyHpiPage extends StatelessWidget {
     return MainScaffold(
       body: CustomScrollView(
         slivers: <Widget>[
-          HpiSliverAppBar(
-            title: Text(HpiL11n.get(context, 'myhpi')),
-          ),
+          HpiSliverAppBar(title: Text(context.s.myhpi)),
           InfoBitList(),
         ],
       ),

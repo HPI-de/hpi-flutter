@@ -12,7 +12,7 @@ class NewsFragment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DashboardFragment(
-      title: Text(HpiL11n.get(context, 'news')),
+      title: Text(context.s.news),
       child: SizedBox(
         height: 150,
         child: Builder(
