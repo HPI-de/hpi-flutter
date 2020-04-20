@@ -9,9 +9,22 @@ import 'package:hpi_flutter/core/core.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:rxdart/rxdart.dart';
 
-class TimerPage extends StatelessWidget {
-  final CountdownTimer _timer =
-      CountdownTimer(Duration(minutes: 5), Duration(milliseconds: 200));
+class TimerPage extends StatefulWidget {
+  @override
+  _TimerPageState createState() => _TimerPageState();
+}
+
+class _TimerPageState extends State<TimerPage> {
+  final CountdownTimer _timer = CountdownTimer(
+    Duration(minutes: 5),
+    Duration(milliseconds: 200),
+  );
+
+  @override
+  void dispose() {
+    _timer.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,6 +153,10 @@ class CountdownTimer {
     _notifyUpdated();
   }
 
+  void dispose() {
+    _state.close();
+  }
+
   void _notifyUpdated() {
     if (isDone) {
       _timer?.cancel();
@@ -152,11 +169,18 @@ class CountdownTimer {
 
 enum CountdownTimerState { ready, running, paused }
 
-class CountdownTimerWidget extends StatelessWidget {
-  CountdownTimerWidget(this.timer) : assert(timer != null);
+class CountdownTimerWidget extends StatefulWidget {
+  const CountdownTimerWidget(this.timer) : assert(timer != null);
 
   final CountdownTimer timer;
+
+  @override
+  _CountdownTimerWidgetState createState() => _CountdownTimerWidgetState();
+}
+
+class _CountdownTimerWidgetState extends State<CountdownTimerWidget> {
   final Duration total = Duration(hours: 1);
+
   PolarCoord _lastCoords;
 
   @override
@@ -177,14 +201,14 @@ class CountdownTimerWidget extends StatelessWidget {
         Duration additional = Duration(
           microseconds: (total.inMicroseconds * difference / (2 * pi)).round(),
         );
-        if (timer.remaining + additional > total) {
-          additional = total - timer.remaining;
+        if (widget.timer.remaining + additional > total) {
+          additional = total - widget.timer.remaining;
         }
-        timer.add(additional);
+        widget.timer.add(additional);
         _lastCoords = coords;
       },
       child: StreamBuilder<Duration>(
-        stream: timer.stream,
+        stream: widget.timer.stream,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return buildLoadingError(snapshot);
@@ -194,7 +218,7 @@ class CountdownTimerWidget extends StatelessWidget {
             aspectRatio: 1,
             child: Builder(
               builder: (context) => CustomPaint(
-                painter: CountdownTimerPainter(context, timer, total),
+                painter: CountdownTimerPainter(context, widget.timer, total),
               ),
             ),
           );
