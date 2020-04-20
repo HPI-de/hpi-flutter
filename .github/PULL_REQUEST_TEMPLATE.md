@@ -1,15 +1,7 @@
-**Fixes: #Issue**
+<!-- Please enter the corresponding issue ID: -->
+**Closes: #Issue**
 
-<!-- Please enter the corresponding issue ID in the placeholder above. -->
-
-**Checklist**
-<!-- Please check if your PR fulfills the following requirements: -->
-
-- [ ] Tested on actual devices
-
-
-**Changes**
-<!-- Please summarize your changes -->
+<!-- Please summarize your changes: -->
 
 
 
