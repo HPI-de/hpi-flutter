@@ -68,7 +68,7 @@ void main() async {
     }
 
     services
-      ..registerSingletonAsync((_) => SharedPreferences.getInstance())
+      ..registerSingletonAsync(SharedPreferences.getInstance)
       ..registerSingleton(NavigationService())
       ..registerSingleton(Uri.parse(serverUrl))
       ..registerSingleton(

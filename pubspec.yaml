@@ -20,7 +20,7 @@ dependencies:
   flutter_markdown: ^0.2.0
   flutter_pagewise: ^1.2.3
   flutter_ringtone_player: ^1.0.3
-  get_it: ^4.0.0-beta.3
+  get_it: ^4.0.1
   grpc: ^2.1.2
   http: ^0.12.0+2
   immutable_proto: ^0.0.4
