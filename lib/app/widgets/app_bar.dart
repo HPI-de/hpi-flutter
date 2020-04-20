@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:hpi_flutter/core/core.dart' hide Image;
 import 'package:hpi_flutter/feedback/feedback.dart';
 
-import '../utils.dart';
-
 class HpiAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HpiAppBar({
     Key key,

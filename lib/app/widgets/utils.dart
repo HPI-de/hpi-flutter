@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hpi_flutter/core/core.dart';
 
-import '../utils.dart';
-
 Widget buildAppBarTitle({
   @required BuildContext context,
   @required Widget title,
