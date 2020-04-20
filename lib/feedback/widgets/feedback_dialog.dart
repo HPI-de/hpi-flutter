@@ -125,12 +125,12 @@ class _FeedbackDialogState extends State<FeedbackDialog>
       ),
       Align(
         alignment: Alignment.centerRight,
-        child: LoadingButton(
-          text: s.general_submit,
-          loadingText: s.general_sending,
-          isLoading: isSending,
+        child: FancyRaisedButton(
           onPressed: _send,
+          isLoading: isSending,
+          loadingChild: Text(s.general_sending),
           color: context.theme.primaryColor,
+          child: Text(s.general_submit),
         ),
       ),
     ];
