@@ -350,6 +350,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.16.0"
+  intl_translation:
+    dependency: transitive
+    description:
+      name: intl_translation
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.17.9"
+  intl_utils:
+    dependency: "direct dev"
+    description:
+      name: intl_utils
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.2"
   io:
     dependency: transitive
     description:
