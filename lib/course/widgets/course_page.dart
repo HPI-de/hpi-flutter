@@ -7,7 +7,6 @@ import 'package:outline_material_icons/outline_material_icons.dart';
 
 import '../bloc.dart';
 import '../data.dart';
-import '../utils.dart';
 
 class CoursePage extends StatelessWidget {
   @override
