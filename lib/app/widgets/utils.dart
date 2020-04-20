@@ -58,13 +58,14 @@ Widget buildLoadingErrorScaffold(
   assert(snapshot != null);
   assert(appBarElevated != null);
 
+  final s = context.s;
   return Scaffold(
     appBar: AppBar(
       elevation: appBarElevated ? null : 0,
       backgroundColor: appBarElevated ? context.theme.cardColor : null,
       title: Text(snapshot.hasError
-          ? HpiL11n.get(context, 'error')
-          : (loadingTitle ?? HpiL11n.get(context, 'loading'))),
+          ? s.general_error
+          : loadingTitle ?? s.general_loading),
     ),
     body: buildLoadingError(snapshot),
   );

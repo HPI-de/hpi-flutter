@@ -102,7 +102,7 @@ class _OnboardingPagerState extends State<OnboardingPager> {
                   onPressed:
                       _canContinue[_page.round()] ? widget.onFinish : null,
                   textColor: Colors.white,
-                  child: Text(HpiL11n.get(context, 'onboarding/done')),
+                  child: Text(context.s.onboarding_done),
                 ),
               ),
             )

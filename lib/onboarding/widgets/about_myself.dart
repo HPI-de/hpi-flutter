@@ -39,8 +39,6 @@ class AboutMyself extends StatefulWidget {
 }
 
 class _AboutMyselfState extends State<AboutMyself> {
-  HpiL11n _l11n;
-
   KtList<DropdownMenuItem<Role>> _roleValues;
   KtList<DropdownMenuItem<CourseOfStudies>> _courseOfStudiesValues;
 
@@ -48,20 +46,22 @@ class _AboutMyselfState extends State<AboutMyself> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _l11n = HpiL11n.of(context);
+    final s = context.s;
     _roleValues = KtList.from(Role.values).map((r) => DropdownMenuItem(
           value: r,
-          child: Text(_l11n('onboarding/role.${enumToKey(r)}')),
+          child: Text(s.onboarding_role(r)),
         ));
     _courseOfStudiesValues =
         KtList.from(CourseOfStudies.values).map((c) => DropdownMenuItem(
               value: c,
-              child: Text(_l11n('onboarding/courseOfStudies.${enumToKey(c)}')),
+              child: Text(s.onboarding_courseOfStudies(c)),
             ));
   }
 
   @override
   Widget build(BuildContext context) {
+    final s = context.s;
+
     var role = AboutMyself.role;
     if (role == null) {
       role = Role.student;
@@ -87,14 +87,14 @@ class _AboutMyselfState extends State<AboutMyself> {
       child: Text.rich(
         TextSpan(
           children: [
-            TextSpan(text: _l11n('onboarding/aboutMyself.text.1')),
+            TextSpan(text: s.onboarding_aboutMyself_text_1),
             _buildDropdown<Role>(
               items: _roleValues,
               value: role,
               onChanged: AboutMyself._setRole,
             ),
             if (role == Role.student) ...[
-              TextSpan(text: _l11n('onboarding/aboutMyself.text.2')),
+              TextSpan(text: s.onboarding_aboutMyself_text_2),
               _buildDropdown<CourseOfStudies>(
                 items: _courseOfStudiesValues,
                 value: courseOfStudies,
@@ -104,24 +104,24 @@ class _AboutMyselfState extends State<AboutMyself> {
                       semester.clamp(1, _maxSemesterCount(c)).toInt());
                 },
               ),
-              TextSpan(text: _l11n('onboarding/aboutMyself.text.3')),
+              TextSpan(text: s.onboarding_aboutMyself_text_3),
               _buildDropdown<int>(
                   items: KtList.from(
                     List.generate(
                       _maxSemesterCount(courseOfStudies),
-                      (s) => DropdownMenuItem(
-                        value: s + 1,
+                      (semester) => DropdownMenuItem(
+                        value: semester + 1,
                         child: Text(
-                          _l11n('onboarding/aboutMyself.text.4', args: [s + 1]),
+                          s.onboarding_aboutMyself_text_4(semester + 1),
                         ),
                       ),
                     ),
                   ),
                   value: semester,
                   onChanged: AboutMyself._setSemester),
-              TextSpan(text: _l11n('onboarding/aboutMyself.text.5')),
+              TextSpan(text: s.onboarding_aboutMyself_text_5),
             ],
-            TextSpan(text: _l11n('onboarding/aboutMyself.text.6')),
+            TextSpan(text: s.onboarding_aboutMyself_text_6),
           ],
         ),
         textAlign: TextAlign.center,

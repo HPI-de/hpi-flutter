@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart' hide Route;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hpi_flutter/app/app.dart';
-import 'package:hpi_flutter/core/core.dart';
+import 'package:hpi_flutter/generated/l10n.dart';
 import 'package:hpi_flutter/onboarding/onboarding.dart';
 
 import '../../route.dart';
@@ -9,8 +9,6 @@ import '../services/navigation.dart';
 import 'hpi_theme.dart';
 
 class HpiApp extends StatelessWidget {
-  final localizationsDelegate = HpiLocalizationsDelegate();
-
   @override
   Widget build(BuildContext context) {
     return HpiTheme(
@@ -27,13 +25,11 @@ class HpiApp extends StatelessWidget {
           NavigationObserver(),
         ],
         localizationsDelegates: [
-          localizationsDelegate,
+          S.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
-        supportedLocales: localizationsDelegate.supportedLanguages
-            .map((l) => Locale(l))
-            .asList(),
+        supportedLocales: S.delegate.supportedLocales,
       ),
     );
   }

@@ -24,7 +24,7 @@ class TimerPage extends StatelessWidget {
 
         return MainScaffold(
           appBar: HpiAppBar(
-            title: HpiL11n.text(context, 'tools.timer'),
+            title: Text(context.s.tools_timer),
           ),
           body: Center(
             child: Padding(

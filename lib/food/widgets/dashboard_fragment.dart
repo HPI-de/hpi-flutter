@@ -10,6 +10,8 @@ import 'restaurant_menu.dart';
 class FoodFragment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final s = context.s;
+
     return StreamBuilder<KtList<MenuItem>>(
       stream: services
           .get<FoodBloc>()
@@ -21,11 +23,11 @@ class FoodFragment extends StatelessWidget {
 
         if (snapshot.data.isEmpty()) {
           return DashboardFragment(
-            title: Text(HpiL11n.get(context, 'food')),
+            title: Text(s.food),
             child: Container(
               alignment: Alignment.center,
               padding: const EdgeInsets.all(16),
-              child: Text(HpiL11n.get(context, 'food/noMenu')),
+              child: Text(s.food_noMenu),
             ),
           );
         }

@@ -8,8 +8,6 @@ analyzer:
     - lib/core/hpi_icons.dart
     - lib/generated/**
     - lib/hpi_cloud_apis/**
-  strong-mode:
-    implicit-casts: false
 
 # These are _a lot_ of strict linter rules. If you think that a rule should be
 # turned off, please open an issue at

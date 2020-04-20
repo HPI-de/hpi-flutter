@@ -16,7 +16,7 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MainScaffold(
       appBar: HpiAppBar(
-        title: HpiL11n.text(context, 'settings'),
+        title: Text(context.s.settings),
       ),
       body: Material(
         child: CustomScrollView(
@@ -35,11 +35,10 @@ class _MobileDevAd extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.theme;
     final onPrimary = theme.colorScheme.onPrimary;
-    final l11n = HpiL11n.of(context);
 
     final content = AboutMyself.role == Role.student
-        ? _buildStudent(context, theme, onPrimary, l11n)
-        : _buildNonStudent(context, theme, onPrimary, l11n);
+        ? _buildStudent(context, theme, onPrimary)
+        : _buildNonStudent(context, theme, onPrimary);
 
     return Material(
       color: theme.primaryColor,
@@ -51,12 +50,11 @@ class _MobileDevAd extends StatelessWidget {
     BuildContext context,
     ThemeData theme,
     Color onPrimary,
-    HpiL11n l11n,
   ) {
     assert(context != null);
     assert(theme != null);
     assert(onPrimary != null);
-    assert(l11n != null);
+    final s = context.s;
 
     return Padding(
       padding: const EdgeInsets.only(left: 16, top: 16),
@@ -66,7 +64,7 @@ class _MobileDevAd extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 16),
             child: Text(
-              HpiL11n.get(context, 'settings/ad.title'),
+              s.settings_ad_title,
               style: theme.textTheme.headline.copyWith(color: onPrimary),
             ),
           ),
@@ -78,7 +76,7 @@ class _MobileDevAd extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       Text(
-                        HpiL11n.get(context, 'settings/ad.text'),
+                        s.settings_ad_text,
                         style: theme.textTheme.body1.copyWith(color: onPrimary),
                       ),
                       SizedBox(height: 16),
@@ -90,17 +88,14 @@ class _MobileDevAd extends StatelessWidget {
                         textColor: onPrimary,
                         onPressed: () =>
                             tryLaunch('https://t.me/hpi_mobiledev'),
-                        child: HpiL11n.text(context, 'settings/ad.button'),
+                        child: Text(s.settings_ad_button),
                       ),
                     ],
                   ),
                 ),
               ),
               SizedBox(width: 8),
-              Image.asset(
-                'assets/logo/mobileDev_sheep.png',
-                height: 192,
-              ),
+              Image.asset('assets/logo/mobileDev_sheep.png', height: 192),
             ],
           ),
         ],
@@ -112,17 +107,15 @@ class _MobileDevAd extends StatelessWidget {
     BuildContext context,
     ThemeData theme,
     Color onPrimary,
-    HpiL11n l11n,
   ) {
     assert(context != null);
     assert(theme != null);
     assert(onPrimary != null);
-    assert(l11n != null);
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       child: Text(
-        HpiL11n.get(context, 'settings/ad.title.nonStudent'),
+        context.s.settings_ad_title_nonStudent,
         style: theme.textTheme.subhead.copyWith(color: onPrimary),
         textAlign: TextAlign.center,
       ),
@@ -144,7 +137,7 @@ class _AboutSection extends StatelessWidget {
           controller: scrollController,
           children: <Widget>[
             Text(
-              HpiL11n.get(context, 'settings/about.imprint.desc'),
+              context.s.settings_about_imprint_desc,
               style: textTheme.body1,
             ),
           ],
@@ -155,12 +148,14 @@ class _AboutSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = context.s;
+
     return SliverList(
       delegate: SliverChildListDelegate.fixed(
         <Widget>[
           ListTile(
             leading: Icon(OMIcons.repeat),
-            title: HpiL11n.text(context, 'settings/repeatOnboarding'),
+            title: Text(s.settings_repeatOnboarding),
             onTap: () {
               Navigator.pushNamed(context, Route.onboarding.name);
             },
@@ -170,29 +165,29 @@ class _AboutSection extends StatelessWidget {
             builder: (context, snapshot) {
               final version = snapshot.hasData
                   ? '${snapshot.data.version}+${snapshot.data.buildNumber}'
-                  : HpiL11n.get(context, 'settings/about.version.error');
+                  : s.settings_about_version_error;
               return ListTile(
                 leading: Icon(OMIcons.update),
-                title: HpiL11n.text(context, 'settings/about.version'),
+                title: Text(s.settings_about_version),
                 subtitle: Text(version),
               );
             },
           ),
           ListTile(
             leading: Icon(OMIcons.people),
-            title: HpiL11n.text(context, 'settings/about.contributors'),
+            title: Text(s.settings_about_contributors),
             subtitle: Text(
                 'Felix Auringer, Marcel Garus, Kirill Postnov, Matti Schmidt, Maximilian Stiede, Clemens Tiedt, Ronja Wagner, Jonas Wanke'),
           ),
           ListTile(
             leading: Icon(OMIcons.code),
-            title: HpiL11n.text(context, 'settings/about.openSource'),
+            title: Text(s.settings_about_openSource),
             trailing: Icon(OMIcons.openInNew),
             onTap: () => tryLaunch('https://github.com/HPI-de/hpi_flutter'),
           ),
           ListTile(
             leading: Icon(OMIcons.person),
-            title: HpiL11n.text(context, 'settings/about.imprint'),
+            title: Text(s.settings_about_imprint),
             onTap: () => _showImprint(context),
           ),
           Wrap(
@@ -207,13 +202,14 @@ class _AboutSection extends StatelessWidget {
 
   List<Widget> _buildBottomButtons(BuildContext context) {
     assert(context != null);
+    final s = context.s;
 
     return <Widget>[
       FlatButton(
         onPressed: () {
           Navigator.pushNamed(context, Route.settingsPrivacyPolicy.name);
         },
-        child: HpiL11n.text(context, 'settings/about.privacyPolicy'),
+        child: Text(s.settings_about_privacyPolicy),
       ),
       Text('⋅', style: context.theme.textTheme.headline),
       FlatButton(
@@ -221,31 +217,28 @@ class _AboutSection extends StatelessWidget {
           PackageInfo.fromPlatform()
               .then(
                 (p) => '${p.version}+${p.buildNumber}',
-                onError: (_) =>
-                    HpiL11n.get(context, 'settings/about.version.error'),
+                onError: (_) => s.settings_about_version_error,
               )
               .then((version) => showLicensePage(
                     context: context,
-                    applicationName:
-                        HpiL11n.get(context, 'settings/about.licenses.name'),
+                    applicationName: s.settings_about_licenses_name,
                     applicationVersion: version,
                     applicationIcon: Image.asset(
                       'assets/logo/logo.png',
                       width: 48,
                       height: 48,
                     ),
-                    applicationLegalese: HpiL11n.get(
-                        context, 'settings/about.licenses.legalese'),
+                    applicationLegalese: s.settings_about_licenses_legalese,
                   ));
         },
-        child: HpiL11n.text(context, 'settings/about.licenses'),
+        child: Text(s.settings_about_licenses),
       ),
       Text('⋅', style: context.theme.textTheme.headline),
       FlatButton(
         onPressed: () {
           FeedbackDialog.show(context);
         },
-        child: HpiL11n.text(context, 'feedback/action'),
+        child: Text(s.feedback_action),
       ),
     ];
   }
@@ -282,7 +275,7 @@ class PrivacyPolicyPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MainScaffold(
       appBar: HpiAppBar(
-        title: HpiL11n.text(context, 'settings/about.privacyPolicy'),
+        title: Text(context.s.settings_about_privacyPolicy),
       ),
       body: FutureBuilder<String>(
         future: rootBundle.loadString('assets/privacyPolicy.md'),

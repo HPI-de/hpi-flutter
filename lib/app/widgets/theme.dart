@@ -41,6 +41,7 @@ ThemeData buildTheme(Brightness brightness) {
 
   ThemeData theme = ThemeData(
     brightness: brightness,
+    applyElevationOverlayColor: isDark,
     primarySwatch: _brandColorRedSwatch,
     // By default, the [primaryColor] is set to a dark grey in dark mode
     primaryColor: _brandColorRedSwatch,
