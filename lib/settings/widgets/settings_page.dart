@@ -8,7 +8,6 @@ import 'package:hpi_flutter/onboarding/onboarding.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:package_info/package_info.dart';
 
-import '../../route.dart';
 import 'scrollable_markdown.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -154,11 +153,9 @@ class _AboutSection extends StatelessWidget {
       delegate: SliverChildListDelegate.fixed(
         <Widget>[
           ListTile(
+            onTap: () => context.navigator.pushNamed('/onboarding'),
             leading: Icon(OMIcons.repeat),
             title: Text(s.settings_repeatOnboarding),
-            onTap: () {
-              Navigator.pushNamed(context, Route.onboarding.name);
-            },
           ),
           FutureBuilder<PackageInfo>(
             future: PackageInfo.fromPlatform(),
@@ -206,9 +203,7 @@ class _AboutSection extends StatelessWidget {
 
     return <Widget>[
       FlatButton(
-        onPressed: () {
-          Navigator.pushNamed(context, Route.settingsPrivacyPolicy.name);
-        },
+        onPressed: () => context.navigator.pushNamed('/settings/privacyPolicy'),
         child: Text(s.settings_about_privacyPolicy),
       ),
       Text('⋅', style: context.theme.textTheme.headline),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart' hide Action, Route;
 import 'package:flutter_html/flutter_html.dart';
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart';
-import 'package:hpi_flutter/route.dart';
 import 'package:pedantic/pedantic.dart';
 
 import '../bloc.dart';
@@ -20,12 +19,7 @@ class InfoBitCard extends StatelessWidget {
     return Card(
       margin: EdgeInsets.all(8),
       child: InkWell(
-        onTap: () {
-          context.navigator.pushNamed(
-            Route.myhpiInfoBit.name,
-            arguments: infoBit.id,
-          );
-        },
+        onTap: () => context.navigator.pushNamed('myhpi/${infoBit.id}'),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -141,12 +135,8 @@ class InfoBitCard extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: OutlineButton(
-                    onPressed: () {
-                      context.navigator.pushNamed(
-                        Route.myhpiInfoBit.name,
-                        arguments: infoBit.id,
-                      );
-                    },
+                    onPressed: () =>
+                        context.navigator.pushNamed('/myhpi/${infoBit.id}'),
                     child: Text(s.general_more),
                   ),
                 ),
@@ -277,12 +267,7 @@ class InfoBitListTile extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             )
           : null,
-      onTap: () {
-        context.navigator.pushNamed(
-          Route.myhpiInfoBit.name,
-          arguments: infoBit.id,
-        );
-      },
+      onTap: () => context.navigator.pushNamed('myhpi/${infoBit.id}'),
     );
   }
 }
@@ -300,12 +285,7 @@ class InfoBitPreviewBox extends StatelessWidget {
       background: ImageWidget(infoBit.cover),
       title: Text(infoBit.title),
       caption: Text(infoBit.subtitle),
-      onTap: () {
-        context.navigator.pushNamed(
-          Route.myhpiInfoBit.name,
-          arguments: infoBit.id,
-        );
-      },
+      onTap: () => context.navigator.pushNamed('myhpi/${infoBit.id}'),
     );
   }
 }

@@ -119,7 +119,7 @@ packages:
       name: characters
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.0"
+    version: "0.3.1"
   charcode:
     dependency: transitive
     description:
@@ -176,6 +176,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.3"
+  dartx:
+    dependency: "direct main"
+    description:
+      name: dartx
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0"
   device_info:
     dependency: "direct main"
     description:
@@ -202,6 +209,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.3"
+  flutter_deep_linking:
+    dependency: "direct main"
+    description:
+      name: flutter_deep_linking
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
   flutter_html:
     dependency: "direct main"
     description:
@@ -705,6 +719,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.11"
+  time:
+    dependency: transitive
+    description:
+      name: time
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.3.0"
   time_machine:
     dependency: "direct main"
     description:

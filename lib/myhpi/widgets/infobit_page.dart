@@ -8,7 +8,7 @@ import '../data.dart';
 import 'infobit_card.dart';
 
 class InfoBitPage extends StatelessWidget {
-  const InfoBitPage({Key key, this.infoBitId}) : super(key: key);
+  const InfoBitPage(this.infoBitId) : assert(infoBitId != null);
 
   final String infoBitId;
 

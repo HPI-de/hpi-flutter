@@ -12,8 +12,10 @@ dependencies:
 
   align_positioned: ^1.0.8
   cached_network_image: ^2.0.0
-  characters: ^0.5.0
+  characters: ^0.3.0
+  dartx: ^0.2.0
   device_info: ^0.4.1+4
+  flutter_deep_linking: ^0.1.1
   flutter_html: ^0.10.4
   flutter_localizations:
     sdk: flutter

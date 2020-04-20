@@ -143,8 +143,8 @@ class _FeedbackDialogState extends State<FeedbackDialog>
 
     setState(() {
       isSending = true;
-      Uri screenUri = Uri.https('mobiledev.hpi.de',
-          services.get<NavigationService>().lastKnownRoute.name);
+      Uri screenUri =
+          Uri.parse(mdWebUrl(services.get<NavigationService>().lastKnownRoute));
       Feedback.create(
         message.trim(),
         screenUri: screenUri,

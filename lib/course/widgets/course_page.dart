@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart' hide Route;
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart';
-import 'package:hpi_flutter/route.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
@@ -85,15 +84,12 @@ class CourseList extends StatelessWidget {
             }
 
             return ListTile(
+              onTap: () => context.navigator.pushNamed('/courses/${course.id}'),
               title: Text(snapshot.data.title),
               subtitle: Text(
                 course.lecturers.joinToString(),
                 maxLines: 1,
               ),
-              onTap: () {
-                context.navigator
-                    .pushNamed(Route.coursesDetail.name, arguments: course.id);
-              },
             );
           },
         ),

@@ -7,7 +7,6 @@ import 'package:pedantic/pedantic.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:time_machine/time_machine.dart';
 
-import '../../route.dart';
 import 'about_myself.dart';
 import 'onboarding_pager.dart';
 
@@ -41,8 +40,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
         onFinish: () async {
           await services.get<SharedPreferences>().setInt(
               OnboardingPage._keyCompleted, Instant.now().epochMilliseconds);
-          unawaited(
-              context.navigator.pushReplacementNamed(Route.dashboard.name));
+          unawaited(context.navigator.pushReplacementNamed('/dashboard'));
         },
       ),
     );

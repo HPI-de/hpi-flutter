@@ -82,7 +82,7 @@ void main() async {
       )
       // Used by feedback to capture the whole app
       ..registerSingleton(ScreenshotController())
-      ..registerFactory(() => _locale)
+      ..registerFactory<Locale>(() => _locale)
       // Most BLoCs require a reference to the current locale to retrieve
       // localized information from HPI Cloud. By registering them as factories,
       // we can adapt to locale changes during runtime.

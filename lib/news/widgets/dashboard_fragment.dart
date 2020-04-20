@@ -3,7 +3,6 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart' hide Image;
 
-import '../../route.dart';
 import '../bloc.dart';
 import '../data.dart';
 import '../utils.dart';
@@ -60,10 +59,7 @@ class ArticlePreviewBox extends StatelessWidget {
           );
         },
       ),
-      onTap: () {
-        Navigator.pushNamed(context, Route.newsArticle.name,
-            arguments: article.id);
-      },
+      onTap: () => context.navigator.pushNamed('/news/${article.id}'),
     );
   }
 }

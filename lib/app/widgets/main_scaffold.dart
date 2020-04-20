@@ -2,7 +2,6 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart' hide Image;
 import 'package:hpi_flutter/feedback/feedback.dart';
-import 'package:hpi_flutter/route.dart';
 import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
@@ -87,7 +86,7 @@ class MainScaffold extends StatelessWidget {
                   iconSize: 32,
                   padding: EdgeInsets.all(8),
                   onPressed: () {
-                    Navigator.popAndPushNamed(context, Route.settings.name);
+                    Navigator.popAndPushNamed(context, '/settings');
                   },
                 ),
               ],
@@ -97,32 +96,32 @@ class MainScaffold extends StatelessWidget {
           NavigationItem(
             icon: OMIcons.home,
             text: s.dashboard,
-            route: Route.dashboard,
+            route: '/dashboard',
           ),
           NavigationItem(
             icon: OMIcons.school,
             text: s.course,
-            route: Route.courses,
+            route: '/courses',
           ),
           NavigationItem(
             icon: OMIcons.restaurantMenu,
             text: s.food,
-            route: Route.food,
+            route: '/food',
           ),
           NavigationItem(
             icon: HpiIcons.myhpi,
             text: s.myhpi,
-            route: Route.myhpi,
+            route: '/myhpi',
           ),
           NavigationItem(
             icon: HpiIcons.newspaper,
             text: s.news,
-            route: Route.news,
+            route: '/news',
           ),
           NavigationItem(
             icon: HpiIcons.tools,
             text: s.tools,
-            route: Route.tools,
+            route: '/tools/timer',
           ),
           SizedBox(height: 12),
         ],
@@ -142,7 +141,7 @@ class NavigationItem extends StatelessWidget {
 
   final IconData icon;
   final String text;
-  final Route route;
+  final String route;
 
   @override
   Widget build(BuildContext context) {
@@ -158,18 +157,7 @@ class NavigationItem extends StatelessWidget {
         color: isActive ? color.withOpacity(0.2) : Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(4),
-          onTap: () {
-            final navigator = context.navigator;
-            final lastKnownRoute =
-                services.get<NavigationService>().lastKnownRoute;
-            if (lastKnownRoute.name != route.name) {
-              navigator
-                ..popUntil((_) => !navigator.canPop())
-                ..pushNamed(route.name);
-            } else {
-              navigator.pop();
-            }
-          },
+          onTap: () => context.navigator.pushNamed(route),
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: Row(
