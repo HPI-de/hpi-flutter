@@ -1,3 +1,4 @@
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart';
@@ -13,19 +14,27 @@ class AboutMyself extends StatefulWidget {
   static const _keyCourseOfStudies = 'onboarding.courseOfStudies';
   static const _keySemester = 'onboarding.semester';
 
-  static Role get role =>
-      stringToEnum(sharedPreferences.getString(_keyRole), Role.values);
-
-  static Future<bool> _setRole(Role value) {
-    return sharedPreferences.setString(_keyRole, enumToString(value));
+  static Role get role {
+    return EnumToString.fromString(
+      Role.values,
+      sharedPreferences.getString(_keyRole),
+    );
   }
 
-  static CourseOfStudies get courseOfStudies => stringToEnum(
-      sharedPreferences.getString(_keyCourseOfStudies), CourseOfStudies.values);
+  static Future<bool> _setRole(Role value) {
+    return sharedPreferences.setString(_keyRole, EnumToString.parse(value));
+  }
+
+  static CourseOfStudies get courseOfStudies {
+    return EnumToString.fromString(
+      CourseOfStudies.values,
+      sharedPreferences.getString(_keyCourseOfStudies),
+    );
+  }
 
   static Future<bool> _setCourseOfStudies(CourseOfStudies value) {
     return sharedPreferences.setString(
-        _keyCourseOfStudies, enumToString(value));
+        _keyCourseOfStudies, EnumToString.parse(value));
   }
 
   static int get semester => sharedPreferences.getInt(_keySemester);
