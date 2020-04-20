@@ -105,12 +105,10 @@ settings/ad.title: Interested in programming apps?
 settings/ad.title.nonStudent: This app was developed by the MobileDev-Club
 settings/ad.text: This app was developed by the MobileDev-Club using Flutter. We meet regularly and are looking forward for new members!
 settings/ad.button: Join us :)
-settings/ad.link: https://t.me/hpi_mobiledev
 settings/about.version: Version
 settings/about.version.error: Error while loading version information
 settings/about.contributors: Contributors
 settings/about.openSource: This app is open source
-settings/about.openSource.link: https://github.com/HPI-de/hpi_flutter
 settings/about.imprint: Imprint
 settings/about.imprint.desc: |-
   Hasso Plattner Institute for Digital Engineering gGmbH

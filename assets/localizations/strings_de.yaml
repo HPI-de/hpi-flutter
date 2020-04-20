@@ -105,12 +105,10 @@ settings/ad.title: Du möchtest Apps programmieren?
 settings/ad.title.nonStudent: Diese App wurde entwickelt vom MobileDev-Klub
 settings/ad.text: Diese App wurde vom MobileDev-Klub mithilfe von Flutter entwickelt. Wir treffen uns regelmäßig und freuen uns auf neue Mitglieder!
 settings/ad.button: Beitreten :)
-settings/ad.link: https://t.me/hpi_mobiledev
 settings/about.version: Version
 settings/about.version.error: Fehler beim Laden der Versionsinformationen
 settings/about.contributors: Mitwirkende
 settings/about.openSource: Diese App ist Open Source
-settings/about.openSource.link: https://github.com/HPI-de/hpi_flutter
 settings/about.imprint: Impressum
 settings/about.imprint.desc: |-
   Hasso-Plattner-Institut für Digital Engineering gGmbH

@@ -88,9 +88,8 @@ class _MobileDevAd extends StatelessWidget {
                         ),
                         highlightedBorderColor: onPrimary,
                         textColor: onPrimary,
-                        onPressed: () {
-                          tryLaunch(HpiL11n.get(context, 'settings/ad.link'));
-                        },
+                        onPressed: () =>
+                            tryLaunch('https://t.me/hpi_mobiledev'),
                         child: HpiL11n.text(context, 'settings/ad.button'),
                       ),
                     ],
@@ -189,9 +188,7 @@ class _AboutSection extends StatelessWidget {
             leading: Icon(OMIcons.code),
             title: HpiL11n.text(context, 'settings/about.openSource'),
             trailing: Icon(OMIcons.openInNew),
-            onTap: () {
-              tryLaunch(HpiL11n.get(context, 'settings/about.openSource.link'));
-            },
+            onTap: () => tryLaunch('https://github.com/HPI-de/hpi_flutter'),
           ),
           ListTile(
             leading: Icon(OMIcons.person),
