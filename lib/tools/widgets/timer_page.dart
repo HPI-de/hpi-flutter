@@ -38,6 +38,12 @@ class _TimerPageState extends State<TimerPage> {
         return MainScaffold(
           appBar: HpiAppBar(
             title: Text(context.s.tools_timer),
+            actions: <Widget>[
+              IconButton(
+                onPressed: _timer.reset,
+                icon: Icon(OMIcons.replay),
+              ),
+            ],
           ),
           body: Center(
             child: Padding(
@@ -53,12 +59,6 @@ class _TimerPageState extends State<TimerPage> {
                   : OMIcons.playArrow,
             ),
           ),
-          bottomActions: [
-            IconButton(
-              onPressed: _timer.reset,
-              icon: Icon(OMIcons.replay),
-            ),
-          ],
         );
       },
     );

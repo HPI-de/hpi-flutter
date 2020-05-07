@@ -10,7 +10,7 @@ class HpiAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.leading,
     this.automaticallyImplyLeading = true,
     this.title,
-    this.actions,
+    this.actions = const [],
     this.flexibleSpace,
     this.bottom,
     this.elevation,
@@ -25,22 +25,24 @@ class HpiAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.titleSpacing = NavigationToolbar.kMiddleSpacing,
     this.toolbarOpacity = 1.0,
     this.bottomOpacity = 1.0,
-    this.menuItems,
-    this.menuItemHandler,
+    this.overflowActions = const [],
+    this.overflowActionHandler,
   })  : assert(automaticallyImplyLeading != null),
+        assert(actions != null),
         assert(elevation == null || elevation >= 0.0),
         assert(primary != null),
         assert(titleSpacing != null),
         assert(toolbarOpacity != null),
         assert(bottomOpacity != null),
+        assert(overflowActions != null),
+        // ignore: prefer_is_empty
+        assert(overflowActions.length == 0 || overflowActionHandler != null),
         super(key: key);
 
   final Widget leading;
   final bool automaticallyImplyLeading;
   final Widget title;
   final List<Widget> actions;
-  final List<PopupMenuEntry> menuItems;
-  final Function(dynamic) menuItemHandler;
   final Widget flexibleSpace;
   final PreferredSizeWidget bottom;
   final double elevation;
@@ -55,6 +57,8 @@ class HpiAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double titleSpacing;
   final double toolbarOpacity;
   final double bottomOpacity;
+  final List<PopupMenuEntry<String>> overflowActions;
+  final OverflowActionHandler overflowActionHandler;
 
   @override
   Size get preferredSize =>
@@ -66,7 +70,13 @@ class HpiAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: leading,
       automaticallyImplyLeading: automaticallyImplyLeading,
       title: title,
-      actions: actions ?? [],
+      actions: [
+        ...actions,
+        _OverflowAction(
+          actions: overflowActions,
+          actionHandler: overflowActionHandler,
+        )
+      ],
       flexibleSpace: flexibleSpace,
       bottom: bottom,
       elevation: elevation,
@@ -81,23 +91,7 @@ class HpiAppBar extends StatelessWidget implements PreferredSizeWidget {
       titleSpacing: titleSpacing,
       toolbarOpacity: toolbarOpacity,
       bottomOpacity: bottomOpacity,
-    )..actions.add(PopupMenuButton(
-        onSelected: (selected) {
-          if (selected == 'app.feedback') {
-            FeedbackDialog.show(context);
-          } else {
-            menuItemHandler(selected);
-          }
-        },
-        icon: Icon(Icons.more_vert),
-        itemBuilder: (context) => [
-          if (menuItems != null) ...menuItems,
-          PopupMenuItem(
-            value: 'app.feedback',
-            child: Text(context.s.feedback_action),
-          )
-        ],
-      ));
+    );
   }
 }
 
@@ -107,8 +101,7 @@ class HpiSliverAppBar extends StatelessWidget {
     this.leading,
     this.automaticallyImplyLeading = true,
     this.title,
-    this.actions,
-    this.menuItems,
+    this.actions = const [],
     this.flexibleSpace,
     this.bottom,
     this.elevation,
@@ -126,8 +119,10 @@ class HpiSliverAppBar extends StatelessWidget {
     this.pinned = false,
     this.shape,
     this.snap = false,
-    this.menuItemHandler,
+    this.overflowActions = const [],
+    this.overflowActionHandler,
   })  : assert(automaticallyImplyLeading != null),
+        assert(actions != null),
         assert(forceElevated != null),
         assert(primary != null),
         assert(titleSpacing != null),
@@ -136,14 +131,15 @@ class HpiSliverAppBar extends StatelessWidget {
         assert(snap != null),
         assert(floating || !snap,
             'The "snap" argument only makes sense for floating app bars.'),
+        assert(overflowActions != null),
+        // ignore: prefer_is_empty
+        assert(overflowActions.length == 0 || overflowActionHandler != null),
         super(key: key);
 
   final Widget leading;
   final bool automaticallyImplyLeading;
   final Widget title;
   final List<Widget> actions;
-  final List<PopupMenuEntry> menuItems;
-  final Function(dynamic) menuItemHandler;
   final Widget flexibleSpace;
   final PreferredSizeWidget bottom;
   final double elevation;
@@ -161,6 +157,8 @@ class HpiSliverAppBar extends StatelessWidget {
   final bool pinned;
   final ShapeBorder shape;
   final bool snap;
+  final List<PopupMenuEntry<String>> overflowActions;
+  final OverflowActionHandler overflowActionHandler;
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +166,13 @@ class HpiSliverAppBar extends StatelessWidget {
       leading: leading,
       automaticallyImplyLeading: automaticallyImplyLeading,
       title: title,
-      actions: actions ?? [],
+      actions: [
+        ...actions,
+        _OverflowAction(
+          actions: overflowActions,
+          actionHandler: overflowActionHandler,
+        )
+      ],
       flexibleSpace: flexibleSpace,
       bottom: bottom,
       elevation: elevation,
@@ -186,23 +190,7 @@ class HpiSliverAppBar extends StatelessWidget {
       pinned: pinned,
       shape: shape,
       snap: snap,
-    )..actions.add(PopupMenuButton(
-        onSelected: (selected) {
-          if (selected == 'app.feedback') {
-            FeedbackDialog.show(context);
-          } else {
-            menuItemHandler(selected);
-          }
-        },
-        icon: Icon(Icons.more_vert),
-        itemBuilder: (context) => [
-          if (menuItems != null) ...menuItems,
-          PopupMenuItem(
-            value: 'app.feedback',
-            child: Text(context.s.feedback_action),
-          )
-        ],
-      ));
+    );
   }
 }
 
@@ -421,5 +409,54 @@ class _HpiFlexibleSpaceBarState extends State<HpiFlexibleSpaceBar> {
     }
 
     return ClipRect(child: Stack(children: children));
+  }
+}
+
+typedef OverflowActionHandler = void Function(String key);
+
+class _OverflowAction extends StatelessWidget {
+  const _OverflowAction({
+    this.actions = const [],
+    this.actionHandler,
+  })  : assert(actions != null),
+        // ignore: prefer_is_empty
+        assert(actions.length == 0 || actionHandler != null);
+
+  final List<PopupMenuEntry<String>> actions;
+  final OverflowActionHandler actionHandler;
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+      onSelected: (selected) {
+        switch (selected) {
+          case 'app.settings':
+            context.rootNavigator.pushNamed('/settings');
+            break;
+          case 'app.feedback':
+            FeedbackDialog.show(context);
+            break;
+          default:
+            actionHandler(selected);
+        }
+      },
+      icon: Icon(Icons.more_vert),
+      itemBuilder: (context) {
+        return <PopupMenuEntry<String>>[
+          if (actions.isNotEmpty) ...[
+            ...actions,
+            PopupMenuDivider(),
+          ],
+          PopupMenuItem(
+            value: 'app.settings',
+            child: Text(context.s.settings),
+          ),
+          PopupMenuItem(
+            value: 'app.feedback',
+            child: Text(context.s.feedback_action),
+          ),
+        ];
+      },
+    );
   }
 }

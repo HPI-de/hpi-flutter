@@ -31,33 +31,7 @@ class ArticlePage extends StatelessWidget {
           );
         }
 
-        return MainScaffold(
-          body: ArticleView(snapshot.data),
-          menuItems: [
-            PopupMenuItem(
-              value: 'openInBrowser',
-              child: Text(s.general_openInBrowser),
-            ),
-          ],
-          menuItemHandler: (value) async {
-            switch (value as String) {
-              case 'openInBrowser':
-                await tryLaunch(snapshot.data.link.toString());
-                break;
-              default:
-                assert(false);
-                break;
-            }
-          },
-          bottomActions: [
-            IconButton(
-              icon: Icon(OMIcons.share),
-              onPressed: () {
-                Share.share(snapshot.data.link.toString());
-              },
-            )
-          ],
-        );
+        return MainScaffold(body: ArticleView(snapshot.data));
       },
     );
   }
@@ -85,6 +59,23 @@ class ArticleView extends StatelessWidget {
                   )
                 : null,
           ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(OMIcons.share),
+              onPressed: () => Share.share(article.link.toString()),
+            ),
+          ],
+          overflowActions: [
+            PopupMenuItem(
+              value: 'openInBrowser',
+              child: Text(s.general_openInBrowser),
+            ),
+          ],
+          overflowActionHandler: (value) async {
+            if (value == 'openInBrowser') {
+              await tryLaunch(article.link.toString());
+            }
+          },
         ),
         SliverPadding(
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),

@@ -14,7 +14,7 @@ dependencies:
   black_hole_flutter: ^0.2.8
   cached_network_image: ^2.0.0
   characters: ^0.3.0
-  dartx: ^0.2.0
+  dartx: ^0.3.0
   device_info: ^0.4.1+4
   enum_to_string: ^1.0.9
   flutter_deep_linking: ^0.1.1
@@ -30,6 +30,10 @@ dependencies:
   immutable_proto: ^0.1.0
   intl: ">=0.15.8 <0.17.0"
   kt_dart: ^0.7.0+1
+  navigation_patterns:
+    git:
+      url: https://github.com/JonasWanke/navigation_patterns.git
+      ref: 8e7c54c
   outline_material_icons: ^0.1.0
   package_info: ^0.4.0+6
   path_provider: ^1.3.0
@@ -44,6 +48,9 @@ dependencies:
   timeago: ^2.0.18
   url_launcher: ^5.1.2
   yaml: ^2.1.16
+
+dependency_overrides:
+  dartx: ^0.3.0
 
 dev_dependencies:
   flutter_test:

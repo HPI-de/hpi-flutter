@@ -52,30 +52,6 @@ class CourseDetailPage extends StatelessWidget {
         final courseDetail = snapshot.data.third;
 
         return MainScaffold(
-          bottomActions: [
-            IconButton(
-              icon: Icon(OMIcons.share),
-              onPressed: () {
-                Share.share(course.website);
-              },
-            )
-          ],
-          menuItemHandler: (value) async {
-            switch (value as String) {
-              case 'openInBrowser':
-                await tryLaunch(course.website);
-                break;
-              default:
-                assert(false);
-                break;
-            }
-          },
-          menuItems: [
-            PopupMenuItem(
-              value: 'openInBrowser',
-              child: Text(s.general_openInBrowser),
-            ),
-          ],
           body: CustomScrollView(
             slivers: <Widget>[
               HpiSliverAppBar(
@@ -97,6 +73,23 @@ class CourseDetailPage extends StatelessWidget {
                     },
                   ),
                 ),
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(OMIcons.share),
+                    onPressed: () => Share.share(course.website),
+                  ),
+                ],
+                overflowActions: [
+                  PopupMenuItem(
+                    value: 'openInBrowser',
+                    child: Text(s.general_openInBrowser),
+                  ),
+                ],
+                overflowActionHandler: (value) async {
+                  if (value == 'openInBrowser') {
+                    await tryLaunch(course.website);
+                  }
+                },
               ),
               SliverList(
                 delegate: SliverChildListDelegate(

@@ -8,12 +8,23 @@ import 'package:hpi_flutter/settings/settings.dart';
 import 'package:hpi_flutter/tools/tools.dart';
 
 import 'widgets/dashboard_page.dart';
+import 'widgets/hpi_app.dart';
 
 const mdHost = 'mobiledev.hpi.de';
 String mdWebUrl(String path) => 'https://$mdHost/$path';
+String appSchemeUrl(String path) => 'app://de.hpi.android/$path';
 
 final router = Router(
   routes: [
+    Route(
+      matcher: Matcher.scheme('app') & Matcher.host('de.hpi.android'),
+      routes: [
+        Route(
+          matcher: Matcher.path('main'),
+          materialBuilder: (_, __) => MainPage(),
+        ),
+      ],
+    ),
     Route(
       matcher: Matcher.webHost(mdHost, isOptional: true),
       routes: [
