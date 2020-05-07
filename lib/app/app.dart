@@ -1,4 +1,4 @@
-export 'routing.dart' show mdHost, mdWebUrl;
+export 'routing.dart' show mdHost, mdWebUrl, appSchemeUrl;
 export 'services/navigation.dart';
 export 'utils.dart';
 export 'widgets/app_bar.dart';
