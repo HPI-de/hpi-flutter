@@ -1,10 +1,11 @@
 import 'package:align_positioned/align_positioned.dart';
 import 'package:flutter/material.dart';
+import 'package:hpi_flutter/core/core.dart' hide Image;
 import 'package:hpi_flutter/food/food.dart';
 import 'package:hpi_flutter/news/news.dart';
 import 'package:hpi_flutter/openhpi/openhpi.dart';
 
-import '../utils.dart';
+import 'hpi_theme.dart';
 import 'main_scaffold.dart';
 
 class DashboardPage extends StatelessWidget {
@@ -72,7 +73,7 @@ class DashboardFragment extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   child: DefaultTextStyle(
-                    style: context.theme.textTheme.title,
+                    style: context.textTheme.title,
                     child: title,
                   ),
                 ),

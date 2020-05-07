@@ -1,8 +1,7 @@
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart' hide Route;
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart';
-import 'package:hpi_flutter/route.dart';
-import 'package:kt_dart/collection.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 import '../bloc.dart';
@@ -29,7 +28,7 @@ class CoursePage extends StatelessWidget {
                   indicatorColor: context.theme.primaryColor,
                   labelColor: context.theme.primaryColor,
                   unselectedLabelColor:
-                      context.theme.textTheme.body2.color.withOpacity(0.7),
+                      context.textTheme.body2.color.withOpacity(0.7),
                   tabs: [
                     Tab(text: s.course_tab_current),
                     Tab(text: s.course_tab_all),
@@ -39,27 +38,28 @@ class CoursePage extends StatelessWidget {
             )
           ],
           body: TabBarView(
-            children: KtList.from([
-              KtPair('tab:course', CourseList()),
-              KtPair('tab:courseSeries', CourseSeriesList()),
-            ])
+            children: {
+              'tab:course': CourseList(),
+              'tab:courseSeries': CourseSeriesList(),
+            }
+                .entries
                 .mapIndexed((index, tab) => SafeArea(
                       top: false,
                       bottom: false,
                       child: Builder(
                         builder: (context) => CustomScrollView(
-                          key: PageStorageKey(tab.first),
+                          key: PageStorageKey(tab.key),
                           slivers: <Widget>[
                             SliverOverlapInjector(
                               handle: NestedScrollView
                                   .sliverOverlapAbsorberHandleFor(context),
                             ),
-                            tab.second,
+                            tab.value,
                           ],
                         ),
                       ),
                     ))
-                .asList(),
+                .toList(),
           ),
         ),
       ),
@@ -85,15 +85,12 @@ class CourseList extends StatelessWidget {
             }
 
             return ListTile(
+              onTap: () => context.navigator.pushNamed('/courses/${course.id}'),
               title: Text(snapshot.data.title),
               subtitle: Text(
                 course.lecturers.joinToString(),
                 maxLines: 1,
               ),
-              onTap: () {
-                context.navigator
-                    .pushNamed(Route.coursesDetail.name, arguments: course.id);
-              },
             );
           },
         ),

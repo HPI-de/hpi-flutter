@@ -1,9 +1,10 @@
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart';
 import 'package:hpi_flutter/feedback/feedback.dart';
-import 'package:kt_dart/collection.dart';
+import 'package:kt_dart/kt.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:share/share.dart';
@@ -51,30 +52,6 @@ class CourseDetailPage extends StatelessWidget {
         final courseDetail = snapshot.data.third;
 
         return MainScaffold(
-          bottomActions: KtList.from([
-            IconButton(
-              icon: Icon(OMIcons.share),
-              onPressed: () {
-                Share.share(course.website);
-              },
-            )
-          ]),
-          menuItemHandler: (value) async {
-            switch (value as String) {
-              case 'openInBrowser':
-                await tryLaunch(course.website);
-                break;
-              default:
-                assert(false);
-                break;
-            }
-          },
-          menuItems: KtList.from([
-            PopupMenuItem(
-              value: 'openInBrowser',
-              child: Text(s.general_openInBrowser),
-            ),
-          ]),
           body: CustomScrollView(
             slivers: <Widget>[
               HpiSliverAppBar(
@@ -96,6 +73,23 @@ class CourseDetailPage extends StatelessWidget {
                     },
                   ),
                 ),
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(OMIcons.share),
+                    onPressed: () => Share.share(course.website),
+                  ),
+                ],
+                overflowActions: [
+                  PopupMenuItem(
+                    value: 'openInBrowser',
+                    child: Text(s.general_openInBrowser),
+                  ),
+                ],
+                overflowActionHandler: (value) async {
+                  if (value == 'openInBrowser') {
+                    await tryLaunch(course.website);
+                  }
+                },
               ),
               SliverList(
                 delegate: SliverChildListDelegate(
@@ -133,8 +127,7 @@ class CourseDetailPage extends StatelessWidget {
         title: s.course_course_details(
             courseSeries.ects, courseSeries.hoursPerWeek),
         subtitle: courseSeries.types
-            .toList()
-            .sortedBy<num>((t) => t.index)
+            .sortedBy((t) => t.index)
             .joinToString(separator: ' · ', transform: s.course_course_type),
       ),
       if (courseDetail.teletask != null)
@@ -179,7 +172,7 @@ class CourseDetailPage extends StatelessWidget {
       SizedBox(height: 16),
       Text(
         s.course_course_noGuarantee,
-        style: context.theme.textTheme.body1
+        style: context.textTheme.body1
             .copyWith(color: Colors.black.withOpacity(0.6)),
         textAlign: TextAlign.center,
       ),
@@ -234,7 +227,7 @@ class CourseDetailPage extends StatelessWidget {
     }
     return ElevatedExpansionTile(
       leading: Icon(icon),
-      title: Text(title, style: context.theme.textTheme.subhead),
+      title: Text(title, style: context.textTheme.subhead),
       children: [
         Html(
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),

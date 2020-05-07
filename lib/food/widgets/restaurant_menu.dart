@@ -1,8 +1,8 @@
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart';
-import 'package:kt_dart/kt.dart';
 
 import '../bloc.dart';
 import '../data.dart';
@@ -14,7 +14,7 @@ class RestaurantMenu extends StatelessWidget {
         assert(menuItems != null);
 
   final String restaurantId;
-  final KtList<MenuItem> menuItems;
+  final List<MenuItem> menuItems;
 
   @override
   Widget build(BuildContext context) {
@@ -30,19 +30,19 @@ class RestaurantMenu extends StatelessWidget {
       child: Column(
         children: <Widget>[
           const SizedBox(height: 16),
-          ..._buildItemGroups(menuItems).iter,
+          ..._buildItemGroups(menuItems),
         ],
       ),
     );
   }
 
-  KtList<Widget> _buildItemGroups(KtList<MenuItem> items) {
+  Iterable<Widget> _buildItemGroups(List<MenuItem> items) {
     assert(items != null);
 
-    return items.groupBy((i) => i.counter).toList().flatMap(
-          (e) =>
-              KtList.of(MenuItemView(e.second.first())) +
-              e.second.drop(1).map((i) => MenuItemView(i, showCounter: false)),
-        );
+    final itemsPerCounter = items.groupBy((i) => i.counter).values;
+    return itemsPerCounter.flatMap((e) {
+      return e.mapIndexed(
+          (index, item) => MenuItemView(item, showCounter: index == 0));
+    });
   }
 }

@@ -2,7 +2,6 @@ import 'package:hpi_flutter/core/core.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/google/protobuf/wrappers.pb.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/news/v1test/article.pb.dart'
     as proto;
-import 'package:kt_dart/collection.dart';
 import 'package:meta/meta.dart';
 import 'package:time_machine/time_machine.dart';
 
@@ -39,14 +38,15 @@ class Article {
           link: Uri.parse(article.link),
           title: article.title,
           publishDate: article.publishDate.toInstant(),
-          authorIds: KtSet.from(article.authorIds),
+          authorIds: article.authorIds.toSet(),
           cover: article.hasCover() ? Image.fromProto(article.cover) : null,
           teaser: article.teaser,
           content: article.content,
-          categories: KtSet.from(article.categories)
+          categories: article.categories
+              .toSet()
               .map((c) => Category.fromProto(c))
               .toSet(),
-          tags: KtSet.from(article.tags).map((t) => Tag.fromProto(t)).toSet(),
+          tags: article.tags.toSet().map((t) => Tag.fromProto(t)).toSet(),
           viewCount: article.hasViewCount() ? article.viewCount.value : null,
         );
 
@@ -55,12 +55,12 @@ class Article {
   final Uri link;
   final String title;
   final Instant publishDate;
-  final KtSet<String> authorIds;
+  final Set<String> authorIds;
   final Image cover;
   final String teaser;
   final String content;
-  final KtSet<Category> categories;
-  final KtSet<Tag> tags;
+  final Set<Category> categories;
+  final Set<Tag> tags;
   final int viewCount;
 
   proto.Article toProto() {
@@ -70,15 +70,15 @@ class Article {
       ..link = link.toString()
       ..title = title
       ..publishDate = publishDate.toTimestamp();
-    a.authorIds.addAll(authorIds.iter);
+    a.authorIds.addAll(authorIds);
     if (cover != null) {
       a.cover = cover.toProto();
     }
     a
       ..teaser = teaser
       ..content = content;
-    a.categories.addAll(categories.map((c) => c.toProto()).iter);
-    a.tags.addAll(tags.map((t) => t.toProto()).iter);
+    a.categories.addAll(categories.map((c) => c.toProto()));
+    a.tags.addAll(tags.map((t) => t.toProto()));
     if (viewCount != null) {
       a.viewCount = UInt32Value()..value = viewCount;
     }

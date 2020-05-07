@@ -3,7 +3,6 @@ import 'package:grpc/grpc.dart';
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/course/v1test/course_service.pbgrpc.dart';
-import 'package:kt_dart/collection.dart';
 
 import 'data.dart';
 
@@ -32,7 +31,7 @@ class CourseBloc {
       ..pageToken = pageToken ?? '';
     return Stream.fromFuture(_client.listCourseSeries(request))
         .map((r) => PaginationResponse(
-              KtList.from(r.courseSeries).map((a) => CourseSeries.fromProto(a)),
+              r.courseSeries.map((a) => CourseSeries.fromProto(a)).toList(),
               r.nextPageToken,
             ));
   }
@@ -59,7 +58,7 @@ class CourseBloc {
       ..pageToken = pageToken ?? '';
     return Stream.fromFuture(_client.listCourses(request))
         .map((r) => PaginationResponse(
-              KtList.from(r.courses).map((a) => Course.fromProto(a)),
+              r.courses.map((a) => Course.fromProto(a)).toList(),
               r.nextPageToken,
             ));
   }

@@ -7,7 +7,7 @@ packages:
       name: _fe_analyzer_shared
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.3"
+    version: "1.0.1"
   align_positioned:
     dependency: "direct main"
     description:
@@ -21,7 +21,7 @@ packages:
       name: analyzer
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.39.4"
+    version: "0.39.2+1"
   archive:
     dependency: transitive
     description:
@@ -43,6 +43,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.4.0"
+  black_hole_flutter:
+    dependency: "direct main"
+    description:
+      name: black_hole_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.10"
   boolean_selector:
     dependency: transitive
     description:
@@ -119,7 +126,7 @@ packages:
       name: characters
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.0"
+    version: "0.3.1"
   charcode:
     dependency: transitive
     description:
@@ -176,6 +183,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.3"
+  dartx:
+    dependency: "direct main"
+    description:
+      name: dartx
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.0"
   device_info:
     dependency: "direct main"
     description:
@@ -183,6 +197,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.1+4"
+  enum_to_string:
+    dependency: "direct main"
+    description:
+      name: enum_to_string
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.9"
   fixnum:
     dependency: transitive
     description:
@@ -202,6 +223,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.3"
+  flutter_deep_linking:
+    dependency: "direct main"
+    description:
+      name: flutter_deep_linking
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
   flutter_html:
     dependency: "direct main"
     description:
@@ -258,7 +286,7 @@ packages:
       name: get_it
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.0-beta3"
+    version: "4.0.1"
   glob:
     dependency: transitive
     description:
@@ -335,14 +363,14 @@ packages:
       name: immutable_proto
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.5+1"
+    version: "0.1.0"
   immutable_proto_generator:
     dependency: "direct dev"
     description:
       name: immutable_proto_generator
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.5+1"
+    version: "0.1.0"
   intl:
     dependency: "direct main"
     description:
@@ -391,7 +419,7 @@ packages:
       name: kt_dart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.2"
+    version: "0.7.0+1"
   logging:
     dependency: transitive
     description:
@@ -434,6 +462,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.6+3"
+  navigation_patterns:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: "8e7c54c"
+      resolved-ref: "8e7c54c2e5355bf7e07c4265a46f2a26821a44ea"
+      url: "https://github.com/JonasWanke/navigation_patterns.git"
+    source: git
+    version: "0.0.1"
   node_interop:
     dependency: transitive
     description:
@@ -705,6 +742,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.11"
+  time:
+    dependency: transitive
+    description:
+      name: time
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.3.0"
   time_machine:
     dependency: "direct main"
     description:
@@ -804,5 +848,5 @@ packages:
     source: hosted
     version: "2.2.0"
 sdks:
-  dart: ">=2.6.0 <3.0.0"
+  dart: ">=2.7.0 <3.0.0"
   flutter: ">=1.12.13+hotfix.4 <2.0.0"

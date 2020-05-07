@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hpi_flutter/core/core.dart';
 
-import '../utils.dart';
-
 Widget buildAppBarTitle({
   @required BuildContext context,
   @required Widget title,
@@ -21,7 +19,7 @@ Widget buildAppBarTitle({
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       DefaultTextStyle(
-        style: context.theme.textTheme.title.copyWith(
+        style: context.textTheme.title.copyWith(
           color: Colors.black87,
         ),
         maxLines: 1,
@@ -29,7 +27,7 @@ Widget buildAppBarTitle({
         child: title,
       ),
       DefaultTextStyle(
-        style: context.theme.textTheme.subhead,
+        style: context.textTheme.subhead,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         child: subtitle,

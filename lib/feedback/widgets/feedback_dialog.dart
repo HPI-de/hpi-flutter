@@ -82,7 +82,7 @@ class _FeedbackDialogState extends State<FeedbackDialog>
     return [
       Text(
         widget.title,
-        style: context.theme.textTheme.display1,
+        style: context.textTheme.display1,
       ),
       SizedBox(height: 16),
       TextFormField(
@@ -125,12 +125,12 @@ class _FeedbackDialogState extends State<FeedbackDialog>
       ),
       Align(
         alignment: Alignment.centerRight,
-        child: LoadingButton(
-          text: s.general_submit,
-          loadingText: s.general_sending,
-          isLoading: isSending,
+        child: FancyRaisedButton(
           onPressed: _send,
+          isLoading: isSending,
+          loadingChild: Text(s.general_sending),
           color: context.theme.primaryColor,
+          child: Text(s.general_submit),
         ),
       ),
     ];
@@ -143,8 +143,8 @@ class _FeedbackDialogState extends State<FeedbackDialog>
 
     setState(() {
       isSending = true;
-      Uri screenUri = Uri.https('mobiledev.hpi.de',
-          services.get<NavigationService>().lastKnownRoute.name);
+      Uri screenUri =
+          Uri.parse(mdWebUrl(services.get<NavigationService>().lastKnownRoute));
       Feedback.create(
         message.trim(),
         screenUri: screenUri,

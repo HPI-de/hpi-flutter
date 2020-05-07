@@ -8,7 +8,7 @@ import '../data.dart';
 import 'infobit_card.dart';
 
 class InfoBitPage extends StatelessWidget {
-  const InfoBitPage({Key key, this.infoBitId}) : super(key: key);
+  const InfoBitPage(this.infoBitId) : assert(infoBitId != null);
 
   final String infoBitId;
 
@@ -45,7 +45,7 @@ class InfoBitPage extends StatelessWidget {
             SliverPadding(
               padding: EdgeInsets.fromLTRB(
                 16,
-                infoBit.actionIds.isNotEmpty() || infoBit.tagIds.isNotEmpty()
+                infoBit.actionIds.isNotEmpty || infoBit.tagIds.isNotEmpty
                     ? 16
                     : 0,
                 16,
@@ -56,9 +56,10 @@ class InfoBitPage extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: ChipGroup(
-                      children: infoBit.actionIds
-                          .map((a) => InfoBitActionChip(a))
-                          .asList(),
+                      children: [
+                        for (final actionId in infoBit.actionIds)
+                          InfoBitActionChip(actionId),
+                      ],
                     ),
                   ),
                   Align(
@@ -66,12 +67,13 @@ class InfoBitPage extends StatelessWidget {
                     child: Builder(
                       builder: (context) => ChipGroup(
                         title: Text(s.myhpi_infoBit_tags_title),
-                        children: infoBit.tagIds
-                            .map((t) => StreamChip<InfoBitTag>(
-                                  stream: services.get<MyHpiBloc>().getTag(t),
-                                  labelBuilder: (i) => Text(i.title),
-                                ))
-                            .asList(),
+                        children: [
+                          for (final tagId in infoBit.tagIds)
+                            StreamChip<InfoBitTag>(
+                              stream: services.get<MyHpiBloc>().getTag(tagId),
+                              labelBuilder: (i) => Text(i.title),
+                            ),
+                        ],
                       ),
                     ),
                   )
@@ -169,7 +171,7 @@ class InfoBitPage extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               context.s.myhpi_infoBit_parent,
-              style: context.theme.textTheme.overline,
+              style: context.textTheme.overline,
             ),
           ),
           StreamBuilder<InfoBit>(

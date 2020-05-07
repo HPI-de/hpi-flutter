@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart' hide Route;
 import 'package:flutter/widgets.dart' hide Route;
 import 'package:hpi_flutter/app/app.dart';
-import 'package:hpi_flutter/route.dart';
+import 'package:hpi_flutter/core/core.dart' hide Image;
 
 import '../bloc.dart';
 import '../data.dart';
@@ -16,10 +16,7 @@ class ArticlePreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: InkWell(
-        onTap: () {
-          Navigator.pushNamed(context, Route.newsArticle.name,
-              arguments: article.id);
-        },
+        onTap: () => context.navigator.pushNamed('news/${article.id}'),
         child: Column(
           children: <Widget>[
             if (article.cover != null) Image.network(article.cover.source),
@@ -30,12 +27,12 @@ class ArticlePreview extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     article.title,
-                    style: context.theme.textTheme.subhead,
+                    style: context.textTheme.subhead,
                   ),
                   SizedBox(height: 8),
                   Text(
                     article.teaser,
-                    style: context.theme.textTheme.body1,
+                    style: context.textTheme.body1,
                   ),
                   SizedBox(height: 4),
                   StreamBuilder<Source>(
@@ -48,7 +45,7 @@ class ArticlePreview extends StatelessWidget {
 
                       return Text(
                         formatSourcePublishDate(article, snapshot.data),
-                        style: context.theme.textTheme.caption,
+                        style: context.textTheme.caption,
                       );
                     },
                   ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart' hide Action, Route;
 import 'package:flutter_html/flutter_html.dart';
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart';
-import 'package:hpi_flutter/route.dart';
 import 'package:pedantic/pedantic.dart';
 
 import '../bloc.dart';
@@ -20,12 +19,7 @@ class InfoBitCard extends StatelessWidget {
     return Card(
       margin: EdgeInsets.all(8),
       child: InkWell(
-        onTap: () {
-          context.navigator.pushNamed(
-            Route.myhpiInfoBit.name,
-            arguments: infoBit.id,
-          );
-        },
+        onTap: () => context.navigator.pushNamed('myhpi/${infoBit.id}'),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -45,12 +39,12 @@ class InfoBitCard extends StatelessWidget {
     final title = [
       Text(
         infoBit.title,
-        style: context.theme.textTheme.headline,
+        style: context.textTheme.headline,
       ),
       if (infoBit.subtitle != null)
         Text(
           infoBit.subtitle,
-          style: context.theme.textTheme.subhead,
+          style: context.textTheme.subhead,
         ),
     ];
 
@@ -89,7 +83,7 @@ class InfoBitCard extends StatelessWidget {
               if (infoBit.description != null)
                 Text(
                   infoBit.description,
-                  style: context.theme.textTheme.body1
+                  style: context.textTheme.body1
                       .copyWith(color: Colors.black.withOpacity(0.6)),
                 ),
             ],
@@ -128,25 +122,22 @@ class InfoBitCard extends StatelessWidget {
           .get<MyHpiBloc>()
           .getInfoBits(parentId: infoBit.id, pageSize: 3),
       builder: (context, snapshot) {
-        if (!snapshot.hasData || snapshot.data.items.isEmpty()) {
+        if (!snapshot.hasData || snapshot.data.items.isEmpty) {
           return Container();
         }
 
+        final infoBits = snapshot.data.items;
         return Column(
           children: <Widget>[
-            ...snapshot.data.items.map((i) => InfoBitListTile(i)).asList(),
+            for (final infoBit in infoBits) InfoBitListTile(infoBit),
             if (!isNullOrBlank(snapshot.data.nextPageToken))
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: OutlineButton(
-                    onPressed: () {
-                      context.navigator.pushNamed(
-                        Route.myhpiInfoBit.name,
-                        arguments: infoBit.id,
-                      );
-                    },
+                    onPressed: () =>
+                        context.navigator.pushNamed('/myhpi/${infoBit.id}'),
                     child: Text(s.general_more),
                   ),
                 ),
@@ -181,7 +172,7 @@ class InfoBitCard extends StatelessWidget {
   Widget _buildFoot(BuildContext context) {
     assert(context != null);
 
-    if (infoBit.actionIds.isEmpty() && infoBit.tagIds.isEmpty()) {
+    if (infoBit.actionIds.isEmpty && infoBit.tagIds.isEmpty) {
       return null;
     }
 
@@ -191,17 +182,21 @@ class InfoBitCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           ChipGroup(
-            children:
-                infoBit.actionIds.map((a) => InfoBitActionChip(a)).asList(),
+            children: [
+              for (final actionId in infoBit.actionIds)
+                InfoBitActionChip(actionId),
+            ],
           ),
           ChipGroup(
-            leading: Text(context.s.myhpi_infoBit_tags_leading),
-            children: infoBit.tagIds
-                .map((t) => StreamChip<InfoBitTag>(
-                      stream: services.get<MyHpiBloc>().getTag(t),
-                      labelBuilder: (t) => Text(t.title),
-                    ))
-                .asList(),
+            children: [
+              if (infoBit.tagIds.isNotEmpty)
+                Text(context.s.myhpi_infoBit_tags_leading),
+              for (final tagId in infoBit.tagIds)
+                StreamChip<InfoBitTag>(
+                  stream: services.get<MyHpiBloc>().getTag(tagId),
+                  labelBuilder: (t) => Text(t.title),
+                ),
+            ],
           )
         ],
       ),
@@ -277,12 +272,7 @@ class InfoBitListTile extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             )
           : null,
-      onTap: () {
-        context.navigator.pushNamed(
-          Route.myhpiInfoBit.name,
-          arguments: infoBit.id,
-        );
-      },
+      onTap: () => context.navigator.pushNamed('myhpi/${infoBit.id}'),
     );
   }
 }
@@ -300,12 +290,7 @@ class InfoBitPreviewBox extends StatelessWidget {
       background: ImageWidget(infoBit.cover),
       title: Text(infoBit.title),
       caption: Text(infoBit.subtitle),
-      onTap: () {
-        context.navigator.pushNamed(
-          Route.myhpiInfoBit.name,
-          arguments: infoBit.id,
-        );
-      },
+      onTap: () => context.navigator.pushNamed('myhpi/${infoBit.id}'),
     );
   }
 }

@@ -2,7 +2,6 @@ import 'package:grpc/grpc.dart';
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/myhpi/v1test/myhpi_service.pbgrpc.dart';
-import 'package:kt_dart/collection.dart';
 
 import 'data.dart';
 
@@ -32,7 +31,7 @@ class MyHpiBloc {
       ..pageToken = pageToken ?? '';
     return Stream.fromFuture(_client.listInfoBits(request))
         .map((r) => PaginationResponse(
-              KtList.from(r.infoBits).map((a) => InfoBit.fromProto(a)),
+              r.infoBits.map((a) => InfoBit.fromProto(a)).toList(),
               r.nextPageToken,
             ));
   }

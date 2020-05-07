@@ -1,7 +1,6 @@
 import 'package:hpi_flutter/core/core.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/food/v1test/food.pb.dart'
     as proto;
-import 'package:kt_dart/collection.dart';
 import 'package:meta/meta.dart';
 import 'package:time_machine/time_machine.dart';
 
@@ -50,7 +49,7 @@ class MenuItem {
               type: moneyToDouble(item.prices[type])
           },
           counter: item.counter,
-          labelIds: KtSet.from(item.labelIds),
+          labelIds: item.labelIds.toSet(),
         );
 
   final String id;
@@ -59,7 +58,7 @@ class MenuItem {
   final String title;
   final Map<String, double> prices;
   final String counter;
-  final KtSet<String> labelIds;
+  final Set<String> labelIds;
 
   proto.MenuItem toProto() {
     return proto.MenuItem()
@@ -70,7 +69,7 @@ class MenuItem {
       ..prices.addAll(
           {for (var type in prices.keys) type: doubleToMoney(prices[type])})
       ..counter = counter
-      ..labelIds.addAll(labelIds.iter);
+      ..labelIds.addAll(labelIds);
   }
 }
 

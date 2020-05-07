@@ -2,12 +2,10 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart' hide Image;
 import 'package:hpi_flutter/settings/settings.dart';
-import 'package:kt_dart/collection.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:time_machine/time_machine.dart';
 
-import '../../route.dart';
 import 'about_myself.dart';
 import 'onboarding_pager.dart';
 
@@ -33,16 +31,15 @@ class _OnboardingPageState extends State<OnboardingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: OnboardingPager(
-        pages: KtList.from([
+        pages: [
           _buildStartPage(),
           _buildPrivacyPolicyPage(),
           _buildAboutMyselfPage(),
-        ]),
+        ],
         onFinish: () async {
           await services.get<SharedPreferences>().setInt(
               OnboardingPage._keyCompleted, Instant.now().epochMilliseconds);
-          unawaited(
-              context.navigator.pushReplacementNamed(Route.dashboard.name));
+          unawaited(context.navigator.pushReplacementNamed('/dashboard'));
         },
       ),
     );
@@ -66,7 +63,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           SizedBox(height: 96),
           Text(
             s.onboarding_start_title,
-            style: context.theme.textTheme.display1.copyWith(
+            style: context.textTheme.display1.copyWith(
               fontSize: 30,
               color: Colors.white,
             ),
@@ -74,8 +71,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           SizedBox(height: 32),
           Text(
             s.onboarding_start_subtitle,
-            style:
-                context.theme.textTheme.subtitle.copyWith(color: Colors.white),
+            style: context.textTheme.subtitle.copyWith(color: Colors.white),
           ),
         ],
       ),
@@ -96,7 +92,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               onPressed: () => PrivacyPolicyPage.showBottomSheet(context),
               child: Text(
                 s.settings_about_privacyPolicy,
-                style: context.theme.textTheme.subhead
+                style: context.textTheme.subhead
                     .copyWith(color: context.hpiTheme.tertiary),
               ),
             ),
@@ -104,7 +100,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           TextSpan(text: s.onboarding_privacyPolicy_suffix),
         ],
       ),
-      style: context.theme.textTheme.subhead.copyWith(color: Colors.white),
+      style: context.textTheme.subhead.copyWith(color: Colors.white),
       textAlign: TextAlign.left,
     );
 
@@ -212,8 +208,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           children: <Widget>[
             Text(
               context.s.onboarding_aboutMyself_title,
-              style:
-                  context.theme.textTheme.title.copyWith(color: Colors.white),
+              style: context.textTheme.title.copyWith(color: Colors.white),
             ),
             SizedBox(height: 32),
             FutureBuilder<SharedPreferences>(

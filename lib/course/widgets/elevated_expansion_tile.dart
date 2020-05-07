@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hpi_flutter/app/app.dart';
+import 'package:hpi_flutter/core/core.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 const Duration _kExpand = Duration(milliseconds: 200);

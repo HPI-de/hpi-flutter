@@ -3,7 +3,6 @@ import 'package:grpc/grpc.dart';
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart';
 import 'package:hpi_flutter/hpi_cloud_apis/hpi/cloud/food/v1test/food_service.pbgrpc.dart';
-import 'package:kt_dart/collection.dart';
 import 'package:time_machine/time_machine.dart';
 
 import 'data.dart';
@@ -24,14 +23,14 @@ class FoodBloc {
 
   final FoodServiceClient _client;
 
-  Stream<KtList<MenuItem>> getMenuItems({String restaurantId}) {
+  Stream<List<MenuItem>> getMenuItems({String restaurantId}) {
     final req = ListMenuItemsRequest()..date = LocalDate.today().toDate();
     if (restaurantId != null) {
       req.restaurantId = restaurantId;
     }
 
     return Stream.fromFuture(_client.listMenuItems(req))
-        .map((r) => KtList.from(r.items).map((i) => MenuItem.fromProto(i)));
+        .map((r) => r.items.map((i) => MenuItem.fromProto(i)).toList());
   }
 
   Stream<MenuItem> getMenuItem(String id) {

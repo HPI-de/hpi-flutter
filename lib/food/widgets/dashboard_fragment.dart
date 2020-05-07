@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart';
-import 'package:kt_dart/kt.dart';
 
 import '../bloc.dart';
 import '../data.dart';
@@ -12,7 +11,7 @@ class FoodFragment extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = context.s;
 
-    return StreamBuilder<KtList<MenuItem>>(
+    return StreamBuilder<List<MenuItem>>(
       stream: services
           .get<FoodBloc>()
           .getMenuItems(restaurantId: 'mensaGriebnitzsee'),
@@ -21,7 +20,7 @@ class FoodFragment extends StatelessWidget {
           return buildLoadingError(snapshot);
         }
 
-        if (snapshot.data.isEmpty()) {
+        if (snapshot.data.isEmpty) {
           return DashboardFragment(
             title: Text(s.food),
             child: Container(

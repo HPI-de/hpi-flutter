@@ -3,7 +3,6 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart' hide Image;
 
-import '../../route.dart';
 import '../bloc.dart';
 import '../data.dart';
 import '../utils.dart';
@@ -55,15 +54,11 @@ class ArticlePreviewBox extends StatelessWidget {
         builder: (context, snapshot) {
           return Text(
             formatSourcePublishDate(article, snapshot.data),
-            style:
-                context.theme.textTheme.caption.copyWith(color: Colors.white),
+            style: context.textTheme.caption.copyWith(color: Colors.white),
           );
         },
       ),
-      onTap: () {
-        Navigator.pushNamed(context, Route.newsArticle.name,
-            arguments: article.id);
-      },
+      onTap: () => context.navigator.pushNamed('/news/${article.id}'),
     );
   }
 }

@@ -4,28 +4,36 @@ description: The official HPI app, written in Flutter.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.6.0 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
   align_positioned: ^1.0.8
+  black_hole_flutter: ^0.2.8
   cached_network_image: ^2.0.0
-  characters: ^0.5.0
+  characters: ^0.3.0
+  dartx: ^0.3.0
   device_info: ^0.4.1+4
+  enum_to_string: ^1.0.9
+  flutter_deep_linking: ^0.1.1
   flutter_html: ^0.10.4
   flutter_localizations:
     sdk: flutter
   flutter_markdown: ^0.2.0
   flutter_pagewise: ^1.2.3
   flutter_ringtone_player: ^1.0.3
-  get_it: ^4.0.0-beta.3
+  get_it: ^4.0.1
   grpc: ^2.1.2
   http: ^0.12.0+2
-  immutable_proto: ^0.0.4
+  immutable_proto: ^0.1.0
   intl: ">=0.15.8 <0.17.0"
-  kt_dart: ^0.6.2
+  kt_dart: ^0.7.0+1
+  navigation_patterns:
+    git:
+      url: https://github.com/JonasWanke/navigation_patterns.git
+      ref: 8e7c54c
   outline_material_icons: ^0.1.0
   package_info: ^0.4.0+6
   path_provider: ^1.3.0
@@ -41,13 +49,16 @@ dependencies:
   url_launcher: ^5.1.2
   yaml: ^2.1.16
 
+dependency_overrides:
+  dartx: ^0.3.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   build_runner: ^1.0.0
   flutter_launcher_icons: ^0.7.2+1
-  immutable_proto_generator: ^0.0.4
+  immutable_proto_generator: ^0.1.0
   intl_utils: ^1.2.2
 
 flutter:
@@ -59,8 +70,6 @@ flutter:
     - assets/logo/logo_captionWhite.png # colored logo with white text and caption
     - assets/logo/mobileDev_sheep.png
     - assets/images/onboarding/mrNet.png
-    - assets/localizations/strings_de.yaml
-    - assets/localizations/strings_en.yaml
     - assets/privacyPolicy.md
 
   fonts:

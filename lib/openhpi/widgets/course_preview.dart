@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart';
 import 'package:meta/meta.dart';
 import 'package:time_machine/time_machine_text_patterns.dart';
@@ -28,15 +27,15 @@ class OpenHpiCoursePreview extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     course.title,
-                    style: context.theme.textTheme.body1
-                        .copyWith(color: Colors.white),
+                    style:
+                        context.textTheme.body1.copyWith(color: Colors.white),
                     maxLines: 3,
                   ),
                   Text(
                     LocalDatePattern.createWithCurrentCulture('d')
                         .format(course.startAt.inLocalZone().calendarDate),
-                    style: context.theme.textTheme.caption
-                        .copyWith(color: Colors.white),
+                    style:
+                        context.textTheme.caption.copyWith(color: Colors.white),
                     maxLines: 1,
                   ),
                 ],

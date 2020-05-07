@@ -1,7 +1,8 @@
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart';
-import 'package:kt_dart/collection.dart';
+
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 class AboutMyself extends StatefulWidget {
@@ -13,19 +14,27 @@ class AboutMyself extends StatefulWidget {
   static const _keyCourseOfStudies = 'onboarding.courseOfStudies';
   static const _keySemester = 'onboarding.semester';
 
-  static Role get role =>
-      stringToEnum(sharedPreferences.getString(_keyRole), Role.values);
-
-  static Future<bool> _setRole(Role value) {
-    return sharedPreferences.setString(_keyRole, enumToString(value));
+  static Role get role {
+    return EnumToString.fromString(
+      Role.values,
+      sharedPreferences.getString(_keyRole),
+    );
   }
 
-  static CourseOfStudies get courseOfStudies => stringToEnum(
-      sharedPreferences.getString(_keyCourseOfStudies), CourseOfStudies.values);
+  static Future<bool> _setRole(Role value) {
+    return sharedPreferences.setString(_keyRole, EnumToString.parse(value));
+  }
+
+  static CourseOfStudies get courseOfStudies {
+    return EnumToString.fromString(
+      CourseOfStudies.values,
+      sharedPreferences.getString(_keyCourseOfStudies),
+    );
+  }
 
   static Future<bool> _setCourseOfStudies(CourseOfStudies value) {
     return sharedPreferences.setString(
-        _keyCourseOfStudies, enumToString(value));
+        _keyCourseOfStudies, EnumToString.parse(value));
   }
 
   static int get semester => sharedPreferences.getInt(_keySemester);
@@ -39,23 +48,28 @@ class AboutMyself extends StatefulWidget {
 }
 
 class _AboutMyselfState extends State<AboutMyself> {
-  KtList<DropdownMenuItem<Role>> _roleValues;
-  KtList<DropdownMenuItem<CourseOfStudies>> _courseOfStudiesValues;
+  List<DropdownMenuItem<Role>> _roleValues;
+  List<DropdownMenuItem<CourseOfStudies>> _courseOfStudiesValues;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
     final s = context.s;
-    _roleValues = KtList.from(Role.values).map((r) => DropdownMenuItem(
-          value: r,
-          child: Text(s.onboarding_role(r)),
-        ));
-    _courseOfStudiesValues =
-        KtList.from(CourseOfStudies.values).map((c) => DropdownMenuItem(
-              value: c,
-              child: Text(s.onboarding_courseOfStudies(c)),
-            ));
+    _roleValues = [
+      for (final role in Role.values)
+        DropdownMenuItem(
+          value: role,
+          child: Text(s.onboarding_role(role)),
+        ),
+    ];
+    _courseOfStudiesValues = [
+      for (final courseOfStudies in CourseOfStudies.values)
+        DropdownMenuItem(
+          value: courseOfStudies,
+          child: Text(s.onboarding_courseOfStudies(courseOfStudies)),
+        ),
+    ];
   }
 
   @override
@@ -79,7 +93,7 @@ class _AboutMyselfState extends State<AboutMyself> {
     }
 
     return DefaultTextStyle(
-      style: context.theme.textTheme.headline.copyWith(
+      style: context.textTheme.headline.copyWith(
         fontSize: 30,
         height: 1.4,
         color: Colors.white,
@@ -106,14 +120,12 @@ class _AboutMyselfState extends State<AboutMyself> {
               ),
               TextSpan(text: s.onboarding_aboutMyself_text_3),
               _buildDropdown<int>(
-                  items: KtList.from(
-                    List.generate(
-                      _maxSemesterCount(courseOfStudies),
-                      (semester) => DropdownMenuItem(
-                        value: semester + 1,
-                        child: Text(
-                          s.onboarding_aboutMyself_text_4(semester + 1),
-                        ),
+                  items: List.generate(
+                    _maxSemesterCount(courseOfStudies),
+                    (semester) => DropdownMenuItem(
+                      value: semester + 1,
+                      child: Text(
+                        s.onboarding_aboutMyself_text_4(semester + 1),
                       ),
                     ),
                   ),
@@ -135,7 +147,7 @@ class _AboutMyselfState extends State<AboutMyself> {
   }
 
   InlineSpan _buildDropdown<T>({
-    @required KtList<DropdownMenuItem<T>> items,
+    @required List<DropdownMenuItem<T>> items,
     @required T value,
     @required void Function(T) onChanged,
   }) {
@@ -186,7 +198,7 @@ class _InlineDropdownButton<T> extends StatelessWidget {
         assert(onChanged != null),
         super(key: key);
 
-  final KtList<DropdownMenuItem<T>> items;
+  final List<DropdownMenuItem<T>> items;
   final T value;
   final void Function(T) onChanged;
 
@@ -195,16 +207,17 @@ class _InlineDropdownButton<T> extends StatelessWidget {
     final style = context.defaultTextStyle.style;
 
     return DropdownButton(
-      items: items
-          .map((i) => DropdownMenuItem(
-                key: i.key,
-                value: i.value,
-                child: DefaultTextStyle(
-                  style: context.theme.textTheme.body1,
-                  child: i.child,
-                ),
-              ))
-          .asList(),
+      items: [
+        for (final item in items)
+          DropdownMenuItem(
+            key: item.key,
+            value: item.value,
+            child: DefaultTextStyle(
+              style: context.textTheme.body1,
+              child: item.child,
+            ),
+          ),
+      ],
       value: value,
       onChanged: onChanged,
       style: style,

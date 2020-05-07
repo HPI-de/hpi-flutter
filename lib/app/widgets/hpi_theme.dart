@@ -15,3 +15,7 @@ class HpiTheme extends InheritedWidget {
     return tertiary != oldWidget.tertiary;
   }
 }
+
+extension HpiThemeBuildContext on BuildContext {
+  HpiTheme get hpiTheme => HpiTheme.of(this);
+}

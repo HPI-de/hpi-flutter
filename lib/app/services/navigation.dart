@@ -1,10 +1,9 @@
 import 'package:flutter/widgets.dart' as flutter;
-import 'package:hpi_flutter/route.dart';
 
 import '../utils.dart';
 
 class NavigationService {
-  Route lastKnownRoute;
+  String lastKnownRoute;
 }
 
 class NavigationObserver extends flutter.RouteObserver {
@@ -42,7 +41,7 @@ class NavigationObserver extends flutter.RouteObserver {
   ) {
     print(
         'Navigating from ${oldRoute?.settings?.name} to ${newRoute?.settings?.name}');
-    var knownRoute = Route.fromString(newRoute?.settings?.name);
+    final knownRoute = newRoute?.settings?.name;
     if (knownRoute != null) {
       service.lastKnownRoute = knownRoute;
     }

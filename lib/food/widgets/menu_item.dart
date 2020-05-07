@@ -1,9 +1,8 @@
-import 'package:characters/characters.dart';
+import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart';
-import 'package:kt_dart/collection.dart';
 
 import '../bloc.dart';
 import '../data.dart';
@@ -36,12 +35,12 @@ class MenuItemView extends StatelessWidget {
             SizedBox(
               width: 32,
               child: Text(
-                showCounter ? item.counter.characters.first : ' ',
-                style: context.theme.textTheme.caption.copyWith(fontSize: 20),
+                showCounter ? item.counter.chars.first : ' ',
+                style: context.textTheme.caption.copyWith(fontSize: 20),
               ),
             ),
             Expanded(
-              child: Text(item.title, style: context.theme.textTheme.body1),
+              child: Text(item.title, style: context.textTheme.body1),
             ),
             SizedBox(width: 8),
             // Currently, label icons aren't sent by the server.
@@ -54,17 +53,17 @@ class MenuItemView extends StatelessWidget {
   }
 
   // ignore: unused_element
-  Widget _buildLabels(KtSet<String> labelIds) {
+  Widget _buildLabels(Set<String> labelIds) {
     final ids = labelIds.toList();
-    if (ids.isEmpty()) {
+    if (ids.isEmpty) {
       return Container();
     }
 
     return Stack(
       children: [
-        for (int i = 0; i < ids.size; i++)
+        for (int i = 0; i < ids.length; i++)
           Padding(
-            padding: EdgeInsets.only(left: (ids.size - i) * 16.0),
+            padding: EdgeInsets.only(left: (ids.length - i) * 16.0),
             child: LabelView(ids[i]),
           ),
       ],
@@ -124,16 +123,17 @@ class MenuItemDetails extends StatelessWidget {
             children: <Widget>[
               Text(
                 s.food_offer(item.counter),
-                style: context.theme.textTheme.headline,
+                style: context.textTheme.headline,
               ),
               Text(
                 item.title,
-                style: context.theme.textTheme.subhead,
+                style: context.textTheme.subhead,
               ),
-              Wrap(
-                spacing: 8,
-                children:
-                    item.labelIds.map((id) => _buildChip(context, id)).asList(),
+              ChipGroup(
+                children: [
+                  for (final labelId in item.labelIds)
+                    _buildChip(context, labelId),
+                ],
               ),
             ],
           ),
