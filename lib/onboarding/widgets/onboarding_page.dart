@@ -39,7 +39,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
         onFinish: () async {
           await services.get<SharedPreferences>().setInt(
               OnboardingPage._keyCompleted, Instant.now().epochMilliseconds);
-          unawaited(context.navigator.pushReplacementNamed('/dashboard'));
+          unawaited(
+              context.navigator.pushReplacementNamed(appSchemeUrl('main')));
         },
       ),
     );

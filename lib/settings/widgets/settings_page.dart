@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide Route;
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart' hide Image;
 import 'package:hpi_flutter/feedback/feedback.dart';
@@ -153,7 +154,7 @@ class _AboutSection extends StatelessWidget {
       delegate: SliverChildListDelegate.fixed(
         <Widget>[
           ListTile(
-            onTap: () => context.navigator.pushNamed('/onboarding'),
+            onTap: () => context.navigator.pushNamedAndRemoveAll('/onboarding'),
             leading: Icon(OMIcons.repeat),
             title: Text(s.settings_repeatOnboarding),
           ),
