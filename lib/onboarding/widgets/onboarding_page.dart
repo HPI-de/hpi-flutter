@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' hide Route;
+import 'package:flutter/material.dart' hide Page, Route;
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart' hide Image;
 import 'package:hpi_flutter/settings/settings.dart';
