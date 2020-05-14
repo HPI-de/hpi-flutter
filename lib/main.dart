@@ -86,7 +86,6 @@ void main() async {
       // Most BLoCs require a reference to the current locale to retrieve
       // localized information from HPI Cloud. By registering them as factories,
       // we can adapt to locale changes during runtime.
-      ..registerFactory(() => CourseBloc())
       ..registerFactory(() => CrashReportingBloc())
       ..registerFactory(() => FeedbackBloc())
       ..registerFactory(() => FoodBloc())

@@ -1,5 +1,4 @@
 import 'package:flutter_deep_linking/flutter_deep_linking.dart';
-import 'package:hpi_flutter/course/course.dart';
 import 'package:hpi_flutter/food/food.dart';
 import 'package:hpi_flutter/myhpi/myhpi.dart';
 import 'package:hpi_flutter/news/news.dart';
@@ -28,7 +27,6 @@ final router = Router(
     Route(
       matcher: Matcher.webHost(mdHost, isOptional: true),
       routes: [
-        courseRoutes,
         Route(
           matcher: Matcher.path('dashboard'),
           materialBuilder: (_, __) => DashboardPage(),
