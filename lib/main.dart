@@ -5,7 +5,6 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:flutter/services.dart';
 import 'package:grpc/grpc.dart';
 import 'package:hpi_flutter/app/app.dart';
-import 'package:hpi_flutter/course/course.dart';
 import 'package:hpi_flutter/crashreporting/crashreporting.dart';
 import 'package:hpi_flutter/feedback/feedback.dart';
 import 'package:hpi_flutter/food/food.dart';
