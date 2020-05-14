@@ -287,7 +287,7 @@ class _HpiFlexibleSpaceBarState extends State<HpiFlexibleSpaceBar> {
     if (effectiveCenterTitle) {
       return Alignment.bottomCenter;
     }
-    final TextDirection textDirection = context.directionality;
+    final textDirection = context.directionality;
     assert(textDirection != null);
     switch (textDirection) {
       case TextDirection.rtl:
@@ -305,7 +305,7 @@ class _HpiFlexibleSpaceBarState extends State<HpiFlexibleSpaceBar> {
       case CollapseMode.none:
         return 0;
       case CollapseMode.parallax:
-        final double deltaExtent = settings.maxExtent - settings.minExtent;
+        final deltaExtent = settings.maxExtent - settings.minExtent;
         return -Tween<double>(begin: 0, end: deltaExtent / 4.0).transform(t);
     }
     // ignore: avoid_returning_null
@@ -314,14 +314,14 @@ class _HpiFlexibleSpaceBarState extends State<HpiFlexibleSpaceBar> {
 
   @override
   Widget build(BuildContext context) {
-    final FlexibleSpaceBarSettings settings =
+    final settings =
         context.dependOnInheritedWidgetOfExactType<FlexibleSpaceBarSettings>();
     assert(settings != null,
         'A HpiFlexibleSpaceBar must be wrapped in the widget returned by HpiFlexibleSpaceBar.createSettings().');
 
-    final List<Widget> children = <Widget>[];
+    final children = <Widget>[];
 
-    final double deltaExtent = settings.maxExtent - settings.minExtent;
+    final deltaExtent = settings.maxExtent - settings.minExtent;
 
     // 0.0 -> Expanded
     // 1.0 -> Collapsed to toolbar
@@ -332,10 +332,10 @@ class _HpiFlexibleSpaceBarState extends State<HpiFlexibleSpaceBar> {
 
     // background image
     if (widget.background != null) {
-      final double fadeStart = math.max(0, 1.0 - kToolbarHeight / deltaExtent);
-      const double fadeEnd = 1;
+      final fadeStart = math.max(0, 1.0 - kToolbarHeight / deltaExtent);
+      const fadeEnd = 1.0;
       assert(fadeStart <= fadeEnd);
-      final double opacity = 1.0 - Interval(fadeStart, fadeEnd).transform(t);
+      final opacity = 1.0 - Interval(fadeStart, fadeEnd).transform(t);
       if (opacity > 0.0) {
         children.add(Positioned(
           top: _getCollapsePadding(t, settings),
@@ -351,7 +351,7 @@ class _HpiFlexibleSpaceBarState extends State<HpiFlexibleSpaceBar> {
     }
 
     if (widget.title != null) {
-      final ThemeData theme = context.theme;
+      final theme = context.theme;
 
       Widget title;
       switch (theme.platform) {
@@ -369,13 +369,13 @@ class _HpiFlexibleSpaceBarState extends State<HpiFlexibleSpaceBar> {
           );
       }
 
-      final double opacity = settings.toolbarOpacity;
+      final opacity = settings.toolbarOpacity;
       if (opacity > 0.0) {
-        TextStyle titleStyle = theme.primaryTextTheme.headline6;
+        var titleStyle = theme.primaryTextTheme.headline6;
         titleStyle =
             titleStyle.copyWith(color: titleStyle.color.withOpacity(opacity));
-        final bool effectiveCenterTitle = _getEffectiveCenterTitle(theme);
-        final EdgeInsetsGeometry padding = widget.titlePadding ??
+        final effectiveCenterTitle = _getEffectiveCenterTitle(theme);
+        final padding = widget.titlePadding ??
             EdgeInsetsDirectional.only(
               start: effectiveCenterTitle
                   ? 0.0
@@ -383,12 +383,10 @@ class _HpiFlexibleSpaceBarState extends State<HpiFlexibleSpaceBar> {
               end: 32,
               bottom: Tween<double>(begin: 16, end: 0).transform(t),
             );
-        final double scaleValue =
-            Tween<double>(begin: 1.5, end: 1).transform(t);
-        final Matrix4 scaleTransform = Matrix4.identity()
+        final scaleValue = Tween<double>(begin: 1.5, end: 1).transform(t);
+        final scaleTransform = Matrix4.identity()
           ..scale(scaleValue, scaleValue, 1);
-        final Alignment titleAlignment =
-            _getTitleAlignment(t, effectiveCenterTitle);
+        final titleAlignment = _getTitleAlignment(t, effectiveCenterTitle);
         children.add(
           SafeArea(
             child: Container(

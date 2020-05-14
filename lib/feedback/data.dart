@@ -56,7 +56,7 @@ class Feedback {
       }
     }
 
-    Feedback f = Feedback(
+    return Feedback(
       id: '',
       message: message,
       screenUri: screenUri,
@@ -64,8 +64,6 @@ class Feedback {
       screenshot: screenshot,
       log: log,
     );
-
-    return f;
   }
 
   proto.Feedback toProto() {

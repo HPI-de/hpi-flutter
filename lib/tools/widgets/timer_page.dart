@@ -192,13 +192,13 @@ class _CountdownTimerWidgetState extends State<CountdownTimerWidget> {
       onRadialDragUpdate: (coords) {
         // _lastCoords ??= coords;
         // normalize in case we change from -pi to pi
-        double difference =
+        var difference =
             (coords.angle - _lastCoords.angle + pi) % (2 * pi) - pi;
         if (difference < -pi) {
           difference += 2 * pi;
         }
 
-        Duration additional = Duration(
+        var additional = Duration(
           microseconds: (total.inMicroseconds * difference / (2 * pi)).round(),
         );
         if (widget.timer.remaining + additional > total) {

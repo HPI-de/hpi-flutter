@@ -143,7 +143,7 @@ class _FeedbackDialogState extends State<FeedbackDialog>
 
     setState(() {
       isSending = true;
-      Uri screenUri =
+      final screenUri =
           Uri.parse(mdWebUrl(services.get<NavigationService>().lastKnownRoute));
       Feedback.create(
         message.trim(),
