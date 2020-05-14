@@ -1,15 +1,13 @@
+import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:flutter/material.dart' hide Route;
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart' hide Image;
 import 'package:hpi_flutter/feedback/feedback.dart';
 import 'package:hpi_flutter/onboarding/onboarding.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:package_info/package_info.dart';
-
-import 'scrollable_markdown.dart';
 
 class SettingsPage extends StatelessWidget {
   @override
@@ -256,9 +254,9 @@ class PrivacyPolicyPage extends StatelessWidget {
               return buildLoadingError(snapshot);
             }
 
-            return ScrollableMarkdown(
-              scrollController: scrollController,
+            return Markdown(
               data: snapshot.data,
+              controller: scrollController,
               onTapLink: tryLaunch,
             );
           },
