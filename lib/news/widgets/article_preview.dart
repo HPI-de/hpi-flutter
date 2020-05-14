@@ -27,12 +27,12 @@ class ArticlePreview extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     article.title,
-                    style: context.textTheme.subhead,
+                    style: context.textTheme.subtitle1,
                   ),
                   SizedBox(height: 8),
                   Text(
                     article.teaser,
-                    style: context.textTheme.body1,
+                    style: context.textTheme.bodyText2,
                   ),
                   SizedBox(height: 4),
                   StreamBuilder<Source>(

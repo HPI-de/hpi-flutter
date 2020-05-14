@@ -82,7 +82,7 @@ class _FeedbackDialogState extends State<FeedbackDialog>
     return [
       Text(
         widget.title,
-        style: context.textTheme.display1,
+        style: context.textTheme.headline4,
       ),
       SizedBox(height: 16),
       TextFormField(
@@ -143,7 +143,7 @@ class _FeedbackDialogState extends State<FeedbackDialog>
 
     setState(() {
       isSending = true;
-      Uri screenUri =
+      final screenUri =
           Uri.parse(mdWebUrl(services.get<NavigationService>().lastKnownRoute));
       Feedback.create(
         message.trim(),

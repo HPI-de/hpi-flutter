@@ -19,7 +19,7 @@ class CoursePage extends StatelessWidget {
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             SliverOverlapAbsorber(
               handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-              child: HpiSliverAppBar(
+              sliver: HpiSliverAppBar(
                 floating: true,
                 pinned: true,
                 forceElevated: innerBoxIsScrolled,
@@ -28,7 +28,7 @@ class CoursePage extends StatelessWidget {
                   indicatorColor: context.theme.primaryColor,
                   labelColor: context.theme.primaryColor,
                   unselectedLabelColor:
-                      context.textTheme.body2.color.withOpacity(0.7),
+                      context.textTheme.bodyText1.color.withOpacity(0.7),
                   tabs: [
                     Tab(text: s.course_tab_current),
                     Tab(text: s.course_tab_all),

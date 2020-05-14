@@ -39,7 +39,7 @@ const _brandColorYellow = 0xFFF6A804;
 ThemeData buildTheme(Brightness brightness) {
   final isDark = brightness == Brightness.dark;
 
-  ThemeData theme = ThemeData(
+  var theme = ThemeData(
     brightness: brightness,
     applyElevationOverlayColor: isDark,
     primarySwatch: _brandColorRedSwatch,
@@ -54,16 +54,17 @@ ThemeData buildTheme(Brightness brightness) {
   );
   theme = theme.copyWith(
     textTheme: theme.textTheme.copyWith(
-        overline: theme.textTheme.overline.copyWith(
-          color: isDark ? Colors.white60 : Colors.black.withOpacity(0.6),
-          fontWeight: FontWeight.w500,
-          fontSize: 10,
-          letterSpacing: 1.5,
-          height: 1.6,
-        ),
-        headline: theme.textTheme.headline.copyWith(
-          fontFamily: 'Neo Sans',
-        )),
+      headline5: theme.textTheme.headline5.copyWith(
+        fontFamily: 'Neo Sans',
+      ),
+      overline: theme.textTheme.overline.copyWith(
+        color: isDark ? Colors.white60 : Colors.black.withOpacity(0.6),
+        fontWeight: FontWeight.w500,
+        fontSize: 10,
+        letterSpacing: 1.5,
+        height: 1.6,
+      ),
+    ),
   );
   var localizedTheme = ThemeData.localize(
     theme,

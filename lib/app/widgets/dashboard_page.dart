@@ -73,7 +73,7 @@ class DashboardFragment extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   child: DefaultTextStyle(
-                    style: context.textTheme.title,
+                    style: context.textTheme.headline6,
                     child: title,
                   ),
                 ),

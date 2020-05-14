@@ -23,13 +23,13 @@ class CourseDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = context.s;
     final bloc = services.get<CourseBloc>();
-    final stream = Observable.combineLatest2<KtPair<Course, CourseSeries>,
-        CourseDetail, KtTriple<Course, CourseSeries, CourseDetail>>(
-      Observable(bloc.getCourse(courseId)).switchMap(
-        (c) => bloc
-            .getCourseSeries(c.courseSeriesId)
-            .map((cs) => KtPair<Course, CourseSeries>(c, cs)),
-      ),
+    final stream = Rx.combineLatest2<KtPair<Course, CourseSeries>, CourseDetail,
+        KtTriple<Course, CourseSeries, CourseDetail>>(
+      bloc.getCourse(courseId).switchMap(
+            (c) => bloc
+                .getCourseSeries(c.courseSeriesId)
+                .map((cs) => KtPair<Course, CourseSeries>(c, cs)),
+          ),
       bloc.getCourseDetail(courseId),
       (ccs, detail) => KtTriple<Course, CourseSeries, CourseDetail>(
           ccs.first, ccs.second, detail),
@@ -172,7 +172,7 @@ class CourseDetailPage extends StatelessWidget {
       SizedBox(height: 16),
       Text(
         s.course_course_noGuarantee,
-        style: context.textTheme.body1
+        style: context.textTheme.bodyText2
             .copyWith(color: Colors.black.withOpacity(0.6)),
         textAlign: TextAlign.center,
       ),
@@ -227,13 +227,15 @@ class CourseDetailPage extends StatelessWidget {
     }
     return ElevatedExpansionTile(
       leading: Icon(icon),
-      title: Text(title, style: context.textTheme.subhead),
+      title: Text(title, style: context.textTheme.subtitle1),
       children: [
-        Html(
+        Padding(
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          data: content,
-          onLinkTap: tryLaunch,
-        )
+          child: Html(
+            data: content,
+            onLinkTap: tryLaunch,
+          ),
+        ),
       ],
     );
   }

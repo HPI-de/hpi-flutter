@@ -180,10 +180,10 @@ class _ElevatedExpansionTileState extends State<ElevatedExpansionTile>
 
   @override
   void didChangeDependencies() {
-    final ThemeData theme = context.theme;
+    final theme = context.theme;
     _borderColorTween.end = theme.dividerColor;
     _headerColorTween
-      ..begin = theme.textTheme.subhead.color
+      ..begin = theme.textTheme.subtitle1.color
       ..end = theme.accentColor;
     _iconColorTween
       ..begin = theme.unselectedWidgetColor
@@ -194,7 +194,7 @@ class _ElevatedExpansionTileState extends State<ElevatedExpansionTile>
 
   @override
   Widget build(BuildContext context) {
-    final bool closed = !_isExpanded && _controller.isDismissed;
+    final closed = !_isExpanded && _controller.isDismissed;
     return AnimatedBuilder(
       animation: _controller.view,
       builder: _buildChildren,

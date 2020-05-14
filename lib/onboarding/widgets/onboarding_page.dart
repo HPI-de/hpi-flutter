@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' hide Route;
+import 'package:flutter/material.dart' hide Page, Route;
 import 'package:hpi_flutter/app/app.dart';
 import 'package:hpi_flutter/core/core.dart' hide Image;
 import 'package:hpi_flutter/settings/settings.dart';
@@ -64,7 +64,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           SizedBox(height: 96),
           Text(
             s.onboarding_start_title,
-            style: context.textTheme.display1.copyWith(
+            style: context.textTheme.headline4.copyWith(
               fontSize: 30,
               color: Colors.white,
             ),
@@ -72,7 +72,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           SizedBox(height: 32),
           Text(
             s.onboarding_start_subtitle,
-            style: context.textTheme.subtitle.copyWith(color: Colors.white),
+            style: context.textTheme.subtitle2.copyWith(color: Colors.white),
           ),
         ],
       ),
@@ -93,7 +93,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               onPressed: () => PrivacyPolicyPage.showBottomSheet(context),
               child: Text(
                 s.settings_about_privacyPolicy,
-                style: context.textTheme.subhead
+                style: context.textTheme.subtitle1
                     .copyWith(color: context.hpiTheme.tertiary),
               ),
             ),
@@ -101,7 +101,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           TextSpan(text: s.onboarding_privacyPolicy_suffix),
         ],
       ),
-      style: context.textTheme.subhead.copyWith(color: Colors.white),
+      style: context.textTheme.subtitle1.copyWith(color: Colors.white),
       textAlign: TextAlign.left,
     );
 
@@ -209,7 +209,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           children: <Widget>[
             Text(
               context.s.onboarding_aboutMyself_title,
-              style: context.textTheme.title.copyWith(color: Colors.white),
+              style: context.textTheme.headline6.copyWith(color: Colors.white),
             ),
             SizedBox(height: 32),
             FutureBuilder<SharedPreferences>(

@@ -84,7 +84,7 @@ class ArticleView extends StatelessWidget {
               <Widget>[
                 Text(
                   article.title,
-                  style: context.textTheme.headline,
+                  style: context.textTheme.headline5,
                 ),
                 SizedBox(height: 8),
                 _buildCaption(context),

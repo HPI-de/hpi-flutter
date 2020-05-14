@@ -39,12 +39,12 @@ class InfoBitCard extends StatelessWidget {
     final title = [
       Text(
         infoBit.title,
-        style: context.textTheme.headline,
+        style: context.textTheme.headline5,
       ),
       if (infoBit.subtitle != null)
         Text(
           infoBit.subtitle,
-          style: context.textTheme.subhead,
+          style: context.textTheme.subtitle1,
         ),
     ];
 
@@ -83,7 +83,7 @@ class InfoBitCard extends StatelessWidget {
               if (infoBit.description != null)
                 Text(
                   infoBit.description,
-                  style: context.textTheme.body1
+                  style: context.textTheme.bodyText2
                       .copyWith(color: Colors.black.withOpacity(0.6)),
                 ),
             ],

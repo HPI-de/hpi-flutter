@@ -25,10 +25,9 @@ Future<void> runWithCrashReporting(Future<void> Function() body) async {
   };
 
   // run in custom zone for catching errors
-  await runZoned<Future<void>>(
+  await runZonedGuarded<Future<void>>(
     body,
-    // ignore: avoid_types_on_closure_parameters
-    onError: (error, StackTrace stackTrace) async {
+    (error, stackTrace) async {
       await reportError(error, stackTrace);
     },
   );
@@ -36,7 +35,7 @@ Future<void> runWithCrashReporting(Future<void> Function() body) async {
 
 bool get isInDebugMode {
   // Assume you're in production mode.
-  bool inDebugMode = false;
+  var inDebugMode = false;
   // Assert expressions are only evaluated during development.
   assert(inDebugMode = true);
   return inDebugMode;
