@@ -27,8 +27,8 @@ class OpenHpiCoursePreview extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     course.title,
-                    style:
-                        context.textTheme.body1.copyWith(color: Colors.white),
+                    style: context.textTheme.bodyText2
+                        .copyWith(color: Colors.white),
                     maxLines: 3,
                   ),
                   Text(

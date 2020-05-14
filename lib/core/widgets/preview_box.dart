@@ -53,7 +53,7 @@ class PreviewBox extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           DefaultTextStyle(
-            style: context.textTheme.body1.copyWith(color: Colors.white),
+            style: context.textTheme.bodyText2.copyWith(color: Colors.white),
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
             child: title,

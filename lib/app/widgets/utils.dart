@@ -19,7 +19,7 @@ Widget buildAppBarTitle({
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       DefaultTextStyle(
-        style: context.textTheme.title.copyWith(
+        style: context.textTheme.headline6.copyWith(
           color: Colors.black87,
         ),
         maxLines: 1,
@@ -27,7 +27,7 @@ Widget buildAppBarTitle({
         child: title,
       ),
       DefaultTextStyle(
-        style: context.textTheme.subhead,
+        style: context.textTheme.subtitle1,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         child: subtitle,

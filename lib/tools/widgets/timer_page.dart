@@ -235,10 +235,10 @@ class CountdownTimerPainter extends CustomPainter {
         assert(total != null),
         _areaPaint = Paint()..color = context.theme.primaryColor,
         _tickSmallPaint = Paint()
-          ..color = context.textTheme.body1.color
+          ..color = context.textTheme.bodyText2.color
           ..strokeWidth = 1.5,
         _tickLargePaint = Paint()
-          ..color = context.textTheme.body1.color
+          ..color = context.textTheme.bodyText2.color
           ..strokeWidth = 3,
         _labelPainter = TextPainter(
           textAlign: TextAlign.center,
@@ -296,7 +296,7 @@ class CountdownTimerPainter extends CustomPainter {
         _labelPainter
           ..text = TextSpan(
             text: (i * _tickSmallDistance.inMinutes).toString(),
-            style: theme.textTheme.display1,
+            style: theme.textTheme.headline4,
           )
           ..layout()
           ..paint(

@@ -82,7 +82,7 @@ class _FeedbackDialogState extends State<FeedbackDialog>
     return [
       Text(
         widget.title,
-        style: context.textTheme.display1,
+        style: context.textTheme.headline4,
       ),
       SizedBox(height: 16),
       TextFormField(

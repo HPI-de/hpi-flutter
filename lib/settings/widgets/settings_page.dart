@@ -63,7 +63,7 @@ class _MobileDevAd extends StatelessWidget {
             padding: const EdgeInsets.only(right: 16),
             child: Text(
               s.settings_ad_title,
-              style: theme.textTheme.headline.copyWith(color: onPrimary),
+              style: theme.textTheme.headline5.copyWith(color: onPrimary),
             ),
           ),
           Row(
@@ -75,7 +75,8 @@ class _MobileDevAd extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         s.settings_ad_text,
-                        style: theme.textTheme.body1.copyWith(color: onPrimary),
+                        style: theme.textTheme.bodyText2
+                            .copyWith(color: onPrimary),
                       ),
                       SizedBox(height: 16),
                       OutlineButton(
@@ -114,7 +115,7 @@ class _MobileDevAd extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       child: Text(
         context.s.settings_ad_title_nonStudent,
-        style: theme.textTheme.subhead.copyWith(color: onPrimary),
+        style: theme.textTheme.subtitle1.copyWith(color: onPrimary),
         textAlign: TextAlign.center,
       ),
     );
@@ -136,7 +137,7 @@ class _AboutSection extends StatelessWidget {
           children: <Widget>[
             Text(
               context.s.settings_about_imprint_desc,
-              style: textTheme.body1,
+              style: textTheme.bodyText2,
             ),
           ],
         ),
@@ -205,7 +206,7 @@ class _AboutSection extends StatelessWidget {
         onPressed: () => context.navigator.pushNamed('/settings/privacyPolicy'),
         child: Text(s.settings_about_privacyPolicy),
       ),
-      Text('⋅', style: context.textTheme.headline),
+      Text('⋅', style: context.textTheme.headline5),
       FlatButton(
         onPressed: () {
           PackageInfo.fromPlatform()
@@ -227,7 +228,7 @@ class _AboutSection extends StatelessWidget {
         },
         child: Text(s.settings_about_licenses),
       ),
-      Text('⋅', style: context.textTheme.headline),
+      Text('⋅', style: context.textTheme.headline5),
       FlatButton(
         onPressed: () {
           FeedbackDialog.show(context);

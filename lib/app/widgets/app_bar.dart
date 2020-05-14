@@ -272,8 +272,11 @@ class _HpiFlexibleSpaceBarState extends State<HpiFlexibleSpaceBar> {
     switch (theme.platform) {
       case TargetPlatform.android:
       case TargetPlatform.fuchsia:
+      case TargetPlatform.linux:
+      case TargetPlatform.windows:
         return false;
       case TargetPlatform.iOS:
+      case TargetPlatform.macOS:
         return true;
     }
     // ignore: avoid_returning_null
@@ -353,10 +356,13 @@ class _HpiFlexibleSpaceBarState extends State<HpiFlexibleSpaceBar> {
       Widget title;
       switch (theme.platform) {
         case TargetPlatform.iOS:
+        case TargetPlatform.macOS:
           title = widget.title;
           break;
-        case TargetPlatform.fuchsia:
         case TargetPlatform.android:
+        case TargetPlatform.fuchsia:
+        case TargetPlatform.linux:
+        case TargetPlatform.windows:
           title = Semantics(
             namesRoute: true,
             child: widget.title,
@@ -365,7 +371,7 @@ class _HpiFlexibleSpaceBarState extends State<HpiFlexibleSpaceBar> {
 
       final double opacity = settings.toolbarOpacity;
       if (opacity > 0.0) {
-        TextStyle titleStyle = theme.primaryTextTheme.title;
+        TextStyle titleStyle = theme.primaryTextTheme.headline6;
         titleStyle =
             titleStyle.copyWith(color: titleStyle.color.withOpacity(opacity));
         final bool effectiveCenterTitle = _getEffectiveCenterTitle(theme);

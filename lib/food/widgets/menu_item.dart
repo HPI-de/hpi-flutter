@@ -40,7 +40,7 @@ class MenuItemView extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: Text(item.title, style: context.textTheme.body1),
+              child: Text(item.title, style: context.textTheme.bodyText2),
             ),
             SizedBox(width: 8),
             // Currently, label icons aren't sent by the server.
@@ -123,11 +123,11 @@ class MenuItemDetails extends StatelessWidget {
             children: <Widget>[
               Text(
                 s.food_offer(item.counter),
-                style: context.textTheme.headline,
+                style: context.textTheme.headline5,
               ),
               Text(
                 item.title,
-                style: context.textTheme.subhead,
+                style: context.textTheme.subtitle1,
               ),
               ChipGroup(
                 children: [
