@@ -9,12 +9,9 @@ import '../data.dart';
 import 'menu_item.dart';
 
 class RestaurantMenu extends StatelessWidget {
-  const RestaurantMenu({@required this.restaurantId, @required this.menuItems})
-      : assert(restaurantId != null),
-        assert(menuItems != null);
+  const RestaurantMenu(this.restaurantId) : assert(restaurantId != null);
 
   final String restaurantId;
-  final List<MenuItem> menuItems;
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +24,21 @@ class RestaurantMenu extends StatelessWidget {
           snapshot.hasData ? snapshot.data.title : s.general_loading,
         ),
       ),
-      child: Column(
-        children: <Widget>[
-          const SizedBox(height: 16),
-          ..._buildItemGroups(menuItems),
-        ],
-      ),
+      child: StreamBuilder<List<MenuItem>>(
+          stream:
+              services.get<FoodBloc>().getMenuItems(restaurantId: restaurantId),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return buildLoadingError(snapshot);
+            }
+
+            return Column(
+              children: <Widget>[
+                SizedBox(height: 16),
+                ..._buildItemGroups(snapshot.data),
+              ],
+            );
+          }),
     );
   }
 
