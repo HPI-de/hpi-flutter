@@ -39,6 +39,11 @@ class FoodBloc {
         .map((a) => MenuItem.fromProto(a));
   }
 
+  Stream<List<Restaurant>> getRestaurants() {
+    return Stream.fromFuture(_client.listRestaurants(ListRestaurantsRequest()))
+        .map((r) => r.restaurants.map((i) => Restaurant.fromProto(i)).toList());
+  }
+
   Stream<Restaurant> getRestaurant(String id) {
     assert(id != null);
     return Stream.fromFuture(

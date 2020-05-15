@@ -24,40 +24,36 @@ class FoodPage extends StatelessWidget {
       ),
     );
   }
-}
 
-Widget _buildRestaurantList(BuildContext context) {
-  final s = context.s;
+  Widget _buildRestaurantList(BuildContext context) {
+    final s = context.s;
 
-  return StreamBuilder<List<MenuItem>>(
-    stream: services.get<FoodBloc>().getMenuItems(),
-    builder: (context, snapshot) {
-      if (!snapshot.hasData) {
-        return buildLoadingErrorSliver(snapshot);
-      }
+    return StreamBuilder<List<Restaurant>>(
+      stream: services.get<FoodBloc>().getRestaurants(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return buildLoadingErrorSliver(snapshot);
+        }
 
-      if (snapshot.data.isEmpty) {
-        return SliverFillRemaining(
-          child: Center(child: Text(s.food_noMenu)),
-        );
-      }
+        final restaurants = snapshot.data;
+        if (restaurants.isEmpty) {
+          return SliverFillRemaining(
+            child: Center(child: Text(s.food_noMenu)),
+          );
+        }
 
-      var menuItems = snapshot.data;
-      var allRestaurants =
-          menuItems.map((item) => item.restaurantId).toSet().toList();
-      return SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (context, index) => Padding(
-            padding: const EdgeInsets.all(16),
-            child: RestaurantMenu(
-              restaurantId: allRestaurants[index],
-              menuItems: menuItems
-                  .where((item) => item.restaurantId == allRestaurants[index]),
-            ),
+        return SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              return Padding(
+                padding: EdgeInsets.all(16),
+                child: RestaurantMenu(restaurants[index].id),
+              );
+            },
+            childCount: restaurants.length,
           ),
-          childCount: allRestaurants.length,
-        ),
-      );
-    },
-  );
+        );
+      },
+    );
+  }
 }

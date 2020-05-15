@@ -30,7 +30,7 @@ class DashboardPage extends StatelessWidget {
           ),
           OpenHpiFragment(),
           NewsFragment(),
-          FoodFragment(),
+          RestaurantMenu('mensaGriebnitzsee'),
         ].expand((child) sync* {
           yield SizedBox(height: 16);
           yield child;
